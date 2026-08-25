@@ -1,0 +1,274 @@
+{
+ "ABDILLAH": {
+  "mengajar": 20,
+  "tugas": 6,
+  "total": 26,
+  "dashboard": 26,
+  "sertifikasi": false,
+  "kelengkapan": 100
+ },
+ "ANDI MIRNA": {
+  "mengajar": 12,
+  "tugas": 6,
+  "total": 18,
+  "dashboard": 24,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ },
+ "ANDI RASNIA RASJID": {
+  "mengajar": 15,
+  "tugas": 12,
+  "total": 27,
+  "dashboard": 27,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "ANWAR": {
+  "mengajar": 0,
+  "tugas": 24,
+  "total": 24,
+  "dashboard": 0,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "ASNIAR": {
+  "mengajar": 10,
+  "tugas": 0,
+  "total": 10,
+  "dashboard": 10,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ },
+ "CHAIRUDDIN": {
+  "mengajar": 12,
+  "tugas": 12,
+  "total": 24,
+  "dashboard": 24,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "ERNAWATI": {
+  "mengajar": 6,
+  "tugas": 6,
+  "total": 12,
+  "dashboard": 25,
+  "sertifikasi": true,
+  "kelengkapan": 80
+ },
+ "HERNIATI": {
+  "mengajar": 20,
+  "tugas": 6,
+  "total": 26,
+  "dashboard": 26,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "IRMAWATI NUR": {
+  "mengajar": 16,
+  "tugas": 12,
+  "total": 28,
+  "dashboard": 28,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "JAYANTI JUFRI": {
+  "mengajar": 12,
+  "tugas": 2,
+  "total": 14,
+  "dashboard": 14,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ },
+ "KAHARUDDIN": {
+  "mengajar": 23,
+  "tugas": 2,
+  "total": 25,
+  "dashboard": 25,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ },
+ "KARDI": {
+  "mengajar": 20,
+  "tugas": 12,
+  "total": 32,
+  "dashboard": 32,
+  "sertifikasi": false,
+  "kelengkapan": 100
+ },
+ "MIDA": {
+  "mengajar": 16,
+  "tugas": 2,
+  "total": 18,
+  "dashboard": 26,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "MIRNAWATI": {
+  "mengajar": 12,
+  "tugas": 2,
+  "total": 14,
+  "dashboard": 14,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ },
+ "MUH. SAIN": {
+  "mengajar": 25,
+  "tugas": 6,
+  "total": 31,
+  "dashboard": 31,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "MUHAMMAD YANI": {
+  "mengajar": 16,
+  "tugas": 0,
+  "total": 16,
+  "dashboard": 16,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ },
+ "MUTMAINNAH": {
+  "mengajar": 25,
+  "tugas": 0,
+  "total": 25,
+  "dashboard": 25,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ },
+ "NIRMAWATI TAHIR": {
+  "mengajar": 6,
+  "tugas": 6,
+  "total": 12,
+  "dashboard": 22,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ },
+ "NURILMI": {
+  "mengajar": 10,
+  "tugas": 2,
+  "total": 12,
+  "dashboard": 12,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ },
+ "NURUL FITRI USMAN": {
+  "mengajar": 24,
+  "tugas": 6,
+  "total": 30,
+  "dashboard": 30,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ },
+ "NURUNNISAA ALIMAH ANWAR": {
+  "mengajar": 10,
+  "tugas": 0,
+  "total": 10,
+  "dashboard": 18,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ },
+ "RATNAWATI": {
+  "mengajar": 13,
+  "tugas": 12,
+  "total": 25,
+  "dashboard": 25,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "RUSNAWATI": {
+  "mengajar": 18,
+  "tugas": 6,
+  "total": 24,
+  "dashboard": 24,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "RUSTIANI": {
+  "mengajar": 6,
+  "tugas": 6,
+  "total": 12,
+  "dashboard": 24,
+  "sertifikasi": false,
+  "kelengkapan": 100
+ },
+ "SAIMANG": {
+  "mengajar": 6,
+  "tugas": 0,
+  "total": 6,
+  "dashboard": 17,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "SITTI RAFIDAH": {
+  "mengajar": 26,
+  "tugas": 6,
+  "total": 32,
+  "dashboard": 32,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "SITTI RAHMAH": {
+  "mengajar": 14,
+  "tugas": 6,
+  "total": 20,
+  "dashboard": 20,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "SRIHARDIANTI": {
+  "mengajar": 10,
+  "tugas": 0,
+  "total": 10,
+  "dashboard": 10,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ },
+ "SUPRIADI": {
+  "mengajar": 22,
+  "tugas": 2,
+  "total": 24,
+  "dashboard": 24,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "SUSIANTI": {
+  "mengajar": 24,
+  "tugas": 6,
+  "total": 30,
+  "dashboard": 30,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ },
+ "SUTRA": {
+  "mengajar": 21,
+  "tugas": 3,
+  "total": 24,
+  "dashboard": 24,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "TAUFIK": {
+  "mengajar": 12,
+  "tugas": 12,
+  "total": 24,
+  "dashboard": 24,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "WATI ZAELANI SIDIG ELLYANANDO": {
+  "mengajar": 21,
+  "tugas": 6,
+  "total": 27,
+  "dashboard": 27,
+  "sertifikasi": true,
+  "kelengkapan": 100
+ },
+ "YURNIANTI": {
+  "mengajar": 18,
+  "tugas": 6,
+  "total": 24,
+  "dashboard": 24,
+  "sertifikasi": false,
+  "kelengkapan": 80
+ }
+}

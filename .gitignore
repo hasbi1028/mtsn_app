@@ -1,0 +1,50 @@
+node_modules
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# SQLite
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+*_log.txt
+*_log.txt
+addlog_*.txt
+bff_build.log
+dev_log.txt
+build_log.txt
+npmlog.txt
+shadcnlog.txt
+svlog.txt
+err.txt
+
+# Binaries
+backend/api.exe
+backend/api.exe~
+
+# Temp
+_hash.txt
+dev_test.txt
+s29a_extract.json
