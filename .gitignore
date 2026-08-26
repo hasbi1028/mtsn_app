@@ -53,3 +53,6 @@ s29a_extract.json
 worker-bel/worker-bel.exe
 worker-bel/sound-cache/
 worker-bel/*.log
+
+# artefak Windows
+nul
