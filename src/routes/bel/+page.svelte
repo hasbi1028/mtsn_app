@@ -3,10 +3,20 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import PageLayout from '$lib/components/page-layout.svelte';
+	import { toast } from 'svelte-sonner';
 
 	let { data, form } = $props();
 	const status = $derived(data.status as any);
 	const jadwal = $derived(data.jadwal as any);
+
+	// Notifikasi hasil aksi via sonner
+	$effect(() => {
+		if (form?.ok === true) {
+			toast.success(form.pesan || 'Perintah terkirim ke bel service.');
+		} else if (form?.ok === false) {
+			toast.error(form.error || 'Gagal mengirim perintah.');
+		}
+	});
 	const suaraFiles = $derived(data.suara?.files ?? []);
 	let semua = $state(false);
 	const arrJadwal = $derived(semua ? (jadwal.semua ?? []) : (jadwal.jadwal_hari_ini ?? []));
@@ -28,11 +38,7 @@
 </script>
 
 <PageLayout title="Modul Bel" description="Jadwal & kontrol bel sekolah — SIMAD MTsN 2 Kolaka Utara">
-	{#if form?.ok !== undefined}
-		<div class="rounded-md border px-3 py-2 text-sm {form.ok ? 'bg-green-500/10 text-green-700' : 'bg-destructive/10 text-destructive'}">
-			{form.ok ? (form.pesan || 'Perintah terkirim ke bel service.') : (form.error || 'Gagal mengirim perintah.')}
-		</div>
-	{/if}
+<!-- notifikasi via sonner -->
 
 	{#if status?.offline}
 		<div class="rounded-lg border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">

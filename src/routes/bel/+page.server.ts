@@ -28,16 +28,23 @@ export const load = async ({ cookies, fetch }) => {
 };
 
 export const actions = {
-	stop: async ({ cookies, fetch }) => api(cookies, fetch, '/api/bel/stop', { method: 'POST' }),
+	stop: async ({ cookies, fetch }) => {
+		const res = await api(cookies, fetch, '/api/bel/stop', { method: 'POST' });
+		if (res?.ok) return { ok: true, pesan: 'Pemutaran dihentikan.' };
+		return res;
+	},
 
 	play: async ({ cookies, fetch, request }) => {
 		const fd = await request.formData();
 		const file = String(fd.get('file') || '');
-		return api(cookies, fetch, '/api/bel/play', {
+		const res = await api(cookies, fetch, '/api/bel/play', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ path: file, repeat: 1 })
 		});
+		if (res?.ok) return { ok: true, pesan: `Memutar ${file}...` };
+		if (res?.error) return fail(409, { ok: false, error: res.error });
+		return fail(400, { ok: false, error: 'Gagal memutar suara.' });
 	},
 
 	// Master switch — konfirmasi kata wajib
@@ -49,11 +56,13 @@ export const actions = {
 			return fail(400, { ok: false, error: `Ketik "${target}" untuk konfirmasi.` });
 		}
 		const enabled = target === 'AKTIF';
-		return api(cookies, fetch, '/api/bel/master', {
+		const res = await api(cookies, fetch, '/api/bel/master', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ enabled })
 		});
+		if (res?.ok) return { ok: true, pesan: `Bel sekarang ${enabled ? 'AKTIF' : 'NONAKTIF (mode darurat)'}.` };
+		return fail(500, { ok: false, error: 'Gagal mengubah master switch.' });
 	},
 
 	// Tambah jadwal
@@ -81,11 +90,13 @@ export const actions = {
 		const fd = await request.formData();
 		const id = String(fd.get('id'));
 		const aktif = Number(fd.get('aktif'));
-		return api(cookies, fetch, `/api/bel/jadwal/${id}`, {
+		const res = await api(cookies, fetch, `/api/bel/jadwal/${id}`, {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ aktif })
 		});
+		if (!res?.ok) return fail(400, { ok: false, error: 'Gagal mengubah jadwal.' });
+		return { ok: true, pesan: `Jadwal ${aktif ? 'diaktifkan' : 'dinonaktifkan'}.` };
 	},
 
 	// Hapus jadwal
