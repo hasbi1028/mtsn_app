@@ -679,7 +679,7 @@ func (s *apiServer) handleBelStop(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *apiServer) handleBelJadwal(w http.ResponseWriter, r *http.Request) {
-	rows, err := s.db.Query(`SELECT hari, jam, jenis, label FROM jam_bel WHERE aktif = 1
+	rows, err := s.db.Query(`SELECT id, hari, jam, jenis, COALESCE(label,''), sound_path, repeat, aktif FROM jam_bel
 		ORDER BY CASE hari WHEN 'senin' THEN 1 WHEN 'selasa' THEN 2 WHEN 'rabu' THEN 3
 		WHEN 'kamis' THEN 4 WHEN 'jumat' THEN 5 WHEN 'sabtu' THEN 6 ELSE 7 END, jam`)
 	if err != nil {
@@ -687,26 +687,39 @@ func (s *apiServer) handleBelJadwal(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer rows.Close()
-	out := []map[string]string{}
+	type Jadwal struct {
+		ID        string `json:"id"`
+		Hari      string `json:"hari"`
+		Jam       string `json:"jam"`
+		Jenis     string `json:"jenis"`
+		Label     string `json:"label"`
+		SoundPath string `json:"sound_path"`
+		Repeat    int    `json:"repeat"`
+		Aktif     int    `json:"aktif"`
+	}
+	all := []Jadwal{}
 	for rows.Next() {
-		var h, j, t, l sql.NullString
-		rows.Scan(&h, &j, &t, &l)
-		out = append(out, map[string]string{"hari": h.String, "jam": j.String, "jenis": t.String, "label": l.String})
+		var x Jadwal
+		var h, j, t, l, sp sql.NullString
+		var rp, ak int
+		rows.Scan(&x.ID, &h, &j, &t, &l, &sp, &rp, &ak)
+		x.Hari, x.Jam, x.Jenis, x.Label, x.SoundPath, x.Repeat, x.Aktif = h.String, j.String, t.String, l.String, sp.String, rp, ak
+		all = append(all, x)
 	}
 	hariIni := strings.ToLower(time.Now().Format("Monday"))
 	hm := map[string]string{"monday": "senin", "tuesday": "selasa", "wednesday": "rabu",
 		"thursday": "kamis", "friday": "jumat", "saturday": "sabtu", "sunday": "minggu"}
 	hariIniID := hm[hariIni]
-	hariRows := []map[string]string{}
-	for _, x := range out {
-		if x["hari"] == hariIniID {
+	hariRows := []Jadwal{}
+	for _, x := range all {
+		if x.Hari == hariIniID {
 			hariRows = append(hariRows, x)
 		}
 	}
 	writeJSON(w, 200, map[string]any{
 		"hari_ini":        hariIniID,
 		"jadwal_hari_ini": hariRows,
-		"semua":           out,
+		"semua":           all,
 	})
 }
 
