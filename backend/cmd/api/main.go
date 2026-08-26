@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"context"
 	"database/sql"
 	"encoding/json"
@@ -86,7 +87,12 @@ func main() {
 	// dashboard
 	mux.HandleFunc("GET /api/skbk", s.auth(s.handleSkbkList))
 	mux.HandleFunc("GET /api/skakpt", s.auth(s.handleSkakptList))
+	mux.HandleFunc("GET /api/siswa", s.auth(s.handleSiswaList))
 	mux.HandleFunc("GET /api/activity", s.auth(s.handleActivityLog))
+	mux.HandleFunc("GET /api/bel/status", s.auth(s.handleBelStatus))
+	mux.HandleFunc("POST /api/bel/play", s.auth(s.handleBelPlay))
+	mux.HandleFunc("POST /api/bel/stop", s.auth(s.handleBelStop))
+	mux.HandleFunc("GET /api/bel/jadwal", s.auth(s.handleBelJadwal))
 	mux.HandleFunc("GET /api/stats", s.auth(s.handleStats))
 
 	addr := ":3730"
@@ -209,10 +215,6 @@ func (s *apiServer) handlePtkList(w http.ResponseWriter, r *http.Request) {
 	q := strings.TrimSpace(r.URL.Query().Get("q"))
 	filter := r.URL.Query().Get("filter")
 
-	base := `SELECT p.id, p.nama, p.peg_id, p.fungsi, p.kepegawaian, p.sertifikasi,
-		p.kelengkapan, p.wali_kelas, p.jabatan_struktural,
-		COALESCE(j.mengajar + j.tugas, NULL) AS total_jtm
-	FROM ptk p LEFT JOIN jtm_semester j ON j.ptk_id = p.id`
 	where := []string{"1=1"}
 	args := []any{}
 	if q != "" {
@@ -227,7 +229,40 @@ func (s *apiServer) handlePtkList(w http.ResponseWriter, r *http.Request) {
 	case "wali":
 		where = append(where, `p.wali_kelas IS NOT NULL`)
 	}
-	rows, err := s.db.Query(base+" WHERE "+strings.Join(where, " AND ")+" ORDER BY p.nama", args...)
+
+	whereClause := strings.Join(where, " AND ")
+
+	// count total
+	var total int
+	countQ := `SELECT COUNT(*) FROM ptk p LEFT JOIN jtm_semester j ON j.ptk_id = p.id WHERE ` + whereClause
+	s.db.QueryRow(countQ, args...).Scan(&total)
+
+	// pagination
+	page := 1
+	perPage := 20
+	if v := r.URL.Query().Get("page"); v != "" {
+		if n, err := fmt.Sscanf(v, "%d", &page); n != 1 || err != nil || page < 1 {
+			page = 1
+		}
+	}
+	if v := r.URL.Query().Get("per_page"); v != "" {
+		if n, err := fmt.Sscanf(v, "%d", &perPage); n != 1 || err != nil || perPage < 1 {
+			perPage = 20
+		}
+	}
+	if perPage > 100 {
+		perPage = 100
+	}
+	offset := (page - 1) * perPage
+
+	base := `SELECT p.id, p.nama, p.peg_id, p.fungsi, p.kepegawaian, p.sertifikasi,
+		p.kelengkapan, p.wali_kelas, p.jabatan_struktural,
+		COALESCE(j.mengajar + j.tugas, NULL) AS total_jtm
+	FROM ptk p LEFT JOIN jtm_semester j ON j.ptk_id = p.id`
+	query := base + " WHERE " + whereClause + " ORDER BY p.nama LIMIT ? OFFSET ?"
+	args = append(args, perPage, offset)
+
+	rows, err := s.db.Query(query, args...)
 	if err != nil {
 		fail(w, 500, err.Error())
 		return
@@ -239,18 +274,23 @@ func (s *apiServer) handlePtkList(w http.ResponseWriter, r *http.Request) {
 		var nama, fungsi sql.NullString
 		var pegID, kepeg, wali, jabatan sql.NullString
 		var sert bool
-		var kel, total sql.NullFloat64
-		if err := rows.Scan(&id, &nama, &pegID, &fungsi, &kepeg, &sert, &kel, &wali, &jabatan, &total); err != nil {
+		var kel, totalJtm sql.NullFloat64
+		if err := rows.Scan(&id, &nama, &pegID, &fungsi, &kepeg, &sert, &kel, &wali, &jabatan, &totalJtm); err != nil {
 			continue
 		}
 		out = append(out, map[string]any{
 			"id": id, "nama": nama.String, "pegId": pegID.String, "fungsi": fungsi.String,
 			"kepegawaian": kepeg.String, "sertifikasi": sert,
 			"kelengkapan": kel.Float64, "waliKelas": wali.String,
-			"jabatanStruktural": jabatan.String, "totalJtm": total.Float64,
+			"jabatanStruktural": jabatan.String, "totalJtm": totalJtm.Float64,
 		})
 	}
-	writeJSON(w, 200, out)
+	writeJSON(w, 200, map[string]any{
+		"rows":    out,
+		"total":   total,
+		"page":    page,
+		"perPage": perPage,
+	})
 }
 
 func nullF(f sql.NullFloat64) any {
@@ -363,7 +403,8 @@ func (s *apiServer) handleSkmtList(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, 200, out)
 }
 
-var hariUrut = `CASE r.hari WHEN 'SENIN' THEN 1 WHEN 'SELASA' THEN 2 WHEN 'RABU' THEN 3 WHEN 'KAMIS' THEN 4 WHEN 'JUMAT' THEN 5 WHEN 'SABTU' THEN 6 END`
+var hariUrut = `CASE REPLACE(r.hari, CHAR(96), '') WHEN 'SENIN' THEN 1 WHEN 'SELASA' THEN 2 WHEN 'RABU' THEN 3 WHEN 'KAMIS' THEN 4 WHEN 'JUMAT' THEN 5 WHEN 'SABTU' THEN 6 END`
+var jamUrut = `CASE r.jam_ke WHEN 'I' THEN 1 WHEN 'II' THEN 2 WHEN 'III' THEN 3 WHEN 'IV' THEN 4 WHEN 'V' THEN 5 WHEN 'VI' THEN 6 WHEN 'VII' THEN 7 WHEN 'VIII' THEN 8 WHEN 'IX' THEN 9 ELSE 99 END`
 
 func (s *apiServer) handleRoster(w http.ResponseWriter, r *http.Request) {
 	kelas := r.URL.Query().Get("kelas")
@@ -371,7 +412,7 @@ func (s *apiServer) handleRoster(w http.ResponseWriter, r *http.Request) {
 		kelas = "IXA"
 	}
 	rows, err := s.db.Query(`SELECT r.hari, r.jam_ke, r.mapel, r.guru_nama FROM roster r
-		WHERE r.kelas = ? ORDER BY `+hariUrut+`, LENGTH(r.jam_ke), r.jam_ke`, kelas)
+		WHERE r.kelas = ? ORDER BY ` + hariUrut + `, ` + jamUrut + `, kelas`, kelas)
 	if err != nil {
 		fail(w, 500, err.Error())
 		return
@@ -458,6 +499,221 @@ func (s *apiServer) handleActivityLog(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 	writeJSON(w, 200, out)
+}
+
+func (s *apiServer) handleSiswaList(w http.ResponseWriter, r *http.Request) {
+	kelas := r.URL.Query().Get("kelas")
+	q := r.URL.Query().Get("q")
+	rombel := r.URL.Query().Get("rombel")
+	status := r.URL.Query().Get("status")
+
+	where := "1=1"
+	var args []any
+	if kelas != "" {
+		where += " AND kelas = ?"
+		args = append(args, kelas)
+	}
+	if rombel != "" {
+		where += " AND rombel = ?"
+		args = append(args, rombel)
+	}
+	if status != "" {
+		if status == "aktif" {
+			where += " AND (status_emis IS NULL OR status_emis LIKE 'Aktif%')"
+		} else if status == "nonaktif" {
+			where += " AND status_emis = 'Tidak Aktif'"
+		} else if status == "tanpa_rombel" {
+			where += " AND (rombel IS NULL OR rombel='')"
+		}
+	}
+	if q != "" {
+		where += " AND (nama LIKE ? OR nis LIKE ? OR nisn LIKE ?)"
+		like := "%" + q + "%"
+		args = append(args, like, like, like)
+	}
+
+	// count total
+	var total int
+	s.db.QueryRow("SELECT COUNT(*) FROM siswa WHERE "+where, args...).Scan(&total)
+
+	// pagination
+	page := 1
+	perPage := 20
+	if v := r.URL.Query().Get("page"); v != "" {
+		if n, err := fmt.Sscanf(v, "%d", &page); n != 1 || err != nil || page < 1 {
+			page = 1
+		}
+	}
+	if v := r.URL.Query().Get("per_page"); v != "" {
+		if n, err := fmt.Sscanf(v, "%d", &perPage); n != 1 || err != nil || perPage < 1 {
+			perPage = 20
+		}
+	}
+	if perPage > 100 {
+		perPage = 100
+	}
+	offset := (page - 1) * perPage
+
+	query := "SELECT id, nis, nisn, nama, jk, kelas, rombel, tempat_lahir, tgl_lahir, ayah, ibu, asal_sekolah, alamat, nik, no_hp, kip_pip, status_emis, sumber_data FROM siswa WHERE " + where + " ORDER BY CAST(kelas AS INTEGER), rombel, nama LIMIT ? OFFSET ?"
+	args = append(args, perPage, offset)
+
+	rows, err := s.db.Query(query, args...)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	defer rows.Close()
+	type siswa struct {
+		ID           int     `json:"id"`
+		NIS          *string `json:"nis"`
+		NISN         *string `json:"nisn"`
+		Nama         string  `json:"nama"`
+		JK           *string `json:"jk"`
+		Kelas        *string `json:"kelas"`
+		Rombel       *string `json:"rombel"`
+		TempatLahir  *string `json:"tempat_lahir"`
+		TglLahir     *string `json:"tgl_lahir"`
+		Ayah         *string `json:"ayah"`
+		Ibu          *string `json:"ibu"`
+		AsalSekolah  *string `json:"asal_sekolah"`
+		Alamat       *string `json:"alamat"`
+		NIK          *string `json:"nik"`
+		NoHP         *string `json:"no_hp"`
+		KipPip       *string `json:"kip_pip"`
+		StatusEmis   *string `json:"status_emis"`
+		SumberData   *string `json:"sumber_data"`
+	}
+	list := []siswa{}
+	for rows.Next() {
+		var x siswa
+		if err := rows.Scan(&x.ID, &x.NIS, &x.NISN, &x.Nama, &x.JK, &x.Kelas, &x.Rombel, &x.TempatLahir, &x.TglLahir, &x.Ayah, &x.Ibu, &x.AsalSekolah, &x.Alamat, &x.NIK, &x.NoHP, &x.KipPip, &x.StatusEmis, &x.SumberData); err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		list = append(list, x)
+	}
+	// rekap
+	type rekap struct {
+		Kelas string `json:"kelas"`
+		Total int    `json:"total"`
+		L     int    `json:"l"`
+		P     int    `json:"p"`
+	}
+	rk := []rekap{}
+	rr, _ := s.db.Query("SELECT kelas, COUNT(*), SUM(jk='L'), SUM(jk='P') FROM siswa GROUP BY kelas ORDER BY CAST(kelas AS INTEGER)")
+	if rr != nil {
+		defer rr.Close()
+		for rr.Next() {
+			var x rekap
+			if rr.Scan(&x.Kelas, &x.Total, &x.L, &x.P) == nil {
+				rk = append(rk, x)
+			}
+		}
+	}
+	writeJSON(w, 200, map[string]any{
+		"rows":    list,
+		"rekap":   rk,
+		"total":   total,
+		"page":    page,
+		"perPage": perPage,
+	})
+}
+
+// ---- Modul Bel: proxy ke bel.exe API (127.0.0.1:8091) ----
+
+func (s *apiServer) belURL(path string) string {
+	base := os.Getenv("BEL_API")
+	if base == "" {
+		base = "http://127.0.0.1:8091"
+	}
+	return base + path
+}
+
+func (s *apiServer) belKey() string {
+	return os.Getenv("BEL_API_KEY")
+}
+
+func (s *apiServer) belProxy(w http.ResponseWriter, method, path string, body io.Reader) {
+	req, err := http.NewRequest(method, s.belURL(path), body)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	if key := s.belKey(); key != "" {
+		req.Header.Set("X-API-Key", key)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	client := &http.Client{Timeout: 10 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		// bel.exe tidak jalan
+		writeJSON(w, 200, map[string]any{"ok": false, "offline": true, "error": "Bel service tidak aktif"})
+		return
+	}
+	defer resp.Body.Close()
+	data, _ := io.ReadAll(resp.Body)
+	var out map[string]any
+	if jsonErr := json.Unmarshal(data, &out); jsonErr != nil {
+		out = map[string]any{"raw": string(data)}
+	}
+	out["ok"] = resp.StatusCode >= 200 && resp.StatusCode < 300
+	writeJSON(w, 200, out)
+}
+
+func (s *apiServer) handleBelStatus(w http.ResponseWriter, r *http.Request) {
+	s.belProxy(w, "GET", "/api/status", nil)
+}
+
+func (s *apiServer) handleBelPlay(w http.ResponseWriter, r *http.Request) {
+	s.belProxy(w, "POST", "/api/play", r.Body)
+}
+
+func (s *apiServer) handleBelStop(w http.ResponseWriter, r *http.Request) {
+	s.belProxy(w, "POST", "/api/stop", nil)
+}
+
+func (s *apiServer) handleBelJadwal(w http.ResponseWriter, r *http.Request) {
+	// baca jam_bel dari mtsn2kolut.db (read-only attach)
+	path := os.Getenv("BEL_DB_PATH")
+	if path == "" {
+		path = "C:/Users/LENOVO/webapp/mtsn2kolut/data/mtsn2kolut.db"
+	}
+	dsn := fmt.Sprintf("file:%s?mode=ro&immutable=0", path)
+	bdb, err := sql.Open("sqlite", dsn)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	defer bdb.Close()
+	rows, err := bdb.Query(`SELECT hari, jam, jenis, label FROM jam_bel WHERE aktif = 1
+		ORDER BY CASE hari WHEN 'senin' THEN 1 WHEN 'selasa' THEN 2 WHEN 'rabu' THEN 3
+		WHEN 'kamis' THEN 4 WHEN 'jumat' THEN 5 WHEN 'sabtu' THEN 6 ELSE 7 END, jam`)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	defer rows.Close()
+	out := []map[string]string{}
+	for rows.Next() {
+		var h, j, t, l sql.NullString
+		rows.Scan(&h, &j, &t, &l)
+		out = append(out, map[string]string{"hari": h.String, "jam": j.String, "jenis": t.String, "label": l.String})
+	}
+	hariIni := strings.ToLower(time.Now().Format("Monday"))
+	hm := map[string]string{"monday": "senin", "tuesday": "selasa", "wednesday": "rabu",
+		"thursday": "kamis", "friday": "jumat", "saturday": "sabtu", "sunday": "minggu"}
+	hariIniID := hm[hariIni]
+	hariRows := []map[string]string{}
+	for _, x := range out {
+		if x["hari"] == hariIniID {
+			hariRows = append(hariRows, x)
+		}
+	}
+	writeJSON(w, 200, map[string]any{
+		"hari_ini":   hariIniID,
+		"jadwal_hari_ini": hariRows,
+		"semua":      out,
+	})
 }
 
 func (s *apiServer) handleStats(w http.ResponseWriter, r *http.Request) {

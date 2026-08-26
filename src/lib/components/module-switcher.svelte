@@ -15,13 +15,13 @@
 	const sidebar = useSidebar();
 
 	const modules = [
-		{ name: "Dashboard", icon: LayoutDashboardIcon, description: "Ringkasan & Statistik", active: true },
-		{ name: "Kepegawaian", icon: UsersIcon, description: "Data Guru & Tendik", active: true },
-		{ name: "Kesiswaan", icon: GraduationCapIcon, description: "Data Siswa & Kelas", active: false },
+		{ name: "Dashboard", icon: LayoutDashboardIcon, description: "Ringkasan & Statistik", active: true, url: "/" },
+		{ name: "Kepegawaian", icon: UsersIcon, description: "Data Guru & Tendik", active: true, url: "/ptk" },
+		{ name: "Kesiswaan", icon: GraduationCapIcon, description: "Data Siswa & Kelas", active: true, url: "/siswa" },
 		{ name: "Perpustakaan", icon: BookOpenIcon, description: "Buku & Peminjaman", active: false },
 		{ name: "Sarana & Prasarana", icon: BuildingIcon, description: "Inventaris Sekolah", active: false },
-		{ name: "Jadwal", icon: CalendarIcon, description: "Roster & Kalender", active: true },
-		{ name: "Dokumen", icon: ClipboardListIcon, description: "SKMT, SKBK, SKAKPT", active: true },
+		{ name: "Jadwal", icon: CalendarIcon, description: "Roster & Kalender", active: true, url: "/roster" },
+		{ name: "Dokumen", icon: ClipboardListIcon, description: "SKMT, SKBK, SKAKPT", active: true, url: "/skmt" },
 		{ name: "Pengaturan", icon: SettingsIcon, description: "Konfigurasi Sistem", active: false },
 	];
 
@@ -59,13 +59,17 @@
 				<DropdownMenu.Label class="text-xs text-muted-foreground">Modul Aktif</DropdownMenu.Label>
 				{#each activeModules as mod (mod.name)}
 					<DropdownMenu.Item class="gap-2 p-2">
-						<div class="flex size-6 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-							<mod.icon class="size-3.5 shrink-0" />
-						</div>
-						<div class="flex flex-col">
-							<span class="font-medium">{mod.name}</span>
-							<span class="text-xs text-muted-foreground">{mod.description}</span>
-						</div>
+						{#snippet child({ props })}
+							<a {...props} href={mod.url} class="flex w-full items-center gap-2">
+								<div class="flex size-6 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
+									<mod.icon class="size-3.5 shrink-0" />
+								</div>
+								<div class="flex flex-col">
+									<span class="font-medium">{mod.name}</span>
+									<span class="text-xs text-muted-foreground">{mod.description}</span>
+								</div>
+							</a>
+						{/snippet}
 					</DropdownMenu.Item>
 				{/each}
 				

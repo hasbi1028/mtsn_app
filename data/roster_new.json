@@ -1,0 +1,4026 @@
+[
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "MAT",
+  "guru_nama": "TAUFIK"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "INFO",
+  "guru_nama": "ANDI MIRNA"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "FIQHI",
+  "guru_nama": "RAHMA"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "KM. MUH TANG"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "BHS.INA",
+  "guru_nama": "WATI ZAELANI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "PENJAS",
+  "guru_nama": "SRIHARDIANTI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.40",
+  "mapel": "MAT",
+  "guru_nama": "TAUFIK"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.40",
+  "mapel": "INFO",
+  "guru_nama": "ANDI MIRNA"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.40",
+  "mapel": "FIQHI",
+  "guru_nama": "RAHMA"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.40",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.40",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "KM. MUH TANG"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.40",
+  "mapel": "BHS.INA",
+  "guru_nama": "WATI ZAELANI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.40",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.40",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.40",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.40",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.40",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.40",
+  "mapel": "PENJAS",
+  "guru_nama": "SRIHARDIANTI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam_ke": "III",
+  "pukul": "08.40 - 09.15",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam_ke": "III",
+  "pukul": "08.40 - 09.15",
+  "mapel": "INFO",
+  "guru_nama": "ANDI MIRNA"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam_ke": "III",
+  "pukul": "08.40 - 09.15",
+  "mapel": "IPS",
+  "guru_nama": "CHAIRUDDIN"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam_ke": "III",
+  "pukul": "08.40 - 09.15",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam_ke": "III",
+  "pukul": "08.40 - 09.15",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "KM. MUH TANG"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam_ke": "III",
+  "pukul": "08.40 - 09.15",
+  "mapel": "BHS.INA",
+  "guru_nama": "WATI ZAELANI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam_ke": "III",
+  "pukul": "08.40 - 09.15",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam_ke": "III",
+  "pukul": "08.40 - 09.15",
+  "mapel": "INFO",
+  "guru_nama": "MALIK"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam_ke": "III",
+  "pukul": "08.40 - 09.15",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam_ke": "III",
+  "pukul": "08.40 - 09.15",
+  "mapel": "MULOK",
+  "guru_nama": "KM AHMAD YANI"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam_ke": "III",
+  "pukul": "08.40 - 09.15",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam_ke": "III",
+  "pukul": "08.40 - 09.15",
+  "mapel": "PENJAS",
+  "guru_nama": "SRIHARDIANTI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam_ke": "IV",
+  "pukul": "09.15 - 09.50",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam_ke": "IV",
+  "pukul": "09.15 - 09.50",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam_ke": "IV",
+  "pukul": "09.15 - 09.50",
+  "mapel": "IPS",
+  "guru_nama": "CHAIRUDDIN"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam_ke": "IV",
+  "pukul": "09.15 - 09.50",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam_ke": "IV",
+  "pukul": "09.15 - 09.50",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam_ke": "IV",
+  "pukul": "09.15 - 09.50",
+  "mapel": "FIQHI",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam_ke": "IV",
+  "pukul": "09.15 - 09.50",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam_ke": "IV",
+  "pukul": "09.15 - 09.50",
+  "mapel": "INFO",
+  "guru_nama": "MALIK"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam_ke": "IV",
+  "pukul": "09.15 - 09.50",
+  "mapel": "BHS.INA",
+  "guru_nama": "RUSTIANI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam_ke": "IV",
+  "pukul": "09.15 - 09.50",
+  "mapel": "MULOK",
+  "guru_nama": "KM AHMAD YANI"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam_ke": "IV",
+  "pukul": "09.15 - 09.50",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam_ke": "IV",
+  "pukul": "09.15 - 09.50",
+  "mapel": "BHS.INA",
+  "guru_nama": "RUSTIANI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam_ke": "V",
+  "pukul": "09.30 - 10.05",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam_ke": "V",
+  "pukul": "09.30 - 10.05",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam_ke": "V",
+  "pukul": "09.30 - 10.05",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "NURILMI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam_ke": "V",
+  "pukul": "09.30 - 10.05",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam_ke": "V",
+  "pukul": "09.30 - 10.05",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam_ke": "V",
+  "pukul": "09.30 - 10.05",
+  "mapel": "FIQHI",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam_ke": "V",
+  "pukul": "09.30 - 10.05",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam_ke": "V",
+  "pukul": "09.30 - 10.05",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam_ke": "V",
+  "pukul": "09.30 - 10.05",
+  "mapel": "BHS.INA",
+  "guru_nama": "RUSTIANI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam_ke": "V",
+  "pukul": "09.30 - 10.05",
+  "mapel": "INFO",
+  "guru_nama": "MALIK"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam_ke": "V",
+  "pukul": "09.30 - 10.05",
+  "mapel": "FIQHI",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam_ke": "V",
+  "pukul": "09.30 - 10.05",
+  "mapel": "BHS.INA",
+  "guru_nama": "RUSTIANI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam_ke": "VI",
+  "pukul": "10.05 - 11.40",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam_ke": "VI",
+  "pukul": "10.05 - 11.40",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam_ke": "VI",
+  "pukul": "10.05 - 11.40",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "NURILMI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam_ke": "VI",
+  "pukul": "10.05 - 11.40",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam_ke": "VI",
+  "pukul": "10.05 - 11.40",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam_ke": "VI",
+  "pukul": "10.05 - 11.40",
+  "mapel": "FIQHI",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam_ke": "VI",
+  "pukul": "10.05 - 11.40",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam_ke": "VI",
+  "pukul": "10.05 - 11.40",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam_ke": "VI",
+  "pukul": "10.05 - 11.40",
+  "mapel": "BHS.INA",
+  "guru_nama": "RUSTIANI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam_ke": "VI",
+  "pukul": "10.05 - 11.40",
+  "mapel": "INFO",
+  "guru_nama": "MALIK"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam_ke": "VI",
+  "pukul": "10.05 - 11.40",
+  "mapel": "FIQHI",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam_ke": "VI",
+  "pukul": "10.05 - 11.40",
+  "mapel": "BHS.INA",
+  "guru_nama": "RUSTIANI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam_ke": "VII",
+  "pukul": "11.40 - 12.15",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam_ke": "VII",
+  "pukul": "11.40 - 12.15",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam_ke": "VII",
+  "pukul": "11.40 - 12.15",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "NURILMI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam_ke": "VII",
+  "pukul": "11.40 - 12.15",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam_ke": "VII",
+  "pukul": "11.40 - 12.15",
+  "mapel": "BHS.INA",
+  "guru_nama": "WATI ZAELANI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam_ke": "VII",
+  "pukul": "11.40 - 12.15",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam_ke": "VII",
+  "pukul": "11.40 - 12.15",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam_ke": "VII",
+  "pukul": "11.40 - 12.15",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam_ke": "VII",
+  "pukul": "11.40 - 12.15",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam_ke": "VII",
+  "pukul": "11.40 - 12.15",
+  "mapel": "BHS.INA",
+  "guru_nama": "ANDI MIRNA"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam_ke": "VII",
+  "pukul": "11.40 - 12.15",
+  "mapel": "BHS.INA",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam_ke": "VII",
+  "pukul": "11.40 - 12.15",
+  "mapel": "IPS",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam_ke": "VIII",
+  "pukul": "12.25- 13.00",
+  "mapel": "IPS",
+  "guru_nama": "CHAIRUDDIN"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam_ke": "VIII",
+  "pukul": "12.25- 13.00",
+  "mapel": "QH",
+  "guru_nama": "SAIMANG"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam_ke": "VIII",
+  "pukul": "12.25- 13.00",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam_ke": "VIII",
+  "pukul": "12.25- 13.00",
+  "mapel": "AA",
+  "guru_nama": "RATNAWATI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam_ke": "VIII",
+  "pukul": "12.25- 13.00",
+  "mapel": "BHS.INA",
+  "guru_nama": "WATI ZAELANI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam_ke": "VIII",
+  "pukul": "12.25- 13.00",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam_ke": "VIII",
+  "pukul": "12.25- 13.00",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam_ke": "VIII",
+  "pukul": "12.25- 13.00",
+  "mapel": "MULOK",
+  "guru_nama": "KM AHMAD YANI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam_ke": "VIII",
+  "pukul": "12.25- 13.00",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam_ke": "VIII",
+  "pukul": "12.25- 13.00",
+  "mapel": "BHS.INA",
+  "guru_nama": "ANDI MIRNA"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam_ke": "VIII",
+  "pukul": "12.25- 13.00",
+  "mapel": "BHS.INA",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam_ke": "VIII",
+  "pukul": "12.25- 13.00",
+  "mapel": "IPS",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam_ke": "IX",
+  "pukul": "13.00. - 13.35",
+  "mapel": "IPS",
+  "guru_nama": "CHAIRUDDIN"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam_ke": "IX",
+  "pukul": "13.00. - 13.35",
+  "mapel": "QH",
+  "guru_nama": "SAIMANG"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam_ke": "IX",
+  "pukul": "13.00. - 13.35",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam_ke": "IX",
+  "pukul": "13.00. - 13.35",
+  "mapel": "AA",
+  "guru_nama": "RATNAWATI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam_ke": "IX",
+  "pukul": "13.00. - 13.35",
+  "mapel": "BHS.INA",
+  "guru_nama": "WATI ZAELANI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam_ke": "IX",
+  "pukul": "13.00. - 13.35",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam_ke": "IX",
+  "pukul": "13.00. - 13.35",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam_ke": "IX",
+  "pukul": "13.00. - 13.35",
+  "mapel": "MULOK",
+  "guru_nama": "KM AHMAD YANI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam_ke": "IX",
+  "pukul": "13.00. - 13.35",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam_ke": "IX",
+  "pukul": "13.00. - 13.35",
+  "mapel": "BHS.INA",
+  "guru_nama": "ANDI MIRNA"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam_ke": "IX",
+  "pukul": "13.00. - 13.35",
+  "mapel": "BHS.INA",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam_ke": "IX",
+  "pukul": "13.00. - 13.35",
+  "mapel": "IPS",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "FIQHI",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "PKN",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "PENJAS",
+  "guru_nama": "SRIHARDIANTI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam_ke": "I",
+  "pukul": "07.30 - 08.05",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.35",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.35",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.35",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.35",
+  "mapel": "FIQHI",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.35",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.35",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.35",
+  "mapel": "PKN",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.35",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.35",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.35",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.35",
+  "mapel": "PENJAS",
+  "guru_nama": "SRIHARDIANTI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam_ke": "II",
+  "pukul": "08.05 - 08.35",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam_ke": "III",
+  "pukul": "08.35 - 09.10",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam_ke": "III",
+  "pukul": "08.35 - 09.10",
+  "mapel": "MAT",
+  "guru_nama": "TAUFIK"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam_ke": "III",
+  "pukul": "08.35 - 09.10",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam_ke": "III",
+  "pukul": "08.35 - 09.10",
+  "mapel": "FIQHI",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam_ke": "III",
+  "pukul": "08.35 - 09.10",
+  "mapel": "QH",
+  "guru_nama": "SAIMANG"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam_ke": "III",
+  "pukul": "08.35 - 09.10",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam_ke": "III",
+  "pukul": "08.35 - 09.10",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam_ke": "III",
+  "pukul": "08.35 - 09.10",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam_ke": "III",
+  "pukul": "08.35 - 09.10",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam_ke": "III",
+  "pukul": "08.35 - 09.10",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam_ke": "III",
+  "pukul": "08.35 - 09.10",
+  "mapel": "PENJAS",
+  "guru_nama": "SRIHARDIANTI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam_ke": "III",
+  "pukul": "08.35 - 09.10",
+  "mapel": "BHS.INA",
+  "guru_nama": "RUSTIANI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam_ke": "IV",
+  "pukul": "09.10- 09.45",
+  "mapel": "MULOK",
+  "guru_nama": "KM AHMAD YANI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam_ke": "IV",
+  "pukul": "09.10- 09.45",
+  "mapel": "MAT",
+  "guru_nama": "TAUFIK"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam_ke": "IV",
+  "pukul": "09.10- 09.45",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam_ke": "IV",
+  "pukul": "09.10- 09.45",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam_ke": "IV",
+  "pukul": "09.10- 09.45",
+  "mapel": "QH",
+  "guru_nama": "SAIMANG"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam_ke": "IV",
+  "pukul": "09.10- 09.45",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "JAYANTI JUFRI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam_ke": "IV",
+  "pukul": "09.10- 09.45",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam_ke": "IV",
+  "pukul": "09.10- 09.45",
+  "mapel": "BHS.INA",
+  "guru_nama": "NIRMAWATI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam_ke": "IV",
+  "pukul": "09.10- 09.45",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam_ke": "IV",
+  "pukul": "09.10- 09.45",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam_ke": "IV",
+  "pukul": "09.10- 09.45",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam_ke": "IV",
+  "pukul": "09.10- 09.45",
+  "mapel": "BHS.INA",
+  "guru_nama": "RUSTIANI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam_ke": "V",
+  "pukul": "10.00 - 10.35",
+  "mapel": "MULOK",
+  "guru_nama": "KM AHMAD YANI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam_ke": "V",
+  "pukul": "10.00 - 10.35",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam_ke": "V",
+  "pukul": "10.00 - 10.35",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam_ke": "V",
+  "pukul": "10.00 - 10.35",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam_ke": "V",
+  "pukul": "10.00 - 10.35",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam_ke": "V",
+  "pukul": "10.00 - 10.35",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "JAYANTI JUFRI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam_ke": "V",
+  "pukul": "10.00 - 10.35",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam_ke": "V",
+  "pukul": "10.00 - 10.35",
+  "mapel": "BHS.INA",
+  "guru_nama": "NIRMAWATI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam_ke": "V",
+  "pukul": "10.00 - 10.35",
+  "mapel": "FIQHI",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam_ke": "V",
+  "pukul": "10.00 - 10.35",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam_ke": "V",
+  "pukul": "10.00 - 10.35",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam_ke": "V",
+  "pukul": "10.00 - 10.35",
+  "mapel": "BHS.INA",
+  "guru_nama": "RUSTIANI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam_ke": "VI",
+  "pukul": "10.35 - 11.10",
+  "mapel": "AA",
+  "guru_nama": "RATNAWATI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam_ke": "VI",
+  "pukul": "10.35 - 11.10",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam_ke": "VI",
+  "pukul": "10.35 - 11.10",
+  "mapel": "INFO",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam_ke": "VI",
+  "pukul": "10.35 - 11.10",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam_ke": "VI",
+  "pukul": "10.35 - 11.10",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam_ke": "VI",
+  "pukul": "10.35 - 11.10",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "JAYANTI JUFRI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam_ke": "VI",
+  "pukul": "10.35 - 11.10",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam_ke": "VI",
+  "pukul": "10.35 - 11.10",
+  "mapel": "BHS.INA",
+  "guru_nama": "NIRMAWATI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam_ke": "VI",
+  "pukul": "10.35 - 11.10",
+  "mapel": "FIQHI",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam_ke": "VI",
+  "pukul": "10.35 - 11.10",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam_ke": "VI",
+  "pukul": "10.35 - 11.10",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam_ke": "VI",
+  "pukul": "10.35 - 11.10",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam_ke": "VII",
+  "pukul": "11.10 - 11.45",
+  "mapel": "AA",
+  "guru_nama": "RATNAWATI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam_ke": "VII",
+  "pukul": "11.10 - 11.45",
+  "mapel": "MULOK",
+  "guru_nama": "KM AHMAD YANI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam_ke": "VII",
+  "pukul": "11.10 - 11.45",
+  "mapel": "INFO",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam_ke": "VII",
+  "pukul": "11.10 - 11.45",
+  "mapel": "MULOK",
+  "guru_nama": "JAYANTI JUFRI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam_ke": "VII",
+  "pukul": "11.10 - 11.45",
+  "mapel": "INFO",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam_ke": "VII",
+  "pukul": "11.10 - 11.45",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam_ke": "VII",
+  "pukul": "11.10 - 11.45",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam_ke": "VII",
+  "pukul": "11.10 - 11.45",
+  "mapel": "FIQHI",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam_ke": "VII",
+  "pukul": "11.10 - 11.45",
+  "mapel": "IPA",
+  "guru_nama": "MIRNAWATI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam_ke": "VII",
+  "pukul": "11.10 - 11.45",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam_ke": "VII",
+  "pukul": "11.10 - 11.45",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam_ke": "VII",
+  "pukul": "11.10 - 11.45",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam_ke": "VIII",
+  "pukul": "11.45 - 12.20",
+  "mapel": "AA",
+  "guru_nama": "RATNAWATI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam_ke": "VIII",
+  "pukul": "11.45 - 12.20",
+  "mapel": "MULOK",
+  "guru_nama": "KM AHMAD YANI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam_ke": "VIII",
+  "pukul": "11.45 - 12.20",
+  "mapel": "INFO",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam_ke": "VIII",
+  "pukul": "11.45 - 12.20",
+  "mapel": "MULOK",
+  "guru_nama": "JAYANTI JUFRI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam_ke": "VIII",
+  "pukul": "11.45 - 12.20",
+  "mapel": "INFO",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam_ke": "VIII",
+  "pukul": "11.45 - 12.20",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam_ke": "VIII",
+  "pukul": "11.45 - 12.20",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam_ke": "VIII",
+  "pukul": "11.45 - 12.20",
+  "mapel": "FIQHI",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam_ke": "VIII",
+  "pukul": "11.45 - 12.20",
+  "mapel": "IPA",
+  "guru_nama": "MIRNAWATI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam_ke": "VIII",
+  "pukul": "11.45 - 12.20",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam_ke": "VIII",
+  "pukul": "11.45 - 12.20",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam_ke": "VIII",
+  "pukul": "11.45 - 12.20",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam_ke": "I",
+  "pukul": "07.50 - 08.25",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam_ke": "I",
+  "pukul": "07.50 - 08.25",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam_ke": "I",
+  "pukul": "07.50 - 08.25",
+  "mapel": "MAT",
+  "guru_nama": "TAUFIK"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam_ke": "I",
+  "pukul": "07.50 - 08.25",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam_ke": "I",
+  "pukul": "07.50 - 08.25",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam_ke": "I",
+  "pukul": "07.50 - 08.25",
+  "mapel": "MULOK",
+  "guru_nama": "NURILMI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam_ke": "I",
+  "pukul": "07.50 - 08.25",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam_ke": "I",
+  "pukul": "07.50 - 08.25",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam_ke": "I",
+  "pukul": "07.50 - 08.25",
+  "mapel": "IPA",
+  "guru_nama": "MIRNAWATI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam_ke": "I",
+  "pukul": "07.50 - 08.25",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam_ke": "I",
+  "pukul": "07.50 - 08.25",
+  "mapel": "BHS.INA",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam_ke": "I",
+  "pukul": "07.50 - 08.25",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "ASNIAR"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam_ke": "II",
+  "pukul": "08.25 - 09.00",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam_ke": "II",
+  "pukul": "08.25 - 09.00",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam_ke": "II",
+  "pukul": "08.25 - 09.00",
+  "mapel": "MAT",
+  "guru_nama": "TAUFIK"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam_ke": "II",
+  "pukul": "08.25 - 09.00",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam_ke": "II",
+  "pukul": "08.25 - 09.00",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam_ke": "II",
+  "pukul": "08.25 - 09.00",
+  "mapel": "MULOK",
+  "guru_nama": "NURILMI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam_ke": "II",
+  "pukul": "08.25 - 09.00",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam_ke": "II",
+  "pukul": "08.25 - 09.00",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam_ke": "II",
+  "pukul": "08.25 - 09.00",
+  "mapel": "IPA",
+  "guru_nama": "MIRNAWATI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam_ke": "II",
+  "pukul": "08.25 - 09.00",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam_ke": "II",
+  "pukul": "08.25 - 09.00",
+  "mapel": "BHS.INA",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam_ke": "II",
+  "pukul": "08.25 - 09.00",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "ASNIAR"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam_ke": "III",
+  "pukul": "09.15 - 09.50",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam_ke": "III",
+  "pukul": "09.15 - 09.50",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam_ke": "III",
+  "pukul": "09.15 - 09.50",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam_ke": "III",
+  "pukul": "09.15 - 09.50",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam_ke": "III",
+  "pukul": "09.15 - 09.50",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam_ke": "III",
+  "pukul": "09.15 - 09.50",
+  "mapel": "QH",
+  "guru_nama": "SAIMANG"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam_ke": "III",
+  "pukul": "09.15 - 09.50",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam_ke": "III",
+  "pukul": "09.15 - 09.50",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam_ke": "III",
+  "pukul": "09.15 - 09.50",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam_ke": "III",
+  "pukul": "09.15 - 09.50",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam_ke": "III",
+  "pukul": "09.15 - 09.50",
+  "mapel": "BHS.INA",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam_ke": "III",
+  "pukul": "09.15 - 09.50",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam_ke": "IV",
+  "pukul": "09.50 - 10.25",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam_ke": "IV",
+  "pukul": "09.50 - 10.25",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam_ke": "IV",
+  "pukul": "09.50 - 10.25",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam_ke": "IV",
+  "pukul": "09.50 - 10.25",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam_ke": "IV",
+  "pukul": "09.50 - 10.25",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam_ke": "IV",
+  "pukul": "09.50 - 10.25",
+  "mapel": "QH",
+  "guru_nama": "SAIMANG"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam_ke": "IV",
+  "pukul": "09.50 - 10.25",
+  "mapel": "INFO",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam_ke": "IV",
+  "pukul": "09.50 - 10.25",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam_ke": "IV",
+  "pukul": "09.50 - 10.25",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam_ke": "IV",
+  "pukul": "09.50 - 10.25",
+  "mapel": "FIQHI",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam_ke": "IV",
+  "pukul": "09.50 - 10.25",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam_ke": "IV",
+  "pukul": "09.50 - 10.25",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam_ke": "V",
+  "pukul": "10.25 - 11.00",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam_ke": "V",
+  "pukul": "10.25 - 11.00",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam_ke": "V",
+  "pukul": "10.25 - 11.00",
+  "mapel": "MULOK",
+  "guru_nama": "KM AHMAD YANI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam_ke": "V",
+  "pukul": "10.25 - 11.00",
+  "mapel": "QH",
+  "guru_nama": "SAIMANG"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam_ke": "V",
+  "pukul": "10.25 - 11.00",
+  "mapel": "BHS.INA",
+  "guru_nama": "WATI ZAELANI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam_ke": "V",
+  "pukul": "10.25 - 11.00",
+  "mapel": "INFO",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam_ke": "V",
+  "pukul": "10.25 - 11.00",
+  "mapel": "INFO",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam_ke": "V",
+  "pukul": "10.25 - 11.00",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam_ke": "V",
+  "pukul": "10.25 - 11.00",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam_ke": "V",
+  "pukul": "10.25 - 11.00",
+  "mapel": "FIQHI",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam_ke": "V",
+  "pukul": "10.25 - 11.00",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam_ke": "V",
+  "pukul": "10.25 - 11.00",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam_ke": "VI",
+  "pukul": "11.00 - 11.35",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam_ke": "VI",
+  "pukul": "11.00 - 11.35",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam_ke": "VI",
+  "pukul": "11.00 - 11.35",
+  "mapel": "MULOK",
+  "guru_nama": "KM AHMAD YANI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam_ke": "VI",
+  "pukul": "11.00 - 11.35",
+  "mapel": "QH",
+  "guru_nama": "SAIMANG"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam_ke": "VI",
+  "pukul": "11.00 - 11.35",
+  "mapel": "BHS.INA",
+  "guru_nama": "WATI ZAELANI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam_ke": "VI",
+  "pukul": "11.00 - 11.35",
+  "mapel": "INFO",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam_ke": "VI",
+  "pukul": "11.00 - 11.35",
+  "mapel": "BHS.INGG",
+  "guru_nama": "NURUNNISA"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam_ke": "VI",
+  "pukul": "11.00 - 11.35",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam_ke": "VI",
+  "pukul": "11.00 - 11.35",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam_ke": "VI",
+  "pukul": "11.00 - 11.35",
+  "mapel": "BHS.INA",
+  "guru_nama": "ANDI MIRNA"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam_ke": "VI",
+  "pukul": "11.00 - 11.35",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam_ke": "VI",
+  "pukul": "11.00 - 11.35",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam_ke": "VII",
+  "pukul": "12.05 - 12.40",
+  "mapel": "FIQHI",
+  "guru_nama": "RAHMA"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam_ke": "VII",
+  "pukul": "12.05 - 12.40",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam_ke": "VII",
+  "pukul": "12.05 - 12.40",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam_ke": "VII",
+  "pukul": "12.05 - 12.40",
+  "mapel": "INFO",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam_ke": "VII",
+  "pukul": "12.05 - 12.40",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam_ke": "VII",
+  "pukul": "12.05 - 12.40",
+  "mapel": "PKN",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam_ke": "VII",
+  "pukul": "12.05 - 12.40",
+  "mapel": "BHS.INGG",
+  "guru_nama": "NURUNNISA"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam_ke": "VII",
+  "pukul": "12.05 - 12.40",
+  "mapel": "IPA",
+  "guru_nama": "MIRNAWATI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam_ke": "VII",
+  "pukul": "12.05 - 12.40",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam_ke": "VII",
+  "pukul": "12.05 - 12.40",
+  "mapel": "BHS.INA",
+  "guru_nama": "ANDI MIRNA"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam_ke": "VII",
+  "pukul": "12.05 - 12.40",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "ASNIAR"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam_ke": "VII",
+  "pukul": "12.05 - 12.40",
+  "mapel": "FIQHI",
+  "guru_nama": "RAHMA"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam_ke": "VIII",
+  "pukul": "12.40 - 13.15",
+  "mapel": "FIQHI",
+  "guru_nama": "RAHMA"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam_ke": "VIII",
+  "pukul": "12.40 - 13.15",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam_ke": "VIII",
+  "pukul": "12.40 - 13.15",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam_ke": "VIII",
+  "pukul": "12.40 - 13.15",
+  "mapel": "INFO",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam_ke": "VIII",
+  "pukul": "12.40 - 13.15",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam_ke": "VIII",
+  "pukul": "12.40 - 13.15",
+  "mapel": "PKN",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam_ke": "VIII",
+  "pukul": "12.40 - 13.15",
+  "mapel": "BHS.INGG",
+  "guru_nama": "NURUNNISA"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam_ke": "VIII",
+  "pukul": "12.40 - 13.15",
+  "mapel": "IPA",
+  "guru_nama": "MIRNAWATI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam_ke": "VIII",
+  "pukul": "12.40 - 13.15",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam_ke": "VIII",
+  "pukul": "12.40 - 13.15",
+  "mapel": "BHS.INA",
+  "guru_nama": "ANDI MIRNA"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam_ke": "VIII",
+  "pukul": "12.40 - 13.15",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "ASNIAR"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam_ke": "VIII",
+  "pukul": "12.40 - 13.15",
+  "mapel": "FIQHI",
+  "guru_nama": "RAHMA"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "IPS",
+  "guru_nama": "CHAIRUDDIN"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "MAT",
+  "guru_nama": "TAUFIK"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "FIQHI",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "MULOK",
+  "guru_nama": "NURILMI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "INFO",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "IPS",
+  "guru_nama": "CHAIRUDDIN"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "MAT",
+  "guru_nama": "TAUFIK"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "FIQHI",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "MULOK",
+  "guru_nama": "NURILMI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "INFO",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "FIQHI",
+  "guru_nama": "RAHMA"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "MAT",
+  "guru_nama": "TAUFIK"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "FIQHI",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "BHS.INA",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "FIQHI",
+  "guru_nama": "RAHMA"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "MAT",
+  "guru_nama": "TAUFIK"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "BHS.INA",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "MULOK",
+  "guru_nama": "KM AHMAD YANI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "IPA",
+  "guru_nama": "MIRNAWATI"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "QH",
+  "guru_nama": "RAHMA"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "MULOK",
+  "guru_nama": "KM AHMAD YANI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "IPA",
+  "guru_nama": "MIRNAWATI"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "INFO",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "QH",
+  "guru_nama": "RAHMA"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "BHS.INA",
+  "guru_nama": "RUSTIANI"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "INFO",
+  "guru_nama": "ERNAWATI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "JUM`AT",
+  "jam_ke": "I",
+  "pukul": "09.00 - 09.35",
+  "mapel": "INFO",
+  "guru_nama": "ANDI MIRNA"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "JUM`AT",
+  "jam_ke": "I",
+  "pukul": "09.00 - 09.35",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "JUM`AT",
+  "jam_ke": "I",
+  "pukul": "09.00 - 09.35",
+  "mapel": "AA",
+  "guru_nama": "RATNAWATI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "JUM`AT",
+  "jam_ke": "I",
+  "pukul": "09.00 - 09.35",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "JUM`AT",
+  "jam_ke": "I",
+  "pukul": "09.00 - 09.35",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "JUM`AT",
+  "jam_ke": "I",
+  "pukul": "09.00 - 09.35",
+  "mapel": "BHS.INGG",
+  "guru_nama": "NURUNNISA"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "JUM`AT",
+  "jam_ke": "I",
+  "pukul": "09.00 - 09.35",
+  "mapel": "BHS.INA",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "JUM`AT",
+  "jam_ke": "I",
+  "pukul": "09.00 - 09.35",
+  "mapel": "BHS.INA",
+  "guru_nama": "NIRMAWATI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "JUM`AT",
+  "jam_ke": "I",
+  "pukul": "09.00 - 09.35",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "JUM`AT",
+  "jam_ke": "I",
+  "pukul": "09.00 - 09.35",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "JUM`AT",
+  "jam_ke": "I",
+  "pukul": "09.00 - 09.35",
+  "mapel": "IPS",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "JUM`AT",
+  "jam_ke": "I",
+  "pukul": "09.00 - 09.35",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "JUM`AT",
+  "jam_ke": "II",
+  "pukul": "09.35 - 10.10",
+  "mapel": "INFO",
+  "guru_nama": "ANDI MIRNA"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "JUM`AT",
+  "jam_ke": "II",
+  "pukul": "09.35 - 10.10",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "JUM`AT",
+  "jam_ke": "II",
+  "pukul": "09.35 - 10.10",
+  "mapel": "AA",
+  "guru_nama": "RATNAWATI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "JUM`AT",
+  "jam_ke": "II",
+  "pukul": "09.35 - 10.10",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "JUM`AT",
+  "jam_ke": "II",
+  "pukul": "09.35 - 10.10",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "JUM`AT",
+  "jam_ke": "II",
+  "pukul": "09.35 - 10.10",
+  "mapel": "BHS.INGG",
+  "guru_nama": "NURUNNISA"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "JUM`AT",
+  "jam_ke": "II",
+  "pukul": "09.35 - 10.10",
+  "mapel": "BHS.INA",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "JUM`AT",
+  "jam_ke": "II",
+  "pukul": "09.35 - 10.10",
+  "mapel": "BHS.INA",
+  "guru_nama": "NIRMAWATI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "JUM`AT",
+  "jam_ke": "II",
+  "pukul": "09.35 - 10.10",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "JUM`AT",
+  "jam_ke": "II",
+  "pukul": "09.35 - 10.10",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "JUM`AT",
+  "jam_ke": "II",
+  "pukul": "09.35 - 10.10",
+  "mapel": "IPS",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "JUM`AT",
+  "jam_ke": "II",
+  "pukul": "09.35 - 10.10",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "JUM`AT",
+  "jam_ke": "III",
+  "pukul": "10.10.10.45",
+  "mapel": "INFO",
+  "guru_nama": "ANDI MIRNA"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "JUM`AT",
+  "jam_ke": "III",
+  "pukul": "10.10.10.45",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "JUM`AT",
+  "jam_ke": "III",
+  "pukul": "10.10.10.45",
+  "mapel": "AA",
+  "guru_nama": "RATNAWATI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "JUM`AT",
+  "jam_ke": "III",
+  "pukul": "10.10.10.45",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "JUM`AT",
+  "jam_ke": "III",
+  "pukul": "10.10.10.45",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "JUM`AT",
+  "jam_ke": "III",
+  "pukul": "10.10.10.45",
+  "mapel": "BHS.INGG",
+  "guru_nama": "NURUNNISA"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "JUM`AT",
+  "jam_ke": "III",
+  "pukul": "10.10.10.45",
+  "mapel": "BHS.INA",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "JUM`AT",
+  "jam_ke": "III",
+  "pukul": "10.10.10.45",
+  "mapel": "BHS.INA",
+  "guru_nama": "NIRMAWATI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "JUM`AT",
+  "jam_ke": "III",
+  "pukul": "10.10.10.45",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "JUM`AT",
+  "jam_ke": "III",
+  "pukul": "10.10.10.45",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "JUM`AT",
+  "jam_ke": "III",
+  "pukul": "10.10.10.45",
+  "mapel": "IPS",
+  "guru_nama": "MIDA"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "JUM`AT",
+  "jam_ke": "III",
+  "pukul": "10.10.10.45",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SABTU",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SABTU",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "IPS",
+  "guru_nama": "CHAIRUDDIN"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SABTU",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SABTU",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "NURILMI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SABTU",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SABTU",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SABTU",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "FIQHI",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SABTU",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SABTU",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SABTU",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "IPA",
+  "guru_nama": "MIRNAWATI"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SABTU",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SABTU",
+  "jam_ke": "I",
+  "pukul": "07.15 - 07.50",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SABTU",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SABTU",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "IPS",
+  "guru_nama": "CHAIRUDDIN"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SABTU",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SABTU",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "NURILMI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SABTU",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SABTU",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SABTU",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "FIQHI",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SABTU",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SABTU",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SABTU",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "IPA",
+  "guru_nama": "MIRNAWATI"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SABTU",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SABTU",
+  "jam_ke": "II",
+  "pukul": "07.50 - 08.25",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SABTU",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "MAT",
+  "guru_nama": "TAUFIK"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SABTU",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SABTU",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "IPS",
+  "guru_nama": "CHAIRUDDIN"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SABTU",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "NURILMI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SABTU",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SABTU",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "BHS.INA",
+  "guru_nama": "WATI ZAELANI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SABTU",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "IPA",
+  "guru_nama": "MIRNAWATI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SABTU",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SABTU",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SABTU",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SABTU",
+  "jam_ke": "III",
+  "pukul": "08.25 - 09.00",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SABTU",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "MAT",
+  "guru_nama": "TAUFIK"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SABTU",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SABTU",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "IPS",
+  "guru_nama": "CHAIRUDDIN"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SABTU",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SABTU",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "MULOK",
+  "guru_nama": "JAYANTI JUFRI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SABTU",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "BHS.INA",
+  "guru_nama": "WATI ZAELANI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SABTU",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SABTU",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "IPA",
+  "guru_nama": "MIRNAWATI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SABTU",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "INFO",
+  "guru_nama": "MALIK"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SABTU",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "MAT",
+  "guru_nama": "IRMAWATI NUR"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SABTU",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SABTU",
+  "jam_ke": "IV",
+  "pukul": "09.00 - 09.35",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SABTU",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SABTU",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SABTU",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SABTU",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "MAT",
+  "guru_nama": "NURUL FITRI USMAN"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SABTU",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "MULOK",
+  "guru_nama": "JAYANTI JUFRI"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SABTU",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SABTU",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "PENJAS",
+  "guru_nama": "KAHARUDDIN"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SABTU",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SABTU",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "INFO",
+  "guru_nama": "MALIK"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SABTU",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SABTU",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SABTU",
+  "jam_ke": "V",
+  "pukul": "09.45 - 10.20",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SABTU",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SABTU",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "AA",
+  "guru_nama": "RATNAWATI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SABTU",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "PKN",
+  "guru_nama": "MUH SAIN"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SABTU",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SABTU",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SABTU",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "IPA",
+  "guru_nama": "KARDI"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SABTU",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "JAYANTI JUFRI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SABTU",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SABTU",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SABTU",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SABTU",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SABTU",
+  "jam_ke": "VI",
+  "pukul": "10.20 - 10.55",
+  "mapel": "QH",
+  "guru_nama": "ANDI RASNIA RASJID"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SABTU",
+  "jam_ke": "VII",
+  "pukul": "10.55 - 11.30",
+  "mapel": "QH",
+  "guru_nama": "SAIMANG"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SABTU",
+  "jam_ke": "VII",
+  "pukul": "10.55 - 11.30",
+  "mapel": "AA",
+  "guru_nama": "RATNAWATI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SABTU",
+  "jam_ke": "VII",
+  "pukul": "10.55 - 11.30",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SABTU",
+  "jam_ke": "VII",
+  "pukul": "10.55 - 11.30",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SABTU",
+  "jam_ke": "VII",
+  "pukul": "10.55 - 11.30",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SABTU",
+  "jam_ke": "VII",
+  "pukul": "10.55 - 11.30",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SABTU",
+  "jam_ke": "VII",
+  "pukul": "10.55 - 11.30",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "JAYANTI JUFRI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SABTU",
+  "jam_ke": "VII",
+  "pukul": "10.55 - 11.30",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SABTU",
+  "jam_ke": "VII",
+  "pukul": "10.55 - 11.30",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SABTU",
+  "jam_ke": "VII",
+  "pukul": "10.55 - 11.30",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SABTU",
+  "jam_ke": "VII",
+  "pukul": "10.55 - 11.30",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SABTU",
+  "jam_ke": "VII",
+  "pukul": "10.55 - 11.30",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SABTU",
+  "jam_ke": "VIII",
+  "pukul": "11.30 - 12.05",
+  "mapel": "QH",
+  "guru_nama": "SAIMANG"
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SABTU",
+  "jam_ke": "VIII",
+  "pukul": "11.30 - 12.05",
+  "mapel": "AA",
+  "guru_nama": "RATNAWATI"
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SABTU",
+  "jam_ke": "VIII",
+  "pukul": "11.30 - 12.05",
+  "mapel": "BHS.INA",
+  "guru_nama": "HERNIATI"
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SABTU",
+  "jam_ke": "VIII",
+  "pukul": "11.30 - 12.05",
+  "mapel": "BHS.INGG",
+  "guru_nama": "RUSNAWATI"
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SABTU",
+  "jam_ke": "VIII",
+  "pukul": "11.30 - 12.05",
+  "mapel": "IPS",
+  "guru_nama": "MUTMAINNAH"
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SABTU",
+  "jam_ke": "VIII",
+  "pukul": "11.30 - 12.05",
+  "mapel": "AA",
+  "guru_nama": "SITTI RAFIDAH"
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SABTU",
+  "jam_ke": "VIII",
+  "pukul": "11.30 - 12.05",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "JAYANTI JUFRI"
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SABTU",
+  "jam_ke": "VIII",
+  "pukul": "11.30 - 12.05",
+  "mapel": "SENI BUDAYA",
+  "guru_nama": "SUPRIADI"
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SABTU",
+  "jam_ke": "VIII",
+  "pukul": "11.30 - 12.05",
+  "mapel": "BHS.ARAB",
+  "guru_nama": "SUTRA"
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SABTU",
+  "jam_ke": "VIII",
+  "pukul": "11.30 - 12.05",
+  "mapel": "SKI",
+  "guru_nama": "SUSIANTI"
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SABTU",
+  "jam_ke": "VIII",
+  "pukul": "11.30 - 12.05",
+  "mapel": "BHS.INGG",
+  "guru_nama": "YURNIANTI"
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SABTU",
+  "jam_ke": "VIII",
+  "pukul": "11.30 - 12.05",
+  "mapel": "IPA",
+  "guru_nama": "ABDILLAH"
+ }
+]

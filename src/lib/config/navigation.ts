@@ -4,6 +4,7 @@ import FileTextIcon from '@lucide/svelte/icons/file-text';
 import ClipboardListIcon from '@lucide/svelte/icons/clipboard-list';
 import FileCheckIcon from '@lucide/svelte/icons/file-check';
 import CalendarDaysIcon from '@lucide/svelte/icons/calendar-days';
+import GraduationCapIcon from '@lucide/svelte/icons/graduation-cap';
 import BookOpenIcon from '@lucide/svelte/icons/book-open';
 import GalleryVerticalEndIcon from "@lucide/svelte/icons/gallery-vertical-end";
 
@@ -17,6 +18,11 @@ export const navItems = [
 		title: "Data PTK",
 		url: "/ptk",
 		icon: UsersIcon,
+	},
+	{
+		title: "Data Siswa",
+		url: "/siswa",
+		icon: GraduationCapIcon,
 	},
 	{
 		title: "SKMT",
