@@ -48,3 +48,8 @@ backend/api.exe~
 _hash.txt
 dev_test.txt
 s29a_extract.json
+
+# worker-bel
+worker-bel/worker-bel.exe
+worker-bel/sound-cache/
+worker-bel/*.log
