@@ -1,6 +1,7 @@
 package main
 
 import (
+	"regexp"
 	"fmt"
 	"io"
 	"context"
@@ -93,6 +94,11 @@ func main() {
 	mux.HandleFunc("POST /api/bel/play", s.auth(s.handleBelPlay))
 	mux.HandleFunc("POST /api/bel/stop", s.auth(s.handleBelStop))
 	mux.HandleFunc("GET /api/bel/jadwal", s.auth(s.handleBelJadwal))
+	mux.HandleFunc("POST /api/bel/jadwal", s.auth(s.handleBelJadwalCreate))
+	mux.HandleFunc("PUT /api/bel/jadwal/{id}", s.auth(s.handleBelJadwalUpdate))
+	mux.HandleFunc("DELETE /api/bel/jadwal/{id}", s.auth(s.handleBelJadwalDelete))
+	mux.HandleFunc("POST /api/bel/master", s.auth(s.handleBelMaster))
+	mux.HandleFunc("GET /api/bel/suara", s.auth(s.handleBelSuaraList))
 	mux.HandleFunc("GET /api/stats", s.auth(s.handleStats))
 
 	addr := ":3730"
@@ -619,12 +625,12 @@ func (s *apiServer) handleSiswaList(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// ---- Modul Bel: proxy ke bel.exe API (127.0.0.1:8091) ----
+// ---- Modul Bel: proxy ke worker-bel SIMAD (127.0.0.1:8093) ----
 
 func (s *apiServer) belURL(path string) string {
 	base := os.Getenv("BEL_API")
 	if base == "" {
-		base = "http://127.0.0.1:8091"
+		base = "http://127.0.0.1:8093"
 	}
 	return base + path
 }
@@ -673,19 +679,7 @@ func (s *apiServer) handleBelStop(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *apiServer) handleBelJadwal(w http.ResponseWriter, r *http.Request) {
-	// baca jam_bel dari mtsn2kolut.db (read-only attach)
-	path := os.Getenv("BEL_DB_PATH")
-	if path == "" {
-		path = "C:/Users/LENOVO/webapp/mtsn2kolut/data/mtsn2kolut.db"
-	}
-	dsn := fmt.Sprintf("file:%s?mode=ro&immutable=0", path)
-	bdb, err := sql.Open("sqlite", dsn)
-	if err != nil {
-		fail(w, 500, err.Error())
-		return
-	}
-	defer bdb.Close()
-	rows, err := bdb.Query(`SELECT hari, jam, jenis, label FROM jam_bel WHERE aktif = 1
+	rows, err := s.db.Query(`SELECT hari, jam, jenis, label FROM jam_bel WHERE aktif = 1
 		ORDER BY CASE hari WHEN 'senin' THEN 1 WHEN 'selasa' THEN 2 WHEN 'rabu' THEN 3
 		WHEN 'kamis' THEN 4 WHEN 'jumat' THEN 5 WHEN 'sabtu' THEN 6 ELSE 7 END, jam`)
 	if err != nil {
@@ -710,10 +704,159 @@ func (s *apiServer) handleBelJadwal(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	writeJSON(w, 200, map[string]any{
-		"hari_ini":   hariIniID,
+		"hari_ini":        hariIniID,
 		"jadwal_hari_ini": hariRows,
-		"semua":      out,
+		"semua":           out,
 	})
+}
+
+func (s *apiServer) handleBelJadwalCreate(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Hari      string `json:"hari"`
+		Jam       string `json:"jam"`
+		Jenis     string `json:"jenis"`
+		Label     string `json:"label"`
+		SoundPath string `json:"sound_path"`
+		Repeat    int    `json:"repeat"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		fail(w, 400, "body JSON tidak valid")
+		return
+	}
+	req.Hari = strings.ToLower(strings.TrimSpace(req.Hari))
+	req.Jam = strings.TrimSpace(req.Jam)
+	req.Jenis = strings.ToLower(strings.TrimSpace(req.Jenis))
+	if req.Hari == "" || req.Jam == "" || req.Jenis == "" {
+		fail(w, 400, "hari, jam, jenis wajib diisi")
+		return
+	}
+	validHari := map[string]bool{"senin": true, "selasa": true, "rabu": true, "kamis": true, "jumat": true, "sabtu": true, "minggu": true}
+	if !validHari[req.Hari] {
+		fail(w, 400, "hari tidak valid")
+		return
+	}
+	if matched, _ := regexp.MatchString(`^\d{2}:\d{2}$`, req.Jam); !matched {
+		fail(w, 400, "jam harus format HH:MM")
+		return
+	}
+	if req.Repeat < 1 {
+		req.Repeat = 2
+	}
+	if req.Label == "" {
+		req.Label = req.Jenis
+	}
+	id := fmt.Sprintf("jb-%d", time.Now().UnixMilli())
+	_, err := s.db.Exec(`INSERT INTO jam_bel (id, hari, jam, jenis, label, sound_path, repeat, aktif)
+		VALUES (?,?,?,?,?,?,?,1)`, id, req.Hari, req.Jam, req.Jenis, req.Label, req.SoundPath, req.Repeat)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	writeJSON(w, 200, map[string]any{"ok": true, "id": id})
+}
+
+func (s *apiServer) handleBelJadwalUpdate(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	var req struct {
+		Hari      string `json:"hari"`
+		Jam       string `json:"jam"`
+		Jenis     string `json:"jenis"`
+		Label     string `json:"label"`
+		SoundPath string `json:"sound_path"`
+		Repeat    int    `json:"repeat"`
+		Aktif     *int   `json:"aktif"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		fail(w, 400, "body JSON tidak valid")
+		return
+	}
+	// toggle aktif saja
+	if req.Aktif != nil && req.Hari == "" {
+		_, err := s.db.Exec(`UPDATE jam_bel SET aktif = ?, updated_at = datetime('now','localtime') WHERE id = ?`, *req.Aktif, id)
+		if err != nil {
+			fail(w, 500, err.Error())
+			return
+		}
+		writeJSON(w, 200, map[string]any{"ok": true})
+		return
+	}
+	req.Hari = strings.ToLower(strings.TrimSpace(req.Hari))
+	req.Jam = strings.TrimSpace(req.Jam)
+	if req.Repeat < 1 {
+		req.Repeat = 2
+	}
+	_, err := s.db.Exec(`UPDATE jam_bel SET hari=?, jam=?, jenis=?, label=?, sound_path=?, repeat=?, updated_at=datetime('now','localtime') WHERE id=?`,
+		req.Hari, req.Jam, req.Jenis, req.Label, req.SoundPath, req.Repeat, id)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	writeJSON(w, 200, map[string]any{"ok": true})
+}
+
+func (s *apiServer) handleBelJadwalDelete(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	_, err := s.db.Exec(`DELETE FROM jam_bel WHERE id = ?`, id)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	writeJSON(w, 200, map[string]any{"ok": true})
+}
+
+func (s *apiServer) handleBelMaster(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Enabled bool `json:"enabled"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		fail(w, 400, "body JSON tidak valid")
+		return
+	}
+	v := "0"
+	if req.Enabled {
+		v = "1"
+	}
+	if _, err := s.db.Exec(`INSERT INTO bel_settings (key, value) VALUES ('bel_master', ?)
+		ON CONFLICT(key) DO UPDATE SET value = excluded.value`, v); err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	// beri tahu worker agar langsung berlaku (tanpa nunggu poll)
+	body := strings.NewReader(fmt.Sprintf(`{"enabled":%v}`, req.Enabled))
+	req2, _ := http.NewRequest("POST", s.belURL("/api/master"), body)
+	if key := s.belKey(); key != "" {
+		req2.Header.Set("X-API-Key", key)
+	}
+	req2.Header.Set("Content-Type", "application/json")
+	client := &http.Client{Timeout: 5 * time.Second}
+	resp, err := client.Do(req2)
+	if err == nil {
+		resp.Body.Close()
+	}
+	writeJSON(w, 200, map[string]any{"ok": true, "master": req.Enabled})
+}
+
+func (s *apiServer) handleBelSuaraList(w http.ResponseWriter, r *http.Request) {
+	dir := os.Getenv("BEL_SOUND_DIR")
+	if dir == "" {
+		dir = "C:/Users/LENOVO/webapp/mtsn_app/static/uploads/bel"
+	}
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		writeJSON(w, 200, map[string]any{"files": []string{}})
+		return
+	}
+	files := []string{}
+	for _, e := range entries {
+		if e.IsDir() {
+			continue
+		}
+		n := strings.ToLower(e.Name())
+		if strings.HasSuffix(n, ".mp3") || strings.HasSuffix(n, ".wav") || strings.HasSuffix(n, ".m4a") || strings.HasSuffix(n, ".wma") {
+			files = append(files, e.Name())
+		}
+	}
+	writeJSON(w, 200, map[string]any{"files": files})
 }
 
 func (s *apiServer) handleStats(w http.ResponseWriter, r *http.Request) {

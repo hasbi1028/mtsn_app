@@ -1,38 +1,99 @@
 const API = process.env.API_BASE || 'http://localhost:3730';
 import { fail } from '@sveltejs/kit';
 
+async function api(cookies: any, fetchFn: any, path: string, opts: any = {}) {
+	const token = cookies.get('mtsn_session');
+	if (!token) return fail(401, { ok: false, error: 'Sesi berakhir' });
+	const res = await fetchFn(`${API}${path}`, {
+		...opts,
+		headers: { Authorization: `Bearer ${token}`, ...(opts.headers || {}) }
+	});
+	return await res.json();
+}
+
 export const load = async ({ cookies, fetch }) => {
 	const token = cookies.get('mtsn_session');
 	const h = token ? { Authorization: `Bearer ${token}` } : {};
-	const [statusRes, jadwalRes] = await Promise.all([
+	const [statusRes, jadwalRes, suaraRes] = await Promise.all([
 		fetch(`${API}/api/bel/status`, { headers: h }),
-		fetch(`${API}/api/bel/jadwal`, { headers: h })
+		fetch(`${API}/api/bel/jadwal`, { headers: h }),
+		fetch(`${API}/api/bel/suara`, { headers: h })
 	]);
 	const status = statusRes.ok ? await statusRes.json() : { ok: false, offline: true };
-	const jadwal = jadwalRes.ok ? await jadwalRes.json() : { hari_ini: '', jadwal_hari_ini: [], semua: [] };
-	return { status, jadwal };
+	const jadwal = jadwalRes.ok
+		? await jadwalRes.json()
+		: { hari_ini: '', jadwal_hari_ini: [], semua: [] };
+	const suara = suaraRes.ok ? await suaraRes.json() : { files: [] };
+	return { status, jadwal, suara };
 };
 
 export const actions = {
-	stop: async ({ cookies, fetch }) => {
-		const token = cookies.get('mtsn_session');
-		if (!token) return fail(401, { error: 'Sesi berakhir' });
-		const res = await fetch(`${API}/api/bel/stop`, {
-			method: 'POST',
-			headers: { Authorization: `Bearer ${token}` }
-		});
-		return await res.json();
-	},
+	stop: async ({ cookies, fetch }) => api(cookies, fetch, '/api/bel/stop', { method: 'POST' }),
+
 	play: async ({ cookies, fetch, request }) => {
-		const token = cookies.get('mtsn_session');
-		if (!token) return fail(401, { error: 'Sesi berakhir' });
 		const fd = await request.formData();
 		const file = String(fd.get('file') || '');
-		const res = await fetch(`${API}/api/bel/play`, {
+		return api(cookies, fetch, '/api/bel/play', {
 			method: 'POST',
-			headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ path: file, repeat: 1 })
 		});
-		return await res.json();
+	},
+
+	// Master switch — konfirmasi kata wajib
+	master: async ({ cookies, fetch, request }) => {
+		const fd = await request.formData();
+		const confirm = String(fd.get('confirm') || '').toUpperCase().trim();
+		const target = String(fd.get('target')) === '1' ? 'AKTIF' : 'NONAKTIF';
+		if (confirm !== target) {
+			return fail(400, { ok: false, error: `Ketik "${target}" untuk konfirmasi.` });
+		}
+		const enabled = target === 'AKTIF';
+		return api(cookies, fetch, '/api/bel/master', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ enabled })
+		});
+	},
+
+	// Tambah jadwal
+	create: async ({ cookies, fetch, request }) => {
+		const fd = await request.formData();
+		const body = {
+			hari: String(fd.get('hari') || ''),
+			jam: String(fd.get('jam') || ''),
+			jenis: String(fd.get('jenis') || 'khusus'),
+			label: String(fd.get('label') || ''),
+			sound_path: String(fd.get('sound_path') || ''),
+			repeat: Number(fd.get('repeat') || 2)
+		};
+		const res = await api(cookies, fetch, '/api/bel/jadwal', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(body)
+		});
+		if (!res.ok) return fail(400, res);
+		return { ok: true, pesan: `Jadwal ${body.hari} ${body.jam} ditambahkan.` };
+	},
+
+	// Toggle aktif/nonaktif satu jadwal
+	toggle: async ({ cookies, fetch, request }) => {
+		const fd = await request.formData();
+		const id = String(fd.get('id'));
+		const aktif = Number(fd.get('aktif'));
+		return api(cookies, fetch, `/api/bel/jadwal/${id}`, {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ aktif })
+		});
+	},
+
+	// Hapus jadwal
+	delete: async ({ cookies, fetch, request }) => {
+		const fd = await request.formData();
+		const id = String(fd.get('id'));
+		const res = await api(cookies, fetch, `/api/bel/jadwal/${id}`, { method: 'DELETE' });
+		if (!res.ok) return fail(400, res);
+		return { ok: true, pesan: 'Jadwal dihapus.' };
 	}
 };

@@ -114,6 +114,13 @@ Defined in `src/app.css`:
 ## PM2 Services
 1. **mtsn-app-api** — Go API on port 3730
 2. **mtsn-app-bff** — SvelteKit build on port 3720
+3. **simad-bel** — Worker bel sekolah (port 8093, baca jam_bel dari local.db, suara di static/uploads/bel)
+
+## Modul Bel (mandiri)
+- Tabel `jam_bel` + `bel_settings` (master switch) di local.db — MILIK SIMAD
+- Worker: `worker-bel/` (Go, port dari webapp/bel) — poll jadwal, playback MCI via proses anak
+- API: /api/bel/status|play|stop|master|jadwal (CRUD)|suara
+- UI /bel: monitoring, kontrol darurat, CRUD jadwal, master switch (konfirmasi ketik NONAKTIF/AKTIF)
 
 ## Conventions
 - Follow shadcn-svelte patterns exactly (do not hack/modify UI components)

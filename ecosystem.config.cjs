@@ -7,7 +7,9 @@ module.exports = {
 			cwd: 'C:/Users/LENOVO/webapp/mtsn_app/backend',
 			env: {
 				DB_PATH: 'C:/Users/LENOVO/webapp/mtsn_app/local.db',
-				PORT: '3730'
+				PORT: '3730',
+				BEL_API: 'http://127.0.0.1:8093',
+				BEL_API_KEY: ''
 			},
 			watch: false,
 			autorestart: true,
@@ -23,12 +25,27 @@ module.exports = {
 				PORT: '3720',
 				ORIGIN: 'http://localhost:3720',
 				API_BASE: 'http://localhost:3730',
-				BEL_API: 'http://127.0.0.1:8091',
-				BEL_API_KEY: 'f4a41a8f91cb6f6e45806a0b139fbc4f'
+				BEL_API: 'http://127.0.0.1:8093',
+				BEL_API_KEY: ''
 			},
 			watch: false,
 			autorestart: true,
 			max_restarts: 5
+		},
+		{
+			name: 'simad-bel',
+			script: 'worker-bel.exe',
+			cwd: 'C:/Users/LENOVO/webapp/mtsn_app/worker-bel',
+			env: {
+				DB_PATH: 'C:/Users/LENOVO/webapp/mtsn_app/local.db',
+				SOUND_BASE: 'C:/Users/LENOVO/webapp/mtsn_app/static/uploads/bel',
+				POLL_SECONDS: '30',
+				BEL_PORT: '8093',
+				BEL_API_KEY: ''
+			},
+			watch: false,
+			autorestart: true,
+			max_restarts: 10
 		}
 	]
 };

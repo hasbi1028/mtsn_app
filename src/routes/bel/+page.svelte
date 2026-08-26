@@ -1,25 +1,42 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
+	import { Input } from '$lib/components/ui/input/index.js';
 	import PageLayout from '$lib/components/page-layout.svelte';
 
 	let { data, form } = $props();
 	const status = $derived(data.status as any);
 	const jadwal = $derived(data.jadwal as any);
+	const suaraFiles = $derived(data.suara?.files ?? []);
 	let semua = $state(false);
 	const arrJadwal = $derived(semua ? (jadwal.semua ?? []) : (jadwal.jadwal_hari_ini ?? []));
+	const hariList = ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'minggu'];
+	const jenisList = ['masuk', 'istirahat', 'pulang', 'upacara', 'khusus'];
+
+	// form tambah
+	let showForm = $state(false);
+	let fHari = $state('senin');
+	let fJam = $state('07:00');
+	let fJenis = $state('khusus');
+	let fLabel = $state('');
+	let fSuara = $state(suaraFiles[0] ?? '');
+	let fRepeat = $state(2);
+
+	// master switch konfirmasi
+	let masterConfirm = $state('');
+	const masterTarget = $derived(status?.master ? 'NONAKTIF' : 'AKTIF');
 </script>
 
-<PageLayout title="Modul Bel" description="Monitoring & kontrol bel sekolah — SIMAD MTsN 2 Kolaka Utara">
+<PageLayout title="Modul Bel" description="Jadwal & kontrol bel sekolah — SIMAD MTsN 2 Kolaka Utara">
 	{#if form?.ok !== undefined}
 		<div class="rounded-md border px-3 py-2 text-sm {form.ok ? 'bg-green-500/10 text-green-700' : 'bg-destructive/10 text-destructive'}">
-			{form.ok ? 'Perintah terkirim ke bel service.' : (form.error || 'Gagal mengirim perintah.')}
+			{form.ok ? (form.pesan || 'Perintah terkirim ke bel service.') : (form.error || 'Gagal mengirim perintah.')}
 		</div>
 	{/if}
 
 	{#if status?.offline}
 		<div class="rounded-lg border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">
-			Bel service tidak aktif. Jalankan: <code class="font-mono">pm2 start bel</code>
+			Worker bel tidak aktif. Jalankan: <code class="font-mono">pm2 start simad-bel</code>
 		</div>
 	{:else}
 		<!-- Status cards -->
@@ -32,15 +49,15 @@
 			</div>
 			<div class="rounded-lg border p-3">
 				<p class="text-xs text-muted-foreground">Master Switch</p>
-				<Badge variant={status?.master ? 'default' : 'outline'}>{status?.master ? 'AKTIF' : 'NONAKTIF'}</Badge>
+				<Badge variant={status?.master ? 'default' : 'destructive'}>{status?.master ? 'AKTIF' : 'NONAKTIF'}</Badge>
 			</div>
 			<div class="rounded-lg border p-3">
 				<p class="text-xs text-muted-foreground">Hari</p>
 				<p class="text-sm font-bold capitalize">{jadwal?.hari_ini || '-'}</p>
 			</div>
 			<div class="rounded-lg border p-3">
-				<p class="text-xs text-muted-foreground">Jadwal Hari Ini</p>
-				<p class="text-xl font-bold">{jadwal?.jadwal_hari_ini?.length ?? 0}</p>
+				<p class="text-xs text-muted-foreground">Jadwal Aktif</p>
+				<p class="text-xl font-bold">{jadwal?.semua?.length ?? 0}</p>
 			</div>
 		</div>
 
@@ -51,32 +68,40 @@
 				<form method="POST" action="?/stop">
 					<Button size="sm" variant="destructive" disabled={!status?.playing} class="cursor-pointer h-8">Stop Pemutaran</Button>
 				</form>
-				{#each [['indonesia-raya.mp3', 'Indonesia Raya'], ['istirahat.mp3', 'Bel Istirahat'], ['jampulang.mp3', 'Bel Pulang']] as [file, label]}
+				{#each suaraFiles.slice(0, 4) as f}
 					<form method="POST" action="?/play">
-						<input type="hidden" name="file" value={file} />
-						<Button size="sm" variant="outline" class="cursor-pointer h-8">{label}</Button>
+						<input type="hidden" name="file" value={f} />
+						<Button size="sm" variant="outline" class="cursor-pointer h-8">{f.replace('.mp3','').replace('.wav','').replace(/-/g,' ')}</Button>
 					</form>
 				{/each}
 			</div>
 
+			<!-- Master switch dengan konfirmasi kata -->
 			<div class="border-t pt-3">
 				<p class="text-sm font-semibold mb-1">Master Switch Bel</p>
-				<p class="text-xs text-muted-foreground mb-2">
-					Pengelolaan master switch dan jadwal bel dilakukan di web app mtsn2kolut (Admin → Jam Bel).
-					Di sini hanya monitoring & kontrol darurat.
-				</p>
+				<form method="POST" action="?/master" class="flex flex-wrap items-center gap-2">
+					<input type="hidden" name="target" value={status?.master ? '0' : '1'} />
+					<span class="text-xs text-muted-foreground">
+						Ketik <b>{masterTarget}</b> untuk {status?.master ? 'menonaktifkan semua bel (mode darurat)' : 'mengaktifkan kembali'}:
+					</span>
+					<Input name="confirm" bind:value={masterConfirm} placeholder={masterTarget} class="h-8 w-36 text-xs" />
+					<Button type="submit" size="sm" variant={status?.master ? 'destructive' : 'default'}
+						disabled={masterConfirm.toUpperCase() !== masterTarget} class="h-8 cursor-pointer">
+						{masterTarget}
+					</Button>
+				</form>
 			</div>
 		</div>
 	{/if}
 
-	<!-- Jadwal -->
+	<!-- Jadwal + kelola -->
 	<div class="rounded-lg border overflow-hidden">
 		<button
 			onclick={() => (semua = !semua)}
 			class="bg-muted px-3 py-2 text-sm font-semibold w-full flex items-center justify-between hover:bg-muted/70 cursor-pointer"
 		>
-			<span class="capitalize">{semua ? 'Jadwal Lengkap (6 Hari)' : 'Jadwal Hari ' + (jadwal?.hari_ini || '-')}</span>
-			<span class="text-xs text-muted-foreground">{semua ? 'selipkan' : 'perluas'}</span>
+			<span class="capitalize">{semua ? 'Semua Jadwal (6 Hari)' : 'Jadwal Hari ' + (jadwal?.hari_ini || '-')}</span>
+			<span class="text-xs text-muted-foreground">{semua ? 'tampilkan hari ini' : 'lihat semua hari'}</span>
 		</button>
 		<table class="w-full text-sm">
 			<thead class="bg-muted/50 text-xs text-muted-foreground">
@@ -85,24 +110,88 @@
 					<th class="px-3 py-1.5 text-left">Jam</th>
 					<th class="px-3 py-1.5 text-left">Jenis</th>
 					<th class="px-3 py-1.5 text-left">Label</th>
+					<th class="px-3 py-1.5 text-right">Aksi</th>
 				</tr>
 			</thead>
 			<tbody>
 				{#each arrJadwal as x, i}
-					<tr class="border-t">
+					<tr class="border-t {x.aktif === 0 ? 'opacity-40' : ''}">
 						{#if semua}<td class="px-3 py-1.5 capitalize text-xs">{x.hari}</td>{/if}
 						<td class="px-3 py-1.5 font-medium">{x.jam}</td>
 						<td class="px-3 py-1.5"><Badge variant={x.jenis === 'masuk' ? 'default' : x.jenis === 'pulang' ? 'destructive' : 'secondary'} class="text-[10px]">{x.jenis}</Badge></td>
 						<td class="px-3 py-1.5">{x.label}</td>
+						<td class="px-3 py-1.5 text-right">
+							{#if x.id}
+								<form method="POST" action="?/toggle" class="inline me-1">
+									<input type="hidden" name="id" value={x.id} />
+									<input type="hidden" name="aktif" value={x.aktif === 0 ? 1 : 0} />
+									<Button type="submit" size="sm" variant="outline" class="h-6 px-2 text-[10px] cursor-pointer">
+										{x.aktif === 0 ? 'Aktifkan' : 'Nonaktifkan'}
+									</Button>
+								</form>
+								<form method="POST" action="?/delete" class="inline"
+									onsubmit={(e) => { if (!confirm('Hapus jadwal ini?')) e.preventDefault(); }}>
+									<input type="hidden" name="id" value={x.id} />
+									<Button type="submit" size="sm" variant="destructive" class="h-6 px-2 text-[10px] cursor-pointer">Hapus</Button>
+								</form>
+							{:else}
+								<span class="text-[10px] text-muted-foreground">—</span>
+							{/if}
+						</td>
 					</tr>
 				{:else}
-					<tr><td colspan={semua ? 4 : 3} class="px-3 py-4 text-center text-muted-foreground">Tidak ada jadwal.</td></tr>
+					<tr><td colspan={semua ? 5 : 4} class="px-3 py-4 text-center text-muted-foreground">Tidak ada jadwal.</td></tr>
 				{/each}
 			</tbody>
 		</table>
 	</div>
 
+	<!-- Form tambah jadwal -->
+	<div class="rounded-lg border p-4">
+		<button onclick={() => (showForm = !showForm)} class="text-sm font-semibold w-full flex items-center justify-between cursor-pointer">
+			<span>Tambah Jadwal Bel</span>
+			<span class="text-xs text-muted-foreground">{showForm ? '▲' : '▼'}</span>
+		</button>
+		{#if showForm}
+			<form method="POST" action="?/create" class="grid grid-cols-2 md:grid-cols-6 gap-2 mt-3 items-end">
+				<label class="text-xs">
+					<span class="text-muted-foreground">Hari</span>
+					<select name="hari" bind:value={fHari} class="w-full h-8 rounded-md border bg-background px-2 text-xs">
+						{#each hariList as h}<option value={h}>{h}</option>{/each}
+					</select>
+				</label>
+				<label class="text-xs">
+					<span class="text-muted-foreground">Jam (HH:MM)</span>
+					<Input name="jam" bind:value={fJam} class="h-8 text-xs" />
+				</label>
+				<label class="text-xs">
+					<span class="text-muted-foreground">Jenis</span>
+					<select name="jenis" bind:value={fJenis} class="w-full h-8 rounded-md border bg-background px-2 text-xs">
+						{#each jenisList as j}<option value={j}>{j}</option>{/each}
+					</select>
+				</label>
+				<label class="text-xs">
+					<span class="text-muted-foreground">Label</span>
+					<Input name="label" bind:value={fLabel} placeholder="mis. Jam ke-2" class="h-8 text-xs" />
+				</label>
+				<label class="text-xs">
+					<span class="text-muted-foreground">Suara</span>
+					<select name="sound_path" bind:value={fSuara} class="w-full h-8 rounded-md border bg-background px-2 text-xs">
+						{#each suaraFiles as f}<option value={f}>{f}</option>{/each}
+					</select>
+				</label>
+				<label class="text-xs">
+					<span class="text-muted-foreground">Repeat</span>
+					<Input name="repeat" type="number" min="1" max="10" bind:value={fRepeat} class="h-8 text-xs" />
+				</label>
+				<div class="col-span-2 md:col-span-6">
+					<Button type="submit" size="sm" class="h-8 cursor-pointer">Simpan Jadwal</Button>
+				</div>
+			</form>
+		{/if}
+	</div>
+
 	<p class="text-xs text-muted-foreground">
-		Data jadwal bel dibaca dari web app mtsn2kolut. Halaman ini hanya monitoring & kontrol darurat.
+		Worker bel SIMAD (simad-bel) membaca jadwal dari database SIMAD dan memutar suara otomatis sesuai jadwal (WITA).
 	</p>
 </PageLayout>
