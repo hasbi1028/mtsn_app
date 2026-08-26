@@ -1,7 +1,7 @@
-# AGENTS.md — MTsN 2 Kolaka Utara App
+# AGENTS.md — SIMAD MTsN 2 Kolaka Utara
 
 ## Project Overview
-Smart Digital School — Sistem Informasi Manajemen Sekolah untuk MTsN 2 Kolaka Utara.
+SIMAD — Sistem Informasi Manajemen Madrasah untuk MTsN 2 Kolaka Utara.
 
 ## Tech Stack
 - **Frontend:** SvelteKit 2, Svelte 5, TailwindCSS v4, shadcn-svelte (nova style)

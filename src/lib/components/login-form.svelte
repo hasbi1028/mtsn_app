@@ -114,7 +114,7 @@
 						<SchoolIcon class="size-10" />
 					</div>
 					<p class="text-lg font-semibold">MTsN 2 Kolaka Utara</p>
-					<p class="text-sm text-muted-foreground">Smart Digital School</p>
+					<p class="text-sm text-muted-foreground">SIMAD — MTsN 2 Kolaka Utara</p>
 				</div>
 			</div>
 		</div>

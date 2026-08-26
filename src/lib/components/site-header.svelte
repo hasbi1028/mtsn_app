@@ -12,7 +12,7 @@
 	<div class="flex items-center gap-2 px-4">
 		<Sidebar.Trigger class="-ms-1" />
 		<Separator orientation="vertical" class="me-2 data-[orientation=vertical]:h-4" />
-		<h1 class="text-sm font-semibold">Smart School — TA 2026/2027 Ganjil</h1>
+		<h1 class="text-sm font-semibold">SIMAD — Rekonsiliasi Data TA 2026/2027</h1>
 	</div>
 	<div class="ms-auto flex items-center gap-2 px-4">
 		<Button onclick={toggleMode} variant="ghost" size="icon" class="cursor-pointer" title="Ganti tema">
