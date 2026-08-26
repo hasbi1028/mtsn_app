@@ -13,7 +13,7 @@
 	$effect(() => {
 		notify.fromForm(form, 'Perintah terkirim ke bel service.');
 	});
-	const suaraFiles = $derived(data.suara?.files ?? []);
+	const suaraFiles = $derived(((data.suara?.files ?? []) as any[]).map((f) => f.name ?? f));
 	let semua = $state(false);
 	const arrJadwal = $derived(semua ? (jadwal.semua ?? []) : (jadwal.jadwal_hari_ini ?? []));
 	const hariList = ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'minggu'];
@@ -34,7 +34,6 @@
 </script>
 
 <PageLayout title="Modul Bel" description="Jadwal & kontrol bel sekolah — SIMAD MTsN 2 Kolaka Utara">
-<!-- notifikasi via sonner -->
 
 	{#if status?.offline}
 		<div class="rounded-lg border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">
@@ -63,38 +62,19 @@
 			</div>
 		</div>
 
-		<!-- Kontrol manual -->
-		<div class="rounded-lg border p-4 space-y-3">
-			<p class="text-sm font-semibold">Kontrol Manual (tes suara)</p>
-			<div class="flex flex-wrap items-center gap-2">
-				<form method="POST" action="?/stop">
-					<Button type="submit" size="sm" variant="destructive" disabled={!status?.playing} class="cursor-pointer h-8">Stop Pemutaran</Button>
-				</form>
-				{#each suaraFiles.slice(0, 4) as f}
-					<form method="POST" action="?/play">
-						<input type="hidden" name="file" value={f} />
-						<Button type="submit" size="sm" variant="outline" class="cursor-pointer h-8">{f.replace('.mp3','').replace('.wav','').replace(/-/g,' ')}</Button>
-					</form>
-				{/each}
-			</div>
 
-			<!-- Master switch dengan konfirmasi kata -->
-			<div class="border-t pt-3">
-				<p class="text-sm font-semibold mb-1">Master Switch Bel</p>
-				<form method="POST" action="?/master" class="flex flex-wrap items-center gap-2">
-					<input type="hidden" name="target" value={status?.master ? '0' : '1'} />
-					<span class="text-xs text-muted-foreground">
-						Ketik <b>{masterTarget}</b> untuk {status?.master ? 'menonaktifkan semua bel (mode darurat)' : 'mengaktifkan kembali'}:
-					</span>
-					<Input name="confirm" bind:value={masterConfirm} placeholder={masterTarget} class="h-8 w-36 text-xs" />
-					<Button type="submit" size="sm" variant={status?.master ? 'destructive' : 'default'}
-						disabled={masterConfirm.toUpperCase() !== masterTarget} class="h-8 cursor-pointer">
-						{masterTarget}
-					</Button>
-				</form>
-			</div>
-		</div>
 	{/if}
+
+	<a
+		href="/bel/suara"
+		class="rounded-lg border p-4 flex items-center justify-between hover:bg-muted/50 transition-colors"
+	>
+		<div>
+			<p class="text-sm font-semibold">Perpustakaan Suara</p>
+			<p class="text-xs text-muted-foreground">Kelola file suara: putar (kontrol manual), upload, hapus</p>
+		</div>
+		<span class="text-xs text-primary">Buka →</span>
+	</a>
 
 	<!-- Jadwal + kelola -->
 	<div class="rounded-lg border overflow-hidden">

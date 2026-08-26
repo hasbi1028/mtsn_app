@@ -1,6 +1,7 @@
 package main
 
 import (
+	"path/filepath"
 	"regexp"
 	"fmt"
 	"io"
@@ -99,6 +100,8 @@ func main() {
 	mux.HandleFunc("DELETE /api/bel/jadwal/{id}", s.auth(s.handleBelJadwalDelete))
 	mux.HandleFunc("POST /api/bel/master", s.auth(s.handleBelMaster))
 	mux.HandleFunc("GET /api/bel/suara", s.auth(s.handleBelSuaraList))
+	mux.HandleFunc("POST /api/bel/suara", s.auth(s.handleBelSuaraUpload))
+	mux.HandleFunc("DELETE /api/bel/suara/{name}", s.auth(s.handleBelSuaraDelete))
 	mux.HandleFunc("GET /api/stats", s.auth(s.handleStats))
 
 	addr := ":3730"
@@ -854,27 +857,112 @@ func (s *apiServer) handleBelMaster(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, 200, map[string]any{"ok": true, "master": req.Enabled})
 }
 
-func (s *apiServer) handleBelSuaraList(w http.ResponseWriter, r *http.Request) {
-	dir := os.Getenv("BEL_SOUND_DIR")
-	if dir == "" {
-		dir = "C:/Users/LENOVO/webapp/mtsn_app/static/uploads/bel"
+func (s *apiServer) belSoundDir() string {
+	if d := os.Getenv("BEL_SOUND_DIR"); d != "" {
+		return d
 	}
+	return "C:/Users/LENOVO/webapp/mtsn_app/static/uploads/bel"
+}
+
+func (s *apiServer) handleBelSuaraList(w http.ResponseWriter, r *http.Request) {
+	dir := s.belSoundDir()
 	entries, err := os.ReadDir(dir)
 	if err != nil {
-		writeJSON(w, 200, map[string]any{"files": []string{}})
+		writeJSON(w, 200, map[string]any{"files": []any{}})
 		return
 	}
-	files := []string{}
+	type Suara struct {
+		Name     string `json:"name"`
+		Size     int64  `json:"size"`
+		UsedBy   int    `json:"used_by"`
+	}
+	files := []Suara{}
 	for _, e := range entries {
 		if e.IsDir() {
 			continue
 		}
 		n := strings.ToLower(e.Name())
-		if strings.HasSuffix(n, ".mp3") || strings.HasSuffix(n, ".wav") || strings.HasSuffix(n, ".m4a") || strings.HasSuffix(n, ".wma") {
-			files = append(files, e.Name())
+		if !strings.HasSuffix(n, ".mp3") && !strings.HasSuffix(n, ".wav") && !strings.HasSuffix(n, ".m4a") && !strings.HasSuffix(n, ".wma") {
+			continue
 		}
+		info, _ := e.Info()
+		var used int
+		s.db.QueryRow(`SELECT COUNT(*) FROM jam_bel WHERE aktif = 1 AND sound_path = ?`, e.Name()).Scan(&used)
+		files = append(files, Suara{Name: e.Name(), Size: info.Size(), UsedBy: used})
 	}
 	writeJSON(w, 200, map[string]any{"files": files})
+}
+
+func (s *apiServer) handleBelSuaraUpload(w http.ResponseWriter, r *http.Request) {
+	// Maks 10 MB
+	r.Body = http.MaxBytesReader(w, r.Body, 10<<20)
+	if err := r.ParseMultipartForm(10 << 20); err != nil {
+		fail(w, 400, "upload terlalu besar (maks 10 MB) atau format salah")
+		return
+	}
+	file, hdr, err := r.FormFile("file")
+	if err != nil {
+		fail(w, 400, "field 'file' wajib ada")
+		return
+	}
+	defer file.Close()
+
+	name := filepath.Base(hdr.Filename)
+	ext := strings.ToLower(filepath.Ext(name))
+	validExt := map[string]bool{".mp3": true, ".wav": true, ".m4a": true, ".wma": true}
+	if !validExt[ext] {
+		fail(w, 400, "format harus mp3/wav/m4a/wma")
+		return
+	}
+	if strings.ContainsAny(name, `/\`) || strings.HasPrefix(name, ".") {
+		fail(w, 400, "nama file tidak valid")
+		return
+	}
+
+	dir := s.belSoundDir()
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	dst, err := os.Create(filepath.Join(dir, name))
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	defer dst.Close()
+	n, err := io.Copy(dst, file)
+	if err != nil {
+		fail(w, 500, "gagal menulis: "+err.Error())
+		return
+	}
+	writeJSON(w, 200, map[string]any{"ok": true, "name": name, "size": n})
+}
+
+func (s *apiServer) handleBelSuaraDelete(w http.ResponseWriter, r *http.Request) {
+	name := r.PathValue("name")
+	name = filepath.Base(name)
+	ext := strings.ToLower(filepath.Ext(name))
+	validExt := map[string]bool{".mp3": true, ".wav": true, ".m4a": true, ".wma": true}
+	if !validExt[ext] || strings.ContainsAny(name, `/\`) {
+		fail(w, 400, "nama file tidak valid")
+		return
+	}
+	var used int
+	s.db.QueryRow(`SELECT COUNT(*) FROM jam_bel WHERE sound_path = ?`, name).Scan(&used)
+	if used > 0 {
+		fail(w, 409, fmt.Sprintf("file dipakai %d jadwal — nonaktifkan/ubah jadwal dulu", used))
+		return
+	}
+	path := filepath.Join(s.belSoundDir(), name)
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		fail(w, 404, "file tidak ditemukan")
+		return
+	}
+	if err := os.Remove(path); err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	writeJSON(w, 200, map[string]any{"ok": true})
 }
 
 func (s *apiServer) handleStats(w http.ResponseWriter, r *http.Request) {
