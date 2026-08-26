@@ -127,7 +127,10 @@ Defined in `src/app.css`:
 ## Modul Bel (mandiri)
 - Tabel `jam_bel` + `bel_settings` (master switch) di local.db — MILIK SIMAD
 - Worker: `worker-bel/` (Go, port dari webapp/bel) — poll jadwal, playback MCI via proses anak
-- API: /api/bel/status|play|stop|master|jadwal (CRUD)|suara
+- API: /api/bel/status|play|stop|master|jadwal (CRUD)|suara (list/upload/delete)
+- Perpustakaan Suara: halaman `/bel/suara` — grid file (badge "dipakai N"), Putar per file
+  (kontrol manual pindah ke sini), Stop global, Upload (mp3/wav/m4a/wma maks 10MB),
+  Hapus (ditolak jika masih direferensikan jam_bel)
 - UI /bel: monitoring, kontrol darurat, CRUD jadwal, master switch (konfirmasi ketik NONAKTIF/AKTIF)
 
 ## Conventions
