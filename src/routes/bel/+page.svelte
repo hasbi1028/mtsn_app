@@ -66,12 +66,12 @@
 			<p class="text-sm font-semibold">Kontrol Manual (tes suara)</p>
 			<div class="flex flex-wrap items-center gap-2">
 				<form method="POST" action="?/stop">
-					<Button size="sm" variant="destructive" disabled={!status?.playing} class="cursor-pointer h-8">Stop Pemutaran</Button>
+					<Button type="submit" size="sm" variant="destructive" disabled={!status?.playing} class="cursor-pointer h-8">Stop Pemutaran</Button>
 				</form>
 				{#each suaraFiles.slice(0, 4) as f}
 					<form method="POST" action="?/play">
 						<input type="hidden" name="file" value={f} />
-						<Button size="sm" variant="outline" class="cursor-pointer h-8">{f.replace('.mp3','').replace('.wav','').replace(/-/g,' ')}</Button>
+						<Button type="submit" size="sm" variant="outline" class="cursor-pointer h-8">{f.replace('.mp3','').replace('.wav','').replace(/-/g,' ')}</Button>
 					</form>
 				{/each}
 			</div>
