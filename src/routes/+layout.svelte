@@ -15,14 +15,14 @@
 </svelte:head>
 
 {#if data.isLogin}
-	<main>{@render children()}</main>
+	<main>{@render children?.()}</main>
 {:else}
 	<Sidebar.Provider>
 		<AppSidebar />
 		<Sidebar.Inset>
 			<SiteHeader user={data.user} />
 			<main class="mx-auto w-full max-w-5xl px-4 py-4">
-				{@render children()}
+				{@render children?.()}
 			</main>
 		</Sidebar.Inset>
 	</Sidebar.Provider>

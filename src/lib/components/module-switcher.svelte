@@ -8,28 +8,28 @@
 	import CalendarIcon from '@lucide/svelte/icons/calendar';
 	import ClipboardListIcon from '@lucide/svelte/icons/clipboard-list';
 	import BellRingIcon from '@lucide/svelte/icons/bell-ring';
-	import HistoryIcon from '@lucide/svelte/icons/history';
 	import SettingsIcon from '@lucide/svelte/icons/settings';
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
 	import { useSidebar } from "$lib/components/ui/sidebar/index.js";
+	import { activeModule } from './module-active.svelte.js';
 
 	const sidebar = useSidebar();
 
 	const modules = [
-		{ name: "Dashboard", icon: LayoutDashboardIcon, description: "Ringkasan & Statistik", active: true, url: "/" },
-		{ name: "PTK", icon: UsersIcon, description: "Data PTK & Tendik", active: true, url: "/ptk" },
-		{ name: "Kesiswaan", icon: GraduationCapIcon, description: "Data Siswa & Kelas", active: true, url: "/siswa" },
-		{ name: "Bel", icon: BellRingIcon, description: "Monitoring & Kontrol", active: true, url: "/bel" },
-		{ name: "Aktivitas", icon: HistoryIcon, description: "Riwayat & Log", active: true, url: "/activity" },
+		{ name: "Semua", icon: LayoutDashboardIcon, description: "Tampilkan semua menu", key: "semua", active: true, url: "/" },
+		{ name: "PTK", icon: UsersIcon, description: "Data PTK & Tendik", key: "PTK", active: true, url: "/ptk" },
+		{ name: "Kesiswaan", icon: GraduationCapIcon, description: "Data Siswa & Kelas", key: "Kesiswaan", active: true, url: "/siswa" },
+		{ name: "Jadwal", icon: CalendarIcon, description: "Roster & Kalender", key: "Jadwal", active: true, url: "/roster" },
+		{ name: "Dokumen", icon: ClipboardListIcon, description: "SKMT, SKBK, SKAKPT", key: "Dokumen", active: true, url: "/skmt" },
+		{ name: "Bel", icon: BellRingIcon, description: "Monitoring & Kontrol", key: "Bel", active: true, url: "/bel" },
 		{ name: "Perpustakaan", icon: BookOpenIcon, description: "Buku & Peminjaman", active: false },
 		{ name: "Sarana & Prasarana", icon: BuildingIcon, description: "Inventaris Sekolah", active: false },
-		{ name: "Jadwal", icon: CalendarIcon, description: "Roster & Kalender", active: true, url: "/roster" },
-		{ name: "Dokumen", icon: ClipboardListIcon, description: "SKMT, SKBK, SKAKPT", active: true, url: "/skmt" },
 		{ name: "Pengaturan", icon: SettingsIcon, description: "Konfigurasi Sistem", active: false },
 	];
 
 	let activeModules = $derived(modules.filter(m => m.active));
+	let activeKey = $derived($activeModule);
 	let inactiveModules = $derived(modules.filter(m => !m.active));
 </script>
 
@@ -47,7 +47,7 @@
 							<span class="text-xs font-bold">MTsN</span>
 						</div>
 						<div class="grid flex-1 text-left text-sm leading-tight">
-							<span class="truncate font-semibold">SIMAD</span>
+							<span class="truncate font-semibold">{activeKey === 'semua' ? 'SIMAD' : activeKey}</span>
 							<span class="truncate text-xs">MTsN 2 Kolaka Utara</span>
 						</div>
 						<ChevronsUpDownIcon class="ms-auto" />
@@ -62,16 +62,17 @@
 			>
 				<DropdownMenu.Label class="text-xs text-muted-foreground">Modul Aktif</DropdownMenu.Label>
 				{#each activeModules as mod (mod.name)}
-					<DropdownMenu.Item class="gap-2 p-2">
+					<DropdownMenu.Item class="gap-2 p-2" data-active={activeKey === (mod.key ?? '')}>
 						{#snippet child({ props })}
-							<a {...props} href={mod.url} class="flex w-full items-center gap-2">
-								<div class="flex size-6 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
+							<a {...props} href={mod.url} onclick={() => activeModule.set(mod.key ?? 'semua')} class="flex w-full items-center gap-2">
+								<div class="flex size-6 items-center justify-center rounded-md {activeKey === (mod.key ?? '') ? 'bg-sidebar-primary text-sidebar-primary-foreground' : 'bg-sidebar-accent text-sidebar-accent-foreground'}">
 									<mod.icon class="size-3.5 shrink-0" />
 								</div>
 								<div class="flex flex-col">
 									<span class="font-medium">{mod.name}</span>
 									<span class="text-xs text-muted-foreground">{mod.description}</span>
 								</div>
+								{#if activeKey === (mod.key ?? '')}<span class="ms-auto text-primary">✓</span>{/if}
 							</a>
 						{/snippet}
 					</DropdownMenu.Item>
