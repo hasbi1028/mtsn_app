@@ -19,18 +19,46 @@
 	const hariList = ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'minggu'];
 	const jenisList = ['masuk', 'istirahat', 'pulang', 'upacara', 'khusus'];
 
-	// form tambah
-	let showForm = $state(false);
-	let fHari = $state('senin');
-	let fJam = $state('07:00');
-	let fJenis = $state('khusus');
-	let fLabel = $state('');
-	let fSuara = $state(suaraFiles[0] ?? '');
-	let fRepeat = $state(2);
-
 	// master switch konfirmasi
 	let masterConfirm = $state('');
 	const masterTarget = $derived(status?.master ? 'NONAKTIF' : 'AKTIF');
+
+	// Satu form universal: editId '' = tambah, ada id = edit (gaya SAMA persis)
+	let formOpen = $state(false);
+	let editId = $state('');
+	let eHari = $state('senin');
+	let eJam = $state('07:00');
+	let eJenis = $state('khusus');
+	let eLabel = $state('');
+	let eSuara = $state('');
+	let eRepeat = $state(2);
+
+	function bukaTambah() {
+		editId = '';
+		eHari = 'senin';
+		eJam = '07:00';
+		eJenis = 'khusus';
+		eLabel = '';
+		eSuara = suaraFiles[0] ?? '';
+		eRepeat = 2;
+		formOpen = true;
+	}
+
+	function mulaiEdit(x: any) {
+		editId = x.id;
+		eHari = x.hari;
+		eJam = x.jam;
+		eJenis = x.jenis;
+		eLabel = x.label ?? '';
+		eSuara = x.sound_path ?? suaraFiles[0] ?? '';
+		eRepeat = x.repeat ?? 2;
+		formOpen = true;
+	}
+
+	function tutupForm() {
+		formOpen = false;
+		editId = '';
+	}
 </script>
 
 <PageLayout title="Modul Bel" description="Jadwal & kontrol bel sekolah — SIMAD MTsN 2 Kolaka Utara">
@@ -62,7 +90,6 @@
 			</div>
 		</div>
 
-
 	{/if}
 
 	<a
@@ -75,6 +102,50 @@
 		</div>
 		<span class="text-xs text-primary">Buka →</span>
 	</a>
+
+	<!-- Form jadwal (tambah/edit, gaya sama) -->
+	{#if formOpen}
+		<div class="rounded-lg border border-primary/40 p-4 mb-3">
+			<p class="text-sm font-semibold mb-3">{editId ? 'Edit Jadwal' : 'Tambah Jadwal Bel'}</p>
+			<form method="POST" action={editId ? '?/update' : '?/create'} class="grid grid-cols-2 md:grid-cols-6 gap-2 items-end">
+				<input type="hidden" name="id" value={editId} />
+				<label class="text-xs">
+					<span class="text-muted-foreground">Hari</span>
+					<select name="hari" bind:value={eHari} class="w-full h-8 rounded-md border bg-background px-2 text-xs">
+						{#each hariList as h}<option value={h} selected={h === eHari}>{h}</option>{/each}
+					</select>
+				</label>
+				<label class="text-xs">
+					<span class="text-muted-foreground">Jam (HH:MM)</span>
+					<Input name="jam" bind:value={eJam} class="h-8 text-xs" />
+				</label>
+				<label class="text-xs">
+					<span class="text-muted-foreground">Jenis</span>
+					<select name="jenis" bind:value={eJenis} class="w-full h-8 rounded-md border bg-background px-2 text-xs">
+						{#each jenisList as j}<option value={j} selected={j === eJenis}>{j}</option>{/each}
+					</select>
+				</label>
+				<label class="text-xs">
+					<span class="text-muted-foreground">Label</span>
+					<Input name="label" bind:value={eLabel} class="h-8 text-xs" />
+				</label>
+				<label class="text-xs">
+					<span class="text-muted-foreground">Suara</span>
+					<select name="sound_path" bind:value={eSuara} class="w-full h-8 rounded-md border bg-background px-2 text-xs">
+						{#each suaraFiles as f}<option value={f} selected={f === eSuara}>{f}</option>{/each}
+					</select>
+				</label>
+				<label class="text-xs">
+					<span class="text-muted-foreground">Repeat</span>
+					<Input name="repeat" type="number" min="1" max="10" bind:value={eRepeat} class="h-8 text-xs" />
+				</label>
+				<div class="col-span-2 md:col-span-6 flex gap-2">
+					<Button type="submit" size="sm" class="h-8 cursor-pointer">{editId ? 'Simpan Perubahan' : 'Simpan Jadwal'}</Button>
+					<Button type="button" size="sm" variant="outline" class="h-8 cursor-pointer" onclick={tutupForm}>Batal</Button>
+				</div>
+			</form>
+		</div>
+	{/if}
 
 	<!-- Jadwal + kelola -->
 	<div class="rounded-lg border overflow-hidden">
@@ -104,6 +175,11 @@
 						<td class="px-3 py-1.5">{x.label}</td>
 						<td class="px-3 py-1.5 text-right">
 							{#if x.id}
+								<button
+									type="button"
+									onclick={() => mulaiEdit(x)}
+									class="inline-flex h-6 items-center rounded-md border px-2 text-[10px] font-medium hover:bg-muted cursor-pointer"
+								>Edit</button>
 								<form method="POST" action="?/toggle" class="inline me-1">
 									<input type="hidden" name="id" value={x.id} />
 									<input type="hidden" name="aktif" value={x.aktif === 0 ? 1 : 0} />
@@ -128,50 +204,13 @@
 		</table>
 	</div>
 
-	<!-- Form tambah jadwal -->
-	<div class="rounded-lg border p-4">
-		<button onclick={() => (showForm = !showForm)} class="text-sm font-semibold w-full flex items-center justify-between cursor-pointer">
-			<span>Tambah Jadwal Bel</span>
-			<span class="text-xs text-muted-foreground">{showForm ? '▲' : '▼'}</span>
-		</button>
-		{#if showForm}
-			<form method="POST" action="?/create" class="grid grid-cols-2 md:grid-cols-6 gap-2 mt-3 items-end">
-				<label class="text-xs">
-					<span class="text-muted-foreground">Hari</span>
-					<select name="hari" bind:value={fHari} class="w-full h-8 rounded-md border bg-background px-2 text-xs">
-						{#each hariList as h}<option value={h}>{h}</option>{/each}
-					</select>
-				</label>
-				<label class="text-xs">
-					<span class="text-muted-foreground">Jam (HH:MM)</span>
-					<Input name="jam" bind:value={fJam} class="h-8 text-xs" />
-				</label>
-				<label class="text-xs">
-					<span class="text-muted-foreground">Jenis</span>
-					<select name="jenis" bind:value={fJenis} class="w-full h-8 rounded-md border bg-background px-2 text-xs">
-						{#each jenisList as j}<option value={j}>{j}</option>{/each}
-					</select>
-				</label>
-				<label class="text-xs">
-					<span class="text-muted-foreground">Label</span>
-					<Input name="label" bind:value={fLabel} placeholder="mis. Jam ke-2" class="h-8 text-xs" />
-				</label>
-				<label class="text-xs">
-					<span class="text-muted-foreground">Suara</span>
-					<select name="sound_path" bind:value={fSuara} class="w-full h-8 rounded-md border bg-background px-2 text-xs">
-						{#each suaraFiles as f}<option value={f}>{f}</option>{/each}
-					</select>
-				</label>
-				<label class="text-xs">
-					<span class="text-muted-foreground">Repeat</span>
-					<Input name="repeat" type="number" min="1" max="10" bind:value={fRepeat} class="h-8 text-xs" />
-				</label>
-				<div class="col-span-2 md:col-span-6">
-					<Button type="submit" size="sm" class="h-8 cursor-pointer">Simpan Jadwal</Button>
-				</div>
-			</form>
-		{/if}
-	</div>
+	<!-- Tombol tambah (membuka form gaya edit di atas) -->
+	<button
+		onclick={bukaTambah}
+		class="w-full rounded-lg border border-dashed p-3 text-sm font-medium text-primary hover:bg-muted/50 cursor-pointer"
+	>
+		+ Tambah Jadwal Bel
+	</button>
 
 	<p class="text-xs text-muted-foreground">
 		Worker bel SIMAD (simad-bel) membaca jadwal dari database SIMAD dan memutar suara otomatis sesuai jadwal (WITA).
