@@ -141,7 +141,7 @@
 				</label>
 				<div class="col-span-2 md:col-span-6 flex gap-2">
 					<Button type="submit" size="sm" class="h-8 cursor-pointer">{editId ? 'Simpan Perubahan' : 'Simpan Jadwal'}</Button>
-					<Button type="button" size="sm" variant="outline" class="h-8 cursor-pointer" onclick={tutupForm}>Batal</Button>
+					<Button type="button" size="sm" variant="outline" class="h-8 cursor-pointer" onclick={tutupForm}>Tutup</Button>
 				</div>
 			</form>
 		</div>
@@ -149,13 +149,21 @@
 
 	<!-- Jadwal + kelola -->
 	<div class="rounded-lg border overflow-hidden">
-		<button
-			onclick={() => (semua = !semua)}
-			class="bg-muted px-3 py-2 text-sm font-semibold w-full flex items-center justify-between hover:bg-muted/70 cursor-pointer"
-		>
-			<span class="capitalize">{semua ? 'Semua Jadwal (6 Hari)' : 'Jadwal Hari ' + (jadwal?.hari_ini || '-')}</span>
-			<span class="text-xs text-muted-foreground">{semua ? 'tampilkan hari ini' : 'lihat semua hari'}</span>
-		</button>
+		<div class="bg-muted px-3 py-2 flex items-center justify-between gap-2">
+			<button
+				onclick={() => (semua = !semua)}
+				class="text-sm font-semibold flex items-center gap-2 hover:bg-muted/70 cursor-pointer rounded px-1"
+			>
+				<span class="capitalize">{semua ? 'Semua Jadwal (6 Hari)' : 'Jadwal Hari ' + (jadwal?.hari_ini || '-')}</span>
+				<span class="text-xs text-muted-foreground">{semua ? 'tampilkan hari ini' : 'lihat semua hari'}</span>
+			</button>
+			<button
+				onclick={formOpen ? tutupForm : bukaTambah}
+				class="shrink-0 inline-flex h-7 items-center rounded-md border px-3 text-xs font-medium cursor-pointer hover:bg-background {formOpen ? 'text-destructive' : 'text-primary'}"
+			>
+				{formOpen ? 'Batal' : '+ Tambah Jadwal'}
+			</button>
+		</div>
 		<table class="w-full text-sm">
 			<thead class="bg-muted/50 text-xs text-muted-foreground">
 				<tr>
@@ -203,14 +211,6 @@
 			</tbody>
 		</table>
 	</div>
-
-	<!-- Tombol tambah (membuka form gaya edit di atas) -->
-	<button
-		onclick={bukaTambah}
-		class="w-full rounded-lg border border-dashed p-3 text-sm font-medium text-primary hover:bg-muted/50 cursor-pointer"
-	>
-		+ Tambah Jadwal Bel
-	</button>
 
 	<p class="text-xs text-muted-foreground">
 		Worker bel SIMAD (simad-bel) membaca jadwal dari database SIMAD dan memutar suara otomatis sesuai jadwal (WITA).
