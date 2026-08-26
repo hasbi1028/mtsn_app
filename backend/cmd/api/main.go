@@ -785,9 +785,14 @@ func (s *apiServer) handleBelJadwalUpdate(w http.ResponseWriter, r *http.Request
 	}
 	// toggle aktif saja
 	if req.Aktif != nil && req.Hari == "" {
-		_, err := s.db.Exec(`UPDATE jam_bel SET aktif = ?, updated_at = datetime('now','localtime') WHERE id = ?`, *req.Aktif, id)
+		res, err := s.db.Exec(`UPDATE jam_bel SET aktif = ?, updated_at = datetime('now','localtime') WHERE id = ?`, *req.Aktif, id)
 		if err != nil {
 			fail(w, 500, err.Error())
+			return
+		}
+		n, _ := res.RowsAffected()
+		if n == 0 {
+			fail(w, 404, "jadwal tidak ditemukan")
 			return
 		}
 		writeJSON(w, 200, map[string]any{"ok": true})

@@ -100,6 +100,14 @@ src/
 - Use Lucide icons (`@lucide/svelte`) throughout
 - No emoji in UI components
 
+### Toast / Notifikasi (WAJIB - pokok)
+- Library: **Sonner** via shadcn-svelte (`svelte-sonner`), `<Toaster />` sudah dipasang di `+layout.svelte`
+- Helper terpusat: `$lib/toast.ts` → `notify.success/error/info/warning` dan `notify.fromForm(form)`
+- SEMUA aksi user (simpan, hapus, toggle, login gagal, error API) WAJIB pakai toast, bukan hanya alert inline
+- Pola action SvelteKit: selalu return `{ ok: true, pesan: '...' }` atau `fail(4xx, { ok: false, error: '...' })`
+- Di komponen: `$effect(() => notify.fromForm(form, 'Pesan default sukses'))`
+- Pesan dalam Bahasa Indonesia, singkat & jelas
+
 ## CSS Theme Variables
 Defined in `src/app.css`:
 - `--sidebar`, `--sidebar-foreground`, `--sidebar-primary`, `--sidebar-accent`, etc.

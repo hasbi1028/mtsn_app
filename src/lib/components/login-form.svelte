@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card/index.js';
+	import { notify } from '$lib/toast';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { FieldGroup, Field, FieldLabel, FieldSeparator } from '$lib/components/ui/field/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
@@ -15,6 +16,11 @@
 	
 	let loading = $state(false);
 	let showPassword = $state(false);
+
+	// Notifikasi error login via toast (sonner)
+	$effect(() => {
+		if (form?.error) notify.error(form.error);
+	});
 </script>
 
 <div class={cn('flex flex-col gap-6 animate-in fade-in duration-500', className)} {...restProps}>

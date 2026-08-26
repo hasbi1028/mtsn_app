@@ -3,19 +3,15 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import PageLayout from '$lib/components/page-layout.svelte';
-	import { toast } from 'svelte-sonner';
+	import { notify } from '$lib/toast';
 
 	let { data, form } = $props();
 	const status = $derived(data.status as any);
 	const jadwal = $derived(data.jadwal as any);
 
-	// Notifikasi hasil aksi via sonner
+	// Notifikasi hasil aksi (sonner, via helper terpusat)
 	$effect(() => {
-		if (form?.ok === true) {
-			toast.success(form.pesan || 'Perintah terkirim ke bel service.');
-		} else if (form?.ok === false) {
-			toast.error(form.error || 'Gagal mengirim perintah.');
-		}
+		notify.fromForm(form, 'Perintah terkirim ke bel service.');
 	});
 	const suaraFiles = $derived(data.suara?.files ?? []);
 	let semua = $state(false);

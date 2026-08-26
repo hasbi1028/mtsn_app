@@ -95,6 +95,7 @@ export const actions = {
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ aktif })
 		});
+		if (res?.error) return fail(404, { ok: false, error: res.error });
 		if (!res?.ok) return fail(400, { ok: false, error: 'Gagal mengubah jadwal.' });
 		return { ok: true, pesan: `Jadwal ${aktif ? 'diaktifkan' : 'dinonaktifkan'}.` };
 	},
@@ -104,7 +105,8 @@ export const actions = {
 		const fd = await request.formData();
 		const id = String(fd.get('id'));
 		const res = await api(cookies, fetch, `/api/bel/jadwal/${id}`, { method: 'DELETE' });
-		if (!res.ok) return fail(400, res);
+		if (res?.error) return fail(404, { ok: false, error: res.error });
+		if (!res.ok) return fail(400, { ok: false, error: 'Gagal menghapus jadwal.' });
 		return { ok: true, pesan: 'Jadwal dihapus.' };
 	}
 };
