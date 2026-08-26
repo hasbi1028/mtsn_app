@@ -7,6 +7,8 @@
 	import BuildingIcon from '@lucide/svelte/icons/building';
 	import CalendarIcon from '@lucide/svelte/icons/calendar';
 	import ClipboardListIcon from '@lucide/svelte/icons/clipboard-list';
+	import BellRingIcon from '@lucide/svelte/icons/bell-ring';
+	import HistoryIcon from '@lucide/svelte/icons/history';
 	import SettingsIcon from '@lucide/svelte/icons/settings';
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
@@ -16,8 +18,10 @@
 
 	const modules = [
 		{ name: "Dashboard", icon: LayoutDashboardIcon, description: "Ringkasan & Statistik", active: true, url: "/" },
-		{ name: "Kepegawaian", icon: UsersIcon, description: "Data PTK", active: true, url: "/ptk" },
+		{ name: "PTK", icon: UsersIcon, description: "Data PTK & Tendik", active: true, url: "/ptk" },
 		{ name: "Kesiswaan", icon: GraduationCapIcon, description: "Data Siswa & Kelas", active: true, url: "/siswa" },
+		{ name: "Bel", icon: BellRingIcon, description: "Monitoring & Kontrol", active: true, url: "/bel" },
+		{ name: "Aktivitas", icon: HistoryIcon, description: "Riwayat & Log", active: true, url: "/activity" },
 		{ name: "Perpustakaan", icon: BookOpenIcon, description: "Buku & Peminjaman", active: false },
 		{ name: "Sarana & Prasarana", icon: BuildingIcon, description: "Inventaris Sekolah", active: false },
 		{ name: "Jadwal", icon: CalendarIcon, description: "Roster & Kalender", active: true, url: "/roster" },
