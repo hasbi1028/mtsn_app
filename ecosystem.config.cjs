@@ -22,7 +22,9 @@ module.exports = {
 				DATABASE_URL: 'file:C:/Users/LENOVO/webapp/mtsn_app/local.db',
 				PORT: '3720',
 				ORIGIN: 'http://localhost:3720',
-				API_BASE: 'http://localhost:3730'
+				API_BASE: 'http://localhost:3730',
+				BEL_API: 'http://127.0.0.1:8091',
+				BEL_API_KEY: 'f4a41a8f91cb6f6e45806a0b139fbc4f'
 			},
 			watch: false,
 			autorestart: true,

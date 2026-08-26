@@ -5,6 +5,7 @@ import ClipboardListIcon from '@lucide/svelte/icons/clipboard-list';
 import FileCheckIcon from '@lucide/svelte/icons/file-check';
 import CalendarDaysIcon from '@lucide/svelte/icons/calendar-days';
 import GraduationCapIcon from '@lucide/svelte/icons/graduation-cap';
+import BellIcon from '@lucide/svelte/icons/bell-ring';
 import BookOpenIcon from '@lucide/svelte/icons/book-open';
 import GalleryVerticalEndIcon from "@lucide/svelte/icons/gallery-vertical-end";
 
@@ -49,10 +50,15 @@ export const navItems = [
 		url: "/activity",
 		icon: BookOpenIcon,
 	},
+	{
+		title: "Bel",
+		url: "/bel",
+		icon: BellIcon,
+	},
 ];
 
 export const teamConfig = {
 	name: "MTsN 2 Kolaka Utara",
 	logo: GalleryVerticalEndIcon,
-	plan: "Smart Digital School",
+	plan: "Sistem Informasi Manajemen Madrasah",
 };

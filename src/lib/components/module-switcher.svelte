@@ -16,7 +16,7 @@
 
 	const modules = [
 		{ name: "Dashboard", icon: LayoutDashboardIcon, description: "Ringkasan & Statistik", active: true, url: "/" },
-		{ name: "Kepegawaian", icon: UsersIcon, description: "Data Guru & Tendik", active: true, url: "/ptk" },
+		{ name: "Kepegawaian", icon: UsersIcon, description: "Data PTK", active: true, url: "/ptk" },
 		{ name: "Kesiswaan", icon: GraduationCapIcon, description: "Data Siswa & Kelas", active: true, url: "/siswa" },
 		{ name: "Perpustakaan", icon: BookOpenIcon, description: "Buku & Peminjaman", active: false },
 		{ name: "Sarana & Prasarana", icon: BuildingIcon, description: "Inventaris Sekolah", active: false },
@@ -43,7 +43,7 @@
 							<span class="text-xs font-bold">MTsN</span>
 						</div>
 						<div class="grid flex-1 text-left text-sm leading-tight">
-							<span class="truncate font-semibold">Smart School</span>
+							<span class="truncate font-semibold">SIMAD</span>
 							<span class="truncate text-xs">MTsN 2 Kolaka Utara</span>
 						</div>
 						<ChevronsUpDownIcon class="ms-auto" />
