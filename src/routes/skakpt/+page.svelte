@@ -3,6 +3,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import DataTable from '$lib/components/data-table.svelte';
 	import PageLayout from '$lib/components/page-layout.svelte';
+	import PdfViewer from '$lib/components/PdfViewer.svelte';
 	import { notify } from '$lib/toast';
 	import { enhance } from '$app/forms';
 
@@ -22,9 +23,12 @@
 	];
 
 	function getPdfUrl(row: any): string {
-		// Format: SKAKPT_NAMA_Juli2026.pdf
 		const nama = row.nama.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_');
 		return `/uploads/skakpt/SKAKPT_${nama}_Juli2026.pdf`;
+	}
+
+	function getPdfTitle(row: any): string {
+		return `SKAKPT ${row.nama} — Juli 2026`;
 	}
 </script>
 
@@ -65,23 +69,27 @@
 				{/if}
 			{:else if column.key === 'aksi'}
 				{#if row.status === 'Sudah Terbit' || row.download}
-					<form method="POST" action="?/download" use:enhance={() => {
-						return async ({ result }) => {
-							if (result.type === 'success' && result.data?.ok) {
-								// Trigger download
-								const a = document.createElement('a');
-								a.href = getPdfUrl(row);
-								a.download = result.data.filename || `SKAKPT_${row.nama}_Juli2026.pdf`;
-								a.click();
-								notify.success('Download SKAKPT ' + row.nama);
-							}
-						};
-					}}>
-						<input type="hidden" name="filename" value="SKAKPT_{row.nama.replace(/[^a-zA-Z0-9]/g, '_')}_Juli2026.pdf" />
-						<Button type="submit" size="sm" variant="outline" class="h-7 text-[10px] cursor-pointer">
-							📄 Download
-						</Button>
-					</form>
+					<div class="flex gap-1">
+						<!-- Lihat PDF -->
+						<PdfViewer src={getPdfUrl(row)} title={getPdfTitle(row)} />
+						<!-- Download PDF -->
+						<form method="POST" action="?/download" use:enhance={() => {
+							return async ({ result }) => {
+								if (result.type === 'success' && result.data?.ok) {
+									const a = document.createElement('a');
+									a.href = getPdfUrl(row);
+									a.download = result.data.filename || `SKAKPT_${row.nama.replace(/[^a-zA-Z0-9]/g, '_')}_Juli2026.pdf`;
+									a.click();
+									notify.success('Download SKAKPT ' + row.nama);
+								}
+							};
+						}}>
+							<input type="hidden" name="filename" value="SKAKPT_{row.nama.replace(/[^a-zA-Z0-9]/g, '_')}_Juli2026.pdf" />
+							<Button type="submit" size="sm" variant="outline" class="h-7 text-[10px] cursor-pointer">
+								↓
+							</Button>
+						</form>
+					</div>
 				{:else}
 					<span class="text-xs text-muted-foreground">—</span>
 				{/if}
