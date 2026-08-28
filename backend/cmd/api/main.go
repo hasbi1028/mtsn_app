@@ -500,8 +500,8 @@ func (s *apiServer) handleSkbkList(w http.ResponseWriter, r *http.Request) {
 
 
 func (s *apiServer) handleSkakptList(w http.ResponseWriter, r *http.Request) {
-	rows, err := s.db.Query(`SELECT s.id, p.nama, s.bulan, s.status, s.tgl_ajuan,
-		(SELECT COUNT(*) FROM dokumen d WHERE d.ptk_id = s.ptk_id) AS ndok
+	rows, err := s.db.Query(`SELECT s.id, p.nama, COALESCE(p.nuptk,'') AS nuptk,
+		s.bulan, s.status, s.tgl_ajuan
 		FROM skakpt s JOIN ptk p ON p.id = s.ptk_id
 		ORDER BY CASE WHEN s.status='Menunggu Verifikasi' THEN 0 ELSE 1 END, p.nama`)
 	if err != nil {
@@ -512,12 +512,27 @@ func (s *apiServer) handleSkakptList(w http.ResponseWriter, r *http.Request) {
 	out := []map[string]any{}
 	for rows.Next() {
 		var id int64
-		var nama, bulan, st, tgl sql.NullString
-		var nd sql.NullFloat64
-		rows.Scan(&id, &nama, &bulan, &st, &tgl, &nd)
+		var nama, nuptk, bulan, st, tgl sql.NullString
+		rows.Scan(&id, &nama, &nuptk, &bulan, &st, &tgl)
+		// Tentukan apakah PDF sudah ada
+		cleanName := strings.ReplaceAll(strings.TrimSpace(nama.String), " ", "_")
+		cleanName = strings.ReplaceAll(cleanName, ",", "")
+		pdfFile := "SKAKPT_" + cleanName + "_Juli2026.pdf"
+		pdfPath := filepath.Join("C:/Users/LENOVO/webapp/mtsn_app/static/uploads/skakpt", pdfFile)
+		pdfExists, _ := os.Stat(pdfPath)
+		terbit := pdfExists != nil
+		status := "Belum Terbit"
+		if terbit {
+			status = "Sudah Terbit"
+		} else if st.String == "Menunggu Verifikasi" {
+			status = "Menunggu Verifikasi"
+		} else if st.String == "Disetujui" {
+			status = "Sudah Terbit"
+		}
 		out = append(out, map[string]any{
-			"ptkId": id, "nama": nama.String, "bulan": bulan.String,
-			"status": st.String, "tglAjuan": tgl.String, "jmlDokumen": int(nd.Float64),
+			"ptkId": id, "nama": nama.String, "nuptk": nuptk.String,
+			"bulan": bulan.String, "status": status, "tglAjuan": tgl.String,
+			"download": terbit, "filename": pdfFile,
 		})
 	}
 	writeJSON(w, 200, out)

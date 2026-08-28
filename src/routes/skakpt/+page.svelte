@@ -1,41 +1,97 @@
 <script lang="ts">
 	import { Badge } from '$lib/components/ui/badge/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
 	import DataTable from '$lib/components/data-table.svelte';
 	import PageLayout from '$lib/components/page-layout.svelte';
-	
+	import { notify } from '$lib/toast';
+	import { enhance } from '$app/forms';
+
 	let { data } = $props();
 	const rows = $derived(data.rows as any[]);
-	const menunggu = rows.filter((r: any) => r.status === 'Menunggu Verifikasi').length;
-	const disetujui = rows.filter((r: any) => r.status === 'Disetujui').length;
-	
+
+	// Filter status
+	const terbit = rows.filter((r: any) => r.status === 'Sudah Terbit' || r.download);
+	const belum = rows.filter((r: any) => r.status !== 'Sudah Terbit' && !r.download);
+
 	const columns = [
 		{ key: 'nama', label: 'Nama' },
-		{ key: 'bulan', label: 'Bulan' },
+		{ key: 'nuptk', label: 'NUPTK', hideOnMobile: true },
+		{ key: 'syarat', label: 'Syarat' },
 		{ key: 'status', label: 'Status' },
-		{ key: 'tglAjuan', label: 'Tgl Ajuan' },
+		{ key: 'aksi', label: 'Aksi', hideOnMobile: true },
 	];
+
+	function getPdfUrl(row: any): string {
+		// Format: SKAKPT_NAMA_Juli2026.pdf
+		const nama = row.nama.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_');
+		return `/uploads/skakpt/SKAKPT_${nama}_Juli2026.pdf`;
+	}
 </script>
 
-<PageLayout title="SKAKPT" description="Status SKAKPT (TA 2026/S1)">
-	<div class="flex gap-2 mb-3 flex-wrap">
-		<div class="bg-muted rounded-lg px-3 py-2 text-sm">Menunggu: <strong>{menunggu}</strong></div>
-		<div class="bg-muted rounded-lg px-3 py-2 text-sm">Disetujui: <strong>{disetujui}</strong></div>
-		<div class="bg-muted rounded-lg px-3 py-2 text-sm">Total: <strong>{rows.length}</strong></div>
-	</div>
-	
+<PageLayout title="SKAKPT" description="Surat Keputusan Administrasi Keuangan Penerima Tunjangan — TA 2026/S1 Bulan Juli 2026">
+	{#snippet actions()}
+		<div class="flex gap-2">
+			<div class="bg-green-100 dark:bg-green-900 rounded-lg px-3 py-2 text-sm">
+				Sudah Terbit: <strong class="text-green-700 dark:text-green-300">{terbit.length}</strong>
+			</div>
+			<div class="bg-yellow-100 dark:bg-yellow-900 rounded-lg px-3 py-2 text-sm">
+				Belum: <strong class="text-yellow-700 dark:text-yellow-300">{belum.length}</strong>
+			</div>
+			<div class="bg-muted rounded-lg px-3 py-2 text-sm">
+				Total: <strong>{rows.length}</strong>
+			</div>
+		</div>
+	{/snippet}
+
 	<DataTable {columns} data={rows} emptyMessage="Tidak ada data SKAKPT">
 		{#snippet children({ row, column })}
 			{#if column.key === 'nama'}
-				<a href="/ptk/{row.ptkId}" class="font-medium text-sm hover:underline">{row.nama}</a>
-			{:else if column.key === 'status'}
-				<Badge variant={row.status === 'Disetujui' ? 'default' : 'secondary'} class="text-[10px]">
-					{row.status}
+				<span class="font-medium text-sm">{row.nama}</span>
+			{:else if column.key === 'nuptk'}
+				<span class="text-xs text-muted-foreground">{row.nuptk ?? '—'}</span>
+			{:else if column.key === 'syarat'}
+				<Badge variant={row.syarat === '11/11' ? 'default' : 'secondary'} class="text-[10px]">
+					{row.syarat}
 				</Badge>
+			{:else if column.key === 'status'}
+				{#if row.status === 'Sudah Terbit' || row.download}
+					<Badge variant="default" class="text-[10px] bg-green-600 hover:bg-green-700">
+						✓ Sudah Terbit
+					</Badge>
+				{:else}
+					<Badge variant="secondary" class="text-[10px]">
+						Belum Terbit
+					</Badge>
+				{/if}
+			{:else if column.key === 'aksi'}
+				{#if row.status === 'Sudah Terbit' || row.download}
+					<form method="POST" action="?/download" use:enhance={() => {
+						return async ({ result }) => {
+							if (result.type === 'success' && result.data?.ok) {
+								// Trigger download
+								const a = document.createElement('a');
+								a.href = getPdfUrl(row);
+								a.download = result.data.filename || `SKAKPT_${row.nama}_Juli2026.pdf`;
+								a.click();
+								notify.success('Download SKAKPT ' + row.nama);
+							}
+						};
+					}}>
+						<input type="hidden" name="filename" value="SKAKPT_{row.nama.replace(/[^a-zA-Z0-9]/g, '_')}_Juli2026.pdf" />
+						<Button type="submit" size="sm" variant="outline" class="h-7 text-[10px] cursor-pointer">
+							📄 Download
+						</Button>
+					</form>
+				{:else}
+					<span class="text-xs text-muted-foreground">—</span>
+				{/if}
 			{:else}
 				{row[column.key] ?? '—'}
 			{/if}
 		{/snippet}
 	</DataTable>
-	
-	<p class="mt-2 text-xs text-muted-foreground">{rows.length} PTK bersertifikasi</p>
+
+	<p class="mt-2 text-xs text-muted-foreground">
+		{rows.length} PTK bersertifikasi · {terbit.length} SKAKPT sudah terbit bulan Juli 2026
+	</p>
 </PageLayout>

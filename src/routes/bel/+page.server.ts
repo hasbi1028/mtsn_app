@@ -86,6 +86,27 @@ export const actions = {
 	},
 
 	// Toggle aktif/nonaktif satu jadwal
+	update: async ({ cookies, fetch, request }) => {
+		const fd = await request.formData();
+		const id = String(fd.get('id') || '');
+		const body = {
+			hari: String(fd.get('hari') || ''),
+			jam: String(fd.get('jam') || ''),
+			jenis: String(fd.get('jenis') || 'khusus'),
+			label: String(fd.get('label') || ''),
+			sound_path: String(fd.get('sound_path') || ''),
+			repeat: Number(fd.get('repeat') || 2)
+		};
+		const res = await api(cookies, fetch, `/api/bel/jadwal/${id}`, {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(body)
+		});
+		if (res?.error) return fail(400, { ok: false, error: res.error });
+		if (!res?.ok) return fail(400, { ok: false, error: 'Gagal menyimpan perubahan.' });
+		return { ok: true, pesan: `Jadwal ${body.hari} ${body.jam} diperbarui.` };
+	},
+
 	toggle: async ({ cookies, fetch, request }) => {
 		const fd = await request.formData();
 		const id = String(fd.get('id'));

@@ -5,7 +5,12 @@
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
 	import { useSidebar } from "$lib/components/ui/sidebar/index.js";
 
+	let { user }: { user?: { username: string; role: string; ref_id: number } | null } = $props();
+
 	const sidebar = useSidebar();
+
+	const initials = $derived(user?.username ? user.username.slice(0, 2).toUpperCase() : 'U');
+	const roleLabel = $derived(user?.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'User');
 </script>
 
 <Sidebar.Menu>
@@ -19,11 +24,11 @@
 						{...props}
 					>
 						<div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground text-xs font-medium">
-							A
+							{initials}
 						</div>
 						<div class="grid flex-1 text-start text-sm leading-tight">
-							<span class="truncate font-medium">Admin</span>
-							<span class="truncate text-xs">admin</span>
+							<span class="truncate font-medium">{user?.username ?? 'User'}</span>
+							<span class="truncate text-xs">{roleLabel}</span>
 						</div>
 						<ChevronsUpDownIcon class="ms-auto size-4" />
 					</Sidebar.MenuButton>
@@ -38,11 +43,11 @@
 				<DropdownMenu.Label class="p-0 font-normal">
 					<div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
 						<div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground text-xs font-medium">
-							A
+							{initials}
 						</div>
 						<div class="grid flex-1 text-start text-sm leading-tight">
-							<span class="truncate font-medium">Admin</span>
-							<span class="truncate text-xs">admin</span>
+							<span class="truncate font-medium">{user?.username ?? 'User'}</span>
+							<span class="truncate text-xs">{roleLabel}</span>
 						</div>
 					</div>
 				</DropdownMenu.Label>
