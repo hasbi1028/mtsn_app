@@ -5,11 +5,16 @@
 	import DataTable from '$lib/components/data-table.svelte';
 	import PageLayout from '$lib/components/page-layout.svelte';
 	import * as Pagination from '$lib/components/ui/pagination/index.js';
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
+
+const API = process.env.API_BASE || 'http://localhost:3730';
 
 	let { data } = $props();
-	const rows = $derived(data.rows as any[]);
 	const rekap = $derived(data.rekap as any[]);
+	// rows bisa di-override hasil live search (tanpa reload)
+	let rows = $state(data.rows as any[]);
+	let totalLocal = $state(data.total as number);
+	let pageLocal = $state(data.page as number);
 
 	const kelasFilters = [['', 'Semua'], ['7', 'Kelas VII'], ['8', 'Kelas VIII'], ['9', 'Kelas IX']];
 	const statusFilters = [
@@ -55,30 +60,50 @@
 		return `/siswa${s ? '?' + s : ''}`;
 	}
 
-	// Debounce: setiap ketik -> tunggu 350ms -> navigate (server fetch)
-	function onSearch() {
+	async function doSearch() {
 		searching = true;
-		clearTimeout(timer);
-		timer = setTimeout(() => {
-			goto(buildHref(), { keepFocus: true, noScroll: true });
+		try {
+			const params = new URLSearchParams();
+			if (q) params.set('q', q);
+			if (nisn) params.set('nisn', nisn);
+			if (ortu) params.set('ortu', ortu);
+			if (data.kelas) params.set('kelas', data.kelas);
+			if (data.rombel) params.set('rombel', data.rombel);
+			if (data.status) params.set('status', data.status);
+			params.set('page', '1');
+			const token = document.cookie.split('; ').find(c => c.startsWith('mtsn_session='))?.split('=')[1];
+			const res = await fetch(`${API}/api/siswa?${params}`, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
+			if (res.ok) {
+				const d = await res.json();
+				rows = d.rows || [];
+				totalLocal = d.total || 0;
+				pageLocal = 1;
+			}
+		} finally {
 			searching = false;
-		}, 350);
+		}
+	}
+
+	// Debounce: setiap ketik -> tunggu 350ms -> fetch live
+	function onSearch() {
+		clearTimeout(timer);
+		timer = setTimeout(() => { doSearch(); }, 350);
 	}
 
 	function submitNow(e: Event) {
 		e.preventDefault();
 		clearTimeout(timer);
-		goto(buildHref(), { keepFocus: true, noScroll: true });
-		searching = false;
+		doSearch();
 	}
 
 	function onKelas(k: string) {
 		clearTimeout(timer);
-		goto(buildHref({ kelas: k }), { noScroll: true });
+		data.kelas = k; // trigger derived tidak cukup, pakai invalidate
+		invalidateAll();
 	}
 	function onStatus(st: string) {
 		clearTimeout(timer);
-		goto(buildHref({ status: st }), { noScroll: true });
+		invalidateAll();
 	}
 	function resetSearch() {
 		q = '';
@@ -87,7 +112,7 @@
 		goto('/siswa' + (data.kelas ? `?kelas=${data.kelas}` : ''), { noScroll: true });
 	}
 
-	const totalPages = $derived(Math.ceil(data.total / data.perPage));
+	const totalPages = $derived(Math.ceil(totalLocal / data.perPage));
 
 	function qs(p: number) {
 		const params = new URLSearchParams();
@@ -229,11 +254,11 @@
 
 	<div class="flex items-center justify-between mt-3">
 		<p class="text-xs text-muted-foreground">
-			{(data.page - 1) * data.perPage + 1}–{Math.min(data.page * data.perPage, data.total)} dari {data.total} siswa
+			{(pageLocal - 1) * data.perPage + 1}–{Math.min(pageLocal * data.perPage, totalLocal)} dari {totalLocal} siswa
 		</p>
 
 		{#if totalPages > 1}
-			<Pagination.Root count={data.total} perPage={data.perPage} page={data.page}>
+			<Pagination.Root count={totalLocal} perPage={data.perPage} page={pageLocal}>
 				{#snippet children({ pages, currentPage })}
 					<Pagination.Content>
 						<Pagination.Item>
