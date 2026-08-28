@@ -90,6 +90,9 @@ func main() {
 	mux.HandleFunc("GET /api/skbk", s.auth(s.handleSkbkList))
 	mux.HandleFunc("GET /api/skakpt", s.auth(s.handleSkakptList))
 	mux.HandleFunc("GET /api/siswa", s.auth(s.handleSiswaList))
+	mux.HandleFunc("GET /api/siswa/{id}", s.auth(s.handleSiswaDetail))
+	mux.HandleFunc("GET /api/siswa/{id}/bansos", s.auth(s.handleSiswaBansos))
+	mux.HandleFunc("GET /api/bansos/stats", s.auth(s.handleBansosStats))
 	mux.HandleFunc("GET /api/activity", s.auth(s.handleActivityLog))
 	mux.HandleFunc("GET /api/bel/status", s.auth(s.handleBelStatus))
 	mux.HandleFunc("POST /api/bel/play", s.auth(s.handleBelPlay))
@@ -150,20 +153,42 @@ func (s *apiServer) auth(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 		var uname string
-		if err := s.db.QueryRow(`SELECT username FROM users WHERE id = ?`, uid).Scan(&uname); err != nil {
+		var role string
+		var refID int
+		if err := s.db.QueryRow(`SELECT username, COALESCE(role,''), COALESCE(ref_id,0) FROM users WHERE id = ?`, uid).Scan(&uname, &role, &refID); err != nil {
 			fail(w, 401, "user tidak ada")
 			return
 		}
-		ctx := context.WithValue(r.Context(), ctxUser{}, uname)
+		ctx := context.WithValue(r.Context(), ctxUserKey{}, ctxUserInfo{Username: uname, Role: role, RefID: refID})
 		next(w, r.WithContext(ctx))
 	}
 }
 
-type ctxKey struct{}
-type ctxUser = ctxKey
+type ctxUserInfo struct {
+	Username string
+	Role     string
+	RefID    int
+}
+
+type ctxUserKey struct{}
 
 func userName(r *http.Request) string {
-	v, _ := r.Context().Value(ctxUser{}).(string)
+	v, _ := r.Context().Value(ctxUserKey{}).(ctxUserInfo)
+	return v.Username
+}
+
+func userRole(r *http.Request) string {
+	v, _ := r.Context().Value(ctxUserKey{}).(ctxUserInfo)
+	return v.Role
+}
+
+func userRefID(r *http.Request) int {
+	v, _ := r.Context().Value(ctxUserKey{}).(ctxUserInfo)
+	return v.RefID
+}
+
+func userInfo(r *http.Request) ctxUserInfo {
+	v, _ := r.Context().Value(ctxUserKey{}).(ctxUserInfo)
 	return v
 }
 
@@ -215,7 +240,12 @@ func (s *apiServer) handleLogout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *apiServer) handleMe(w http.ResponseWriter, r *http.Request) {
-	writeJSON(w, 200, map[string]string{"username": userName(r)})
+	info := userInfo(r)
+	writeJSON(w, 200, map[string]any{
+		"username": info.Username,
+		"role":     info.Role,
+		"ref_id":   info.RefID,
+	})
 }
 
 // ---------- data endpoints ----------
@@ -311,6 +341,12 @@ func nullF(f sql.NullFloat64) any {
 func nullS(f sql.NullString) any {
 	if f.Valid {
 		return f.String
+	}
+	return nil
+}
+func nullStr(f sql.NullString) *string {
+	if f.Valid {
+		return &f.String
 	}
 	return nil
 }
@@ -513,6 +549,8 @@ func (s *apiServer) handleActivityLog(w http.ResponseWriter, r *http.Request) {
 func (s *apiServer) handleSiswaList(w http.ResponseWriter, r *http.Request) {
 	kelas := r.URL.Query().Get("kelas")
 	q := r.URL.Query().Get("q")
+	nisn := r.URL.Query().Get("nisn")
+	ortu := r.URL.Query().Get("ortu")
 	rombel := r.URL.Query().Get("rombel")
 	status := r.URL.Query().Get("status")
 
@@ -540,6 +578,15 @@ func (s *apiServer) handleSiswaList(w http.ResponseWriter, r *http.Request) {
 		like := "%" + q + "%"
 		args = append(args, like, like, like)
 	}
+	if nisn != "" {
+		where += " AND nisn LIKE ?"
+		args = append(args, "%"+nisn+"%")
+	}
+	if ortu != "" {
+		where += " AND (ayah LIKE ? OR ibu LIKE ?)"
+		like := "%" + ortu + "%"
+		args = append(args, like, like)
+	}
 
 	// count total
 	var total int
@@ -563,7 +610,7 @@ func (s *apiServer) handleSiswaList(w http.ResponseWriter, r *http.Request) {
 	}
 	offset := (page - 1) * perPage
 
-	query := "SELECT id, nis, nisn, nama, jk, kelas, rombel, tempat_lahir, tgl_lahir, ayah, ibu, asal_sekolah, alamat, nik, no_hp, kip_pip, status_emis, sumber_data FROM siswa WHERE " + where + " ORDER BY CAST(kelas AS INTEGER), rombel, nama LIMIT ? OFFSET ?"
+	query := "SELECT id, nis, nisn, nama, jk, kelas, rombel, tempat_lahir, tgl_lahir, ayah, ibu, asal_sekolah, alamat, nik, no_hp, kip_pip, status_emis, sumber_data, bansos_desil, bansos_sembako, bansos_pkh, bansos_pbijk, bansos_kpd, bansos_cek_at FROM siswa WHERE " + where + " ORDER BY CAST(kelas AS INTEGER), rombel, nama LIMIT ? OFFSET ?"
 	args = append(args, perPage, offset)
 
 	rows, err := s.db.Query(query, args...)
@@ -591,11 +638,17 @@ func (s *apiServer) handleSiswaList(w http.ResponseWriter, r *http.Request) {
 		KipPip       *string `json:"kip_pip"`
 		StatusEmis   *string `json:"status_emis"`
 		SumberData   *string `json:"sumber_data"`
+		BansosDesil  *string `json:"bansos_desil"`
+		BansosSembako *string `json:"bansos_sembako"`
+		BansosPKH    *string `json:"bansos_pkh"`
+		BansosPBIJK  *string `json:"bansos_pbijk"`
+		BansosKPD    *string `json:"bansos_kpd"`
+		BansosCekAt  *string `json:"bansos_cek_at"`
 	}
 	list := []siswa{}
 	for rows.Next() {
 		var x siswa
-		if err := rows.Scan(&x.ID, &x.NIS, &x.NISN, &x.Nama, &x.JK, &x.Kelas, &x.Rombel, &x.TempatLahir, &x.TglLahir, &x.Ayah, &x.Ibu, &x.AsalSekolah, &x.Alamat, &x.NIK, &x.NoHP, &x.KipPip, &x.StatusEmis, &x.SumberData); err != nil {
+		if err := rows.Scan(&x.ID, &x.NIS, &x.NISN, &x.Nama, &x.JK, &x.Kelas, &x.Rombel, &x.TempatLahir, &x.TglLahir, &x.Ayah, &x.Ibu, &x.AsalSekolah, &x.Alamat, &x.NIK, &x.NoHP, &x.KipPip, &x.StatusEmis, &x.SumberData, &x.BansosDesil, &x.BansosSembako, &x.BansosPKH, &x.BansosPBIJK, &x.BansosKPD, &x.BansosCekAt); err != nil {
 			http.Error(w, err.Error(), 500)
 			return
 		}
@@ -625,6 +678,303 @@ func (s *apiServer) handleSiswaList(w http.ResponseWriter, r *http.Request) {
 		"total":   total,
 		"page":    page,
 		"perPage": perPage,
+	})
+}
+
+// ---------- Bansos: siswa detail, bansos detail, stats ----------
+
+// siswaWhereClause builds a WHERE clause + args for role-based siswa filtering.
+// Returns (whereClause, args) where whereClause already includes " AND " prefix.
+func (s *apiServer) siswaWhereClause(r *http.Request) (string, []any) {
+	info := userInfo(r)
+	switch info.Role {
+	case "siswa":
+		return " AND s.id = ?", []any{info.RefID}
+	case "guru":
+		// guru sees only their wali_kelas rombel
+		return " AND s.rombel = REPLACE((SELECT wali_kelas FROM ptk WHERE id = ?), ' ', '')", []any{info.RefID}
+	default: // admin, kepsek, staf
+		return "", nil
+	}
+}
+
+// interpretasi computes bansos eligibility fields from desil and pbijk.
+func interpretasi(desil sql.NullString, pbijk sql.NullString) (layakPKH, layakPBI, tenggang90 bool, status string) {
+	if !desil.Valid || desil.String == "" {
+		return false, false, false, "belum_cek"
+	}
+	d := desil.String
+	switch d {
+	case "TIDAK DITEMUKAN":
+		return false, false, false, "not_found"
+	case "BELUM ADA DESIL":
+		return false, false, false, "belum_cek"
+	}
+	// d is "1","2","3","4","5","6-10"
+	layakPKH = (d == "1" || d == "2" || d == "3" || d == "4")
+	layakPBI = (d == "1" || d == "2" || d == "3" || d == "4" || d == "5")
+	pbiActive := pbijk.Valid && strings.Contains(strings.ToUpper(pbijk.String), "YA")
+	tenggang90 = pbiActive && (d == "6-10")
+	return layakPKH, layakPBI, tenggang90, "ok"
+}
+
+// GET /api/siswa/{id}
+func (s *apiServer) handleSiswaDetail(w http.ResponseWriter, r *http.Request) {
+	idStr := r.PathValue("id")
+	if idStr == "" {
+		fail(w, 400, "id wajib")
+		return
+	}
+
+	// Role-based access check
+	info := userInfo(r)
+	switch info.Role {
+	case "siswa":
+		if idStr != fmt.Sprintf("%d", info.RefID) {
+			fail(w, 403, "akses ditolak")
+			return
+		}
+	case "guru":
+		// verify siswa is in the guru's rombel
+		var rombel string
+		err := s.db.QueryRow(`SELECT COALESCE(rombel,'') FROM siswa WHERE id = ?`, idStr).Scan(&rombel)
+		if err != nil {
+			fail(w, 404, "siswa tidak ditemukan")
+			return
+		}
+		var wali sql.NullString
+		s.db.QueryRow(`SELECT wali_kelas FROM ptk WHERE id = ?`, info.RefID).Scan(&wali)
+		if !wali.Valid || rombel != strings.ReplaceAll(wali.String, " ", "") {
+			fail(w, 403, "akses ditolak")
+			return
+		}
+	}
+
+	type siswaDetail struct {
+		ID          int     `json:"id"`
+		NIS         *string `json:"nis"`
+		NISN        *string `json:"nisn"`
+		Nama        string  `json:"nama"`
+		JK          *string `json:"jk"`
+		Kelas       *string `json:"kelas"`
+		Rombel      *string `json:"rombel"`
+		TempatLahir *string `json:"tempat_lahir"`
+		TglLahir    *string `json:"tgl_lahir"`
+		Ayah        *string `json:"ayah"`
+		Ibu         *string `json:"ibu"`
+		KerjaAyah   *string `json:"kerja_ayah"`
+		KerjaIbu    *string `json:"kerja_ibu"`
+		Penghasilan *int    `json:"penghasilan"`
+		AnakKe      *int    `json:"anak_ke"`
+		Dari        *int    `json:"dari"`
+		AsalSekolah *string `json:"asal_sekolah"`
+		Alamat      *string `json:"alamat"`
+		NIK         *string `json:"nik"`
+		NoHP        *string `json:"no_hp"`
+		KipPip      *string `json:"kip_pip"`
+		StatusEmis  *string `json:"status_emis"`
+		SumberData  *string `json:"sumber_data"`
+		// bansos
+		Desil    *string `json:"bansos_desil"`
+		Sembako  *string `json:"bansos_sembako"`
+		PKH      *string `json:"bansos_pkh"`
+		PBIJK    *string `json:"bansos_pbijk"`
+		KPD      *string `json:"bansos_kpd"`
+		CekAt    *string `json:"bansos_cek_at"`
+		// interpretasi
+		LayakPKH    bool   `json:"layak_pkh"`
+		LayakPBI    bool   `json:"layak_pbi"`
+		Tenggang90  bool   `json:"tenggang_90_hari"`
+		StatusBansos string `json:"bansos_status"`
+	}
+
+	var d siswaDetail
+	var desilS, sembakoS, pkhS, pbijkS, kpdS, cekAtS sql.NullString
+	var kerjaAyah, kerjaIbu sql.NullString
+	var penghasilan sql.NullInt64
+	var anakKe, dari sql.NullInt64
+
+	err := s.db.QueryRow(`SELECT id, nis, nisn, nama, jk, kelas, rombel,
+		tempat_lahir, tgl_lahir, ayah, ibu, kerja_ayah, kerja_ibu,
+		penghasilan, anak_ke, dari, asal_sekolah, alamat, nik,
+		no_hp, kip_pip, status_emis, sumber_data,
+		bansos_desil, bansos_sembako, bansos_pkh, bansos_pbijk, bansos_kpd, bansos_cek_at
+		FROM siswa WHERE id = ?`, idStr).Scan(
+		&d.ID, &d.NIS, &d.NISN, &d.Nama, &d.JK, &d.Kelas, &d.Rombel,
+		&d.TempatLahir, &d.TglLahir, &d.Ayah, &d.Ibu, &kerjaAyah, &kerjaIbu,
+		&penghasilan, &anakKe, &dari, &d.AsalSekolah, &d.Alamat, &d.NIK,
+		&d.NoHP, &d.KipPip, &d.StatusEmis, &d.SumberData,
+		&desilS, &sembakoS, &pkhS, &pbijkS, &kpdS, &cekAtS,
+	)
+	if errors.Is(err, sql.ErrNoRows) {
+		fail(w, 404, "siswa tidak ditemukan")
+		return
+	} else if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+
+	d.KerjaAyah = nullStr(kerjaAyah)
+	d.KerjaIbu = nullStr(kerjaIbu)
+	if penghasilan.Valid {
+		v := int(penghasilan.Int64)
+		d.Penghasilan = &v
+	}
+	if anakKe.Valid {
+		v := int(anakKe.Int64)
+		d.AnakKe = &v
+	}
+	if dari.Valid {
+		v := int(dari.Int64)
+		d.Dari = &v
+	}
+	d.Desil = nullStr(desilS)
+	d.Sembako = nullStr(sembakoS)
+	d.PKH = nullStr(pkhS)
+	d.PBIJK = nullStr(pbijkS)
+	d.KPD = nullStr(kpdS)
+	d.CekAt = nullStr(cekAtS)
+
+	d.LayakPKH, d.LayakPBI, d.Tenggang90, d.StatusBansos = interpretasi(desilS, pbijkS)
+
+	writeJSON(w, 200, d)
+}
+
+// GET /api/siswa/{id}/bansos
+func (s *apiServer) handleSiswaBansos(w http.ResponseWriter, r *http.Request) {
+	idStr := r.PathValue("id")
+	if idStr == "" {
+		fail(w, 400, "id wajib")
+		return
+	}
+
+	// Role-based access (same as siswa detail)
+	info := userInfo(r)
+	switch info.Role {
+	case "siswa":
+		if idStr != fmt.Sprintf("%d", info.RefID) {
+			fail(w, 403, "akses ditolak")
+			return
+		}
+	case "guru":
+		var rombel string
+		err := s.db.QueryRow(`SELECT COALESCE(rombel,'') FROM siswa WHERE id = ?`, idStr).Scan(&rombel)
+		if err != nil {
+			fail(w, 404, "siswa tidak ditemukan")
+			return
+		}
+		var wali sql.NullString
+		s.db.QueryRow(`SELECT wali_kelas FROM ptk WHERE id = ?`, info.RefID).Scan(&wali)
+		if !wali.Valid || rombel != strings.ReplaceAll(wali.String, " ", "") {
+			fail(w, 403, "akses ditolak")
+			return
+		}
+	}
+
+	type bansosDetail struct {
+		ID          int     `json:"id"`
+		Nama        string  `json:"nama"`
+		Kelas       *string `json:"kelas"`
+		Rombel      *string `json:"rombel"`
+		Desil       *string `json:"desil"`
+		Sembako     *string `json:"sembako"`
+		PKH         *string `json:"pkh"`
+		PBIJK       *string `json:"pbijk"`
+		KPD         *string `json:"kpd"`
+		CekAt       *string `json:"cek_at"`
+		LayakPKH    bool    `json:"layak_pkh"`
+		LayakPBI    bool    `json:"layak_pbi"`
+		Tenggang90  bool    `json:"tenggang_90"`
+		StatusText  string  `json:"status_text"`
+	}
+
+	var d bansosDetail
+	var desilS, sembakoS, pkhS, pbijkS, kpdS, cekAtS sql.NullString
+
+	err := s.db.QueryRow(`SELECT id, nama, kelas, rombel,
+		bansos_desil, bansos_sembako, bansos_pkh, bansos_pbijk, bansos_kpd, bansos_cek_at
+		FROM siswa WHERE id = ?`, idStr).Scan(
+		&d.ID, &d.Nama, &d.Kelas, &d.Rombel,
+		&desilS, &sembakoS, &pkhS, &pbijkS, &kpdS, &cekAtS,
+	)
+	if errors.Is(err, sql.ErrNoRows) {
+		fail(w, 404, "siswa tidak ditemukan")
+		return
+	} else if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+
+	d.Desil = nullStr(desilS)
+	d.Sembako = nullStr(sembakoS)
+	d.PKH = nullStr(pkhS)
+	d.PBIJK = nullStr(pbijkS)
+	d.KPD = nullStr(kpdS)
+	d.CekAt = nullStr(cekAtS)
+
+	d.LayakPKH, d.LayakPBI, d.Tenggang90, d.StatusText = interpretasi(desilS, pbijkS)
+
+	writeJSON(w, 200, d)
+}
+
+// GET /api/bansos/stats
+func (s *apiServer) handleBansosStats(w http.ResponseWriter, r *http.Request) {
+	filter, args := s.siswaWhereClause(r)
+	base := "FROM siswa s WHERE 1=1" + filter
+
+	type catCount struct {
+		Category string `json:"category"`
+		Total    int    `json:"total"`
+	}
+
+	getCount := func(whereExtra string, extraArgs ...any) int {
+		var c int
+		allArgs := append(args, extraArgs...)
+		s.db.QueryRow("SELECT COUNT(*) "+base+whereExtra, allArgs...).Scan(&c)
+		return c
+	}
+
+	// Total siswa
+	totalSiswa := getCount("")
+
+	// Per desil
+	desilMap := map[string]int{}
+	for _, d := range []string{"1", "2", "3", "4", "5", "6-10", "TIDAK DITEMUKAN", "BELUM ADA DESIL"} {
+		desilMap[d] = getCount(" AND s.bansos_desil = ?", d)
+	}
+	desilMap["null"] = getCount(" AND (s.bansos_desil IS NULL OR s.bansos_desil = '')")
+
+	// Per kelas
+	kelasRows, err := s.db.Query("SELECT s.kelas, COUNT(*) "+base+" GROUP BY s.kelas ORDER BY CAST(s.kelas AS INTEGER)", args...)
+	var perKelas []catCount
+	if err == nil {
+		defer kelasRows.Close()
+		for kelasRows.Next() {
+			var cc catCount
+			kelasRows.Scan(&cc.Category, &cc.Total)
+			perKelas = append(perKelas, cc)
+		}
+	}
+
+	// Layak PKH = desil 1-4
+	layakPKH := getCount(" AND s.bansos_desil IN ('1','2','3','4')")
+	// Layak PBI = desil 1-5
+	layakPBI := getCount(" AND s.bansos_desil IN ('1','2','3','4','5')")
+	// Tenggang 90 = pbijk contains 'YA' AND desil 6-10
+	tenggang90 := getCount(" AND s.bansos_pbijk LIKE '%YA%' AND s.bansos_desil = '6-10'")
+	// Sembako aktif = desil 1-4 (sembako follows desil, not column)
+	sembakoAktif := layakPKH
+
+	writeJSON(w, 200, map[string]any{
+		"total_siswa":  totalSiswa,
+		"per_desil":    desilMap,
+		"per_kelas":    perKelas,
+		"layak_pkh":    layakPKH,
+		"layak_pbi":    layakPBI,
+		"sembako_aktif": sembakoAktif,
+		"tenggang_90":  tenggang90,
+		"belum_cek":    desilMap["null"],
+		"not_found":    desilMap["TIDAK DITEMUKAN"],
 	})
 }
 

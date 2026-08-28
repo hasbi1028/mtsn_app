@@ -5,6 +5,8 @@ export const load = async ({ cookies, url }) => {
 	const h = token ? { Authorization: `Bearer ${token}` } : {};
 	const kelas = url.searchParams.get('kelas') || '';
 	const q = url.searchParams.get('q') || '';
+	const nisn = url.searchParams.get('nisn') || '';
+	const ortu = url.searchParams.get('ortu') || '';
 	const rombel = url.searchParams.get('rombel') || '';
 	const status = url.searchParams.get('status') || '';
 	const page = parseInt(url.searchParams.get('page') || '1', 10) || 1;
@@ -12,6 +14,8 @@ export const load = async ({ cookies, url }) => {
 	const params = new URLSearchParams();
 	if (kelas) params.set('kelas', kelas);
 	if (q) params.set('q', q);
+	if (nisn) params.set('nisn', nisn);
+	if (ortu) params.set('ortu', ortu);
 	if (rombel) params.set('rombel', rombel);
 	if (status) params.set('status', status);
 	params.set('page', String(page));
@@ -26,6 +30,8 @@ export const load = async ({ cookies, url }) => {
 		perPage: data.perPage || perPage,
 		kelas,
 		q,
+		nisn,
+		ortu,
 		rombel,
 		status,
 	};
