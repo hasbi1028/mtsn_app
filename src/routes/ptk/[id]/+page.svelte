@@ -72,6 +72,9 @@
 						{/if}
 						{#if jtm.dashboardTotal != null}
 							<TableRow><TableCell class="text-muted-foreground text-xs">Dashboard EMIS</TableCell><TableCell class="text-xs">{jtm.dashboardTotal}</TableCell></TableRow>
+							{#if jtm.dashboardTotal != totalJtm}
+								<TableRow><TableCell colspan="2" class="text-[10px] text-muted-foreground italic">* EMIS termasuk tugas tambahan lain</TableCell></TableRow>
+							{/if}
 						{/if}
 					</TableBody>
 				</Table>

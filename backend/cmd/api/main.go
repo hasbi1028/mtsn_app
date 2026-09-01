@@ -444,6 +444,22 @@ func (s *apiServer) handlePtkDetail(w http.ResponseWriter, r *http.Request) {
 		rows5.Close()
 	}
 
+	// Tambah SKBK & SKAKPT PDF jika sudah Disetujui
+	namaFile := strings.ReplaceAll(strings.TrimSpace(nama.String), " ", "_")
+	namaFile = strings.ReplaceAll(namaFile, ".", "")
+	for _, sk := range skbks {
+		if sk["status"] == "Disetujui" {
+			skbkPath := "/uploads/skbk/" + namaFile + "_SKBK_2026S1.pdf"
+			doks = append(doks, map[string]any{"jenis": "SKBK", "filePath": skbkPath, "periode": sk["periode"]})
+		}
+	}
+	for _, sa := range skakpts {
+		if sa["status"] == "Disetujui" {
+			skakptPath := "/uploads/skakpt/SKAKPT_" + namaFile + "_Juli2026.pdf"
+			doks = append(doks, map[string]any{"jenis": "SKAKPT", "filePath": skakptPath, "periode": sa["bulan"]})
+		}
+	}
+
 	writeJSON(w, 200, map[string]any{
 		"id": id, "nama": nama.String, "pegId": nullS(pegID), "nip": nullS(nip),
 		"nik": nullS(nik), "nuptk": nullS(nuptk), "fungsi": fungsi.String,
