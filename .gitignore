@@ -43,6 +43,8 @@ err.txt
 # Binaries
 backend/api.exe
 backend/api.exe~
+backend-api.exe
+backend.exe
 
 # Temp
 _hash.txt
@@ -56,3 +58,20 @@ worker-bel/*.log
 
 # artefak Windows
 nul
+
+# Konfigurasi lokal asisten/editor
+.claude/
+.cursor/
+.gemini/
+.hermes/
+.opencode/
+.vscode/mcp.json
+GEMINI.md
+.github/agents/
+.github/skills/
+
+# Artefak pengujian dan unggahan runtime
+test-results/
+static/uploads/foto_siswa/
+static/uploads/skbk/
+static/uploads/skmt/

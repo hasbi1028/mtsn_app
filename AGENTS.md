@@ -142,6 +142,12 @@ Defined in `src/app.css`:
 - Use shared components (`data-table`, `page-layout`) for new pages
 - Add new navigation items to `$lib/config/navigation.ts`
 
+### Svelte Validation (WAJIB)
+- Setiap membuat, mengubah, atau menganalisis file `.svelte`, `.svelte.ts`, atau `.svelte.js`, wajib menjalankan Svelte autofixer sebelum menyelesaikan pekerjaan.
+- Gunakan perintah: `npx @sveltejs/mcp svelte-autofixer <path-file> --svelte-version 5`.
+- Jika `npx` diblokir oleh PowerShell, gunakan `npx.cmd` dengan argumen yang sama.
+- Setelah autofixer, jalankan `npm run check` dan laporkan error/warning yang relevan.
+
 ## Future Modules (Mendatang)
 - Kesiswaan — Data Siswa & Kelas
 - Perpustakaan — Buku & Peminjaman
