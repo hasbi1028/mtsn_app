@@ -6,11 +6,12 @@ module.exports = {
 			script: 'api.exe',
 			cwd: 'C:/Users/LENOVO/webapp/mtsn_app/backend',
 			env: {
-				DB_PATH: 'C:/Users/LENOVO/webapp/mtsn_app/local.db',
-				PORT: '3730',
-				BEL_API: 'http://127.0.0.1:8093',
-				BEL_API_KEY: ''
-			},
+							DB_PATH: 'C:/Users/LENOVO/webapp/mtsn_app/local.db',
+							PORT: '3730',
+							BEL_API: 'http://127.0.0.1:8093',
+							BEL_API_KEY: '',
+							KARTU_SCALE: '16'
+						},
 			watch: false,
 			autorestart: true,
 			max_restarts: 5

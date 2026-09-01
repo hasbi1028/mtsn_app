@@ -1,17 +1,17 @@
 package main
 
 import (
-	"path/filepath"
-	"regexp"
-	"fmt"
-	"io"
 	"context"
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 
@@ -92,6 +92,8 @@ func main() {
 	mux.HandleFunc("GET /api/siswa", s.auth(s.handleSiswaList))
 	mux.HandleFunc("GET /api/siswa/{id}", s.auth(s.handleSiswaDetail))
 	mux.HandleFunc("GET /api/siswa/{id}/bansos", s.auth(s.handleSiswaBansos))
+	mux.HandleFunc("POST /api/siswa/{id}/foto", s.auth(s.handleSiswaFotoUpload))
+	mux.HandleFunc("GET /api/siswa/{id}/kartu.png", s.auth(s.handleSiswaKartuPNG))
 	mux.HandleFunc("GET /api/bansos/stats", s.auth(s.handleBansosStats))
 	mux.HandleFunc("GET /api/activity", s.auth(s.handleActivityLog))
 	mux.HandleFunc("GET /api/bel/status", s.auth(s.handleBelStatus))
@@ -401,7 +403,7 @@ func (s *apiServer) handlePtkDetail(w http.ResponseWriter, r *http.Request) {
 
 	roster := []map[string]any{}
 	first := strings.Split(nama.String, ",")[0]
-	rows3, _ := s.db.Query(`SELECT hari, jam_ke, kelas, mapel FROM roster WHERE guru_nama LIKE ? `, first + "%")
+	rows3, _ := s.db.Query(`SELECT hari, jam_ke, kelas, mapel FROM roster WHERE guru_nama LIKE ? `, first+"%")
 	if rows3 != nil {
 		for rows3.Next() {
 			var h, j, k, m sql.NullString
@@ -409,6 +411,21 @@ func (s *apiServer) handlePtkDetail(w http.ResponseWriter, r *http.Request) {
 			roster = append(roster, map[string]any{"hari": h.String, "jamKe": j.String, "kelas": k.String, "mapel": m.String})
 		}
 		rows3.Close()
+	}
+
+	skbks := []map[string]any{}
+	rows4, _ := s.db.Query(`SELECT periode, instansi, status, jtm_total, tgl_ajuan FROM skbk_ajuan WHERE ptk_id = ? ORDER BY id DESC`, id)
+	if rows4 != nil {
+		for rows4.Next() {
+			var per, ins, st, tgl sql.NullString
+			var jtm sql.NullFloat64
+			rows4.Scan(&per, &ins, &st, &jtm, &tgl)
+			skbks = append(skbks, map[string]any{
+				"periode": per.String, "instansi": ins.String, "status": st.String,
+				"jtmTotal": nullF(jtm), "tglAjuan": tgl.String,
+			})
+		}
+		rows4.Close()
 	}
 
 	writeJSON(w, 200, map[string]any{
@@ -419,7 +436,7 @@ func (s *apiServer) handlePtkDetail(w http.ResponseWriter, r *http.Request) {
 		"jabatanStruktural": nullS(jabatan), "catatan": nullS(catatan),
 		"jtm": map[string]any{"mengajar": nullF(meng), "tugas": nullF(tugas),
 			"totalS25a": nullF(s25a), "dashboardTotal": nullF(dash)},
-		"skmt": skmts, "dokumen": doks, "roster": roster,
+		"skmt": skmts, "skbk": skbks, "dokumen": doks, "roster": roster,
 	})
 }
 
@@ -457,7 +474,7 @@ func (s *apiServer) handleRoster(w http.ResponseWriter, r *http.Request) {
 		kelas = "IXA"
 	}
 	rows, err := s.db.Query(`SELECT r.hari, r.jam_ke, r.mapel, r.guru_nama FROM roster r
-		WHERE r.kelas = ? ORDER BY ` + hariUrut + `, ` + jamUrut + `, kelas`, kelas)
+		WHERE r.kelas = ? ORDER BY `+hariUrut+`, `+jamUrut+`, kelas`, kelas)
 	if err != nil {
 		fail(w, 500, err.Error())
 		return
@@ -472,7 +489,6 @@ func (s *apiServer) handleRoster(w http.ResponseWriter, r *http.Request) {
 	kelasList := []string{"VIIA", "VIIB", "VIIC", "VIID", "VIIE", "VIIIA", "VIIIB", "VIIIC", "VIIID", "IXA", "IXB", "IXC"}
 	writeJSON(w, 200, map[string]any{"kelas": kelas, "daftarKelas": kelasList, "rows": out})
 }
-
 
 func (s *apiServer) handleSkbkList(w http.ResponseWriter, r *http.Request) {
 	rows, err := s.db.Query(`SELECT s.id, p.nama, s.instansi, s.status, s.jtm_total,
@@ -491,19 +507,19 @@ func (s *apiServer) handleSkbkList(w http.ResponseWriter, r *http.Request) {
 		var jtm, nd sql.NullFloat64
 		rows.Scan(&id, &nama, &inst, &st, &jtm, &nd)
 		out = append(out, map[string]any{
-			"ptkId": id, "nama": nama.String, "instansi": inst.String, 
+			"ptkId": id, "nama": nama.String, "instansi": inst.String,
 			"status": st.String, "jtmTotal": nullF(jtm), "jmlDokumen": int(nd.Float64),
 		})
 	}
 	writeJSON(w, 200, out)
 }
 
-
 func (s *apiServer) handleSkakptList(w http.ResponseWriter, r *http.Request) {
-	rows, err := s.db.Query(`SELECT s.id, p.nama, COALESCE(p.nuptk,'') AS nuptk,
-		s.bulan, s.status, s.tgl_ajuan
-		FROM skakpt s JOIN ptk p ON p.id = s.ptk_id
-		ORDER BY CASE WHEN s.status='Menunggu Verifikasi' THEN 0 ELSE 1 END, p.nama`)
+	rows, err := s.db.Query(`SELECT COALESCE(s.id,0), p.nama, COALESCE(p.nuptk,'') AS nuptk,
+		COALESCE(s.bulan,''), COALESCE(s.status,''), COALESCE(s.tgl_ajuan,'')
+		FROM ptk p LEFT JOIN skakpt s ON p.id = s.ptk_id
+		WHERE p.sertifikasi = 1
+		ORDER BY CASE WHEN s.status='Menunggu Verifikasi' THEN 0 WHEN s.id IS NULL THEN 1 ELSE 2 END, p.nama`)
 	if err != nil {
 		fail(w, 500, err.Error())
 		return
@@ -589,16 +605,19 @@ func (s *apiServer) handleSiswaList(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if q != "" {
-		where += " AND (nama LIKE ? OR nis LIKE ? OR nisn LIKE ?)"
+		q = strings.TrimSpace(q)
+		where += " AND LOWER(COALESCE(nama,'')) LIKE LOWER(?)"
 		like := "%" + q + "%"
-		args = append(args, like, like, like)
+		args = append(args, like)
 	}
 	if nisn != "" {
-		where += " AND nisn LIKE ?"
+		nisn = strings.TrimSpace(nisn)
+		where += " AND LOWER(COALESCE(nisn,'')) LIKE LOWER(?)"
 		args = append(args, "%"+nisn+"%")
 	}
 	if ortu != "" {
-		where += " AND (ayah LIKE ? OR ibu LIKE ?)"
+		ortu = strings.TrimSpace(ortu)
+		where += " AND (LOWER(COALESCE(ayah,'')) LIKE LOWER(?) OR LOWER(COALESCE(ibu,'')) LIKE LOWER(?))"
 		like := "%" + ortu + "%"
 		args = append(args, like, like)
 	}
@@ -625,7 +644,7 @@ func (s *apiServer) handleSiswaList(w http.ResponseWriter, r *http.Request) {
 	}
 	offset := (page - 1) * perPage
 
-	query := "SELECT id, nis, nisn, nama, jk, kelas, rombel, tempat_lahir, tgl_lahir, ayah, ibu, asal_sekolah, alamat, nik, no_hp, kip_pip, status_emis, sumber_data, bansos_desil, bansos_sembako, bansos_pkh, bansos_pbijk, bansos_kpd, bansos_cek_at FROM siswa WHERE " + where + " ORDER BY CAST(kelas AS INTEGER), rombel, nama LIMIT ? OFFSET ?"
+	query := "SELECT id, nis, nisn, nama, jk, kelas, rombel, tempat_lahir, tgl_lahir, ayah, ibu, asal_sekolah, asal_sekolah_npsn, alamat, nik, no_hp, kip_pip, status_emis, sumber_data, bansos_desil, bansos_sembako, bansos_pkh, bansos_pbijk, bansos_kpd, bansos_cek_at FROM siswa WHERE " + where + " ORDER BY CAST(kelas AS INTEGER), rombel, nama LIMIT ? OFFSET ?"
 	args = append(args, perPage, offset)
 
 	rows, err := s.db.Query(query, args...)
@@ -635,35 +654,36 @@ func (s *apiServer) handleSiswaList(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 	type siswa struct {
-		ID           int     `json:"id"`
-		NIS          *string `json:"nis"`
-		NISN         *string `json:"nisn"`
-		Nama         string  `json:"nama"`
-		JK           *string `json:"jk"`
-		Kelas        *string `json:"kelas"`
-		Rombel       *string `json:"rombel"`
-		TempatLahir  *string `json:"tempat_lahir"`
-		TglLahir     *string `json:"tgl_lahir"`
-		Ayah         *string `json:"ayah"`
-		Ibu          *string `json:"ibu"`
-		AsalSekolah  *string `json:"asal_sekolah"`
-		Alamat       *string `json:"alamat"`
-		NIK          *string `json:"nik"`
-		NoHP         *string `json:"no_hp"`
-		KipPip       *string `json:"kip_pip"`
-		StatusEmis   *string `json:"status_emis"`
-		SumberData   *string `json:"sumber_data"`
-		BansosDesil  *string `json:"bansos_desil"`
-		BansosSembako *string `json:"bansos_sembako"`
-		BansosPKH    *string `json:"bansos_pkh"`
-		BansosPBIJK  *string `json:"bansos_pbijk"`
-		BansosKPD    *string `json:"bansos_kpd"`
-		BansosCekAt  *string `json:"bansos_cek_at"`
+		ID              int     `json:"id"`
+		NIS             *string `json:"nis"`
+		NISN            *string `json:"nisn"`
+		Nama            string  `json:"nama"`
+		JK              *string `json:"jk"`
+		Kelas           *string `json:"kelas"`
+		Rombel          *string `json:"rombel"`
+		TempatLahir     *string `json:"tempat_lahir"`
+		TglLahir        *string `json:"tgl_lahir"`
+		Ayah            *string `json:"ayah"`
+		Ibu             *string `json:"ibu"`
+		AsalSekolah     *string `json:"asal_sekolah"`
+		AsalSekolahNPSN *string `json:"asal_sekolah_npsn"`
+		Alamat          *string `json:"alamat"`
+		NIK             *string `json:"nik"`
+		NoHP            *string `json:"no_hp"`
+		KipPip          *string `json:"kip_pip"`
+		StatusEmis      *string `json:"status_emis"`
+		SumberData      *string `json:"sumber_data"`
+		BansosDesil     *string `json:"bansos_desil"`
+		BansosSembako   *string `json:"bansos_sembako"`
+		BansosPKH       *string `json:"bansos_pkh"`
+		BansosPBIJK     *string `json:"bansos_pbijk"`
+		BansosKPD       *string `json:"bansos_kpd"`
+		BansosCekAt     *string `json:"bansos_cek_at"`
 	}
 	list := []siswa{}
 	for rows.Next() {
 		var x siswa
-		if err := rows.Scan(&x.ID, &x.NIS, &x.NISN, &x.Nama, &x.JK, &x.Kelas, &x.Rombel, &x.TempatLahir, &x.TglLahir, &x.Ayah, &x.Ibu, &x.AsalSekolah, &x.Alamat, &x.NIK, &x.NoHP, &x.KipPip, &x.StatusEmis, &x.SumberData, &x.BansosDesil, &x.BansosSembako, &x.BansosPKH, &x.BansosPBIJK, &x.BansosKPD, &x.BansosCekAt); err != nil {
+		if err := rows.Scan(&x.ID, &x.NIS, &x.NISN, &x.Nama, &x.JK, &x.Kelas, &x.Rombel, &x.TempatLahir, &x.TglLahir, &x.Ayah, &x.Ibu, &x.AsalSekolah, &x.AsalSekolahNPSN, &x.Alamat, &x.NIK, &x.NoHP, &x.KipPip, &x.StatusEmis, &x.SumberData, &x.BansosDesil, &x.BansosSembako, &x.BansosPKH, &x.BansosPBIJK, &x.BansosKPD, &x.BansosCekAt); err != nil {
 			http.Error(w, err.Error(), 500)
 			return
 		}
@@ -766,41 +786,44 @@ func (s *apiServer) handleSiswaDetail(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type siswaDetail struct {
-		ID          int     `json:"id"`
-		NIS         *string `json:"nis"`
-		NISN        *string `json:"nisn"`
-		Nama        string  `json:"nama"`
-		JK          *string `json:"jk"`
-		Kelas       *string `json:"kelas"`
-		Rombel      *string `json:"rombel"`
-		TempatLahir *string `json:"tempat_lahir"`
-		TglLahir    *string `json:"tgl_lahir"`
-		Ayah        *string `json:"ayah"`
-		Ibu         *string `json:"ibu"`
-		KerjaAyah   *string `json:"kerja_ayah"`
-		KerjaIbu    *string `json:"kerja_ibu"`
-		Penghasilan *int    `json:"penghasilan"`
-		AnakKe      *int    `json:"anak_ke"`
-		Dari        *int    `json:"dari"`
-		AsalSekolah *string `json:"asal_sekolah"`
-		Alamat      *string `json:"alamat"`
-		NIK         *string `json:"nik"`
-		NoHP        *string `json:"no_hp"`
-		KipPip      *string `json:"kip_pip"`
-		StatusEmis  *string `json:"status_emis"`
-		SumberData  *string `json:"sumber_data"`
+		ID              int     `json:"id"`
+		NIS             *string `json:"nis"`
+		NISN            *string `json:"nisn"`
+		Nama            string  `json:"nama"`
+		JK              *string `json:"jk"`
+		Kelas           *string `json:"kelas"`
+		Rombel          *string `json:"rombel"`
+		TempatLahir     *string `json:"tempat_lahir"`
+		TglLahir        *string `json:"tgl_lahir"`
+		Ayah            *string `json:"ayah"`
+		Ibu             *string `json:"ibu"`
+		KerjaAyah       *string `json:"kerja_ayah"`
+		KerjaIbu        *string `json:"kerja_ibu"`
+		Penghasilan     *int    `json:"penghasilan"`
+		AnakKe          *int    `json:"anak_ke"`
+		Dari            *int    `json:"dari"`
+		AsalSekolah     *string `json:"asal_sekolah"`
+		AsalSekolahNPSN *string `json:"asal_sekolah_npsn"`
+		Alamat          *string `json:"alamat"`
+		NIK             *string `json:"nik"`
+		NoHP            *string `json:"no_hp"`
+		KipPip          *string `json:"kip_pip"`
+		StatusEmis      *string `json:"status_emis"`
+		SumberData      *string `json:"sumber_data"`
 		// bansos
-		Desil    *string `json:"bansos_desil"`
-		Sembako  *string `json:"bansos_sembako"`
-		PKH      *string `json:"bansos_pkh"`
-		PBIJK    *string `json:"bansos_pbijk"`
-		KPD      *string `json:"bansos_kpd"`
-		CekAt    *string `json:"bansos_cek_at"`
+		Desil   *string `json:"bansos_desil"`
+		Sembako *string `json:"bansos_sembako"`
+		PKH     *string `json:"bansos_pkh"`
+		PBIJK   *string `json:"bansos_pbijk"`
+		KPD     *string `json:"bansos_kpd"`
+		CekAt   *string `json:"bansos_cek_at"`
 		// interpretasi
-		LayakPKH    bool   `json:"layak_pkh"`
-		LayakPBI    bool   `json:"layak_pbi"`
-		Tenggang90  bool   `json:"tenggang_90_hari"`
+		LayakPKH     bool   `json:"layak_pkh"`
+		LayakPBI     bool   `json:"layak_pbi"`
+		Tenggang90   bool   `json:"tenggang_90_hari"`
 		StatusBansos string `json:"bansos_status"`
+		// foto
+		FotoPath *string `json:"foto_path"`
 	}
 
 	var d siswaDetail
@@ -811,15 +834,17 @@ func (s *apiServer) handleSiswaDetail(w http.ResponseWriter, r *http.Request) {
 
 	err := s.db.QueryRow(`SELECT id, nis, nisn, nama, jk, kelas, rombel,
 		tempat_lahir, tgl_lahir, ayah, ibu, kerja_ayah, kerja_ibu,
-		penghasilan, anak_ke, dari, asal_sekolah, alamat, nik,
+		penghasilan, anak_ke, dari, asal_sekolah, asal_sekolah_npsn, alamat, nik,
 		no_hp, kip_pip, status_emis, sumber_data,
-		bansos_desil, bansos_sembako, bansos_pkh, bansos_pbijk, bansos_kpd, bansos_cek_at
+		bansos_desil, bansos_sembako, bansos_pkh, bansos_pbijk, bansos_kpd, bansos_cek_at,
+		foto_path
 		FROM siswa WHERE id = ?`, idStr).Scan(
 		&d.ID, &d.NIS, &d.NISN, &d.Nama, &d.JK, &d.Kelas, &d.Rombel,
 		&d.TempatLahir, &d.TglLahir, &d.Ayah, &d.Ibu, &kerjaAyah, &kerjaIbu,
-		&penghasilan, &anakKe, &dari, &d.AsalSekolah, &d.Alamat, &d.NIK,
+		&penghasilan, &anakKe, &dari, &d.AsalSekolah, &d.AsalSekolahNPSN, &d.Alamat, &d.NIK,
 		&d.NoHP, &d.KipPip, &d.StatusEmis, &d.SumberData,
 		&desilS, &sembakoS, &pkhS, &pbijkS, &kpdS, &cekAtS,
+		&d.FotoPath,
 	)
 	if errors.Is(err, sql.ErrNoRows) {
 		fail(w, 404, "siswa tidak ditemukan")
@@ -887,20 +912,20 @@ func (s *apiServer) handleSiswaBansos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type bansosDetail struct {
-		ID          int     `json:"id"`
-		Nama        string  `json:"nama"`
-		Kelas       *string `json:"kelas"`
-		Rombel      *string `json:"rombel"`
-		Desil       *string `json:"desil"`
-		Sembako     *string `json:"sembako"`
-		PKH         *string `json:"pkh"`
-		PBIJK       *string `json:"pbijk"`
-		KPD         *string `json:"kpd"`
-		CekAt       *string `json:"cek_at"`
-		LayakPKH    bool    `json:"layak_pkh"`
-		LayakPBI    bool    `json:"layak_pbi"`
-		Tenggang90  bool    `json:"tenggang_90"`
-		StatusText  string  `json:"status_text"`
+		ID         int     `json:"id"`
+		Nama       string  `json:"nama"`
+		Kelas      *string `json:"kelas"`
+		Rombel     *string `json:"rombel"`
+		Desil      *string `json:"desil"`
+		Sembako    *string `json:"sembako"`
+		PKH        *string `json:"pkh"`
+		PBIJK      *string `json:"pbijk"`
+		KPD        *string `json:"kpd"`
+		CekAt      *string `json:"cek_at"`
+		LayakPKH   bool    `json:"layak_pkh"`
+		LayakPBI   bool    `json:"layak_pbi"`
+		Tenggang90 bool    `json:"tenggang_90"`
+		StatusText string  `json:"status_text"`
 	}
 
 	var d bansosDetail
@@ -930,6 +955,89 @@ func (s *apiServer) handleSiswaBansos(w http.ResponseWriter, r *http.Request) {
 	d.LayakPKH, d.LayakPBI, d.Tenggang90, d.StatusText = interpretasi(desilS, pbijkS)
 
 	writeJSON(w, 200, d)
+}
+
+// POST /api/siswa/{id}/foto — upload foto siswa untuk kartu OMI
+func (s *apiServer) handleSiswaFotoUpload(w http.ResponseWriter, r *http.Request) {
+	idStr := r.PathValue("id")
+	if idStr == "" {
+		fail(w, 400, "id wajib")
+		return
+	}
+
+	// Verify siswa exists
+	var nama string
+	err := s.db.QueryRow(`SELECT nama FROM siswa WHERE id = ?`, idStr).Scan(&nama)
+	if errors.Is(err, sql.ErrNoRows) {
+		fail(w, 404, "siswa tidak ditemukan")
+		return
+	} else if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+
+	// Parse multipart form (max 2MB)
+	if err := r.ParseMultipartForm(2 << 20); err != nil {
+		fail(w, 400, "gagal parse form: "+err.Error())
+		return
+	}
+
+	file, header, err := r.FormFile("foto")
+	if err != nil {
+		fail(w, 400, "field 'foto' wajib")
+		return
+	}
+	defer file.Close()
+
+	// Validate extension
+	ext := strings.ToLower(filepath.Ext(header.Filename))
+	switch ext {
+	case ".jpg", ".jpeg", ".png", ".gif":
+	default:
+		fail(w, 400, "format tidak didukung (hanya jpg/png/gif)")
+		return
+	}
+
+	// Validate size (max 2MB)
+	if header.Size > 2<<20 {
+		fail(w, 400, "ukuran file maksimal 2MB")
+		return
+	}
+
+	// Create upload directory
+	uploadDir := filepath.Join("..", "static", "uploads", "foto_siswa")
+	if err := os.MkdirAll(uploadDir, 0755); err != nil {
+		fail(w, 500, "gagal buat direktori: "+err.Error())
+		return
+	}
+
+	// Save file: {id}.ext
+	filename := idStr + ext
+	dstPath := filepath.Join(uploadDir, filename)
+	dst, err := os.Create(dstPath)
+	if err != nil {
+		fail(w, 500, "gagal simpan file: "+err.Error())
+		return
+	}
+	defer dst.Close()
+
+	if _, err := io.Copy(dst, file); err != nil {
+		fail(w, 500, "gagal tulis file: "+err.Error())
+		return
+	}
+
+	// Update DB
+	fotoPath := "uploads/foto_siswa/" + filename
+	_, err = s.db.Exec(`UPDATE siswa SET foto_path = ? WHERE id = ?`, fotoPath, idStr)
+	if err != nil {
+		fail(w, 500, "gagal update database: "+err.Error())
+		return
+	}
+
+	writeJSON(w, 200, map[string]any{
+		"foto_path": fotoPath,
+		"message":   "foto berhasil diupload",
+	})
 }
 
 // GET /api/bansos/stats
@@ -981,15 +1089,15 @@ func (s *apiServer) handleBansosStats(w http.ResponseWriter, r *http.Request) {
 	sembakoAktif := layakPKH
 
 	writeJSON(w, 200, map[string]any{
-		"total_siswa":  totalSiswa,
-		"per_desil":    desilMap,
-		"per_kelas":    perKelas,
-		"layak_pkh":    layakPKH,
-		"layak_pbi":    layakPBI,
+		"total_siswa":   totalSiswa,
+		"per_desil":     desilMap,
+		"per_kelas":     perKelas,
+		"layak_pkh":     layakPKH,
+		"layak_pbi":     layakPBI,
 		"sembako_aktif": sembakoAktif,
-		"tenggang_90":  tenggang90,
-		"belum_cek":    desilMap["null"],
-		"not_found":    desilMap["TIDAK DITEMUKAN"],
+		"tenggang_90":   tenggang90,
+		"belum_cek":     desilMap["null"],
+		"not_found":     desilMap["TIDAK DITEMUKAN"],
 	})
 }
 
@@ -1237,9 +1345,9 @@ func (s *apiServer) handleBelSuaraList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	type Suara struct {
-		Name     string `json:"name"`
-		Size     int64  `json:"size"`
-		UsedBy   int    `json:"used_by"`
+		Name   string `json:"name"`
+		Size   int64  `json:"size"`
+		UsedBy int    `json:"used_by"`
 	}
 	files := []Suara{}
 	for _, e := range entries {
@@ -1337,19 +1445,19 @@ func (s *apiServer) handleStats(w http.ResponseWriter, r *http.Request) {
 		return c
 	}
 	stats := map[string]int64{
-		"totalPtk":        get(`SELECT COUNT(*) FROM ptk`),
-		"guru":            get(`SELECT COUNT(*) FROM ptk WHERE fungsi='Guru'`),
-		"sertifikasi":     get(`SELECT COUNT(*) FROM ptk WHERE sertifikasi=1`),
+		"totalPtk":         get(`SELECT COUNT(*) FROM ptk`),
+		"guru":             get(`SELECT COUNT(*) FROM ptk WHERE fungsi='Guru'`),
+		"sertifikasi":      get(`SELECT COUNT(*) FROM ptk WHERE sertifikasi=1`),
 		"belumSertifikasi": get(`SELECT COUNT(*) FROM ptk WHERE sertifikasi=0 AND fungsi='Guru'`),
-		"jtmDiBawah24":    get(`SELECT COUNT(*) FROM jtm_semester WHERE (COALESCE(mengajar,0)+COALESCE(tugas,0)) < 24`),
-		"skmtDisetujui":   get(`SELECT COUNT(DISTINCT ptk_id) FROM skmt_ajuan WHERE status LIKE 'Disetujui%'`),
-		"skmtMenunggu":    get(`SELECT COUNT(*) FROM skmt_ajuan WHERE status='Menunggu'`),
-		"rosterSlot":      get(`SELECT COUNT(*) FROM roster`),
-		"dokumen":         get(`SELECT COUNT(*) FROM dokumen`),
-		"skbkDisetujui":   get(`SELECT COUNT(DISTINCT ptk_id) FROM skbk_ajuan WHERE status='Sudah Diajukan'`),
-		"skbkMenunggu":    get(`SELECT COUNT(*) FROM skbk_ajuan WHERE status='Belum Diajukan'`),
-		"skakptDiajukan":  get(`SELECT COUNT(*) FROM skakpt WHERE status='Menunggu Verifikasi'`),
-		"skakptMenunggu":  get(`SELECT COUNT(*) FROM skakpt WHERE status='Menunggu Verifikasi'`),
+		"jtmDiBawah24":     get(`SELECT COUNT(*) FROM jtm_semester WHERE (COALESCE(mengajar,0)+COALESCE(tugas,0)) < 24`),
+		"skmtDisetujui":    get(`SELECT COUNT(DISTINCT ptk_id) FROM skmt_ajuan WHERE status LIKE 'Disetujui%'`),
+		"skmtMenunggu":     get(`SELECT COUNT(*) FROM skmt_ajuan WHERE status='Menunggu'`),
+		"rosterSlot":       get(`SELECT COUNT(*) FROM roster`),
+		"dokumen":          get(`SELECT COUNT(*) FROM dokumen`),
+		"skbkDisetujui":    get(`SELECT COUNT(DISTINCT ptk_id) FROM skbk_ajuan WHERE status='Sudah Diajukan'`),
+		"skbkMenunggu":     get(`SELECT COUNT(*) FROM skbk_ajuan WHERE status='Belum Diajukan'`),
+		"skakptDiajukan":   get(`SELECT COUNT(*) FROM skakpt WHERE status='Menunggu Verifikasi'`),
+		"skakptMenunggu":   get(`SELECT COUNT(*) FROM skakpt WHERE status='Menunggu Verifikasi'`),
 	}
 	writeJSON(w, 200, stats)
 }
