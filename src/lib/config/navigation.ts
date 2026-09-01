@@ -52,8 +52,9 @@ export const navItems: NavItem[] = [
 		group: "Kesiswaan",
 		roles: ["admin", "kepsek", "guru", "staf"],
 		children: [
-			{ title: "Data Siswa", url: "/siswa", icon: GraduationCapIcon },
-		],
+				{ title: "Data Siswa", url: "/siswa", icon: GraduationCapIcon },
+				{ title: "Kartu Siswa", url: "/siswa/kartu", icon: GalleryVerticalEndIcon },
+			],
 	},
 	{
 		title: "Dokumen",
