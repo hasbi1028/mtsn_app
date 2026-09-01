@@ -94,6 +94,8 @@ func main() {
 	mux.HandleFunc("GET /api/siswa/{id}/bansos", s.auth(s.handleSiswaBansos))
 	mux.HandleFunc("POST /api/siswa/{id}/foto", s.auth(s.handleSiswaFotoUpload))
 	mux.HandleFunc("GET /api/siswa/{id}/kartu.png", s.auth(s.handleSiswaKartuPNG))
+	mux.HandleFunc("GET /api/siswa/kartu/list", s.auth(s.handleKartuList))
+	mux.HandleFunc("POST /api/siswa/kartu/generate-all", s.auth(s.handleKartuGenerateAll))
 	mux.HandleFunc("GET /api/bansos/stats", s.auth(s.handleBansosStats))
 	mux.HandleFunc("GET /api/activity", s.auth(s.handleActivityLog))
 	mux.HandleFunc("GET /api/bel/status", s.auth(s.handleBelStatus))
@@ -428,6 +430,20 @@ func (s *apiServer) handlePtkDetail(w http.ResponseWriter, r *http.Request) {
 		rows4.Close()
 	}
 
+	skakpts := []map[string]any{}
+	rows5, _ := s.db.Query(`SELECT periode, bulan, status, tgl_ajuan, tgl_verifikasi FROM skakpt WHERE ptk_id = ? ORDER BY id DESC`, id)
+	if rows5 != nil {
+		for rows5.Next() {
+			var per, bul, st, tglA, tglV sql.NullString
+			rows5.Scan(&per, &bul, &st, &tglA, &tglV)
+			skakpts = append(skakpts, map[string]any{
+				"periode": per.String, "bulan": bul.String, "status": st.String,
+				"tglAjuan": tglA.String, "tglVerifikasi": tglV.String,
+			})
+		}
+		rows5.Close()
+	}
+
 	writeJSON(w, 200, map[string]any{
 		"id": id, "nama": nama.String, "pegId": nullS(pegID), "nip": nullS(nip),
 		"nik": nullS(nik), "nuptk": nullS(nuptk), "fungsi": fungsi.String,
@@ -436,7 +452,7 @@ func (s *apiServer) handlePtkDetail(w http.ResponseWriter, r *http.Request) {
 		"jabatanStruktural": nullS(jabatan), "catatan": nullS(catatan),
 		"jtm": map[string]any{"mengajar": nullF(meng), "tugas": nullF(tugas),
 			"totalS25a": nullF(s25a), "dashboardTotal": nullF(dash)},
-		"skmt": skmts, "skbk": skbks, "dokumen": doks, "roster": roster,
+		"skmt": skmts, "skbk": skbks, "skakpt": skakpts, "dokumen": doks, "roster": roster,
 	})
 }
 
@@ -1033,6 +1049,9 @@ func (s *apiServer) handleSiswaFotoUpload(w http.ResponseWriter, r *http.Request
 		fail(w, 500, "gagal update database: "+err.Error())
 		return
 	}
+
+	// Foto berubah → buang cache kartu lama agar di-generate ulang saat download
+	os.Remove(kartuPath(idStr))
 
 	writeJSON(w, 200, map[string]any{
 		"foto_path": fotoPath,

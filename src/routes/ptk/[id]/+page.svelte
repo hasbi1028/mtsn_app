@@ -139,7 +139,43 @@
 		</CardContent>
 	</Card>
 
-	<!-- Dokumen -->
+	<!-- SKAKPT -->
+<Card>
+	<CardHeader class="pb-2"><CardTitle class="text-sm">Riwayat SKAKPT</CardTitle></CardHeader>
+	<CardContent>
+		{#if !p.skakpt || p.skakpt.length === 0}
+			<p class="text-xs text-muted-foreground">Belum ada ajuan SKAKPT.</p>
+		{:else}
+			<Table>
+				<TableHeader>
+					<TableRow><TableHead class="text-xs">Periode</TableHead><TableHead class="text-xs">Bulan</TableHead><TableHead class="text-xs">Status</TableHead><TableHead class="text-xs hideOnMobile">Aksi</TableHead></TableRow>
+				</TableHeader>
+				<TableBody>
+					{#each p.skakpt as s}
+						<TableRow>
+							<TableCell class="text-xs">{s.periode || '—'}</TableCell>
+							<TableCell class="text-xs">{s.bulan || '—'}</TableCell>
+							<TableCell>
+								<Badge variant={s.status === 'Disetujui' ? 'default' : 'secondary'} class="text-[10px] {s.status === 'Disetujui' ? 'bg-green-600 text-white hover:bg-green-600' : ''}">
+									{s.status}
+								</Badge>
+							</TableCell>
+							<TableCell class="text-xs">
+								{#if s.status === 'Disetujui'}
+									{@const nama = p.nama.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_')}
+									{@const pdfUrl = `/uploads/skakpt/SKAKPT_${nama}_Juli2026.pdf`}
+									<PdfViewer src={pdfUrl} title="SKAKPT {p.nama} — Juli 2026" />
+								{/if}
+							</TableCell>
+						</TableRow>
+					{/each}
+				</TableBody>
+			</Table>
+		{/if}
+	</CardContent>
+</Card>
+
+<!-- Dokumen -->
 	<Card>
 		<CardHeader class="pb-2"><CardTitle class="text-sm">Dokumen</CardTitle></CardHeader>
 		<CardContent>
