@@ -5,16 +5,15 @@
 	import DataTable from '$lib/components/data-table.svelte';
 	import PageLayout from '$lib/components/page-layout.svelte';
 	import * as Pagination from '$lib/components/ui/pagination/index.js';
-	import { goto, invalidateAll } from '$app/navigation';
-
-const API = process.env.API_BASE || 'http://localhost:3730';
+	import { goto } from '$app/navigation';
+	import Search from '@lucide/svelte/icons/search';
 
 	let { data } = $props();
 	const rekap = $derived(data.rekap as any[]);
 	// rows bisa di-override hasil live search (tanpa reload)
-	let rows = $state(data.rows as any[]);
-	let totalLocal = $state(data.total as number);
-	let pageLocal = $state(data.page as number);
+	const rows = $derived(data.rows as any[]);
+	const totalLocal = $derived(data.total as number);
+	const pageLocal = $derived(data.page as number);
 
 	const kelasFilters = [['', 'Semua'], ['7', 'Kelas VII'], ['8', 'Kelas VIII'], ['9', 'Kelas IX']];
 	const statusFilters = [
@@ -37,18 +36,18 @@ const API = process.env.API_BASE || 'http://localhost:3730';
 		{ key: 'status_emis', label: 'Status' },
 	];
 
-	// State pencarian (live, debounce server)
+	// Nilai form dikirim sebagai URL search params ke server.
 	let q = $state(data.q || '');
-	let nisn = $state(data.nisn || '');
-	let ortu = $state(data.ortu || '');
-	let searching = $state(false);
-	let timer: ReturnType<typeof setTimeout> | undefined;
+
+	// Sinkronkan kembali input setiap kali URL search params berubah.
+	// Ini penting karena navigasi GET SvelteKit mempertahankan instance komponen.
+	$effect(() => {
+		q = data.q || '';
+	});
 
 	function buildHref(extra: Record<string, string> = {}): string {
 		const params = new URLSearchParams();
 		if (q) params.set('q', q);
-		if (nisn) params.set('nisn', nisn);
-		if (ortu) params.set('ortu', ortu);
 		if (data.kelas) params.set('kelas', data.kelas);
 		if (data.rombel) params.set('rombel', data.rombel);
 		if (data.status) params.set('status', data.status);
@@ -60,56 +59,21 @@ const API = process.env.API_BASE || 'http://localhost:3730';
 		return `/siswa${s ? '?' + s : ''}`;
 	}
 
-	async function doSearch() {
-		searching = true;
-		try {
-			const params = new URLSearchParams();
-			if (q) params.set('q', q);
-			if (nisn) params.set('nisn', nisn);
-			if (ortu) params.set('ortu', ortu);
-			if (data.kelas) params.set('kelas', data.kelas);
-			if (data.rombel) params.set('rombel', data.rombel);
-			if (data.status) params.set('status', data.status);
-			params.set('page', '1');
-			const token = document.cookie.split('; ').find(c => c.startsWith('mtsn_session='))?.split('=')[1];
-			const res = await fetch(`${API}/api/siswa?${params}`, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
-			if (res.ok) {
-				const d = await res.json();
-				rows = d.rows || [];
-				totalLocal = d.total || 0;
-				pageLocal = 1;
-			}
-		} finally {
-			searching = false;
-		}
-	}
-
-	// Debounce: setiap ketik -> tunggu 350ms -> fetch live
-	function onSearch() {
-		clearTimeout(timer);
-		timer = setTimeout(() => { doSearch(); }, 350);
-	}
-
-	function submitNow(e: Event) {
-		e.preventDefault();
-		clearTimeout(timer);
-		doSearch();
-	}
-
 	function onKelas(k: string) {
-		clearTimeout(timer);
-		data.kelas = k; // trigger derived tidak cukup, pakai invalidate
-		invalidateAll();
+		goto(buildHref({ kelas: k, page: '' }), { noScroll: true });
 	}
+
 	function onStatus(st: string) {
-		clearTimeout(timer);
-		invalidateAll();
+		goto(buildHref({ status: st, page: '' }), { noScroll: true });
 	}
+
+	function resetFilters() {
+		goto('/siswa', { noScroll: true });
+	}
+
 	function resetSearch() {
 		q = '';
-		nisn = '';
-		ortu = '';
-		goto('/siswa' + (data.kelas ? `?kelas=${data.kelas}` : ''), { noScroll: true });
+		goto(buildHref({ q: '', page: '' }), { noScroll: true });
 	}
 
 	const totalPages = $derived(Math.ceil(totalLocal / data.perPage));
@@ -117,8 +81,6 @@ const API = process.env.API_BASE || 'http://localhost:3730';
 	function qs(p: number) {
 		const params = new URLSearchParams();
 		if (q) params.set('q', q);
-		if (nisn) params.set('nisn', nisn);
-		if (ortu) params.set('ortu', ortu);
 		if (data.kelas) params.set('kelas', data.kelas);
 		if (data.rombel) params.set('rombel', data.rombel);
 		if (data.status) params.set('status', data.status);
@@ -144,18 +106,21 @@ const API = process.env.API_BASE || 'http://localhost:3730';
 		return { text: val.substring(0, 10), class: 'bg-blue-100 text-blue-700' };
 	}
 
-	const activeSearch = $derived(q || nisn || ortu);
+	const activeSearch = $derived(Boolean(q));
+	const activeFilters = $derived(Boolean(data.kelas || data.status || data.rombel));
 </script>
 
 <PageLayout title="Data Siswa" description="Kesiswaan MTsN 2 Kolaka Utara — TA 2026/2027 Ganjil · sinkron EMIS 26-08-2026">
 	{#snippet actions()}
-		<form onsubmit={submitNow} class="flex flex-col gap-1.5 w-full sm:w-72">
+		<form method="GET" action="/siswa" class="flex flex-col gap-1.5 w-full sm:w-72">
 			<div class="flex gap-1.5">
-				<Input name="q" bind:value={q} oninput={onSearch} placeholder="Cari nama..." class="h-8 text-xs" />
-				<Input name="nisn" bind:value={nisn} oninput={onSearch} placeholder="NISN" class="h-8 w-24 text-xs" />
+				<Input name="q" bind:value={q} placeholder="Cari nama..." class="h-8 text-xs" />
+				<Button type="submit" size="sm" class="h-8 px-2" aria-label="Cari siswa"><Search class="size-4" /></Button>
 			</div>
 			<div class="flex gap-1.5">
-				<Input name="ortu" bind:value={ortu} oninput={onSearch} placeholder="Nama ortu" class="h-8 text-xs flex-1" />
+				<input type="hidden" name="kelas" value={data.kelas || ''} />
+				<input type="hidden" name="rombel" value={data.rombel || ''} />
+				<input type="hidden" name="status" value={data.status || ''} />
 				{#if activeSearch}
 					<Button type="button" variant="outline" size="sm" class="h-8 cursor-pointer" onclick={resetSearch}>Reset</Button>
 				{/if}
@@ -167,7 +132,7 @@ const API = process.env.API_BASE || 'http://localhost:3730';
 		<div class="flex flex-wrap gap-x-3 gap-y-1.5 items-center">
 			<div class="flex flex-wrap gap-1.5">
 				{#each kelasFilters as [f, label]}
-					<button onclick={() => onKelas(f)} class="cursor-pointer">
+					<button type="button" onclick={() => onKelas(f)} class="cursor-pointer">
 						<Badge variant={data.kelas === f ? 'default' : 'outline'} class="whitespace-nowrap text-xs">{label}</Badge>
 					</button>
 				{/each}
@@ -175,12 +140,14 @@ const API = process.env.API_BASE || 'http://localhost:3730';
 			<span class="text-xs text-muted-foreground">|</span>
 			<div class="flex flex-wrap gap-1.5">
 				{#each statusFilters as [f, label]}
-					<button onclick={() => onStatus(f)} class="cursor-pointer">
+					<button type="button" onclick={() => onStatus(f)} class="cursor-pointer">
 						<Badge variant={data.status === f ? 'default' : 'outline'} class="whitespace-nowrap text-xs">{label}</Badge>
 					</button>
 				{/each}
 			</div>
-			{#if searching}<span class="text-xs text-muted-foreground animate-pulse">mencari…</span>{/if}
+			{#if activeFilters}
+				<Button type="button" variant="ghost" size="sm" class="h-7 text-xs cursor-pointer" onclick={resetFilters}>Reset filter</Button>
+			{/if}
 		</div>
 	{/snippet}
 

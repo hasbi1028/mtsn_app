@@ -5,8 +5,8 @@
 	
 	let { data } = $props();
 	const rows = $derived(data.rows as any[]);
-	const belum = rows.filter((r: any) => r.status === 'Belum Diajukan').length;
-	const sudah = rows.filter((r: any) => r.status === 'Sudah Diajukan').length;
+	const belum = $derived(rows.filter((r: any) => r.status === 'Belum Diajukan').length);
+	const sudah = $derived(rows.filter((r: any) => r.status === 'Sudah Diajukan').length);
 	
 	const columns = [
 		{ key: 'nama', label: 'Nama' },
@@ -30,7 +30,7 @@
 			{#if column.key === 'nama'}
 				<a href="/ptk/{row.ptkId}" class="font-medium text-sm hover:underline">{row.nama}</a>
 			{:else if column.key === 'status'}
-				<Badge variant={row.status === 'Sudah Diajukan' ? 'default' : 'destructive'} class="text-[10px]">
+				<Badge variant={row.status === 'Disetujui' ? 'default' : row.status === 'Sudah Diajukan' ? 'secondary' : 'destructive'} class="text-[10px] {row.status === 'Disetujui' ? 'bg-green-600 text-white hover:bg-green-600' : ''}">
 					{row.status}
 				</Badge>
 			{:else}

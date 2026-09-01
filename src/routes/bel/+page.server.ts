@@ -13,7 +13,7 @@ async function api(cookies: any, fetchFn: any, path: string, opts: any = {}) {
 
 export const load = async ({ cookies, fetch }) => {
 	const token = cookies.get('mtsn_session');
-	const h = token ? { Authorization: `Bearer ${token}` } : {};
+	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
 	const [statusRes, jadwalRes, suaraRes] = await Promise.all([
 		fetch(`${API}/api/bel/status`, { headers: h }),
 		fetch(`${API}/api/bel/jadwal`, { headers: h }),

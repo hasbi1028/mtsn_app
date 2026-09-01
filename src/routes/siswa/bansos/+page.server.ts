@@ -7,7 +7,7 @@ export const load = async ({ cookies, locals }) => {
 	}
 
 	const token = cookies.get('mtsn_session');
-	const h = token ? { Authorization: `Bearer ${token}` } : {};
+	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
 
 	try {
 		const res = await fetch(`${API}/api/siswa?page=1&per_page=200`, { headers: h });

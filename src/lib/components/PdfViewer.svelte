@@ -13,7 +13,7 @@
 					<button onclick={() => showViewer = false} class="text-xs text-muted-foreground hover:text-foreground">✕ Tutup</button>
 				</div>
 			</div>
-			<iframe src={src} class="flex-1 w-full border-0"></iframe>
+			<iframe {src} {title} class="flex-1 w-full border-0"></iframe>
 		</div>
 	</div>
 {:else}

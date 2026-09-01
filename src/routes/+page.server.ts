@@ -1,13 +1,24 @@
 const API = process.env.API_BASE || 'http://localhost:3730';
 
+type BansosRaw = {
+	total_siswa?: number;
+	belum_cek?: number;
+	layak_pkh?: number;
+	sembako_aktif?: number;
+	layak_pbi?: number;
+	tenggang_90?: number;
+	per_desil?: Record<string, number>;
+	per_kelas?: { category: string; total: number }[];
+};
+
 export const load = async ({ cookies }) => {
 	const token = cookies.get('mtsn_session');
-	const h = token ? { Authorization: `Bearer ${token}` } : {};
+	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
 
 	const [stats, bansosRaw] = await Promise.all([
 		fetch(`${API}/api/stats`, { headers: h }).then((r) => (r.ok ? r.json() : {})).catch(() => ({})),
 		fetch(`${API}/api/bansos/stats`, { headers: h }).then((r) => (r.ok ? r.json() : {})).catch(() => ({}))
-	]);
+	]) as [Record<string, number>, BansosRaw];
 
 	// Transform bansos stats to frontend format
 	const totalSiswa = bansosRaw.total_siswa || 0;

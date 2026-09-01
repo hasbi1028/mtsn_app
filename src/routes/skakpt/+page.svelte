@@ -11,8 +11,8 @@
 	const rows = $derived(data.rows as any[]);
 
 	// Filter status
-	const terbit = rows.filter((r: any) => r.status === 'Sudah Terbit' || r.download);
-	const belum = rows.filter((r: any) => r.status !== 'Sudah Terbit' && !r.download);
+	const terbit = $derived(rows.filter((r: any) => r.status === 'Sudah Terbit' || r.download));
+	const belum = $derived(rows.filter((r: any) => r.status !== 'Sudah Terbit' && !r.download));
 
 	const columns = [
 		{ key: 'nama', label: 'Nama' },
@@ -78,7 +78,7 @@
 								if (result.type === 'success' && result.data?.ok) {
 									const a = document.createElement('a');
 									a.href = getPdfUrl(row);
-									a.download = result.data.filename || `SKAKPT_${row.nama.replace(/[^a-zA-Z0-9]/g, '_')}_Juli2026.pdf`;
+									a.download = String(result.data.filename || `SKAKPT_${row.nama.replace(/[^a-zA-Z0-9]/g, '_')}_Juli2026.pdf`);
 									a.click();
 									notify.success('Download SKAKPT ' + row.nama);
 								}

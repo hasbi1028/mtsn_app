@@ -8,7 +8,7 @@
 
 	let { data } = $props();
 	const rows = $derived(data.rows as any[]);
-	const filters = [['', 'Semua'], ['wali', 'Wali Kelas'], ['belum-sertifikasi', 'Belum Sertifikasi'], ['jtm-rendah', 'JTM < 24']];
+	const filterOptions = [['', 'Semua'], ['wali', 'Wali Kelas'], ['belum-sertifikasi', 'Belum Sertifikasi'], ['jtm-rendah', 'JTM < 24']];
 
 	const columns = [
 		{ key: 'nama', label: 'Nama' },
@@ -41,7 +41,7 @@
 
 	{#snippet filters()}
 		<div class="flex gap-1.5 overflow-x-auto pb-1">
-			{#each filters as [f, label]}
+			{#each filterOptions as [f, label]}
 				<a href="/ptk?filter={f}{data.q ? `&q=${data.q}` : ''}">
 					<Badge variant={data.filter === f ? 'default' : 'outline'} class="cursor-pointer whitespace-nowrap text-xs">{label}</Badge>
 				</a>

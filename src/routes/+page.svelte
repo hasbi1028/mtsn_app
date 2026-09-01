@@ -16,225 +16,183 @@
 	const s = $derived(data.stats as Record<string, number>);
 	const bansos = $derived(data.bansosStats as any);
 
-	const cards: { label: string; key: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }[] = [
-		{ label: 'Total PTK', key: 'totalPtk', variant: 'default' },
-		{ label: 'Guru', key: 'guru', variant: 'secondary' },
-		{ label: 'Sertifikasi', key: 'sertifikasi', variant: 'default' },
-		{ label: 'Belum Sertifikasi', key: 'belumSertifikasi', variant: 'outline' },
-		{ label: 'JTM < 24 jam', key: 'jtmDiBawah24', variant: 'destructive' },
-		{ label: 'SKMT Disetujui', key: 'skmtDisetujui', variant: 'default' },
-		{ label: 'SKMT Menunggu', key: 'skmtMenunggu', variant: 'secondary' },
-		{ label: 'SKBK Disetujui', key: 'skbkDisetujui', variant: 'default' },
-		{ label: 'SKBK Menunggu', key: 'skbkMenunggu', variant: 'secondary' },
-		{ label: 'SKAKPT Diajukan', key: 'skakptDiajukan', variant: 'default' },
-		{ label: 'SKAKPT Menunggu', key: 'skakptMenunggu', variant: 'secondary' },
-		{ label: 'Dokumen PDF', key: 'totalDokumen', variant: 'outline' },
-	];
+	const attentionCards = $derived([
+		{
+			label: 'JTM di bawah 24 jam',
+			value: s.jtmDiBawah24 ?? 0,
+			tone: 'border-red-200 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300'
+		},
+		{
+			label: 'SKMT menunggu',
+			value: s.skmtMenunggu ?? 0,
+			tone: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300'
+		},
+		{
+			label: 'Bansos belum dicek',
+			value: bansos.belumCek ?? 0,
+			tone: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-900 dark:bg-sky-950/40 dark:text-sky-300'
+		}
+	]);
+
+	const documentCards = $derived([
+		{ label: 'SKMT disetujui', value: s.skmtDisetujui ?? 0, icon: FileText },
+		{ label: 'SKBK disetujui', value: s.skbkDisetujui ?? 0, icon: ClipboardList },
+		{ label: 'SKAKPT diajukan', value: s.skakptDiajukan ?? 0, icon: FileCheck },
+		{ label: 'Dokumen PDF', value: s.totalDokumen ?? 0, icon: FileText }
+	]);
+
+	const peopleCards = $derived([
+		{ label: 'Total PTK', value: s.totalPtk ?? 0, helper: `${s.guru ?? 0} guru` },
+		{ label: 'Sertifikasi', value: s.sertifikasi ?? 0, helper: `${s.belumSertifikasi ?? 0} belum sertifikasi` },
+		{ label: 'Total Siswa', value: bansos.totalSiswa ?? 0, helper: `${bansos.sudahCek ?? 0} sudah cek bansos` },
+		{ label: 'Tenggang >90 hari', value: bansos.tenggang90 ?? 0, helper: 'Perlu pembaruan data' }
+	]);
 
 	const desilOrder = ['1', '2', '3', '4', '5', '6-10', 'Belum Dicek', 'Tidak Ditemukan'];
+	const quickLinks = $derived([
+		{ href: '/ptk', label: 'Data PTK', helper: `${s.totalPtk ?? 0} guru`, icon: Users },
+		{ href: '/siswa', label: 'Data Siswa', helper: `${bansos.totalSiswa ?? 0} siswa`, icon: GraduationCap },
+		{ href: '/skmt', label: 'SKMT', helper: `${s.skmtDisetujui ?? 0} disetujui`, icon: FileText },
+		{ href: '/skbk', label: 'SKBK', helper: `${s.skbkDisetujui ?? 0} disetujui`, icon: ClipboardList },
+		{ href: '/skakpt', label: 'SKAKPT', helper: `${s.skakptDiajukan ?? 0} diajukan`, icon: FileCheck },
+		{ href: '/roster', label: 'Roster', helper: '12 kelas', icon: CalendarDays },
+		{ href: '/bel', label: 'Bel Sekolah', helper: 'Jadwal & suara', icon: BellRing },
+		{ href: '/activity', label: 'Aktivitas', helper: 'Riwayat sistem', icon: Activity }
+	]);
 </script>
 
 <svelte:head><title>Dashboard — MTsN App</title></svelte:head>
 
-<h1 class="text-lg font-semibold mb-4">Dashboard</h1>
-
-<!-- Stats Cards - PTK -->
-<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
-	{#each cards as c}
-		<Card>
-			<CardHeader class="pb-1">
-				<CardTitle class="text-xs font-medium text-muted-foreground">{c.label}</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<div class="text-2xl font-bold">{s[c.key] ?? 0}</div>
-			</CardContent>
-		</Card>
-	{/each}
-</div>
-
-<!-- Bansos Stats -->
-<div class="mb-6">
-	<h2 class="text-sm font-semibold mb-3 flex items-center gap-2">
-		<BellRing class="size-4" />
-		Statistik Bansos Siswa
-	</h2>
-
-	<!-- Summary Cards -->
-	<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-		<Card>
-			<CardHeader class="pb-1">
-				<CardTitle class="text-xs font-medium text-muted-foreground">Total Siswa</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<div class="text-2xl font-bold">{bansos.totalSiswa}</div>
-			</CardContent>
-		</Card>
-		<Card>
-			<CardHeader class="pb-1">
-				<CardTitle class="text-xs font-medium text-muted-foreground">Sudah Cek Bansos</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<div class="text-2xl font-bold text-green-600">{bansos.sudahCek}</div>
-			</CardContent>
-		</Card>
-		<Card>
-			<CardHeader class="pb-1">
-				<CardTitle class="text-xs font-medium text-muted-foreground">Belum Cek Bansos</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<div class="text-2xl font-bold text-amber-600">{bansos.belumCek}</div>
-			</CardContent>
-		</Card>
-		<Card>
-			<CardHeader class="pb-1">
-				<CardTitle class="text-xs font-medium text-muted-foreground">Tenggang >90 Hari</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<div class="text-2xl font-bold text-red-600">{bansos.tenggang90}</div>
-			</CardContent>
-		</Card>
-	</div>
-
-	<!-- Layak Counts -->
-	<div class="grid grid-cols-3 gap-3 mb-4">
-		<Card>
-			<CardContent class="p-3 text-center">
-				<ShieldCheck class="mx-auto mb-1 size-6 text-green-600" />
-				<div class="text-lg font-bold">{bansos.layakPkh}</div>
-				<div class="text-xs text-muted-foreground">Layak PKH</div>
-			</CardContent>
-		</Card>
-		<Card>
-			<CardContent class="p-3 text-center">
-				<ShieldCheck class="mx-auto mb-1 size-6 text-green-600" />
-				<div class="text-lg font-bold">{bansos.layakSembako}</div>
-				<div class="text-xs text-muted-foreground">Layak Sembako</div>
-			</CardContent>
-		</Card>
-		<Card>
-			<CardContent class="p-3 text-center">
-				<ShieldCheck class="mx-auto mb-1 size-6 text-blue-600" />
-				<div class="text-lg font-bold">{bansos.layakPbijk}</div>
-				<div class="text-xs text-muted-foreground">Layak PBI-JK</div>
-			</CardContent>
-		</Card>
-	</div>
-
-	<!-- Desil Distribution -->
-	<Card class="mb-4">
-		<CardHeader class="pb-2">
-			<CardTitle class="text-sm">Distribusi Desil</CardTitle>
-		</CardHeader>
-		<CardContent>
+<div class="space-y-5">
+	<section class="rounded-xl border bg-card p-4 shadow-sm">
+		<div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 			<div class="space-y-2">
-				{#each desilOrder as d}
-					{#if bansos.desilDist[d]}
-						<div class="flex items-center gap-2">
-							<span class="text-xs w-24 text-muted-foreground truncate">{d}</span>
-							<div class="flex-1 h-4 bg-muted rounded overflow-hidden">
-								<div
-									class="h-full rounded transition-all
-										{['1','2','3','4'].includes(d) ? 'bg-green-500' :
-										 d === '5' ? 'bg-yellow-500' :
-										 ['6-10'].includes(d) ? 'bg-red-500' :
-										 'bg-gray-400'}"
-									style="width: {bansos.totalSiswa > 0 ? (bansos.desilDist[d] / bansos.totalSiswa * 100) : 0}%"
-								></div>
-							</div>
-							<span class="text-xs font-medium w-8 text-right">{bansos.desilDist[d]}</span>
-						</div>
-					{/if}
-				{/each}
+				<Badge variant="secondary" class="w-fit">TA 2026/2027 Ganjil</Badge>
+				<div>
+					<h1 class="text-2xl font-semibold tracking-tight">Dashboard SIMAD</h1>
+					<p class="text-sm text-muted-foreground">Ringkasan operasional MTsN 2 Kolaka Utara dari EMIS GTK, SK Pembagian Tugas, roster, dan data bansos.</p>
+				</div>
 			</div>
-		</CardContent>
-	</Card>
-
-	<!-- Kelas Breakdown -->
-	<Card>
-		<CardHeader class="pb-2">
-			<CardTitle class="text-sm">Breakdown per Kelas</CardTitle>
-		</CardHeader>
-		<CardContent>
-			<div class="grid grid-cols-3 gap-2">
-				{#each Object.entries(bansos.kelasDist) as [kelas, count]}
-					<div class="rounded-lg border p-2 text-center">
-						<p class="text-xs text-muted-foreground">Kelas {kelas}</p>
-						<p class="text-lg font-bold">{count}</p>
+			<div class="grid grid-cols-3 gap-2 md:min-w-80">
+				{#each attentionCards as item (item.label)}
+					<div class="rounded-lg border p-3 {item.tone}">
+						<p class="text-[11px] font-medium leading-tight">{item.label}</p>
+						<p class="mt-1 text-2xl font-bold">{item.value}</p>
 					</div>
 				{/each}
 			</div>
-		</CardContent>
-	</Card>
-</div>
+		</div>
+	</section>
 
-<!-- Info -->
-<p class="text-xs text-muted-foreground mb-4">
-	Periode aktif: <strong>TA 2026/2027 Ganjil</strong>. Data dari EMIS GTK + SK Pembagian Tugas + Roster Pelajaran.
-</p>
+	<section class="grid gap-3 md:grid-cols-4">
+		{#each peopleCards as item (item.label)}
+			<Card>
+				<CardHeader class="pb-1">
+					<CardTitle class="text-xs font-medium text-muted-foreground">{item.label}</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<div class="text-2xl font-bold">{item.value}</div>
+					<p class="text-xs text-muted-foreground">{item.helper}</p>
+				</CardContent>
+			</Card>
+		{/each}
+	</section>
 
-<!-- Quick Links -->
-<div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-	<a href="/ptk" class="block">
-		<Card class="hover:border-primary transition-colors cursor-pointer">
-			<CardContent class="p-4 text-center">
-				<Users class="mx-auto mb-1 size-8 text-muted-foreground" />
-				<div class="text-sm font-medium">Data PTK</div>
-				<div class="text-xs text-muted-foreground">{s.totalPtk ?? 0} guru</div>
+	<section class="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+		<Card>
+			<CardHeader class="pb-2">
+				<CardTitle class="flex items-center gap-2 text-sm">
+					<FileCheck class="size-4 text-primary" />
+					Progres Dokumen
+				</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<div class="grid grid-cols-2 gap-2">
+					{#each documentCards as item (item.label)}
+						<div class="rounded-lg border bg-muted/20 p-3">
+							<div class="mb-2 flex items-center justify-between">
+								<item.icon class="size-4 text-primary" />
+								<span class="text-xl font-bold">{item.value}</span>
+							</div>
+							<p class="text-xs text-muted-foreground">{item.label}</p>
+						</div>
+					{/each}
+				</div>
 			</CardContent>
 		</Card>
-	</a>
-	<a href="/siswa" class="block">
-		<Card class="hover:border-primary transition-colors cursor-pointer">
-			<CardContent class="p-4 text-center">
-				<GraduationCap class="mx-auto mb-1 size-8 text-muted-foreground" />
-				<div class="text-sm font-medium">Data Siswa</div>
-				<div class="text-xs text-muted-foreground">{bansos.totalSiswa} siswa</div>
+
+		<Card>
+			<CardHeader class="pb-2">
+				<CardTitle class="flex items-center gap-2 text-sm">
+					<ShieldCheck class="size-4 text-primary" />
+					Kelayakan Bansos
+				</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<div class="grid grid-cols-3 gap-2 text-center">
+					<div class="rounded-lg border p-3">
+						<div class="text-xl font-bold text-green-700 dark:text-green-300">{bansos.layakPkh}</div>
+						<div class="text-xs text-muted-foreground">PKH</div>
+					</div>
+					<div class="rounded-lg border p-3">
+						<div class="text-xl font-bold text-green-700 dark:text-green-300">{bansos.layakSembako}</div>
+						<div class="text-xs text-muted-foreground">Sembako</div>
+					</div>
+					<div class="rounded-lg border p-3">
+						<div class="text-xl font-bold text-sky-700 dark:text-sky-300">{bansos.layakPbijk}</div>
+						<div class="text-xs text-muted-foreground">PBI-JK</div>
+					</div>
+				</div>
+				{#if bansos.tenggang90 > 0}
+					<div class="mt-3 flex items-start gap-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
+						<AlertTriangle class="mt-0.5 size-4 shrink-0" />
+						<span>{bansos.tenggang90} data bansos melewati tenggang 90 hari.</span>
+					</div>
+				{/if}
 			</CardContent>
 		</Card>
-	</a>
-	<a href="/skmt" class="block">
-		<Card class="hover:border-primary transition-colors cursor-pointer">
-			<CardContent class="p-4 text-center">
-				<FileText class="mx-auto mb-1 size-8 text-muted-foreground" />
-				<div class="text-sm font-medium">SKMT</div>
-				<div class="text-xs text-muted-foreground">{s.skmtDisetujui ?? 0} disetujui</div>
+	</section>
+
+	<section class="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+		<Card>
+			<CardHeader class="pb-2">
+				<CardTitle class="text-sm">Distribusi Desil</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<div class="space-y-2">
+					{#each desilOrder as d}
+						{#if bansos.desilDist[d]}
+							<div class="flex items-center gap-2">
+								<span class="w-24 truncate text-xs text-muted-foreground">{d}</span>
+								<div class="h-4 flex-1 overflow-hidden rounded bg-muted">
+									<div
+										class="h-full rounded transition-all {['1','2','3','4'].includes(d) ? 'bg-green-500' : d === '5' ? 'bg-yellow-500' : ['6-10'].includes(d) ? 'bg-red-500' : 'bg-gray-400'}"
+										style="width: {bansos.totalSiswa > 0 ? (bansos.desilDist[d] / bansos.totalSiswa * 100) : 0}%"
+									></div>
+								</div>
+								<span class="w-8 text-right text-xs font-medium">{bansos.desilDist[d]}</span>
+							</div>
+						{/if}
+					{/each}
+				</div>
 			</CardContent>
 		</Card>
-	</a>
-	<a href="/skbk" class="block">
-		<Card class="hover:border-primary transition-colors cursor-pointer">
-			<CardContent class="p-4 text-center">
-				<ClipboardList class="mx-auto mb-1 size-8 text-muted-foreground" />
-				<div class="text-sm font-medium">SKBK</div>
-				<div class="text-xs text-muted-foreground">{s.skbkDisetujui ?? 0} disetujui</div>
+
+		<Card>
+			<CardHeader class="pb-2">
+				<CardTitle class="text-sm">Akses Cepat</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+					{#each quickLinks as item (item.href)}
+						<a href={item.href} class="rounded-lg border p-3 transition-colors hover:border-primary hover:bg-primary/5">
+							<item.icon class="mb-2 size-5 text-primary" />
+							<div class="text-sm font-medium">{item.label}</div>
+							<div class="text-xs text-muted-foreground">{item.helper}</div>
+						</a>
+					{/each}
+				</div>
 			</CardContent>
 		</Card>
-	</a>
-	<a href="/skakpt" class="block">
-		<Card class="hover:border-primary transition-colors cursor-pointer">
-			<CardContent class="p-4 text-center">
-				<FileCheck class="mx-auto mb-1 size-8 text-muted-foreground" />
-				<div class="text-sm font-medium">SKAKPT</div>
-				<div class="text-xs text-muted-foreground">{s.skakptDiajukan ?? 0} diajukan</div>
-			</CardContent>
-		</Card>
-	</a>
-	<a href="/roster" class="block">
-		<Card class="hover:border-primary transition-colors cursor-pointer">
-			<CardContent class="p-4 text-center">
-				<CalendarDays class="mx-auto mb-1 size-8 text-muted-foreground" />
-				<div class="text-sm font-medium">Roster</div>
-				<div class="text-xs text-muted-foreground">12 kelas</div>
-			</CardContent>
-		</Card>
-	</a>
-	<a href="/activity" class="block">
-		<Card class="hover:border-primary transition-colors cursor-pointer">
-			<CardContent class="p-4 text-center">
-				<Activity class="mx-auto mb-1 size-8 text-muted-foreground" />
-				<div class="text-sm font-medium">Aktivitas</div>
-				<div class="text-xs text-muted-foreground">Riwayat</div>
-			</CardContent>
-		</Card>
-	</a>
+	</section>
 </div>

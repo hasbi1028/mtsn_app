@@ -1,4 +1,4 @@
-import { json, cookies } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 const API = process.env.API_BASE || 'http://localhost:3730';

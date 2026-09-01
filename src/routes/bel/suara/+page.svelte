@@ -2,6 +2,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import PageLayout from '$lib/components/page-layout.svelte';
+	import ConfirmSubmit from '$lib/components/confirm-submit.svelte';
 	import { notify } from '$lib/toast';
 
 	let { data, form } = $props();
@@ -54,16 +55,16 @@
 						<input type="hidden" name="file" value={f.name} />
 						<Button type="submit" size="sm" variant="outline" class="w-full h-7 text-xs cursor-pointer">Putar</Button>
 					</form>
-					<form
-						method="POST"
+					<ConfirmSubmit
 						action="?/delete"
-						onsubmit={(e) => {
-							if (!confirm(`Hapus ${f.name}?`)) e.preventDefault();
-						}}
+						fields={{ name: f.name }}
+						title="Hapus file suara?"
+						description={`${f.name} akan dihapus jika tidak sedang dipakai jadwal.`}
+						confirmLabel="Hapus"
+						buttonClass="h-7 text-xs cursor-pointer"
 					>
-						<input type="hidden" name="name" value={f.name} />
-						<Button type="submit" size="sm" variant="destructive" class="h-7 text-xs cursor-pointer">Hapus</Button>
-					</form>
+						Hapus
+					</ConfirmSubmit>
 				</div>
 			</div>
 		{:else}

@@ -12,6 +12,7 @@
 	import LogOutIcon from '@lucide/svelte/icons/log-out';
 	import AppSidebar from '$lib/components/app-sidebar.svelte';
 	import SiteHeader from '$lib/components/site-header.svelte';
+	import AppBreadcrumb from '$lib/components/app-breadcrumb.svelte';
 	import { siswaNavItems, ortuNavItems } from '$lib/config/navigation.js';
 	import { page } from '$app/state';
 	import { notify } from '$lib/toast';
@@ -29,6 +30,7 @@
 		[]
 	);
 
+	const pathname = $derived(page?.url?.pathname ?? '');
 	const userInitials = $derived(user?.username ? user.username.slice(0, 2).toUpperCase() : 'U');
 	const userRoleLabel = $derived(role ? role.charAt(0).toUpperCase() + role.slice(1) : 'User');
 </script>
@@ -80,7 +82,7 @@
 				<a
 					href={item.url}
 					class="flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-xs transition-colors
-						{page.url.pathname.startsWith(item.url) ? 'text-primary font-medium' : 'text-muted-foreground hover:text-foreground'}"
+						{pathname.startsWith(item.url) ? 'text-primary font-medium' : 'text-muted-foreground hover:text-foreground'}"
 				>
 					<item.icon class="size-5" />
 					<span>{item.title}</span>
@@ -94,6 +96,9 @@
 		<AppSidebar {user} />
 		<Sidebar.Inset>
 			<SiteHeader {user} />
+			<div class="px-4 pt-2">
+				<AppBreadcrumb />
+			</div>
 			<main class="mx-auto w-full max-w-5xl px-4 py-4">
 				{@render children?.()}
 			</main>

@@ -2,7 +2,7 @@ const API = process.env.API_BASE || 'http://localhost:3730';
 
 export const load = async ({ cookies, params }) => {
 	const token = cookies.get('mtsn_session');
-	const h = token ? { Authorization: `Bearer ${token}` } : {};
+	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
 	const id = params.id;
 
 	try {

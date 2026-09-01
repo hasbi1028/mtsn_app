@@ -10,10 +10,24 @@ import BookOpenIcon from '@lucide/svelte/icons/book-open';
 import UserIcon from '@lucide/svelte/icons/user';
 import UsersRoundIcon from '@lucide/svelte/icons/users-round';
 import GalleryVerticalEndIcon from "@lucide/svelte/icons/gallery-vertical-end";
+import ListMusicIcon from "@lucide/svelte/icons/list-music";
+import ShieldCheckIcon from "@lucide/svelte/icons/shield-check";
+import FileTextIcon2 from "@lucide/svelte/icons/file-badge";
+import CalendarClockIcon from "@lucide/svelte/icons/calendar-clock";
+import Volume2Icon from "@lucide/svelte/icons/volume-2";
+
+export interface NavItem {
+	title: string;
+	url: string;
+	icon?: any;
+	group: string;
+	roles?: string[];
+	children?: { title: string; url: string; icon?: any }[];
+}
 
 // group = nama modul yang menampilkan menu tsb. 'semua' selalu tampil.
 // roles = array role yang boleh lihat item ini. kosong = semua role.
-export const navItems = [
+export const navItems: NavItem[] = [
 	{
 		title: "Dashboard",
 		url: "/",
@@ -22,53 +36,46 @@ export const navItems = [
 		roles: ["admin", "kepsek", "guru", "staf"],
 	},
 	{
-		title: "Data PTK",
+		title: "PTK",
 		url: "/ptk",
 		icon: UsersIcon,
 		group: "PTK",
 		roles: ["admin", "kepsek"],
+		children: [
+			{ title: "Data PTK", url: "/ptk", icon: UsersIcon },
+		],
 	},
 	{
-		title: "Data Siswa",
+		title: "Kesiswaan",
 		url: "/siswa",
 		icon: GraduationCapIcon,
 		group: "Kesiswaan",
 		roles: ["admin", "kepsek", "guru", "staf"],
+		children: [
+			{ title: "Data Siswa", url: "/siswa", icon: GraduationCapIcon },
+		],
 	},
 	{
-		title: "SKMT",
+		title: "Dokumen",
 		url: "/skmt",
 		icon: FileTextIcon,
 		group: "Dokumen",
 		roles: ["admin", "kepsek", "guru"],
+		children: [
+			{ title: "SKMT", url: "/skmt", icon: FileTextIcon },
+			{ title: "SKBK", url: "/skbk", icon: ClipboardListIcon },
+			{ title: "SKAKPT", url: "/skakpt", icon: FileCheckIcon },
+		],
 	},
 	{
-		title: "SKBK",
-		url: "/skbk",
-		icon: ClipboardListIcon,
-		group: "Dokumen",
-		roles: ["admin", "kepsek", "guru"],
-	},
-	{
-		title: "SKAKPT",
-		url: "/skakpt",
-		icon: FileCheckIcon,
-		group: "Dokumen",
-		roles: ["admin", "kepsek", "guru"],
-	},
-	{
-		title: "Roster",
+		title: "Jadwal",
 		url: "/roster",
 		icon: CalendarDaysIcon,
 		group: "Jadwal",
 		roles: ["admin", "kepsek", "guru"],
-	},
-	{
-		title: "Aktivitas",
-		url: "/activity",
-		icon: BookOpenIcon,
-		group: "semua",
-		roles: ["admin", "kepsek", "guru", "staf"],
+		children: [
+			{ title: "Roster", url: "/roster", icon: CalendarClockIcon },
+		],
 	},
 	{
 		title: "Bel",
@@ -76,6 +83,17 @@ export const navItems = [
 		icon: BellIcon,
 		group: "Bel",
 		roles: ["admin", "staf"],
+		children: [
+			{ title: "Monitoring", url: "/bel", icon: BellIcon },
+			{ title: "Perpustakaan Suara", url: "/bel/suara", icon: Volume2Icon },
+		],
+	},
+	{
+		title: "Aktivitas",
+		url: "/activity",
+		icon: BookOpenIcon,
+		group: "semua",
+		roles: ["admin", "kepsek", "guru", "staf"],
 	},
 ];
 

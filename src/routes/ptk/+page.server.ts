@@ -2,7 +2,7 @@ const API = process.env.API_BASE || 'http://localhost:3730';
 
 export const load = async ({ cookies, url }) => {
 	const token = cookies.get('mtsn_session');
-	const h = token ? { Authorization: `Bearer ${token}` } : {};
+	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
 	const q = url.searchParams.get('q') || '';
 	const filter = url.searchParams.get('filter') || '';
 	const page = parseInt(url.searchParams.get('page') || '1', 10) || 1;

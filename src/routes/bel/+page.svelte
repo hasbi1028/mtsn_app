@@ -3,6 +3,7 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import PageLayout from '$lib/components/page-layout.svelte';
+	import ConfirmSubmit from '$lib/components/confirm-submit.svelte';
 	import { notify } from '$lib/toast';
 
 	let { data, form } = $props();
@@ -195,11 +196,16 @@
 										{x.aktif === 0 ? 'Aktifkan' : 'Nonaktifkan'}
 									</Button>
 								</form>
-								<form method="POST" action="?/delete" class="inline"
-									onsubmit={(e) => { if (!confirm('Hapus jadwal ini?')) e.preventDefault(); }}>
-									<input type="hidden" name="id" value={x.id} />
-									<Button type="submit" size="sm" variant="destructive" class="h-6 px-2 text-[10px] cursor-pointer">Hapus</Button>
-								</form>
+								<ConfirmSubmit
+									action="?/delete"
+									fields={{ id: x.id }}
+									title="Hapus jadwal bel?"
+									description={`Jadwal ${x.hari} ${x.jam} akan dihapus dari sistem.`}
+									confirmLabel="Hapus"
+									buttonClass="h-6 px-2 text-[10px] cursor-pointer"
+								>
+									Hapus
+								</ConfirmSubmit>
 							{:else}
 								<span class="text-[10px] text-muted-foreground">—</span>
 							{/if}

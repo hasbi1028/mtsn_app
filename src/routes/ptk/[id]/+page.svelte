@@ -110,6 +110,35 @@
 		</CardContent>
 	</Card>
 
+	<!-- SKBK -->
+	<Card>
+		<CardHeader class="pb-2"><CardTitle class="text-sm">Riwayat SKBK</CardTitle></CardHeader>
+		<CardContent>
+			{#if !p.skbk || p.skbk.length === 0}
+				<p class="text-xs text-muted-foreground">Belum ada ajuan SKBK.</p>
+			{:else}
+				<Table>
+					<TableHeader>
+						<TableRow><TableHead class="text-xs">Periode</TableHead><TableHead class="text-xs">JTM</TableHead><TableHead class="text-xs">Status</TableHead></TableRow>
+					</TableHeader>
+					<TableBody>
+						{#each p.skbk as s}
+							<TableRow>
+								<TableCell class="text-xs">{s.periode}</TableCell>
+								<TableCell class="text-xs">{s.jtmTotal ?? '—'} jam</TableCell>
+								<TableCell>
+									<Badge variant={s.status === 'Disetujui' ? 'default' : 'secondary'} class="text-[10px] {s.status === 'Disetujui' ? 'bg-green-600 text-white hover:bg-green-600' : ''}">
+										{s.status}
+									</Badge>
+								</TableCell>
+							</TableRow>
+						{/each}
+					</TableBody>
+				</Table>
+			{/if}
+		</CardContent>
+	</Card>
+
 	<!-- Dokumen -->
 	<Card>
 		<CardHeader class="pb-2"><CardTitle class="text-sm">Dokumen</CardTitle></CardHeader>

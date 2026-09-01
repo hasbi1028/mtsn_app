@@ -18,8 +18,9 @@
 	} = $props();
 </script>
 
-<Card>
+<Card class="shadow-sm">
 	<CardContent class="p-0">
+		<div class="w-full overflow-x-auto">
 		<Table>
 			<TableHeader>
 				<TableRow>
@@ -40,7 +41,7 @@
 				{:else}
 					{#each data as row}
 						<TableRow 
-							class={onRowClick ? 'cursor-pointer' : ''}
+							class="transition-colors hover:bg-muted/40 {onRowClick ? 'cursor-pointer' : ''}"
 							onclick={() => onRowClick?.(row)}
 						>
 							{#each columns as col}
@@ -57,5 +58,6 @@
 				{/if}
 			</TableBody>
 		</Table>
+		</div>
 	</CardContent>
 </Card>
