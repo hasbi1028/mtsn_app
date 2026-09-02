@@ -13,6 +13,7 @@ const segmentLabels: Record<string, string> = {
   dashboard: 'Dashboard',
   ptk: 'Data PTK',
   siswa: 'Data Siswa',
+  rombel: 'Rombel',
   profil: 'Profil',
   bansos: 'Bansos',
   cetak: 'Cetak',

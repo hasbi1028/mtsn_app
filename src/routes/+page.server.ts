@@ -15,10 +15,11 @@ export const load = async ({ cookies }) => {
 	const token = cookies.get('mtsn_session');
 	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
 
-	const [stats, bansosRaw] = await Promise.all([
+	const [stats, bansosRaw, rombelRaw] = await Promise.all([
 		fetch(`${API}/api/stats`, { headers: h }).then((r) => (r.ok ? r.json() : {})).catch(() => ({})),
-		fetch(`${API}/api/bansos/stats`, { headers: h }).then((r) => (r.ok ? r.json() : {})).catch(() => ({}))
-	]) as [Record<string, number>, BansosRaw];
+		fetch(`${API}/api/bansos/stats`, { headers: h }).then((r) => (r.ok ? r.json() : {})).catch(() => ({})),
+		fetch(`${API}/api/rombel/stats`, { headers: h }).then((r) => (r.ok ? r.json() : {})).catch(() => ({}))
+	]) as [Record<string, number>, BansosRaw, Record<string, any>];
 
 	// Transform bansos stats to frontend format
 	const totalSiswa = bansosRaw.total_siswa || 0;
@@ -59,6 +60,13 @@ export const load = async ({ cookies }) => {
 	return {
 		user: { username: 'hasbi' },
 		stats,
+		rombelStats: {
+			totalRombel: rombelRaw.total_rombel || 0,
+			teralokasi: rombelRaw.total_siswa_teralokasi || 0,
+			tanpa: rombelRaw.siswa_tanpa_rombel || 0,
+			totalSiswa: rombelRaw.total_siswa || 0,
+			perKelas: rombelRaw.per_kelas || {}
+		},
 		bansosStats: {
 			totalSiswa,
 			sudahCek,

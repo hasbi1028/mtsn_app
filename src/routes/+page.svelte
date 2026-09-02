@@ -11,10 +11,12 @@
 	import BellRing from '@lucide/svelte/icons/bell-ring';
 	import AlertTriangle from '@lucide/svelte/icons/alert-triangle';
 	import ShieldCheck from '@lucide/svelte/icons/shield-check';
+	import UsersRound from '@lucide/svelte/icons/users-round';
 
 	let { data } = $props();
 	const s = $derived(data.stats as Record<string, number>);
 	const bansos = $derived(data.bansosStats as any);
+	const rombelStats = $derived(data.rombelStats as any);
 
 	const attentionCards = $derived([
 		{
@@ -192,6 +194,66 @@
 						</a>
 					{/each}
 				</div>
+			</CardContent>
+		</Card>
+	</section>
+
+	<!-- Alokasi Rombel -->
+	<section>
+		<Card>
+			<CardHeader class="pb-2">
+				<CardTitle class="flex items-center gap-2 text-sm">
+					<UsersRound class="size-4 text-primary" />
+					Alokasi Rombel
+				</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<div class="grid grid-cols-2 gap-2 mb-3 md:grid-cols-4">
+					<div class="rounded-lg border p-3">
+						<p class="text-xs text-muted-foreground">Total Rombel</p>
+						<p class="text-xl font-bold">{rombelStats.totalRombel}</p>
+					</div>
+					<div class="rounded-lg border p-3">
+						<p class="text-xs text-muted-foreground">Siswa Teralokasi</p>
+						<p class="text-xl font-bold">{rombelStats.teralokasi}</p>
+					</div>
+					<div class="rounded-lg border border-amber-500/50 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950/40">
+						<p class="text-xs text-amber-700 dark:text-amber-300">Tanpa Rombel</p>
+						<p class="text-xl font-bold text-amber-700 dark:text-amber-300">{rombelStats.tanpa}</p>
+					</div>
+					<div class="rounded-lg border p-3">
+						<p class="text-xs text-muted-foreground">Progress</p>
+						<p class="text-xl font-bold">
+							{rombelStats.totalSiswa > 0 ? Math.round((rombelStats.teralokasi / rombelStats.totalSiswa) * 100) : 0}%
+						</p>
+					</div>
+				</div>
+
+				<!-- Progress per kelas -->
+				<div class="space-y-1.5">
+					{#each [7, 8, 9] as kelas}
+						{@const ks = rombelStats.perKelas[String(kelas)]}
+						{#if ks}
+							<div class="flex items-center gap-2">
+								<span class="w-14 shrink-0 text-xs">{kelas === 7 ? 'VII' : kelas === 8 ? 'VIII' : 'IX'}</span>
+								<div class="h-3 flex-1 overflow-hidden rounded bg-muted">
+									<div
+										class="h-full rounded transition-all {ks.tanpa > 0 ? 'bg-amber-500' : 'bg-green-500'}"
+										style="width: {ks.total > 0 ? ks.teralokasi / ks.total * 100 : 0}%"
+									></div>
+								</div>
+								<span class="w-16 text-right text-xs text-muted-foreground">{ks.teralokasi}/{ks.total}{#if ks.tanpa > 0} ({ks.tanpa}){/if}</span>
+							</div>
+						{/if}
+					{/each}
+				</div>
+
+				{#if rombelStats.tanpa > 0}
+					<div class="mt-3 flex items-start gap-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
+						<AlertTriangle class="mt-0.5 size-4 shrink-0" />
+						<span>{rombelStats.tanpa} siswa belum dialokasikan ke rombel. <a href="/rombel" class="underline">Kelola rombel</a></span>
+					</div>
+				{/if}
 			</CardContent>
 		</Card>
 	</section>

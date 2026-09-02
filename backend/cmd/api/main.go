@@ -84,6 +84,16 @@ func main() {
 	mux.HandleFunc("GET /api/ptk/{id}", s.auth(s.handlePtkDetail))
 	// skmt
 	mux.HandleFunc("GET /api/skmt", s.auth(s.handleSkmtList))
+	// rombel
+	mux.HandleFunc("GET /api/rombel", s.auth(s.handleRombelList))
+	mux.HandleFunc("GET /api/rombel/stats", s.auth(s.handleRombelStats))
+	mux.HandleFunc("GET /api/rombel/{id}", s.auth(s.handleRombelDetail))
+	mux.HandleFunc("POST /api/rombel", s.auth(s.handleRombelCreate))
+	mux.HandleFunc("PUT /api/rombel/{id}", s.auth(s.handleRombelUpdate))
+	mux.HandleFunc("DELETE /api/rombel/{id}", s.auth(s.handleRombelDelete))
+	mux.HandleFunc("POST /api/rombel/{id}/siswa", s.auth(s.handleRombelAllocate))
+	mux.HandleFunc("DELETE /api/rombel/{id}/siswa/{siswaId}", s.auth(s.handleRombelRemoveSiswa))
+	mux.HandleFunc("POST /api/rombel/{id}/wali", s.auth(s.handleRombelWali))
 	// roster
 	mux.HandleFunc("GET /api/roster", s.auth(s.handleRoster))
 	// dashboard
@@ -536,8 +546,22 @@ var jamUrut = `CASE r.jam_ke WHEN 'I' THEN 1 WHEN 'II' THEN 2 WHEN 'III' THEN 3 
 
 func (s *apiServer) handleRoster(w http.ResponseWriter, r *http.Request) {
 	kelas := r.URL.Query().Get("kelas")
-	if kelas == "" {
-		kelas = "IXA"
+	// daftar kelas dari tabel rombel (format "VII-A")
+	kelasList := []string{}
+	kRows, _ := s.db.Query(`SELECT nama FROM rombel WHERE aktif=1 ORDER BY kelas, label`)
+	if kRows != nil {
+		for kRows.Next() {
+			var nm string
+			kRows.Scan(&nm)
+			kelasList = append(kelasList, nm)
+		}
+		kRows.Close()
+	}
+	if len(kelasList) == 0 {
+		kelasList = []string{"VII-A", "VII-B", "VII-C", "VII-D", "VII-E", "VIII-A", "VIII-B", "VIII-C", "VIII-D", "IX-A", "IX-B", "IX-C"}
+	}
+	if kelas == "" && len(kelasList) > 0 {
+		kelas = kelasList[0]
 	}
 	rows, err := s.db.Query(`SELECT r.hari, r.jam_ke, r.mapel, r.guru_nama FROM roster r
 		WHERE r.kelas = ? ORDER BY `+hariUrut+`, `+jamUrut+`, kelas`, kelas)
@@ -552,7 +576,6 @@ func (s *apiServer) handleRoster(w http.ResponseWriter, r *http.Request) {
 		rows.Scan(&h, &j, &m, &g)
 		out = append(out, map[string]any{"hari": h.String, "jamKe": j.String, "mapel": m.String, "guru": g.String})
 	}
-	kelasList := []string{"VIIA", "VIIB", "VIIC", "VIID", "VIIE", "VIIIA", "VIIIB", "VIIIC", "VIIID", "IXA", "IXB", "IXC"}
 	writeJSON(w, 200, map[string]any{"kelas": kelas, "daftarKelas": kelasList, "rows": out})
 }
 
@@ -703,6 +726,260 @@ func (s *apiServer) handleSkakptBukti(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "image/png")
 	http.ServeFile(w, r, fp)
+}
+
+// ============================= ROMBEL =============================
+
+// GET /api/rombel — list semua rombel + stats ringkas
+func (s *apiServer) handleRombelList(w http.ResponseWriter, r *http.Request) {
+	rows, err := s.db.Query(`
+		SELECT r.id, r.nama, r.kelas, r.label, COALESCE(r.wali_ptk_id,0), r.kapasitas, r.aktif,
+			COALESCE(p.nama,'') AS wali_nama,
+			(SELECT COUNT(*) FROM siswa s WHERE s.rombel = r.nama) AS jml_siswa
+		FROM rombel r
+		LEFT JOIN ptk p ON r.wali_ptk_id = p.id
+		ORDER BY r.kelas, r.label`)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	defer rows.Close()
+	out := []map[string]any{}
+	for rows.Next() {
+		var id int64
+		var nama, label string
+		var kelas, waliId, kap, aktif, jml int
+		var wali string
+		rows.Scan(&id, &nama, &kelas, &label, &waliId, &kap, &aktif, &wali, &jml)
+		out = append(out, map[string]any{
+			"id": id, "nama": nama, "kelas": kelas, "label": label,
+			"wali_ptk_id": waliId, "wali_nama": wali, "kapasitas": kap, "aktif": aktif, "jml_siswa": jml,
+		})
+	}
+	writeJSON(w, 200, map[string]any{"rombels": out})
+}
+
+// GET /api/rombel/stats — ringkasan per kelas
+func (s *apiServer) handleRombelStats(w http.ResponseWriter, r *http.Request) {
+	// total per kelas
+	rows, err := s.db.Query(`
+		SELECT kelas, COUNT(*), SUM(CASE WHEN rombel IS NULL OR rombel='' THEN 1 ELSE 0 END)
+		FROM siswa GROUP BY kelas ORDER BY kelas`)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	defer rows.Close()
+	perKelas := map[string]map[string]any{}
+	totalSiswa, teralokasi, tanpa := 0, 0, 0
+	for rows.Next() {
+		var kelas, cnt, tanpaKelas int
+		rows.Scan(&kelas, &cnt, &tanpaKelas)
+		perKelas[fmt.Sprintf("%d", kelas)] = map[string]any{
+			"total": cnt, "teralokasi": cnt - tanpaKelas, "tanpa": tanpaKelas,
+		}
+		totalSiswa += cnt
+		tanpa += tanpaKelas
+		teralokasi += cnt - tanpaKelas
+	}
+	// jumlah rombel per kelas
+	var totalRombel int
+	s.db.QueryRow(`SELECT COUNT(*) FROM rombel WHERE aktif=1`).Scan(&totalRombel)
+	writeJSON(w, 200, map[string]any{
+		"total_rombel": totalRombel,
+		"total_siswa_teralokasi": teralokasi,
+		"siswa_tanpa_rombel": tanpa,
+		"total_siswa": totalSiswa,
+		"per_kelas": perKelas,
+	})
+}
+
+// GET /api/rombel/{id} — detail rombel + daftar siswa
+func (s *apiServer) handleRombelDetail(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	var rom map[string]any
+	row := s.db.QueryRow(`
+		SELECT r.id, r.nama, r.kelas, r.label, COALESCE(r.wali_ptk_id,0), r.kapasitas, r.aktif, COALESCE(p.nama,'')
+		FROM rombel r LEFT JOIN ptk p ON r.wali_ptk_id = p.id WHERE r.id = ?`, id)
+	var rid int64
+	var nama, label, wali string
+	var kelas, waliId, kap, aktif int
+	err := row.Scan(&rid, &nama, &kelas, &label, &waliId, &kap, &aktif, &wali)
+	if errors.Is(err, sql.ErrNoRows) {
+		fail(w, 404, "Rombel tidak ditemukan")
+		return
+	} else if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	// siswa di rombel ini
+	sRows, _ := s.db.Query(`SELECT id, nama, nis, nisn, jk, status_emis FROM siswa WHERE rombel = ? ORDER BY nama`, nama)
+	siswa := []map[string]any{}
+	if sRows != nil {
+		for sRows.Next() {
+			var id2 int64
+			var nm, nis, nisn, jk, status sql.NullString
+			sRows.Scan(&id2, &nm, &nis, &nisn, &jk, &status)
+			siswa = append(siswa, map[string]any{"id": id2, "nama": nm.String, "nis": nis.String, "nisn": nisn.String, "jk": jk.String, "statusEmis": status.String})
+		}
+		sRows.Close()
+	}
+	rom = map[string]any{
+		"id": rid, "nama": nama, "kelas": kelas, "label": label,
+		"wali_ptk_id": waliId, "wali_nama": wali, "kapasitas": kap, "aktif": aktif,
+		"jml_siswa": len(siswa), "siswa": siswa,
+	}
+	writeJSON(w, 200, rom)
+}
+
+// POST /api/rombel — buat rombel baru
+func (s *apiServer) handleRombelCreate(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Nama  string `json:"nama"`
+		Kelas int    `json:"kelas"`
+		Label string `json:"label"`
+		Kap   int    `json:"kapasitas"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		fail(w, 400, "body tidak valid")
+		return
+	}
+	if req.Nama == "" || req.Kelas < 7 || req.Kelas > 9 || req.Label == "" {
+		fail(w, 400, "nama, kelas, label wajib")
+		return
+	}
+	if req.Kap <= 0 {
+		req.Kap = 40
+	}
+	_, err := s.db.Exec(`INSERT INTO rombel (nama, kelas, label, kapasitas) VALUES (?,?,?,?)`,
+		req.Nama, req.Kelas, req.Label, req.Kap)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	writeJSON(w, 201, map[string]any{"ok": true, "pesan": "Rombel ditambahkan"})
+}
+
+// PUT /api/rombel/{id} — update kapasitas/aktif/nama
+func (s *apiServer) handleRombelUpdate(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	var req struct {
+		Nama     string `json:"nama"`
+		Kapasitas int   `json:"kapasitas"`
+		Aktif    *int   `json:"aktif"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		fail(w, 400, "body tidak valid")
+		return
+	}
+	// update kapasitas & aktif
+	_, err := s.db.Exec(`UPDATE rombel SET kapasitas=?, aktif=?, updated_at=datetime('now','localtime') WHERE id=?`,
+		req.Kapasitas, req.Aktif, id)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	// update nama? (jika siswa/roster sudah pakai nama lama, perlu hati-hati — skip dulu)
+	writeJSON(w, 200, map[string]any{"ok": true, "pesan": "Rombel diperbarui"})
+}
+
+// DELETE /api/rombel/{id} — hapus, tolak jika masih ada siswa
+func (s *apiServer) handleRombelDelete(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	var nama string
+	err := s.db.QueryRow(`SELECT nama FROM rombel WHERE id=?`, id).Scan(&nama)
+	if errors.Is(err, sql.ErrNoRows) {
+		fail(w, 404, "Rombel tidak ditemukan")
+		return
+	} else if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	var cnt int
+	s.db.QueryRow(`SELECT COUNT(*) FROM siswa WHERE rombel=?`, nama).Scan(&cnt)
+	if cnt > 0 {
+		fail(w, 400, fmt.Sprintf("Tidak bisa hapus: %d siswa masih di rombel %s", cnt, nama))
+		return
+	}
+	s.db.Exec(`DELETE FROM rombel WHERE id=?`, id)
+	writeJSON(w, 200, map[string]any{"ok": true, "pesan": "Rombel dihapus"})
+}
+
+// POST /api/rombel/{id}/siswa — alokasikan siswa ke rombel
+func (s *apiServer) handleRombelAllocate(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	var req struct {
+		SiswaIds []int `json:"siswa_ids"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		fail(w, 400, "body tidak valid")
+		return
+	}
+	if len(req.SiswaIds) == 0 {
+		fail(w, 400, "siswa_ids wajib")
+		return
+	}
+	var nama string
+	var kapasitas int
+	err := s.db.QueryRow(`SELECT nama, kapasitas FROM rombel WHERE id=?`, id).Scan(&nama, &kapasitas)
+	if errors.Is(err, sql.ErrNoRows) {
+		fail(w, 404, "Rombel tidak ditemukan")
+		return
+	} else if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	var cur int
+	s.db.QueryRow(`SELECT COUNT(*) FROM siswa WHERE rombel=?`, nama).Scan(&cur)
+	if cur+len(req.SiswaIds) > kapasitas {
+		fail(w, 400, "Melebihi kapasitas rombel")
+		return
+	}
+	tx, _ := s.db.Begin()
+	for _, sid := range req.SiswaIds {
+		tx.Exec(`UPDATE siswa SET rombel=? WHERE id=?`, nama, sid)
+	}
+	tx.Commit()
+	writeJSON(w, 200, map[string]any{"ok": true, "pesan": fmt.Sprintf("%d siswa dialokasikan ke %s", len(req.SiswaIds), nama)})
+}
+
+// DELETE /api/rombel/{id}/siswa/{siswaId} — keluarkan siswa dari rombel
+func (s *apiServer) handleRombelRemoveSiswa(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	siswaId := r.PathValue("siswaId")
+	var nama string
+	if err := s.db.QueryRow(`SELECT nama FROM rombel WHERE id=?`, id).Scan(&nama); err != nil {
+		fail(w, 404, "Rombel tidak ditemukan")
+		return
+	}
+	s.db.Exec(`UPDATE siswa SET rombel='' WHERE id=? AND rombel=?`, siswaId, nama)
+	writeJSON(w, 200, map[string]any{"ok": true, "pesan": "Siswa dikeluarkan"})
+}
+
+// POST /api/rombel/{id}/wali — assign wali kelas
+func (s *apiServer) handleRombelWali(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	var req struct {
+		PtkId int `json:"ptk_id"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		fail(w, 400, "body tidak valid")
+		return
+	}
+	if req.PtkId <= 0 {
+		fail(w, 400, "ptk_id wajib")
+		return
+	}
+	var nama string
+	if err := s.db.QueryRow(`SELECT nama FROM rombel WHERE id=?`, id).Scan(&nama); err != nil {
+		fail(w, 404, "Rombel tidak ditemukan")
+		return
+	}
+	s.db.Exec(`UPDATE rombel SET wali_ptk_id=?, updated_at=datetime('now','localtime') WHERE id=?`, req.PtkId, id)
+	// sync ke ptk.wali_kelas
+	s.db.Exec(`UPDATE ptk SET wali_kelas='' WHERE wali_kelas=?`, nama)
+	s.db.Exec(`UPDATE ptk SET wali_kelas=? WHERE id=?`, nama, req.PtkId)
+	writeJSON(w, 200, map[string]any{"ok": true, "pesan": "Wali kelas ditetapkan"})
 }
 
 func (s *apiServer) handleActivityLog(w http.ResponseWriter, r *http.Request) {
