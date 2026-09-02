@@ -26,13 +26,11 @@
 	const columns = [
 		{ key: 'nama', label: 'Nama' },
 		{ key: 'nisn', label: 'NISN', hideOnMobile: true },
+		{ key: 'nik', label: 'NIK', hideOnMobile: true },
+		{ key: 'nis', label: 'NIS Lokal', hideOnMobile: true },
 		{ key: 'jk', label: 'L/P' },
 		{ key: 'kelas', label: 'Kls' },
 		{ key: 'rombel', label: 'Rombel' },
-		{ key: 'bansos_desil', label: 'Desil', hideOnMobile: true },
-		{ key: 'bansos_sembako', label: 'Sembako', hideOnMobile: true },
-		{ key: 'bansos_pkh', label: 'PKH', hideOnMobile: true },
-		{ key: 'bansos_pbijk', label: 'PBI-JK', hideOnMobile: true },
 		{ key: 'status_emis', label: 'Status' },
 	];
 
@@ -87,22 +85,6 @@
 		if (p > 1) params.set('page', String(p));
 		const s = params.toString();
 		return `/siswa${s ? '?' + s : ''}`;
-	}
-
-	function desilBadgeVariant(desil: string | null): { text: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' } {
-		if (!desil || desil === '' || desil === 'TIDAK DITEMUKAN' || desil === 'BELUM ADA DESIL')
-			return { text: desil || '—', variant: 'outline' };
-		const num = parseInt(desil);
-		if (num >= 1 && num <= 4) return { text: desil, variant: 'default' };
-		if (num === 5) return { text: desil, variant: 'secondary' };
-		if (num >= 6 && num <= 10) return { text: desil, variant: 'destructive' };
-		return { text: desil, variant: 'outline' };
-	}
-
-	function yesNoBadgeVariant(val: string | null): { text: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' } {
-		if (!val || val === '' || val === 'TIDAK') return { text: '—', variant: 'outline' };
-		if (val === 'YA' || val.startsWith('YA')) return { text: 'YA', variant: 'default' };
-		return { text: val.substring(0, 10), variant: 'secondary' };
 	}
 
 	const activeSearch = $derived(Boolean(q));
@@ -178,25 +160,17 @@
 					</div>
 				</a>
 			{:else if column.key === 'nisn'}
-				<span class="text-xs {!row.nisn ? 'text-destructive font-medium' : ''}">{row.nisn ?? 'kosong'}</span>
-			{:else if column.key === 'jk'}
+					<span class="text-xs {!row.nisn ? 'text-destructive font-medium' : ''}">{row.nisn ?? 'kosong'}</span>
+				{:else if column.key === 'nik'}
+					<span class="text-xs {(!row.nik || row.nik === '') ? 'text-muted-foreground' : ''}">{row.nik || '—'}</span>
+				{:else if column.key === 'nis'}
+					<span class="text-xs {(!row.nis || row.nis === '') ? 'text-muted-foreground' : ''}">{row.nis || '—'}</span>
+				{:else if column.key === 'jk'}
 				<Badge variant={row.jk === 'L' ? 'secondary' : 'outline'} class="text-[10px] px-1.5 py-0">{row.jk ?? '?'}</Badge>
 			{:else if column.key === 'kelas'}
 				<span class="font-medium">{row.kelas}</span>
 			{:else if column.key === 'rombel'}
 				<span class="text-xs {(!row.rombel || row.rombel === '') ? 'text-destructive font-medium' : ''}">{row.rombel || '—'}</span>
-			{:else if column.key === 'bansos_desil'}
-				{@const badge = desilBadgeVariant(row.bansos_desil)}
-				<Badge variant={badge.variant} class="text-[10px]">{badge.text}</Badge>
-			{:else if column.key === 'bansos_sembako'}
-				{@const badge = yesNoBadgeVariant(row.bansos_sembako)}
-				<Badge variant={badge.variant} class="text-[10px]">{badge.text}</Badge>
-			{:else if column.key === 'bansos_pkh'}
-				{@const badge = yesNoBadgeVariant(row.bansos_pkh)}
-				<Badge variant={badge.variant} class="text-[10px]">{badge.text}</Badge>
-			{:else if column.key === 'bansos_pbijk'}
-				{@const badge = yesNoBadgeVariant(row.bansos_pbijk)}
-				<Badge variant={badge.variant} class="text-[10px]">{badge.text}</Badge>
 			{:else if column.key === 'status_emis'}
 				{#if row.status_emis === 'Tidak Aktif'}
 					<Badge variant="destructive" class="text-[10px] px-1.5 py-0">Non-Aktif</Badge>
