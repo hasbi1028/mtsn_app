@@ -6,11 +6,35 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import { Alert, AlertDescription } from '$lib/components/ui/alert/index.js';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import CheckCircle from '@lucide/svelte/icons/check-circle-2';
+	import XCircle from '@lucide/svelte/icons/x-circle';
+	import Eye from '@lucide/svelte/icons/eye';
+	import ImageIcon from '@lucide/svelte/icons/image';
 	let { data } = $props();
 	const p = $derived(data.p as any);
 	const jtm = $derived(p.jtm || {});
 	const totalJtm = $derived(Number(jtm.mengajar || 0) + Number(jtm.tugas || 0));
 	const emisDiffers = $derived(Number(jtm.dashboardTotal || 0) !== totalJtm);
+
+	// Modal 11 indikator & bukti
+	let detailOpen = $state(false);
+	let detailRow = $state<any>(null);
+	const detailIndikator = $derived((detailRow?.detail?.indikator as any[]) || []);
+	const detailUnmet = $derived((detailRow?.detail?.indikator_unmet as any[]) || []);
+	function lihatDetail(s: any) {
+		detailRow = s;
+		detailOpen = true;
+	}
+
+	let buktiOpen = $state(false);
+	let buktiUrl = $state('');
+	let buktiNama = $state('');
+	function lihatBukti(name: string, namaPtk: string) {
+		buktiUrl = `/api/skakpt/bukti/${encodeURIComponent(name)}`;
+		buktiNama = namaPtk;
+		buktiOpen = true;
+	}
 </script>
 
 <svelte:head><title>{p.nama} — MTsN App</title></svelte:head>
@@ -152,24 +176,54 @@
 		{:else}
 			<Table>
 				<TableHeader>
-					<TableRow><TableHead class="text-xs">Periode</TableHead><TableHead class="text-xs">Bulan</TableHead><TableHead class="text-xs">Status</TableHead><TableHead class="text-xs hideOnMobile">Aksi</TableHead></TableRow>
+					<TableRow><TableHead class="text-xs">Bulan</TableHead><TableHead class="text-xs">Syarat</TableHead><TableHead class="text-xs">Status</TableHead><TableHead class="text-xs">Aksi</TableHead></TableRow>
 				</TableHeader>
 				<TableBody>
 					{#each p.skakpt as s}
+						{@const det = s.detail as any}
+						{@const totalOk = Number(det?.totalOk ?? 0)}
+						{@const total = Number(det?.total ?? 11)}
+						{@const buktiRel = det?.bukti || ''}
+						{@const buktiName = buktiRel ? buktiRel.split('/').pop() : ''}
 						<TableRow>
-							<TableCell class="text-xs">{s.periode || '—'}</TableCell>
 							<TableCell class="text-xs">{s.bulan || '—'}</TableCell>
 							<TableCell>
-								<Badge variant={s.status === 'Disetujui' ? 'default' : 'secondary'} class="text-[10px] {s.status === 'Disetujui' ? 'bg-green-600 text-white hover:bg-green-600' : ''}">
-									{s.status}
-								</Badge>
+								{#if det}
+									<Badge variant={totalOk === total ? 'default' : 'destructive'} class="text-[10px]">
+										{totalOk}/{total}
+									</Badge>
+								{:else}
+									<span class="text-xs text-muted-foreground">—</span>
+								{/if}
+							</TableCell>
+							<TableCell>
+								{#if det?.layak && totalOk >= total}
+									<Badge class="text-[10px] bg-emerald-600 hover:bg-emerald-600 text-white">✓ Indikator Hijau (belum terbit)</Badge>
+								{:else if det?.indikator_unmet?.length > 0}
+									<Badge variant="destructive" class="text-[10px]">Belum Layak</Badge>
+								{:else if s.status === 'Disetujui' || s.status === 'Sudah Terbit'}
+									<Badge variant="default" class="text-[10px]">✓ Sudah Terbit</Badge>
+								{:else}
+									<Badge variant="secondary" class="text-[10px]">{s.status}</Badge>
+								{/if}
 							</TableCell>
 							<TableCell class="text-xs">
-								{#if s.status === 'Disetujui'}
-									{@const nama = p.nama.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_')}
-									{@const pdfUrl = `/uploads/skakpt/SKAKPT_${nama}_Juli2026.pdf`}
-									<PdfViewer src={pdfUrl} title="SKAKPT {p.nama} — Juli 2026" />
-								{/if}
+								<div class="flex flex-wrap gap-1.5">
+									{#if det}
+										<Button size="sm" variant="outline" class="h-6 text-[10px] cursor-pointer" onclick={() => lihatDetail(s)}>
+											<Eye class="size-3" /> Indikator
+										</Button>
+										{#if buktiName}
+											<Button size="sm" variant="outline" class="h-6 text-[10px] cursor-pointer" onclick={() => lihatBukti(buktiName, p.nama)}>
+												<ImageIcon class="size-3" /> Bukti
+											</Button>
+										{/if}
+									{/if}
+									{#if s.download}
+										{@const pdfUrl = `/uploads/skakpt/${s.filename || ''}`}
+										<PdfViewer src={pdfUrl} title="SKAKPT {p.nama} — {s.bulan || 'Juli 2026'}" />
+									{/if}
+								</div>
 							</TableCell>
 						</TableRow>
 					{/each}
@@ -225,3 +279,69 @@
 		</CardContent>
 	</Card>
 </div>
+
+<!-- Modal: 11 indikator kelayakan -->
+<Dialog.Root bind:open={detailOpen}>
+	<Dialog.Content class="max-w-2xl p-0 gap-0">
+		<Dialog.Header class="px-4 py-3 border-b">
+			<Dialog.Title class="text-sm">11 Indikator Kelayakan TPG — {p.nama}{detailRow?.bulan ? ` (${detailRow.bulan})` : ''}</Dialog.Title>
+			<div class="flex items-center gap-2 mt-1">
+				<Badge variant={detailUnmet.length === 0 ? 'default' : 'destructive'} class="text-[10px]">
+					{detailRow?.detail?.totalOk}/{detailRow?.detail?.total} terpenuhi
+				</Badge>
+				{#if detailUnmet.length > 0}
+					<span class="text-xs text-destructive">{detailUnmet.length} indikator merah</span>
+				{:else}
+					<span class="text-xs text-green-600">Semua terpenuhi</span>
+				{/if}
+			</div>
+		</Dialog.Header>
+		<div class="max-h-[65vh] overflow-auto px-4 py-3">
+			{#if detailIndikator.length === 0}
+				<p class="text-sm text-muted-foreground py-4 text-center">Belum ada detail indikator.</p>
+			{:else}
+				<ul class="space-y-2">
+					{#each detailIndikator as ind (ind.no)}
+						<li class="flex items-start gap-2 rounded-lg border p-2.5 {ind.ok ? 'border-green-200 bg-green-50/40 dark:border-green-900 dark:bg-green-950/20' : 'border-red-200 bg-red-50/40 dark:border-red-900 dark:bg-red-950/20'}">
+							{#if ind.ok}
+								<CheckCircle class="size-4 mt-0.5 shrink-0 text-green-600" />
+							{:else}
+								<XCircle class="size-4 mt-0.5 shrink-0 text-red-600" />
+							{/if}
+							<div class="min-w-0">
+								<div class="flex items-center gap-2">
+									<span class="text-xs font-medium">{ind.no}. {ind.nama}</span>
+									<Badge variant={ind.ok ? 'secondary' : 'destructive'} class="text-[9px]">
+										{ind.ok ? 'OK' : 'Belum'}
+									</Badge>
+								</div>
+								{#if ind.keterangan}
+									<p class="text-[11px] text-muted-foreground mt-0.5">{ind.keterangan}</p>
+								{/if}
+							</div>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+		</div>
+	</Dialog.Content>
+</Dialog.Root>
+
+<!-- Modal: bukti screenshot -->
+<Dialog.Root bind:open={buktiOpen}>
+	<Dialog.Content class="max-w-4xl p-0 gap-0">
+		<Dialog.Header class="px-4 py-3 border-b">
+			<Dialog.Title class="text-sm">Bukti SKAKPT — {buktiNama}</Dialog.Title>
+			<a href={buktiUrl} target="_blank" class="text-xs text-primary hover:underline">
+				Buka gambar di tab baru
+			</a>
+		</Dialog.Header>
+		<div class="max-h-[75vh] overflow-auto bg-muted/30">
+			{#if buktiUrl}
+				<img src={buktiUrl} alt="Bukti SKAKPT {buktiNama}" class="w-full max-w-3xl mx-auto" />
+			{:else}
+				<p class="p-8 text-center text-sm text-muted-foreground">Belum ada bukti</p>
+			{/if}
+		</div>
+	</Dialog.Content>
+</Dialog.Root>

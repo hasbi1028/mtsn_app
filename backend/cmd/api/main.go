@@ -89,6 +89,7 @@ func main() {
 	// dashboard
 	mux.HandleFunc("GET /api/skbk", s.auth(s.handleSkbkList))
 	mux.HandleFunc("GET /api/skakpt", s.auth(s.handleSkakptList))
+	mux.HandleFunc("GET /api/skakpt/months", s.auth(s.handleSkakptMonths))
 	mux.HandleFunc("GET /api/skakpt/bukti/{name}", s.auth(s.handleSkakptBukti))
 	mux.HandleFunc("GET /api/siswa", s.auth(s.handleSiswaList))
 	mux.HandleFunc("GET /api/siswa/{id}", s.auth(s.handleSiswaDetail))
@@ -432,21 +433,48 @@ func (s *apiServer) handlePtkDetail(w http.ResponseWriter, r *http.Request) {
 	}
 
 	skakpts := []map[string]any{}
-	rows5, _ := s.db.Query(`SELECT periode, bulan, status, tgl_ajuan, tgl_verifikasi FROM skakpt WHERE ptk_id = ? ORDER BY id DESC`, id)
+	// Nama file dasar untuk pengecekan PDF
+	namaFile := strings.ReplaceAll(strings.TrimSpace(nama.String), " ", "_")
+	namaFile = strings.ReplaceAll(namaFile, ".", "")
+	rows5, _ := s.db.Query(`SELECT periode, bulan, status, tgl_ajuan, tgl_verifikasi, COALESCE(detail,'') FROM skakpt WHERE ptk_id = ? ORDER BY id DESC`, id)
 	if rows5 != nil {
 		for rows5.Next() {
-			var per, bul, st, tglA, tglV sql.NullString
-			rows5.Scan(&per, &bul, &st, &tglA, &tglV)
+			var per, bul, st, tglA, tglV, det sql.NullString
+			rows5.Scan(&per, &bul, &st, &tglA, &tglV, &det)
+			var detObj any
+			if det.String != "" {
+				_ = json.Unmarshal([]byte(det.String), &detObj)
+			}
+			// Cek apakah PDF SKAKPT untuk bulan ini sudah ada (scan folder, toleran variasi nama)
+			bulanStr := bul.String
+			monthSlug := strings.ReplaceAll(bulanStr, " ", "")
+			firstToken := strings.Fields(strings.TrimSpace(nama.String))
+			firstWord := ""
+			if len(firstToken) > 0 {
+				firstWord = firstToken[0]
+			}
+			terbit := false
+			actualFileName := ""
+			matches, _ := filepath.Glob("C:/Users/LENOVO/webapp/mtsn_app/static/uploads/skakpt/*.pdf")
+			for _, fp := range matches {
+				fn := strings.ToLower(filepath.Base(fp))
+				if strings.Contains(fn, strings.ToLower(firstWord)) && strings.Contains(fn, strings.ToLower(monthSlug)) {
+					terbit = true
+					actualFileName = filepath.Base(fp)
+					break
+				}
+			}
 			skakpts = append(skakpts, map[string]any{
 				"periode": per.String, "bulan": bul.String, "status": st.String,
 				"tglAjuan": tglA.String, "tglVerifikasi": tglV.String,
+				"detail": detObj, "download": terbit, "filename": actualFileName,
 			})
 		}
 		rows5.Close()
 	}
 
 	// Tambah SKBK & SKAKPT PDF jika sudah Disetujui
-	namaFile := strings.ReplaceAll(strings.TrimSpace(nama.String), " ", "_")
+	namaFile = strings.ReplaceAll(strings.TrimSpace(nama.String), " ", "_")
 	namaFile = strings.ReplaceAll(namaFile, ".", "")
 	for _, sk := range skbks {
 		if sk["status"] == "Disetujui" {
@@ -456,7 +484,12 @@ func (s *apiServer) handlePtkDetail(w http.ResponseWriter, r *http.Request) {
 	}
 	for _, sa := range skakpts {
 		if sa["status"] == "Disetujui" {
-			skakptPath := "/uploads/skakpt/SKAKPT_" + namaFile + "_Juli2026.pdf"
+			bulanStr, _ := sa["bulan"].(string)
+			if bulanStr == "" {
+				bulanStr = "Juli 2026"
+			}
+			monthSlug := strings.ReplaceAll(bulanStr, " ", "")
+			skakptPath := "/uploads/skakpt/SKAKPT_" + namaFile + "_" + monthSlug + ".pdf"
 			doks = append(doks, map[string]any{"jenis": "SKAKPT", "filePath": skakptPath, "periode": sa["bulan"]})
 		}
 	}
@@ -631,6 +664,25 @@ func (s *apiServer) handleSkakptList(w http.ResponseWriter, r *http.Request) {
 			"layak": layak, "totalOk": totalOk, "totalIndikator": total,
 			"detail": detailObj,
 		})
+	}
+	writeJSON(w, 200, out)
+}
+
+// handleSkakptMonths mengembalikan daftar bulan yang punya data skakpt (terbaru dulu)
+func (s *apiServer) handleSkakptMonths(w http.ResponseWriter, r *http.Request) {
+	rows, err := s.db.Query(`SELECT DISTINCT bulan FROM skakpt WHERE bulan != '' AND bulan IS NOT NULL ORDER BY id DESC`)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	defer rows.Close()
+	out := []string{}
+	for rows.Next() {
+		var b sql.NullString
+		rows.Scan(&b)
+		if b.String != "" {
+			out = append(out, b.String)
+		}
 	}
 	writeJSON(w, 200, out)
 }

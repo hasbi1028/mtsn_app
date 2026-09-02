@@ -17,8 +17,9 @@
 	let { data } = $props();
 	const rows = $derived(data.rows as any[]);
 	const bulanActive = $derived(data.bulan || '');
+	const allMonths = $derived((data.allMonths as string[]) || []);
 
-	const bulanOptions = $derived([...new Set(rows.map((r) => r.bulan).filter(Boolean))]);
+	const bulanOptions = $derived(allMonths.length > 0 ? allMonths : [...new Set(rows.map((r) => r.bulan).filter(Boolean))]);
 
 	const layakCount = $derived(rows.filter((r) => r.status === 'Sudah Terbit').length);
 	const indikatorLengkapCount = $derived(rows.filter((r) => r.status === 'Indikator Lengkap').length);
@@ -124,11 +125,15 @@
 			{:else if column.key === 'nuptk'}
 				<span class="text-xs text-muted-foreground">{row.nuptk ?? '—'}</span>
 			{:else if column.key === 'syarat'}
-				{@const totalOk = Number(row.detail?.totalOk ?? 0)}
-				{@const total = Number(row.detail?.total ?? 11)}
-				<Badge variant={totalOk === total ? 'default' : 'destructive'} class="text-[10px]">
-					{totalOk}/{total}
-				</Badge>
+				{#if row.detail}
+					{@const totalOk = Number(row.detail?.totalOk ?? 0)}
+					{@const total = Number(row.detail?.total ?? 11)}
+					<Badge variant={totalOk === total ? 'default' : 'destructive'} class="text-[10px]">
+						{totalOk}/{total}
+					</Badge>
+				{:else}
+					<span class="text-xs text-muted-foreground">—</span>
+				{/if}
 			{:else if column.key === 'status'}
 				{#if row.status === 'Sudah Terbit'}
 					<Badge variant="default" class="text-[10px]">✓ Sudah Terbit</Badge>
