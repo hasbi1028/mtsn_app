@@ -89,6 +89,7 @@ func main() {
 	// dashboard
 	mux.HandleFunc("GET /api/skbk", s.auth(s.handleSkbkList))
 	mux.HandleFunc("GET /api/skakpt", s.auth(s.handleSkakptList))
+	mux.HandleFunc("GET /api/skakpt/bukti/{name}", s.auth(s.handleSkakptBukti))
 	mux.HandleFunc("GET /api/siswa", s.auth(s.handleSiswaList))
 	mux.HandleFunc("GET /api/siswa/{id}", s.auth(s.handleSiswaDetail))
 	mux.HandleFunc("GET /api/siswa/{id}/bansos", s.auth(s.handleSiswaBansos))
@@ -547,11 +548,26 @@ func (s *apiServer) handleSkbkList(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *apiServer) handleSkakptList(w http.ResponseWriter, r *http.Request) {
-	rows, err := s.db.Query(`SELECT COALESCE(s.id,0), p.nama, COALESCE(p.nuptk,'') AS nuptk,
-		COALESCE(s.bulan,''), COALESCE(s.status,''), COALESCE(s.tgl_ajuan,'')
-		FROM ptk p LEFT JOIN skakpt s ON p.id = s.ptk_id
-		WHERE p.sertifikasi = 1
-		ORDER BY CASE WHEN s.status='Menunggu Verifikasi' THEN 0 WHEN s.id IS NULL THEN 1 ELSE 2 END, p.nama`)
+	// Filter bulan (optional). Default: ambil semua bulan, dedupe per PTK per bulan.
+	bulanFilter := r.URL.Query().Get("bulan")
+	var rows *sql.Rows
+	var err error
+	if bulanFilter != "" {
+		rows, err = s.db.Query(`SELECT COALESCE(s.id,0), p.nama, COALESCE(p.nuptk,'') AS nuptk,
+			COALESCE(s.bulan,''), COALESCE(s.status,''), COALESCE(s.tgl_ajuan,'' ), COALESCE(s.detail,'')
+			FROM ptk p LEFT JOIN skakpt s ON p.id = s.ptk_id AND s.bulan = ?
+			WHERE p.sertifikasi = 1
+			ORDER BY p.nama`, bulanFilter)
+	} else {
+		// Tanpa filter: ambil baris skakpt terbaru per PTK (OR-der by bulan desc)
+		rows, err = s.db.Query(`SELECT COALESCE(s.id,0), p.nama, COALESCE(p.nuptk,'') AS nuptk,
+			COALESCE(s.bulan,''), COALESCE(s.status,''), COALESCE(s.tgl_ajuan,'' ), COALESCE(s.detail,'')
+			FROM ptk p
+			LEFT JOIN skakpt s ON p.id = s.ptk_id
+				AND s.bulan = (SELECT bulan FROM skakpt s2 WHERE s2.ptk_id = p.id ORDER BY s2.id DESC LIMIT 1)
+			WHERE p.sertifikasi = 1
+			ORDER BY p.nama`)
+	}
 	if err != nil {
 		fail(w, 500, err.Error())
 		return
@@ -560,30 +576,81 @@ func (s *apiServer) handleSkakptList(w http.ResponseWriter, r *http.Request) {
 	out := []map[string]any{}
 	for rows.Next() {
 		var id int64
-		var nama, nuptk, bulan, st, tgl sql.NullString
-		rows.Scan(&id, &nama, &nuptk, &bulan, &st, &tgl)
-		// Tentukan apakah PDF sudah ada
+		var nama, nuptk, bulan, st, tgl, detail sql.NullString
+		rows.Scan(&id, &nama, &nuptk, &bulan, &st, &tgl, &detail)
+		// Tentukan bulan dari data (default Juli 2026 jika kosong)
+		bulanStr := bulan.String
+		if bulanStr == "" {
+			bulanStr = "Juli 2026"
+		}
+		// Parse detail JSON (11 indikator)
+		var detailObj any
+		layak := false
+		totalOk := 0
+		total := 0
+		if detail.String != "" {
+			_ = json.Unmarshal([]byte(detail.String), &detailObj)
+			if dm, ok := detailObj.(map[string]any); ok {
+				if l, ok := dm["layak"].(bool); ok {
+					layak = l
+				}
+				if n, ok := dm["totalOk"].(float64); ok {
+					totalOk = int(n)
+				}
+				if n, ok := dm["total"].(float64); ok {
+					total = int(n)
+				}
+			}
+		}
+		// PDF filename mengikuti bulan
 		cleanName := strings.ReplaceAll(strings.TrimSpace(nama.String), " ", "_")
 		cleanName = strings.ReplaceAll(cleanName, ",", "")
-		pdfFile := "SKAKPT_" + cleanName + "_Juli2026.pdf"
+		monthSlug := strings.ReplaceAll(bulanStr, " ", "")
+		pdfFile := "SKAKPT_" + cleanName + "_" + monthSlug + ".pdf"
 		pdfPath := filepath.Join("C:/Users/LENOVO/webapp/mtsn_app/static/uploads/skakpt", pdfFile)
 		pdfExists, _ := os.Stat(pdfPath)
 		terbit := pdfExists != nil
+		// Status: prioritas PDF (sudah terbit) > indikator lengkap > kondisi lama > belum
 		status := "Belum Terbit"
 		if terbit {
 			status = "Sudah Terbit"
+		} else if layak && totalOk >= total && total > 0 {
+			status = "Indikator Lengkap" // hijau 11/11 tapi SKAKPT belum diterbitkan
+		} else if st.String == "Belum Layak" {
+			status = "Belum Layak"
 		} else if st.String == "Menunggu Verifikasi" {
 			status = "Menunggu Verifikasi"
 		} else if st.String == "Disetujui" {
+			// Fallback kondisi lama (Juli): detail kosong tapi sudah disetujui
 			status = "Sudah Terbit"
 		}
 		out = append(out, map[string]any{
 			"ptkId": id, "nama": nama.String, "nuptk": nuptk.String,
-			"bulan": bulan.String, "status": status, "tglAjuan": tgl.String,
+			"bulan": bulanStr, "status": status, "tglAjuan": tgl.String,
 			"download": terbit, "filename": pdfFile,
+			"layak": layak, "totalOk": totalOk, "totalIndikator": total,
+			"detail": detailObj,
 		})
 	}
 	writeJSON(w, 200, out)
+}
+
+// handleSkakptBukti melayani file screenshot bukti dari output/bukti-skakpt/
+func (s *apiServer) handleSkakptBukti(w http.ResponseWriter, r *http.Request) {
+	name := r.PathValue("name")
+	// Anti path traversal
+	if name == "" || strings.Contains(name, "..") || strings.Contains(name, "/") || strings.Contains(name, "\\") {
+		http.NotFound(w, r)
+		return
+	}
+	base := "C:/Users/LENOVO/webapp/mtsn_app/output/bukti-skakpt"
+	fp := filepath.Join(base, name)
+	if _, err := os.Stat(fp); err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	w.Header().Set("Content-Type", "image/png")
+	http.ServeFile(w, r, fp)
 }
 
 func (s *apiServer) handleActivityLog(w http.ResponseWriter, r *http.Request) {

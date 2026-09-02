@@ -1,11 +1,14 @@
 const API = process.env.API_BASE || 'http://localhost:3730';
 
-export const load = async ({ cookies }) => {
+export const load = async ({ cookies, url }) => {
 	const token = cookies.get('mtsn_session');
 	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
-	const res = await fetch(`${API}/api/skakpt`, { headers: h });
+	const bulan = url.searchParams.get('bulan') || '';
+
+	const qs = bulan ? `?bulan=${encodeURIComponent(bulan)}` : '';
+	const res = await fetch(`${API}/api/skakpt${qs}`, { headers: h });
 	const rows = res.ok ? await res.json() : [];
-	return { rows };
+	return { rows, bulan };
 };
 
 export const actions = {
