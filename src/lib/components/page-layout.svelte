@@ -6,12 +6,14 @@
 		description,
 		actions,
 		filters,
+		stats,
 		children,
 	}: {
 		title: string;
 		description?: string;
 		actions?: Snippet;
 		filters?: Snippet;
+		stats?: Snippet;
 		children?: Snippet;
 	} = $props();
 </script>
@@ -35,6 +37,10 @@
 		<div class="rounded-lg border bg-card/60 px-3 py-2">
 			{@render filters()}
 		</div>
+	{/if}
+
+	{#if stats}
+		{@render stats()}
 	{/if}
 
 	{@render children?.()}

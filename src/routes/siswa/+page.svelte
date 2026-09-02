@@ -37,7 +37,7 @@
 	];
 
 	// Nilai form dikirim sebagai URL search params ke server.
-	let q = $state(data.q || '');
+	let q = $state('');
 
 	// Sinkronkan kembali input setiap kali URL search params berubah.
 	// Ini penting karena navigasi GET SvelteKit mempertahankan instance komponen.
@@ -89,21 +89,20 @@
 		return `/siswa${s ? '?' + s : ''}`;
 	}
 
-	function desilBadgeClass(desil: string | null): string {
-		if (!desil || desil === '' || desil === 'TIDAK DITEMUKAN' || desil === 'BELUM ADA DESIL') {
-			return 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400';
-		}
+	function desilBadgeVariant(desil: string | null): { text: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' } {
+		if (!desil || desil === '' || desil === 'TIDAK DITEMUKAN' || desil === 'BELUM ADA DESIL')
+			return { text: desil || '—', variant: 'outline' };
 		const num = parseInt(desil);
-		if (num >= 1 && num <= 4) return 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300';
-		if (num === 5) return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300';
-		if (num >= 6 && num <= 10) return 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300';
-		return 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400';
+		if (num >= 1 && num <= 4) return { text: desil, variant: 'default' };
+		if (num === 5) return { text: desil, variant: 'secondary' };
+		if (num >= 6 && num <= 10) return { text: desil, variant: 'destructive' };
+		return { text: desil, variant: 'outline' };
 	}
 
-	function yesNoBadge(val: string | null): { text: string; class: string } {
-		if (!val || val === '' || val === 'TIDAK') return { text: '—', class: 'bg-gray-100 text-gray-500' };
-		if (val === 'YA' || val.startsWith('YA')) return { text: 'YA', class: 'bg-green-100 text-green-700' };
-		return { text: val.substring(0, 10), class: 'bg-blue-100 text-blue-700' };
+	function yesNoBadgeVariant(val: string | null): { text: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' } {
+		if (!val || val === '' || val === 'TIDAK') return { text: '—', variant: 'outline' };
+		if (val === 'YA' || val.startsWith('YA')) return { text: 'YA', variant: 'default' };
+		return { text: val.substring(0, 10), variant: 'secondary' };
 	}
 
 	const activeSearch = $derived(Boolean(q));
@@ -163,7 +162,7 @@
 			<div class="rounded-lg border border-primary/40 bg-primary/5 p-3">
 				<p class="text-xs text-muted-foreground">Total</p>
 				<p class="text-xl font-bold">{data.total}</p>
-				<p class="text-[11px] text-muted-foreground">12 rombel</p>
+				<p class="text-[11px] text-muted-foreground">{rekap.length} kelas</p>
 			</div>
 		</div>
 	{/if}
@@ -187,24 +186,17 @@
 			{:else if column.key === 'rombel'}
 				<span class="text-xs {(!row.rombel || row.rombel === '') ? 'text-destructive font-medium' : ''}">{row.rombel || '—'}</span>
 			{:else if column.key === 'bansos_desil'}
-				<span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium {desilBadgeClass(row.bansos_desil)}">
-					{row.bansos_desil || '—'}
-				</span>
+				{@const badge = desilBadgeVariant(row.bansos_desil)}
+				<Badge variant={badge.variant} class="text-[10px]">{badge.text}</Badge>
 			{:else if column.key === 'bansos_sembako'}
-				{@const badge = yesNoBadge(row.bansos_sembako)}
-				<span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium {badge.class}">
-					{badge.text}
-				</span>
+				{@const badge = yesNoBadgeVariant(row.bansos_sembako)}
+				<Badge variant={badge.variant} class="text-[10px]">{badge.text}</Badge>
 			{:else if column.key === 'bansos_pkh'}
-				{@const badge = yesNoBadge(row.bansos_pkh)}
-				<span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium {badge.class}">
-					{badge.text}
-				</span>
+				{@const badge = yesNoBadgeVariant(row.bansos_pkh)}
+				<Badge variant={badge.variant} class="text-[10px]">{badge.text}</Badge>
 			{:else if column.key === 'bansos_pbijk'}
-				{@const badge = yesNoBadge(row.bansos_pbijk)}
-				<span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium {badge.class}">
-					{badge.text}
-				</span>
+				{@const badge = yesNoBadgeVariant(row.bansos_pbijk)}
+				<Badge variant={badge.variant} class="text-[10px]">{badge.text}</Badge>
 			{:else if column.key === 'status_emis'}
 				{#if row.status_emis === 'Tidak Aktif'}
 					<Badge variant="destructive" class="text-[10px] px-1.5 py-0">Non-Aktif</Badge>

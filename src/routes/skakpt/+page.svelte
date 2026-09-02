@@ -59,7 +59,7 @@
 				</Badge>
 			{:else if column.key === 'status'}
 				{#if row.status === 'Sudah Terbit' || row.download}
-					<Badge variant="default" class="text-[10px] bg-green-600 hover:bg-green-700">
+					<Badge variant="default" class="text-[10px]">
 						✓ Sudah Terbit
 					</Badge>
 				{:else}

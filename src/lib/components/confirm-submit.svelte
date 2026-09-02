@@ -1,4 +1,5 @@
 <script lang="ts">
+	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import type { Snippet } from 'svelte';
 
@@ -23,28 +24,31 @@
 		buttonClass?: string;
 		children?: Snippet;
 	} = $props();
-
-	let open = $state(false);
 </script>
 
-<Button type="button" size="sm" {variant} class={buttonClass} onclick={() => (open = true)}>
-	{@render children?.()}
-</Button>
-
-{#if open}
-	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4" role="presentation">
-		<div class="w-full max-w-sm rounded-lg border bg-background p-4 shadow-xl" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-description">
-			<div class="space-y-1">
-				<h2 id="confirm-title" class="text-base font-semibold">{title}</h2>
-				<p id="confirm-description" class="text-sm text-muted-foreground">{description}</p>
-			</div>
-			<form method="POST" {action} class="mt-4 flex justify-end gap-2">
-				{#each Object.entries(fields) as [name, value] (name)}
-					<input type="hidden" {name} value={String(value ?? '')} />
-				{/each}
-				<Button type="button" variant="outline" size="sm" onclick={() => (open = false)}>{cancelLabel}</Button>
-				<Button type="submit" variant="destructive" size="sm">{confirmLabel}</Button>
-			</form>
-		</div>
-	</div>
-{/if}
+<AlertDialog.Root>
+	<AlertDialog.Trigger>
+		{#snippet child({ props })}
+			<Button type="button" size="sm" {variant} class={buttonClass} {...props}>
+				{@render children?.()}
+			</Button>
+		{/snippet}
+	</AlertDialog.Trigger>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>{title}</AlertDialog.Title>
+			<AlertDialog.Description>{description}</AlertDialog.Description>
+		</AlertDialog.Header>
+		<form method="POST" {action} class="flex justify-end gap-2">
+			{#each Object.entries(fields) as [name, value] (name)}
+				<input type="hidden" {name} value={String(value ?? '')} />
+			{/each}
+			<AlertDialog.Cancel>
+				{#snippet child({ props })}
+					<Button type="button" variant="outline" size="sm" {...props}>{cancelLabel}</Button>
+				{/snippet}
+			</AlertDialog.Cancel>
+			<Button type="submit" variant="destructive" size="sm">{confirmLabel}</Button>
+		</form>
+	</AlertDialog.Content>
+</AlertDialog.Root>

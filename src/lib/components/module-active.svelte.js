@@ -1,5 +1,14 @@
-// Store modul aktif di sidebar module switcher.
-import { writable } from 'svelte/store';
+// Store modul aktif di sidebar module switcher — Svelte 5 runes mode.
+// File .svelte.js enables runes at module level.
 
-// 'semua' = tampilkan semua menu. Nilai lain = nama modul (misal 'PTK', 'Kesiswaan').
-export const activeModule = writable('semua');
+let _activeModule = $state('semua');
+
+/** @returns {string} */
+export function getActiveModule() {
+	return _activeModule;
+}
+
+/** @param {string} value */
+export function setActiveModule(value) {
+	_activeModule = value;
+}

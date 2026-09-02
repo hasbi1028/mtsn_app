@@ -48,16 +48,6 @@
 						<p class="text-balance text-muted-foreground">Masuk ke akun MTsN 2 Kolaka Utara Anda</p>
 					</div>
 
-					{#if form?.error}
-						<div 
-							class="rounded-md bg-destructive/10 border border-destructive/30 px-3 py-2 text-sm text-destructive"
-							role="alert"
-							aria-live="assertive"
-						>
-							{form.error}
-						</div>
-					{/if}
-
 					<Field>
 						<FieldLabel for="username">Username</FieldLabel>
 						<Input 

@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
 	import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
-	import { activeModule } from './module-active.svelte.js';
+	import { getActiveModule } from './module-active.svelte.js';
 	import NavSubItem from './nav-sub-item.svelte';
 
 	let {
@@ -18,7 +18,7 @@
 		}[];
 	} = $props();
 
-	const modul = $derived($activeModule);
+	const modul = $derived(getActiveModule());
 	const visible = $derived(modul === 'semua' ? items : items.filter((i) => i.group === modul));
 
 	// Dibaca di top-level komponen (bukan dalam #each) -> hydration-safe

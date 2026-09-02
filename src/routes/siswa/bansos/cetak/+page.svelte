@@ -581,12 +581,6 @@
 			border: none;
 		}
 
-		body {
-			background: #fff;
-			margin: 0;
-			padding: 0;
-		}
-
 		.status-ya,
 		.status-tidak {
 			print-color-adjust: exact;

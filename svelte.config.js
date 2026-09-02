@@ -6,7 +6,7 @@ const config = {
 	preprocess: vitePreprocess(),
 	kit: {
 		adapter: adapter(),
-		csrf: { checkOrigin: false, trustedOrigins: ['http://localhost:3720', 'http://127.0.0.1:3720'] }
+		csrf: { trustedOrigins: ['http://localhost:3720', 'http://127.0.0.1:3720'] }
 	}
 };
 

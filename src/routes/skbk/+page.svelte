@@ -30,7 +30,7 @@
 			{#if column.key === 'nama'}
 				<a href="/ptk/{row.ptkId}" class="font-medium text-sm hover:underline">{row.nama}</a>
 			{:else if column.key === 'status'}
-				<Badge variant={row.status === 'Disetujui' ? 'default' : row.status === 'Sudah Diajukan' ? 'secondary' : 'destructive'} class="text-[10px] {row.status === 'Disetujui' ? 'bg-green-600 text-white hover:bg-green-600' : ''}">
+				<Badge variant={row.status === 'Disetujui' ? 'default' : row.status === 'Sudah Diajukan' ? 'secondary' : 'destructive'} class="text-[10px]">
 					{row.status}
 				</Badge>
 			{:else}

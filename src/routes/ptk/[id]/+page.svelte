@@ -9,7 +9,8 @@
 	let { data } = $props();
 	const p = $derived(data.p as any);
 	const jtm = $derived(p.jtm || {});
-	const totalJtm = $derived((jtm.mengajar || 0) + (jtm.tugas || 0));
+	const totalJtm = $derived(Number(jtm.mengajar || 0) + Number(jtm.tugas || 0));
+	const emisDiffers = $derived(Number(jtm.dashboardTotal || 0) !== totalJtm);
 </script>
 
 <svelte:head><title>{p.nama} — MTsN App</title></svelte:head>
@@ -72,7 +73,7 @@
 						{/if}
 						{#if jtm.dashboardTotal != null}
 							<TableRow><TableCell class="text-muted-foreground text-xs">Dashboard EMIS</TableCell><TableCell class="text-xs">{jtm.dashboardTotal}</TableCell></TableRow>
-							{#if jtm.dashboardTotal != totalJtm}
+							{#if emisDiffers}
 								<TableRow><TableCell colspan="2" class="text-[10px] text-muted-foreground italic">* EMIS termasuk tugas tambahan lain</TableCell></TableRow>
 							{/if}
 						{/if}

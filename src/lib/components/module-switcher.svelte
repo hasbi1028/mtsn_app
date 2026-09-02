@@ -12,7 +12,7 @@
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
 	import { useSidebar } from "$lib/components/ui/sidebar/index.js";
-	import { activeModule } from './module-active.svelte.js';
+	import { getActiveModule, setActiveModule } from './module-active.svelte.js';
 
 	const sidebar = useSidebar();
 
@@ -29,7 +29,7 @@
 	];
 
 	let activeModules = $derived(modules.filter(m => m.active));
-	let activeKey = $derived($activeModule);
+	let activeKey = $derived(getActiveModule());
 	let inactiveModules = $derived(modules.filter(m => !m.active));
 </script>
 
@@ -64,7 +64,7 @@
 				{#each activeModules as mod (mod.name)}
 					<DropdownMenu.Item class="gap-2 p-2" data-active={activeKey === (mod.key ?? '')}>
 						{#snippet child({ props })}
-							<a {...props} href={mod.url} onclick={() => activeModule.set(mod.key ?? 'semua')} class="flex w-full items-center gap-2">
+							<a {...props} href={mod.url} onclick={() => setActiveModule(mod.key ?? 'semua')} class="flex w-full items-center gap-2">
 								<div class="flex size-6 items-center justify-center rounded-md {activeKey === (mod.key ?? '') ? 'bg-sidebar-primary text-sidebar-primary-foreground' : 'bg-sidebar-accent text-sidebar-accent-foreground'}">
 									<mod.icon class="size-3.5 shrink-0" />
 								</div>
