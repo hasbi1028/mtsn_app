@@ -91,15 +91,22 @@ export const navItems: NavItem[] = [
 		],
 	},
 	{
-		title: "Aktivitas",
-		url: "/activity",
-		icon: BookOpenIcon,
-		group: "semua",
-		roles: ["admin", "kepsek", "guru", "staf"],
-	},
-];
+			title: "Aktivitas",
+			url: "/activity",
+			icon: BookOpenIcon,
+			group: "semua",
+			roles: ["admin", "kepsek", "guru", "staf"],
+		},
+		{
+			title: "Persetujuan",
+			url: "/approval",
+			icon: ShieldCheckIcon,
+			group: "semua",
+			roles: ["admin", "kepsek", "staf"],
+		},
+	];
 
-/** Siswa/ortu minimal navigation (shown outside sidebar) */
+	/** Siswa/ortu minimal navigation (shown outside sidebar) */
 export const siswaNavItems = [
 	{
 		title: "Profil Saya",

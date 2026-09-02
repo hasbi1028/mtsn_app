@@ -108,6 +108,16 @@ func main() {
 	mux.HandleFunc("GET /api/siswa/{id}/kartu.png", s.auth(s.handleSiswaKartuPNG))
 	mux.HandleFunc("GET /api/siswa/kartu/list", s.auth(s.handleKartuList))
 	mux.HandleFunc("POST /api/siswa/kartu/generate-all", s.auth(s.handleKartuGenerateAll))
+	// profile siswa sendiri + approval foto
+	mux.HandleFunc("GET /api/siswa/me", s.auth(s.handleSiswaMe))
+	mux.HandleFunc("POST /api/siswa/me/foto", s.auth(s.handleSiswaMeFotoUpload))
+	mux.HandleFunc("POST /api/siswa/me/perubahan", s.auth(s.handleSiswaMePerubahan))
+	mux.HandleFunc("GET /api/approval/foto", s.auth(s.handleApprovalFotoList))
+	mux.HandleFunc("POST /api/approval/foto/{id}/approve", s.auth(s.handleApprovalFotoApprove))
+	mux.HandleFunc("POST /api/approval/foto/{id}/reject", s.auth(s.handleApprovalFotoReject))
+	mux.HandleFunc("GET /api/approval/perubahan", s.auth(s.handleApprovalPerubahanList))
+	mux.HandleFunc("POST /api/approval/perubahan/{id}/approve", s.auth(s.handleApprovalPerubahanApprove))
+	mux.HandleFunc("POST /api/approval/perubahan/{id}/reject", s.auth(s.handleApprovalPerubahanReject))
 	mux.HandleFunc("GET /api/bansos/stats", s.auth(s.handleBansosStats))
 	mux.HandleFunc("GET /api/activity", s.auth(s.handleActivityLog))
 	mux.HandleFunc("GET /api/bel/status", s.auth(s.handleBelStatus))
@@ -980,6 +990,299 @@ func (s *apiServer) handleRombelWali(w http.ResponseWriter, r *http.Request) {
 	s.db.Exec(`UPDATE ptk SET wali_kelas='' WHERE wali_kelas=?`, nama)
 	s.db.Exec(`UPDATE ptk SET wali_kelas=? WHERE id=?`, nama, req.PtkId)
 	writeJSON(w, 200, map[string]any{"ok": true, "pesan": "Wali kelas ditetapkan"})
+}
+
+// ================== PROFILE SISWA & APPROVAL ==================
+
+// Kolom yang boleh diubah siswa (whitelist) — aman dari SQL injection
+var siswaEditableFields = map[string]string{
+	"nama": "nama", "nik": "nik", "nisn": "nisn", "nis": "nis", "jk": "jk",
+	"ayah": "ayah", "ibu": "ibu", "kerja_ayah": "kerja_ayah", "kerja_ibu": "kerja_ibu",
+	"tempat_lahir": "tempat_lahir", "tgl_lahir": "tgl_lahir", "alamat": "alamat",
+	"no_hp": "no_hp", "kip_pip": "kip_pip",
+}
+
+// GET /api/siswa/me — profil siswa yang login (berdasarkan ref_id)
+func (s *apiServer) handleSiswaMe(w http.ResponseWriter, r *http.Request) {
+	info := userInfo(r)
+	if info.Role != "siswa" {
+		fail(w, 403, "hanya untuk siswa")
+		return
+	}
+	// Reuse query detail siswa
+	var d struct {
+		NIS, NISN, Nama, JK, Kelas, Rombel, TempatLahir, TglLahir, Ayah, Ibu *string
+		Alamat, NIK, NoHP, KipPip, FotoPath, FotoPending, FotoStatus            *string
+	}
+	var kerjaAyah, kerjaIbu sql.NullString
+	err := s.db.QueryRow(`SELECT nis,nisn,nama,jk,kelas,rombel,tempat_lahir,tgl_lahir,ayah,ibu,
+		kerja_ayah,kerja_ibu,alamat,nik,no_hp,kip_pip,foto_path,foto_pending,foto_status
+		FROM siswa WHERE id=?`, info.RefID).Scan(
+		&d.NIS, &d.NISN, &d.Nama, &d.JK, &d.Kelas, &d.Rombel, &d.TempatLahir, &d.TglLahir,
+		&d.Ayah, &d.Ibu, &kerjaAyah, &kerjaIbu, &d.Alamat, &d.NIK, &d.NoHP, &d.KipPip,
+		&d.FotoPath, &d.FotoPending, &d.FotoStatus)
+	if errors.Is(err, sql.ErrNoRows) {
+		fail(w, 404, "data siswa tidak ditemukan")
+		return
+	} else if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	writeJSON(w, 200, map[string]any{
+		"nis": d.NIS, "nisn": d.NISN, "nama": d.Nama, "jk": d.JK, "kelas": d.Kelas, "rombel": d.Rombel,
+		"tempat_lahir": d.TempatLahir, "tgl_lahir": d.TglLahir, "ayah": d.Ayah, "ibu": d.Ibu,
+		"alamat": d.Alamat, "nik": d.NIK, "no_hp": d.NoHP, "kip_pip": d.KipPip,
+		"foto_path": d.FotoPath, "foto_pending": d.FotoPending, "foto_status": d.FotoStatus,
+	})
+}
+
+// POST /api/siswa/me/foto — siswa upload foto sendiri (menunggu approval)
+func (s *apiServer) handleSiswaMeFotoUpload(w http.ResponseWriter, r *http.Request) {
+	info := userInfo(r)
+	if info.Role != "siswa" {
+		fail(w, 403, "hanya untuk siswa")
+		return
+	}
+	idStr := fmt.Sprintf("%d", info.RefID)
+	var nama string
+	if err := s.db.QueryRow(`SELECT nama FROM siswa WHERE id=?`, idStr).Scan(&nama); err != nil {
+		fail(w, 404, "siswa tidak ditemukan")
+		return
+	}
+	if err := r.ParseMultipartForm(2 << 20); err != nil {
+		fail(w, 400, "gagal parse form")
+		return
+	}
+	file, header, err := r.FormFile("foto")
+	if err != nil {
+		fail(w, 400, "field 'foto' wajib")
+		return
+	}
+	defer file.Close()
+	ext := strings.ToLower(filepath.Ext(header.Filename))
+	switch ext {
+	case ".jpg", ".jpeg", ".png", ".gif":
+	default:
+		fail(w, 400, "format tidak didukung (hanya jpg/png/gif)")
+		return
+	}
+	if header.Size > 2<<20 {
+		fail(w, 400, "ukuran file maksimal 2MB")
+		return
+	}
+	uploadDir := filepath.Join("..", "static", "uploads", "foto_siswa")
+	os.MkdirAll(uploadDir, 0755)
+	// Simpan sebagai file "pending/{id}{ext}"
+	pendingDir := filepath.Join(uploadDir, "pending")
+	os.MkdirAll(pendingDir, 0755)
+	filename := idStr + ext
+	dstPath := filepath.Join(pendingDir, filename)
+	dst, err := os.Create(dstPath)
+	if err != nil {
+		fail(w, 500, "gagal simpan file")
+		return
+	}
+	defer dst.Close()
+	if _, err := io.Copy(dst, file); err != nil {
+		fail(w, 500, "gagal tulis file")
+		return
+	}
+	relPath := "uploads/foto_siswa/pending/" + filename
+	_, err = s.db.Exec(`UPDATE siswa SET foto_pending=?, foto_status='pending' WHERE id=?`, relPath, idStr)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	writeJSON(w, 200, map[string]any{"ok": true, "message": "Foto dikirim untuk persetujuan admin", "foto_pending": relPath})
+}
+
+// GET /api/approval/foto — admin lihat daftar foto menunggu approval
+func (s *apiServer) handleApprovalFotoList(w http.ResponseWriter, r *http.Request) {
+	info := userInfo(r)
+	if info.Role != "admin" && info.Role != "kepsek" && info.Role != "staf" {
+		fail(w, 403, "akses ditolak")
+		return
+	}
+	rows, err := s.db.Query(`SELECT id, nama, nisn, kelas, rombel, foto_pending, foto_path FROM siswa
+		WHERE foto_status='pending' AND foto_pending IS NOT NULL AND foto_pending != '' ORDER BY nama`)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	defer rows.Close()
+	out := []map[string]any{}
+	for rows.Next() {
+		var id int64
+		var nama, nisn, kelas, rombel, pending, path sql.NullString
+		rows.Scan(&id, &nama, &nisn, &kelas, &rombel, &pending, &path)
+		out = append(out, map[string]any{"id": id, "nama": nama.String, "nisn": nisn.String,
+			"kelas": kelas.String, "rombel": rombel.String, "foto_pending": pending.String, "foto_path": path.String})
+	}
+	writeJSON(w, 200, out)
+}
+
+// POST /api/approval/foto/{id}/approve — setujui foto (pindah pending → aktif)
+func (s *apiServer) handleApprovalFotoApprove(w http.ResponseWriter, r *http.Request) {
+	idStr := r.PathValue("id")
+	var pending, path sql.NullString
+	err := s.db.QueryRow(`SELECT foto_pending, foto_path FROM siswa WHERE id=?`, idStr).Scan(&pending, &path)
+	if err != nil || !pending.Valid || pending.String == "" {
+		fail(w, 400, "tidak ada foto pending")
+		return
+	}
+	// Pindah file: pending/{id}.ext → {id}.ext (hapus foto lama)
+	ext := filepath.Ext(pending.String)
+	baseDir := filepath.Join("..", "static", "uploads", "foto_siswa")
+	oldPath := filepath.Join("..", "static", pending.String)
+	newPath := filepath.Join(baseDir, idStr+ext)
+	// hapus foto lama jika ada
+	if path.Valid && path.String != "" {
+		os.Remove(filepath.Join("..", "static", path.String))
+	}
+	os.Rename(oldPath, newPath)
+	newRel := "uploads/foto_siswa/" + idStr + ext
+	s.db.Exec(`UPDATE siswa SET foto_path=?, foto_pending='', foto_status='approved', updated_at=datetime('now','localtime') WHERE id=?`,
+		newRel, idStr)
+	writeJSON(w, 200, map[string]any{"ok": true, "pesan": "Foto disetujui"})
+}
+
+// POST /api/approval/foto/{id}/reject — tolak foto
+func (s *apiServer) handleApprovalFotoReject(w http.ResponseWriter, r *http.Request) {
+	idStr := r.PathValue("id")
+	var pending sql.NullString
+	if err := s.db.QueryRow(`SELECT foto_pending FROM siswa WHERE id=?`, idStr).Scan(&pending); err != nil || !pending.Valid {
+		fail(w, 400, "tidak ada foto pending")
+		return
+	}
+	os.Remove(filepath.Join("..", "static", pending.String))
+	s.db.Exec(`UPDATE siswa SET foto_pending='', foto_status='rejected' WHERE id=?`, idStr)
+	writeJSON(w, 200, map[string]any{"ok": true, "pesan": "Foto ditolak"})
+}
+
+// POST /api/siswa/me/perubahan — siswa ajukan perubahan data (menunggu approval)
+func (s *apiServer) handleSiswaMePerubahan(w http.ResponseWriter, r *http.Request) {
+	info := userInfo(r)
+	if info.Role != "siswa" {
+		fail(w, 403, "hanya untuk siswa")
+		return
+	}
+	var req struct {
+		Field    string `json:"field"`
+		NilaiBaru string `json:"nilai_baru"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		fail(w, 400, "body tidak valid")
+		return
+	}
+	col, ok := siswaEditableFields[req.Field]
+	if !ok {
+		fail(w, 400, "field tidak boleh diubah")
+		return
+	}
+	// Ambil nilai lama
+	var nilaiLama sql.NullString
+	query := "SELECT " + col + " FROM siswa WHERE id=?"
+	s.db.QueryRow(query, info.RefID).Scan(&nilaiLama)
+	// Cek belum ada permintaan pending untuk field ini
+	var cnt int
+	s.db.QueryRow(`SELECT COUNT(*) FROM perubahan_siswa WHERE siswa_id=? AND field=? AND status='pending'`, info.RefID, req.Field).Scan(&cnt)
+	if cnt > 0 {
+		fail(w, 400, "Masih ada permintaan perubahan untuk field ini yang belum disetujui")
+		return
+	}
+	_, err := s.db.Exec(`INSERT INTO perubahan_siswa (siswa_id, field, nilai_lama, nilai_baru, status, diajukan_by)
+		VALUES (?,?,?,?,'pending','siswa')`, info.RefID, req.Field, nilaiLama.String, req.NilaiBaru)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	writeJSON(w, 201, map[string]any{"ok": true, "pesan": "Permintaan perubahan dikirim untuk persetujuan admin"})
+}
+
+// GET /api/approval/perubahan — admin lihat permintaan perubahan data
+func (s *apiServer) handleApprovalPerubahanList(w http.ResponseWriter, r *http.Request) {
+	info := userInfo(r)
+	if info.Role != "admin" && info.Role != "kepsek" && info.Role != "staf" {
+		fail(w, 403, "akses ditolak")
+		return
+	}
+	rows, err := s.db.Query(`SELECT p.id, p.siswa_id, s.nama, p.field, p.nilai_lama, p.nilai_baru, p.status, p.diajukan_at
+		FROM perubahan_siswa p JOIN siswa s ON p.siswa_id = s.id
+		WHERE p.status='pending' ORDER BY p.diajukan_at DESC`)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	defer rows.Close()
+	out := []map[string]any{}
+	for rows.Next() {
+		var id, sid int64
+		var nama, field, lama, baru, status, tgl sql.NullString
+		rows.Scan(&id, &sid, &nama, &field, &lama, &baru, &status, &tgl)
+		label := fieldLabel(field.String)
+		out = append(out, map[string]any{"id": id, "siswa_id": sid, "nama": nama.String,
+			"field": field.String, "field_label": label, "nilai_lama": lama.String,
+			"nilai_baru": baru.String, "status": status.String, "diajukan_at": tgl.String})
+	}
+	writeJSON(w, 200, out)
+}
+
+func fieldLabel(f string) string {
+	labels := map[string]string{"nama": "Nama", "nik": "NIK", "nisn": "NISN", "nis": "NIS",
+		"jk": "Jenis Kelamin", "ayah": "Nama Ayah", "ibu": "Nama Ibu", "kerja_ayah": "Pekerjaan Ayah",
+		"kerja_ibu": "Pekerjaan Ibu", "tempat_lahir": "Tempat Lahir", "tgl_lahir": "Tanggal Lahir",
+		"alamat": "Alamat", "no_hp": "No HP", "kip_pip": "KIP/PIP"}
+	if v, ok := labels[f]; ok {
+		return v
+	}
+	return f
+}
+
+// POST /api/approval/perubahan/{id}/approve — setujui & terapkan perubahan
+func (s *apiServer) handleApprovalPerubahanApprove(w http.ResponseWriter, r *http.Request) {
+	idStr := r.PathValue("id")
+	var sid int64
+	var field, nilaiBaru string
+	err := s.db.QueryRow(`SELECT siswa_id, field, nilai_baru FROM perubahan_siswa WHERE id=? AND status='pending'`, idStr).Scan(&sid, &field, &nilaiBaru)
+	if err != nil {
+		fail(w, 404, "permintaan tidak ditemukan atau sudah diproses")
+		return
+	}
+	col, ok := siswaEditableFields[field]
+	if !ok {
+		fail(w, 400, "field tidak valid")
+		return
+	}
+	// Terapkan ke siswa (whitelist → aman)
+	q := "UPDATE siswa SET " + col + " = ?, updated_at=datetime('now','localtime') WHERE id=?"
+	if _, err := s.db.Exec(q, nilaiBaru, sid); err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	info := userInfo(r)
+	s.db.Exec(`UPDATE perubahan_siswa SET status='approved', disetujui_at=datetime('now','localtime'), disetujui_oleh=? WHERE id=?`,
+		info.Username, idStr)
+	writeJSON(w, 200, map[string]any{"ok": true, "pesan": "Perubahan disetujui & diterapkan"})
+}
+
+// POST /api/approval/perubahan/{id}/reject — tolak perubahan
+func (s *apiServer) handleApprovalPerubahanReject(w http.ResponseWriter, r *http.Request) {
+	idStr := r.PathValue("id")
+	var req struct {
+		Catatan string `json:"catatan"`
+	}
+	_ = json.NewDecoder(r.Body).Decode(&req)
+	res, err := s.db.Exec(`UPDATE perubahan_siswa SET status='rejected', catatan=? WHERE id=? AND status='pending'`,
+		req.Catatan, idStr)
+	if err != nil {
+		fail(w, 500, err.Error())
+		return
+	}
+	if n, _ := res.RowsAffected(); n == 0 {
+		fail(w, 404, "permintaan tidak ditemukan atau sudah diproses")
+		return
+	}
+	writeJSON(w, 200, map[string]any{"ok": true, "pesan": "Perubahan ditolak"})
 }
 
 func (s *apiServer) handleActivityLog(w http.ResponseWriter, r *http.Request) {

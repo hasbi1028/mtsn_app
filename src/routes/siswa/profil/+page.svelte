@@ -1,47 +1,213 @@
 <script lang="ts">
+	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { Separator } from '$lib/components/ui/separator/index.js';
+	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import { Field, FieldGroup, FieldLabel } from '$lib/components/ui/field/index.js';
+	import { notify } from '$lib/toast';
+	import { enhance } from '$app/forms';
 	import UserIcon from '@lucide/svelte/icons/user';
 	import LogOutIcon from '@lucide/svelte/icons/log-out';
+	import CameraIcon from '@lucide/svelte/icons/camera';
+	import PencilIcon from '@lucide/svelte/icons/pencil';
+	import CheckCircle from '@lucide/svelte/icons/check-circle-2';
+	import ClockIcon from '@lucide/svelte/icons/clock';
 
-	let { data } = $props();
+	let { data, form } = $props();
 	const user = $derived(data.user);
+	const profile = $derived(data.profile as any);
+
+	$effect(() => {
+		notify.fromForm(form, 'Aksi berhasil');
+	});
+
+	const fotoUrl = $derived(profile?.foto_path ? `/${profile.foto_path}` : '');
+	// Foto pending menunggu approve: tampilkan preview + status
+	const isPendingFoto = $derived(profile?.foto_status === 'pending');
+
+	// Field yang boleh diubah siswa
+	const fields = [
+		{ key: 'nama', label: 'Nama', icon: UserIcon },
+		{ key: 'nik', label: 'NIK' },
+		{ key: 'nisn', label: 'NISN' },
+		{ key: 'nis', label: 'NIS' },
+		{ key: 'ayah', label: 'Nama Ayah' },
+		{ key: 'ibu', label: 'Nama Ibu' },
+		{ key: 'kerja_ayah', label: 'Pekerjaan Ayah' },
+		{ key: 'kerja_ibu', label: 'Pekerjaan Ibu' },
+		{ key: 'tempat_lahir', label: 'Tempat Lahir' },
+		{ key: 'tgl_lahir', label: 'Tanggal Lahir' },
+		{ key: 'alamat', label: 'Alamat' },
+		{ key: 'no_hp', label: 'No. HP' },
+		{ key: 'kip_pip', label: 'KIP/PIP' },
+	];
+
+	// Dialog ubah data
+	let editField = $state('');
+	let editValue = $state('');
+	function bukaEdit(field: string, currentVal: string) {
+		editField = field;
+		editValue = currentVal || '';
+		editOpen = true;
+	}
+	let editOpen = $state(false);
+	const editLabel = $derived(fields.find((f) => f.key === editField)?.label || editField);
+
+	// Upload foto via BFF proxy (client fetch)
+	let fotoInput: HTMLInputElement | undefined = $state();
+	let uploading = $state(false);
+	async function submitFoto() {
+		const file = fotoInput?.files?.[0];
+		if (!file) {
+			notify.warning('Pilih file foto dulu');
+			return;
+		}
+		uploading = true;
+		const fd = new FormData();
+		fd.append('foto', file);
+		try {
+			const res = await fetch('/api/siswa/me/foto', { method: 'POST', body: fd });
+			const data = await res.json().catch(() => ({}));
+			if (res.ok && data.ok) {
+				notify.success(data.pesan || 'Foto dikirim untuk persetujuan');
+				window.location.reload();
+			} else {
+				notify.error(data.error || data.pesan || 'Gagal upload foto');
+			}
+		} catch {
+			notify.error('Gagal upload foto');
+		}
+		uploading = false;
+	}
 </script>
 
 <svelte:head><title>Profil Saya — SIMAD</title></svelte:head>
 
 <div class="flex flex-col gap-4">
+	<!-- Foto & ringkasan -->
 	<Card.Root>
-		<Card.Header>
+		<Card.Header class="pb-2">
 			<Card.Title class="flex items-center gap-2 text-base">
-				<UserIcon class="size-5" />
-				Profil Saya
+				<UserIcon class="size-5" /> Profil Saya
 			</Card.Title>
 		</Card.Header>
 		<Card.Content>
 			<div class="flex flex-col gap-3">
-				<div class="flex items-center justify-center">
-					<div class="flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground text-xl font-bold">
-						{user?.username?.slice(0, 2).toUpperCase() ?? 'SI'}
+				<div class="flex items-center gap-3">
+					<div class="relative shrink-0">
+						{#if fotoUrl}
+							<img src={fotoUrl} alt="Foto" class="size-16 rounded-full object-cover border" />
+						{:else}
+							<div class="flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground text-xl font-bold">
+								{profile?.nama?.slice(0, 2).toUpperCase() ?? 'SI'}
+							</div>
+						{/if}
+						{#if isPendingFoto}
+							<div class="absolute -bottom-1 -right-1 rounded-full bg-amber-500 p-1 text-white" title="Menunggu persetujuan">
+								<ClockIcon class="size-3" />
+							</div>
+						{/if}
+					</div>
+					<div class="min-w-0">
+						<p class="text-lg font-semibold truncate">{profile?.nama ?? '-'}</p>
+						<div class="flex flex-wrap gap-1.5 mt-1">
+							<Badge class="text-[10px]">Kelas {profile?.kelas ?? '-'}</Badge>
+							<Badge variant="outline" class="text-[10px]">{profile?.rombel || 'Tanpa rombel'}</Badge>
+							{#if profile?.jk}<Badge variant="secondary" class="text-[10px]">{profile.jk === 'L' ? 'Laki-laki' : 'Perempuan'}</Badge>{/if}
+						</div>
 					</div>
 				</div>
-				<div class="text-center">
-					<p class="text-lg font-semibold">{user?.username ?? '-'}</p>
-					<p class="text-sm text-muted-foreground">Siswa</p>
+
+				{#if isPendingFoto}
+					<div class="rounded-lg border border-amber-300 bg-amber-50 p-2.5 text-xs text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
+						<ClockIcon class="size-3.5 inline mr-1" /> Foto baru menunggu persetujuan admin.
+					</div>
+				{/if}
+
+				<!-- Upload foto -->
+				<div class="flex items-center gap-2">
+					<label class="flex flex-1 items-center gap-2 rounded-lg border border-dashed px-3 py-2 text-sm text-muted-foreground cursor-pointer" for="foto-input">
+						<CameraIcon class="size-4 shrink-0" />
+						<span>Pilih foto...</span>
+					</label>
+					<input id="foto-input" type="file" accept="image/*" class="hidden" bind:this={fotoInput} />
+					<Button size="sm" class="cursor-pointer" onclick={submitFoto}>Upload & Kirim</Button>
 				</div>
-				<Separator />
-				<p class="text-sm text-muted-foreground text-center">
-					Halaman profil siswa sedang dalam pengembangan.
-				</p>
+				<p class="text-[10px] text-muted-foreground mt-1">JPG/PNG max 2MB. Foto perlu persetujuan admin sebelum aktif.</p>
+			</div>
+		</Card.Content>
+	</Card.Root>
+
+	<!-- Data diri -->
+	<Card.Root>
+		<Card.Header class="pb-2">
+			<Card.Title class="text-sm">Data Pribadi</Card.Title>
+		</Card.Header>
+		<Card.Content>
+			<div class="grid grid-cols-2 gap-x-3 gap-y-2.5">
+				{#each fields as f}
+					{@const val = profile?.[f.key] }
+					<div class="min-w-0">
+						<p class="text-[11px] text-muted-foreground">{f.label}</p>
+						<p class="text-sm font-medium truncate">{val || '—'}</p>
+					</div>
+				{/each}
+			</div>
+			<div class="mt-3 border-t pt-3">
+				<Button size="sm" variant="outline" class="w-full cursor-pointer" onclick={() => bukaEdit('', '')}>
+					<PencilIcon class="size-4" /> Ubah Data Pribadi
+				</Button>
+				<p class="text-[10px] text-muted-foreground text-center mt-1.5">Perubahan butuh persetujuan admin</p>
 			</div>
 		</Card.Content>
 	</Card.Root>
 
 	<form method="POST" action="/logout" class="flex justify-center">
 		<Button variant="outline" type="submit" class="cursor-pointer">
-			<LogOutIcon class="size-4 mr-2" />
-			Keluar
+			<LogOutIcon class="size-4 mr-2" /> Keluar
 		</Button>
 	</form>
 </div>
+
+<!-- Dialog: pilih field & isi nilai baru -->
+<Dialog.Root bind:open={editOpen}>
+	<Dialog.Content class="max-w-sm">
+		<Dialog.Header>
+			<Dialog.Title class="text-base">Ubah Data Pribadi</Dialog.Title>
+			<Dialog.Description>Pilih field lalu isi nilai baru. Perubahan akan menunggu persetujuan admin.</Dialog.Description>
+		</Dialog.Header>
+		<div class="space-y-3">
+			<Field>
+				<FieldLabel>Field</FieldLabel>
+				<select
+					class="h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
+					value={editField}
+					onchange={(e) => {
+						const f = (e.target as HTMLSelectElement).value;
+						editField = f;
+						editValue = profile?.[f] || '';
+					}}
+				>
+					<option value="">— Pilih field —</option>
+					{#each fields as f}
+						<option value={f.key}>{f.label}</option>
+					{/each}
+				</select>
+			</Field>
+			{#if editField}
+				<form method="POST" action="?/ubahData" use:enhance class="space-y-3">
+					<input type="hidden" name="field" value={editField} />
+					<Field>
+						<FieldLabel>Nilai Baru ({editLabel})</FieldLabel>
+						<Input name="nilai_baru" bind:value={editValue} placeholder={profile?.[editField] || ''} class="h-9 text-sm" />
+					</Field>
+					<div class="flex justify-end gap-2">
+						<Button type="button" variant="outline" size="sm" onclick={() => (editOpen = false)}>Batal</Button>
+						<Button type="submit" size="sm" class="cursor-pointer">Ajukan Perubahan</Button>
+					</div>
+				</form>
+			{/if}
+		</div>
+	</Dialog.Content>
+</Dialog.Root>
