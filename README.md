@@ -1,6 +1,11 @@
-# sv
+# SIMAD MTsN 2 Kolaka Utara
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+> **⚠️ DEPRECATED** — Repository ini sudah tidak digunakan.
+> Silakan lihat [mtsnsuper](../mtsnsuper) untuk versi terbaru (SvelteKit 3 + SQLite).
+
+---
+
+Sistem Informasi Manajemen Akademik Digital (SIMAD) untuk MTsN 2 Kolaka Utara.
 
 ## Creating a project
 
