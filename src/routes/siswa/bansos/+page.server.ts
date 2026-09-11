@@ -1,22 +1,12 @@
-const API = process.env.API_BASE || 'http://localhost:3730';
+import { error } from '@sveltejs/kit';
+import { getSiswaByRefId } from '$modules/siswa/siswa.service';
 
-export const load = async ({ cookies, locals }) => {
+export const load = async ({ locals }) => {
 	const user = locals.user;
-	if (!user || user.role !== 'siswa') {
-		return { siswa: null };
-	}
+	if (!user || user.role !== 'siswa') error(403, 'Akses ditolak');
 
-	const token = cookies.get('mtsn_session');
-	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+	const siswa = getSiswaByRefId(user.ref_id ?? 0);
+	if (!siswa) error(404, 'Data siswa tidak ditemukan');
 
-	try {
-		const res = await fetch(`${API}/api/siswa?page=1&per_page=200`, { headers: h });
-		if (!res.ok) return { siswa: null };
-		const data = await res.json();
-		const rows = data.rows || [];
-		const found = rows.find((r: any) => r.id === user.ref_id);
-		return { siswa: found || null };
-	} catch {
-		return { siswa: null };
-	}
+	return { siswa };
 };

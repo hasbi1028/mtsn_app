@@ -1,38 +1,29 @@
-const API = process.env.API_BASE || 'http://localhost:3730';
+import { getSiswaList, getRekap } from '$modules/siswa/siswa.service';
 
-export const load = async ({ cookies, url }) => {
-	const token = cookies.get('mtsn_session');
-	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
-	const kelas = url.searchParams.get('kelas') || '';
+export const load = async ({ url }) => {
 	const q = url.searchParams.get('q') || '';
+	const kelas = url.searchParams.get('kelas') || '';
 	const nisn = url.searchParams.get('nisn') || '';
 	const ortu = url.searchParams.get('ortu') || '';
 	const rombel = url.searchParams.get('rombel') || '';
 	const status = url.searchParams.get('status') || '';
 	const page = parseInt(url.searchParams.get('page') || '1', 10) || 1;
 	const perPage = 20;
-	const params = new URLSearchParams();
-	if (kelas) params.set('kelas', kelas);
-	if (q) params.set('q', q);
-	if (nisn) params.set('nisn', nisn);
-	if (ortu) params.set('ortu', ortu);
-	if (rombel) params.set('rombel', rombel);
-	if (status) params.set('status', status);
-	params.set('page', String(page));
-	params.set('per_page', String(perPage));
-	const res = await fetch(`${API}/api/siswa?${params}`, { headers: h });
-	const data = res.ok ? await res.json() : { rows: [], rekap: [], total: 0, page: 1, perPage };
+
+	const result = getSiswaList({ q, kelas, nisn, ortu, rombel, status, page, perPage });
+	const rekap = getRekap();
+
 	return {
-		rows: data.rows,
-		rekap: data.rekap,
-		total: data.total,
-		page: data.page || 1,
-		perPage: data.perPage || perPage,
-		kelas,
+		rows: result.rows,
+		total: result.total,
+		page: result.page,
+		perPage: result.perPage,
+		rekap,
 		q,
+		kelas,
 		nisn,
 		ortu,
 		rombel,
-		status,
+		status
 	};
 };

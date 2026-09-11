@@ -1,15 +1,6 @@
-const API = process.env.API_BASE || 'http://localhost:3730';
+import { getKartuList } from '$modules/siswa/siswa.service';
 
-export const load = async ({ cookies }) => {
-	const token = cookies.get('mtsn_session');
-	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
-
-	try {
-		const res = await fetch(`${API}/api/siswa/kartu/list`, { headers: h });
-		if (!res.ok) return { list: [] };
-		const data = await res.json();
-		return { list: data.rows || [] };
-	} catch {
-		return { list: [] };
-	}
+export const load = async () => {
+	const list = getKartuList();
+	return { list };
 };
