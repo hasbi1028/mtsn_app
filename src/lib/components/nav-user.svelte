@@ -5,7 +5,7 @@
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
 	import { useSidebar } from "$lib/components/ui/sidebar/index.js";
 
-	let { user }: { user?: { username: string; role: string; ref_id: number } | null } = $props();
+	let { user }: { user?: { username: string; role: string; ref_id: number | null } | null } = $props();
 
 	const sidebar = useSidebar();
 

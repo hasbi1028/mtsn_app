@@ -22,7 +22,7 @@ npm run test         # Run unit tests
 npx playwright test  # Run e2e tests
 ```
 
-## Architecture: Fullstack SvelteKit
+## Architecture: Domain-Centric Modular Monolith
 
 ```
 Browser → SvelteKit (3720) → Drizzle ORM → SQLite (local.db)
@@ -30,141 +30,97 @@ Browser → SvelteKit (3720) → Drizzle ORM → SQLite (local.db)
 
 - **NO separate Go API** — all logic lives in SvelteKit
 - **Remote functions** replace `fetch()` — type-safe, validated, auto-deduped
-- **Co-located data** — `data.remote.ts` next to `+page.svelte`
+- **Domain modules** — feature-based colocation, not type-based
+
+### Thin Remote Wrapper & Service Layer Pattern
+
+```
+src/modules/[domain]/
+├── [domain].validation.ts   # Valibot schemas (types + validation)
+├── [domain].service.ts      # Pure business logic (DB queries, no SvelteKit)
+├── [domain].remote.ts       # Thin wrapper (SvelteKit bridge, ~30 lines)
+└── components/
+    └── *.svelte             # UI components
+```
+
+**Why this pattern?**
+- `service.ts` — AI reads this for DB logic (~50 lines, no SvelteKit noise)
+- `validation.ts` — AI reads this for schemas (~20 lines)
+- `remote.ts` — AI reads this for API contract (~30 lines)
+- **Total: ~100 lines per domain** — minimal tokens, no attention drift
+
+**File size limit:** Max 150 lines per `.remote.ts`. If exceeded, split the domain.
 
 ## Project Structure
 ```
 src/
+├── modules/                          # Domain modules (feature-based)
+│   ├── auth/
+│   │   ├── auth.validation.ts        # loginSchema, UserSession
+│   │   ├── auth.service.ts           # hashPassword, createSession, getUserFromSession
+│   │   ├── auth.remote.ts            # login(), logout(), getMe()
+│   │   └── components/
+│   │       └── login-form.svelte
+│   ├── ptk/
+│   │   ├── ptk.validation.ts
+│   │   ├── ptk.service.ts
+│   │   ├── ptk.remote.ts
+│   │   └── components/
+│   ├── siswa/
+│   │   ├── siswa.validation.ts
+│   │   ├── siswa.service.ts
+│   │   ├── siswa.remote.ts
+│   │   └── components/
+│   ├── rombel/
+│   ├── dokumen/                      # SKMT + SKBK + SKAKPT
+│   ├── kartu/
+│   ├── bel/
+│   ├── approval/
+│   └── activity/
 ├── lib/
 │   ├── server/
-│   │   ├── db/
-│   │   │   ├── schema.ts      # ALL Drizzle table definitions
-│   │   │   ├── index.ts       # DB client export
-│   │   │   └── migrate.ts     # Migration runner
-│   │   ├── auth.ts            # getUser(), requireRole(), createSession()
-│   │   └── kartu/
-│   │       ├── render.ts      # Playwright HTML→PNG rendering
-│   │       └── queue.ts       # In-memory job queue
+│   │   └── db/
+│   │       ├── schema.ts             # ALL Drizzle table definitions
+│   │       ├── index.ts              # DB client export
+│   │       └── migrate.ts
 │   ├── components/
-│   │   ├── ui/                # shadcn-svelte primitives (DO NOT MODIFY)
-│   │   ├── data-table.svelte  # Shared table component
-│   │   ├── page-layout.svelte # Shared page wrapper
-│   │   ├── confirm-dialog.svelte
-│   │   ├── empty-state.svelte
+│   │   ├── ui/                       # shadcn-svelte primitives (DO NOT MODIFY)
+│   │   ├── data-table.svelte         # Shared table component
+│   │   ├── page-layout.svelte        # Shared page wrapper
 │   │   └── ...
 │   ├── config/
-│   │   └── navigation.ts      # Sidebar nav items
-│   └── toast.ts               # Sonner helper
-├── routes/
-│   ├── +layout.svelte         # Root layout (Sidebar.Provider, ModeWatcher, Toaster)
-│   ├── +layout.server.ts      # Root session check → { user, isLogin }
+│   │   └── navigation.ts
+│   └── toast.ts
+├── routes/                           # SvelteKit pages (thin, delegate to modules)
+│   ├── +layout.svelte
+│   ├── +layout.server.ts             # Root session check → { user }
 │   ├── login/
-│   │   ├── +page.svelte
-│   │   └── data.remote.ts     # login(), logout()
-│   ├── +page.svelte           # Dashboard
-│   ├── +page.server.ts        # Dashboard stats (load only)
+│   │   └── +page.svelte              # Just renders LoginForm from auth module
 │   ├── ptk/
 │   │   ├── +page.svelte
-│   │   ├── data.remote.ts     # getPtkList()
 │   │   └── [id]/
-│   │       ├── +page.svelte
-│   │       └── data.remote.ts # getPtkDetail()
-│   ├── siswa/
-│   │   ├── +page.svelte
-│   │   ├── data.remote.ts     # getSiswaList()
-│   │   ├── [id]/
-│   │   │   ├── profil/
-│   │   │   │   ├── +page.svelte
-│   │   │   │   └── data.remote.ts
-│   │   │   ├── bansos/
-│   │   │   │   ├── +page.svelte
-│   │   │   │   └── data.remote.ts
-│   │   │   └── kartu/
-│   │   │       ├── +page.svelte
-│   │   │       └── data.remote.ts
-│   │   ├── profil/            # Self-service (siswa login)
-│   │   │   ├── +page.svelte
-│   │   │   └── data.remote.ts
-│   │   └── bansos/            # Self-service (siswa login)
-│   │       ├── +page.svelte
-│   │       └── data.remote.ts
-│   ├── rombel/
-│   │   ├── +page.svelte
-│   │   ├── data.remote.ts
-│   │   └── [id]/
-│   │       ├── +page.svelte
-│   │       └── data.remote.ts
-│   ├── roster/
-│   │   ├── +page.svelte
-│   │   └── data.remote.ts
-│   ├── skmt/
-│   │   ├── +page.svelte
-│   │   └── data.remote.ts
-│   ├── skbk/
-│   │   ├── +page.svelte
-│   │   └── data.remote.ts
-│   ├── skakpt/
-│   │   ├── +page.svelte
-│   │   └── data.remote.ts
-│   ├── bel/
-│   │   ├── +page.svelte
-│   │   ├── data.remote.ts
-│   │   └── suara/
-│   │       ├── +page.svelte
-│   │       └── data.remote.ts
-│   ├── approval/
-│   │   ├── +page.svelte
-│   │   └── data.remote.ts
-│   ├── activity/
-│   │   ├── +page.svelte
-│   │   └── data.remote.ts
-│   ├── ortu/
-│   │   └── bansos/
-│   │       ├── +page.svelte
-│   │       └── data.remote.ts
-│   └── api/                   # ONLY for proxied external services
-│       └── skakpt/bukti/[name]/
-│           └── +server.ts     # Proxy bukti images
-├── hooks.server.ts            # Auth middleware (session check)
-└── app.css                    # TailwindCSS + shadcn theme variables
-
-specs/                         # Markdown-driven specs
-├── README.md                  # Index
-├── _template/
-│   ├── spec.md                # Requirements template
-│   ├── data-model.md          # Schema template
-│   └── test-plan.md           # Test plan template
-├── 001-auth/
-├── 002-dashboard/
-├── 003-ptk/
-├── 004-siswa/
-├── 005-rombel/
-├── 006-roster/
-├── 007-dokumen/               # SKMT + SKBK + SKAKPT
-├── 008-kartu/
-├── 009-bel/
-├── 010-approval/
-├── 011-bansos/
-└── 012-activity/
-
-tests/
-└── e2e/
-    ├── helpers.ts             # Shared test utilities
-    ├── auth.spec.ts
-    ├── ptk.spec.ts
-    ├── siswa.spec.ts
-    ├── rombel.spec.ts
-    ├── kartu.spec.ts
-    └── ...
-```
+│   │       └── +page.svelte
+│   └── ...
+├── hooks.server.ts                   # Auth middleware (calls auth.service)
+└── app.css
 
 ## Remote Functions Pattern
 
 ### File Naming
-- `data.remote.ts` — co-located with page, contains query/form/command exports
+- `*.remote.ts` — in `src/modules/[domain]/`, contains query/form/command exports
 - Must NOT be in `$lib/server/` directory
 
-### Four Flavors
+### Domain Module Pattern
+```
+src/modules/[domain]/
+├── [domain].validation.ts   # Valibot schemas (types + validation)
+├── [domain].service.ts      # Pure business logic (DB queries, no SvelteKit)
+├── [domain].remote.ts       # Thin wrapper (SvelteKit bridge, ~30 lines)
+└── components/
+    └── *.svelte             # UI components
+```
+
+### Four Flavors (in remote.ts)
 ```ts
 import { query, form, command, prerender } from '$app/server';
 
@@ -254,9 +210,23 @@ export const getProfile = query(async () => {
 - AI reads spec → generates remote function + page + test
 - Spec includes: user story, acceptance criteria, data model, API contract
 
-### Svelte Validation (WAJIB)
-- Run `npx @sveltejs/mcp svelte-autofixer <file> --svelte-version 5` before completing
-- Then run `npm run check`
+### Svelte MCP + Autofixer (WAJIB)
+- **Selalu gunakan Svelte MCP tools** untuk fetch dokumentasi Svelte 5 terbaru
+- Tools tersedia:
+  - `svelte_list-sections` — list semua dokumentasi yang tersedia
+  - `svelte_get-documentation` — fetch konten dokumentasi berdasarkan section
+  - `svelte_svelte-autofixer` — analisis & fix issue Svelte code
+  - `svelte_playground-link` — generate playground link (jika user minta)
+- **Sebelum menulis/mengubah file `.svelte` atau `.svelte.ts/.svelte.js`:**
+  1. Panggil `svelte_svelte-autofixer` untuk analisis code
+  2. Apply fixes berdasarkan suggestions
+  3. Ulangi sampai tidak ada issues
+- **Sebelum menggunakan API SvelteKit baru:**
+  1. Panggil `svelte_list-sections` untuk cari section yang relevan
+  2. Panggil `svelte_get-documentation` untuk fetch detail API
+- **Jika ada error/uncertain tentang Svelte syntax:**
+  1. Cari di documentation pakai MCP tools
+  2. Jangan assume — verifikasi dari docs resmi
 
 ### State Management
 - Remote queries: auto-cached, auto-deduped

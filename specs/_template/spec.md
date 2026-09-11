@@ -55,107 +55,83 @@ DELETE FROM table WHERE id = ?;
 
 ---
 
-## Remote Functions
+## Domain Module Structure
 
-### Queries (READ)
+```
+src/modules/[domain]/
+├── [domain].validation.ts    # Valibot schemas
+├── [domain].service.ts       # Pure business logic (DB queries)
+├── [domain].remote.ts        # Thin wrapper (SvelteKit bridge)
+└── components/
+    └── *.svelte              # UI components
+```
+
+### Validation (validation.ts)
 
 ```ts
-// src/routes/[module]/data.remote.ts
 import * as v from 'valibot';
-import { query } from '$app/server';
+
+export const schema = v.object({
+  field1: v.pipe(v.string(), v.nonEmpty()),
+  field2: v.number()
+});
+
+export type SchemaType = v.InferOutput<typeof schema>;
+```
+
+### Service (service.ts)
+
+```ts
 import { db } from '$lib/server/db';
-import { auth } from '$lib/server/auth';
+import { table } from '$lib/server/db/schema';
+import { eq } from 'drizzle-orm';
 
-export const getXxxList = query(
-  v.object({
-    q: v.optional(v.string()),
-    page: v.optional(v.number(), 1)
-  }),
-  async ({ q, page }) => {
-    const user = await auth.getUser();
-    if (!user) error(401, 'Unauthorized');
-    // query logic
-    return result;
-  }
-);
+export function getXxxList(args: { q?: string; page?: number }) {
+  return db.select().from(table).where(...).all();
+}
+
+export function createXxx(data: SchemaType) {
+  return db.insert(table).values(data).run();
+}
 ```
 
-### Forms (WRITE)
+### Remote (remote.ts)
 
 ```ts
-export const createXxx = form(
-  v.object({
-    field1: v.pipe(v.string(), v.nonEmpty()),
-    field2: v.number()
-  }),
-  async (data) => {
-    const user = await auth.getUser();
-    if (!user) error(401, 'Unauthorized');
-    // insert logic
-    void getXxxList.refresh(); // single-flight mutation
-    redirect(303, '/xxx');
-  }
-);
-```
+import { form, query, command } from '$app/server';
+import { schema } from './[domain].validation';
+import { getXxxList, createXxx } from './[domain].service';
 
-### Commands (WRITE from event handler)
+export const getXxx = query(schema, async (args) => {
+  return getXxxList(args);
+});
 
-```ts
-export const deleteXxx = command(v.number(), async (id) => {
-  const user = await auth.getUser();
-  if (!user) error(401, 'Unauthorized');
-  // delete logic
-  void getXxxList.refresh();
+export const createXxxRemote = form(schema, async (data) => {
+  createXxx(data);
+  void getXxx.refresh();
+  redirect(303, '/xxx');
 });
 ```
 
----
-
-## UI Components
-
-### Page Structure
+### Component (components/*.svelte)
 
 ```svelte
-<!-- src/routes/[module]/+page.svelte -->
 <script>
-  import { getXxxList, createXxx } from './data.remote';
+  import { getXxx } from '../[domain].remote';
   import { PageLayout } from '$lib/components/page-layout';
-  import { DataTable } from '$lib/components/data-table';
-  import { Button } from '$lib/components/ui/button';
-  import { notify } from '$lib/toast';
 
-  const data = getXxxList({ page: 1 });
-
-  const columns = [
-    { accessor: 'nama', header: 'Nama' },
-    { accessor: 'status', header: 'Status' }
-  ];
+  const data = getXxx({ page: 1 });
 </script>
 
-<PageLayout title="[Module]" description="[Description]">
+<PageLayout title="[Module]">
   {#await data}
     <p>Loading...</p>
   {:then rows}
-    <DataTable {columns} data={rows} />
-  {:catch error}
-    <p>Error: {error.message}</p>
+    {#each rows as row}
+      <p>{row.nama}</p>
+    {/each}
   {/await}
 </PageLayout>
-```
-
-### Form Pattern
-
-```svelte
-<form {...createXxx.enhance(async (form) => {
-  if (await form.submit()) {
-    notify.success('Berhasil disimpan!');
-  } else {
-    notify.error('Gagal menyimpan');
-  }
-})}>
-  <input {...createXxx.fields.nama.as('text')} />
-  <button>Simpan</button>
-</form>
 ```
 
 ---
@@ -171,13 +147,6 @@ test.describe('[Module]', () => {
     await page.goto('/[module]');
     await expect(page.locator('h1')).toContainText('[Module]');
   });
-
-  test('can create item', async ({ page }) => {
-    await page.goto('/[module]/new');
-    await page.fill('input[name="nama"]', 'Test Item');
-    await page.click('button[type="submit"]');
-    await expect(page.locator('.toast')).toContainText('Berhasil');
-  });
 });
 ```
 
@@ -186,10 +155,12 @@ test.describe('[Module]', () => {
 ## Migration Checklist
 
 - [ ] Spec reviewed & approved
-- [ ] Drizzle schema updated (if new table/columns)
-- [ ] Remote functions created (`data.remote.ts`)
-- [ ] Page updated (`+page.svelte`)
-- [ ] Old `+page.server.ts` deleted (if fetch removed)
+- [ ] Validation schema created (`[domain].validation.ts`)
+- [ ] Service layer created (`[domain].service.ts`)
+- [ ] Remote wrapper created (`[domain].remote.ts`)
+- [ ] UI components created/moved to module
+- [ ] Page updated (`+page.svelte`) — imports from module
+- [ ] Old files deleted (`+page.server.ts`, `data.remote.ts`)
 - [ ] E2E test written & passing
 - [ ] Svelte autofixer run
 - [ ] `npm run check` passes

@@ -11,7 +11,7 @@
 		ref = $bindable(null),
 		collapsible = "icon",
 		...restProps
-	}: ComponentProps<typeof Sidebar.Root> & { user?: { username: string; role: string; ref_id: number } | null } = $props();
+	}: ComponentProps<typeof Sidebar.Root> & { user?: { username: string; role: string; ref_id: number | null } | null } = $props();
 
 	const filteredItems = $derived(user?.role ? filterNavByRole(navItems, user.role) : navItems);
 </script>

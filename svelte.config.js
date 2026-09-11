@@ -6,6 +6,9 @@ const config = {
 	preprocess: vitePreprocess(),
 	kit: {
 		adapter: adapter(),
+		alias: {
+			$modules: 'src/modules'
+		},
 		csrf: {
 			// Dev stage: lax — trust all origins
 			checkOrigin: false,

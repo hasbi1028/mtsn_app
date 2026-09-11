@@ -4,7 +4,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { FieldGroup, Field, FieldLabel, FieldSeparator } from '$lib/components/ui/field/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
-	import { enhance } from '$app/forms';
+	import { login } from '../auth.remote';
 	import { cn } from '$lib/utils.js';
 	import SchoolIcon from '@lucide/svelte/icons/school';
 	import EyeIcon from '@lucide/svelte/icons/eye';
@@ -12,31 +12,26 @@
 	import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	let { class: className, form, ...restProps }: HTMLAttributes<HTMLDivElement> & { form?: any } = $props();
+	let { class: className, ...restProps }: HTMLAttributes<HTMLDivElement> = $props();
 	
 	let loading = $state(false);
 	let showPassword = $state(false);
-
-	// Notifikasi error login via toast (sonner)
-	$effect(() => {
-		if (form?.error) notify.error(form.error);
-	});
 </script>
 
 <div class={cn('flex flex-col gap-6 animate-in fade-in duration-500', className)} {...restProps}>
 	<Card.Root class="overflow-hidden p-0">
 		<div class="grid grid-cols-1 md:grid-cols-2 p-0">
 			<form 
-				method="POST" 
-				action="?/login" 
-				class="p-6 md:p-8"
-				use:enhance={() => {
+				{...login.enhance(async (form) => {
 					loading = true;
-					return async ({ update }) => {
-						loading = false;
-						await update();
-					};
-				}}
+					if (await form.submit()) {
+						// redirect handled by remote function
+					} else {
+						notify.error('Username atau kata sandi salah');
+					}
+					loading = false;
+				})}
+				class="p-6 md:p-8"
 				aria-label="Formulir masuk"
 			>
 				<FieldGroup>
@@ -52,24 +47,22 @@
 						<FieldLabel for="username">Username</FieldLabel>
 						<Input 
 							id="username" 
-							name="username" 
+							{...login.fields.username.as('text')}
 							placeholder="username" 
-							required 
 							autocomplete="username"
-							aria-describedby={form?.error ? 'login-error' : undefined}
 							disabled={loading}
 						/>
+						{#each login.fields.username.issues() ?? [] as issue (issue.message)}
+							<p class="text-sm text-destructive">{issue.message}</p>
+						{/each}
 					</Field>
 					<Field>
 						<FieldLabel for="password">Kata Sandi</FieldLabel>
 						<div class="relative">
 							<Input 
 								id="password" 
-								name="password" 
-								type={showPassword ? 'text' : 'password'} 
-								required 
+								{...login.fields.password.as('password')}
 								autocomplete="current-password"
-								aria-describedby={form?.error ? 'login-error' : undefined}
 								disabled={loading}
 								class="pr-10"
 							/>
@@ -88,6 +81,9 @@
 								{/if}
 							</button>
 						</div>
+						{#each login.fields.password.issues() ?? [] as issue (issue.message)}
+							<p class="text-sm text-destructive">{issue.message}</p>
+						{/each}
 					</Field>
 					<Button type="submit" class="w-full cursor-pointer" disabled={loading}>
 						{#if loading}
