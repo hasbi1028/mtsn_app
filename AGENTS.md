@@ -4,152 +4,276 @@
 SIMAD — Sistem Informasi Manajemen Madrasah untuk MTsN 2 Kolaka Utara.
 
 ## Tech Stack
-- **Frontend:** SvelteKit 2, Svelte 5, TailwindCSS v4, shadcn-svelte (nova style)
-- **Backend:** Go API (port 3730)
-- **Database:** SQLite via Drizzle ORM (local.db)
-- **Runtime:** Node.js (SvelteKit BFF on port 3720)
-- **Process Manager:** PM2 (ecosystem.config.cjs)
+- **Framework:** SvelteKit 2 + Svelte 5 (runes)
+- **Remote Functions:** `$app/server` — `query`, `form`, `command` (experimental, opt-in)
+- **UI:** TailwindCSS v4 + shadcn-svelte (nova style)
+- **Database:** SQLite via Drizzle ORM (`local.db`)
+- **Validation:** Valibot (Standard Schema)
+- **Testing:** Playwright (e2e) + Vitest (unit)
+- **Runtime:** Node.js on port 3720
+- **Process Manager:** PM2 (`ecosystem.config.cjs`)
 
 ## Commands
 ```bash
 npm run dev          # Start dev server
 npm run build        # Build for production
 npm run check        # Type check
-pm2 start ecosystem.config.cjs  # Start all services
+npm run test         # Run unit tests
+npx playwright test  # Run e2e tests
 ```
+
+## Architecture: Fullstack SvelteKit
+
+```
+Browser → SvelteKit (3720) → Drizzle ORM → SQLite (local.db)
+```
+
+- **NO separate Go API** — all logic lives in SvelteKit
+- **Remote functions** replace `fetch()` — type-safe, validated, auto-deduped
+- **Co-located data** — `data.remote.ts` next to `+page.svelte`
 
 ## Project Structure
 ```
 src/
-├── routes/           # Pages
-│   ├── +layout.svelte      # Root layout (ModeWatcher, Sidebar.Provider, conditional login/main)
-│   ├── +layout.server.ts   # Session check, provides { user, isLogin }
-│   ├── +page.svelte        # Dashboard
-│   ├── ptk/                # Data PTK
-│   ├── skmt/               # SKMT
-│   ├── skbk/               # SKBK
-│   ├── skakpt/             # SKAKPT
-│   ├── roster/             # Roster
-│   ├── activity/           # Aktivitas
-│   ├── login/              # Login page
-│   └── logout/             # Logout handler
 ├── lib/
+│   ├── server/
+│   │   ├── db/
+│   │   │   ├── schema.ts      # ALL Drizzle table definitions
+│   │   │   ├── index.ts       # DB client export
+│   │   │   └── migrate.ts     # Migration runner
+│   │   ├── auth.ts            # getUser(), requireRole(), createSession()
+│   │   └── kartu/
+│   │       ├── render.ts      # Playwright HTML→PNG rendering
+│   │       └── queue.ts       # In-memory job queue
 │   ├── components/
-│   │   ├── app-sidebar.svelte     # Main sidebar component (sidebar-07 pattern)
-│   │   ├── module-switcher.svelte # Module switcher dropdown
-│   │   ├── nav-main.svelte        # Navigation menu items
-│   │   ├── nav-user.svelte        # User dropdown in sidebar footer
-│   │   ├── site-header.svelte     # Top header bar with dark mode toggle
-│   │   ├── data-table.svelte      # Shared data table component
-│   │   ├── page-layout.svelte     # Shared page layout with title/description
-│   │   ├── login-form.svelte      # Login form component
-│   │   ├── PdfViewer.svelte       # PDF viewer modal
-│   │   └── ui/                    # shadcn-svelte components
+│   │   ├── ui/                # shadcn-svelte primitives (DO NOT MODIFY)
+│   │   ├── data-table.svelte  # Shared table component
+│   │   ├── page-layout.svelte # Shared page wrapper
+│   │   ├── confirm-dialog.svelte
+│   │   ├── empty-state.svelte
+│   │   └── ...
 │   ├── config/
-│   │   └── navigation.ts          # Nav items and team configuration
-│   ├── hooks/
-│   │   └── is-mobile.svelte.ts    # MediaQuery for mobile detection
-│   └── server/                    # Server-side utilities
-├── hooks.server.ts        # Session middleware, redirects to /login
-└── app.css                # TailwindCSS + shadcn theme variables
+│   │   └── navigation.ts      # Sidebar nav items
+│   └── toast.ts               # Sonner helper
+├── routes/
+│   ├── +layout.svelte         # Root layout (Sidebar.Provider, ModeWatcher, Toaster)
+│   ├── +layout.server.ts      # Root session check → { user, isLogin }
+│   ├── login/
+│   │   ├── +page.svelte
+│   │   └── data.remote.ts     # login(), logout()
+│   ├── +page.svelte           # Dashboard
+│   ├── +page.server.ts        # Dashboard stats (load only)
+│   ├── ptk/
+│   │   ├── +page.svelte
+│   │   ├── data.remote.ts     # getPtkList()
+│   │   └── [id]/
+│   │       ├── +page.svelte
+│   │       └── data.remote.ts # getPtkDetail()
+│   ├── siswa/
+│   │   ├── +page.svelte
+│   │   ├── data.remote.ts     # getSiswaList()
+│   │   ├── [id]/
+│   │   │   ├── profil/
+│   │   │   │   ├── +page.svelte
+│   │   │   │   └── data.remote.ts
+│   │   │   ├── bansos/
+│   │   │   │   ├── +page.svelte
+│   │   │   │   └── data.remote.ts
+│   │   │   └── kartu/
+│   │   │       ├── +page.svelte
+│   │   │       └── data.remote.ts
+│   │   ├── profil/            # Self-service (siswa login)
+│   │   │   ├── +page.svelte
+│   │   │   └── data.remote.ts
+│   │   └── bansos/            # Self-service (siswa login)
+│   │       ├── +page.svelte
+│   │       └── data.remote.ts
+│   ├── rombel/
+│   │   ├── +page.svelte
+│   │   ├── data.remote.ts
+│   │   └── [id]/
+│   │       ├── +page.svelte
+│   │       └── data.remote.ts
+│   ├── roster/
+│   │   ├── +page.svelte
+│   │   └── data.remote.ts
+│   ├── skmt/
+│   │   ├── +page.svelte
+│   │   └── data.remote.ts
+│   ├── skbk/
+│   │   ├── +page.svelte
+│   │   └── data.remote.ts
+│   ├── skakpt/
+│   │   ├── +page.svelte
+│   │   └── data.remote.ts
+│   ├── bel/
+│   │   ├── +page.svelte
+│   │   ├── data.remote.ts
+│   │   └── suara/
+│   │       ├── +page.svelte
+│   │       └── data.remote.ts
+│   ├── approval/
+│   │   ├── +page.svelte
+│   │   └── data.remote.ts
+│   ├── activity/
+│   │   ├── +page.svelte
+│   │   └── data.remote.ts
+│   ├── ortu/
+│   │   └── bansos/
+│   │       ├── +page.svelte
+│   │       └── data.remote.ts
+│   └── api/                   # ONLY for proxied external services
+│       └── skakpt/bukti/[name]/
+│           └── +server.ts     # Proxy bukti images
+├── hooks.server.ts            # Auth middleware (session check)
+└── app.css                    # TailwindCSS + shadcn theme variables
+
+specs/                         # Markdown-driven specs
+├── README.md                  # Index
+├── _template/
+│   ├── spec.md                # Requirements template
+│   ├── data-model.md          # Schema template
+│   └── test-plan.md           # Test plan template
+├── 001-auth/
+├── 002-dashboard/
+├── 003-ptk/
+├── 004-siswa/
+├── 005-rombel/
+├── 006-roster/
+├── 007-dokumen/               # SKMT + SKBK + SKAKPT
+├── 008-kartu/
+├── 009-bel/
+├── 010-approval/
+├── 011-bansos/
+└── 012-activity/
+
+tests/
+└── e2e/
+    ├── helpers.ts             # Shared test utilities
+    ├── auth.spec.ts
+    ├── ptk.spec.ts
+    ├── siswa.spec.ts
+    ├── rombel.spec.ts
+    ├── kartu.spec.ts
+    └── ...
 ```
 
-## Key Architecture Decisions
+## Remote Functions Pattern
 
-### Sidebar (sidebar-07 pattern)
-- Uses `sidebar-07` block from shadcn-svelte
-- `Sidebar.Root` with `collapsible="icon"` for icon-only collapsed mode
-- `Sidebar.Provider` wraps the app in `+layout.svelte`
-- Components: `ModuleSwitcher` → header, `NavMain` → menu, `NavUser` → footer
-- Menu uses `<Sidebar.Group>` + `<Sidebar.GroupLabel>` + `<Sidebar.GroupContent>` + `<Sidebar.Menu>`
-- Menu items use `child` snippet pattern with `<a>` tags for navigation
-- `tooltipContent` prop (not `tooltip`) for sidebar-menu-button
-- `data-active` attribute only rendered when `true` (fixed bug where `data-active="false"` matched CSS `[data-active]`)
+### File Naming
+- `data.remote.ts` — co-located with page, contains query/form/command exports
+- Must NOT be in `$lib/server/` directory
 
-### Module Switcher
-- Dropdown di sidebar header untuk switch antar modul
-- Modul aktif: Dashboard, Kepegawaian, Jadwal, Dokumen
-- Modul mendatang: Kesiswaan, Perpustakaan, Sarana & Prasarana, Pengaturan
-- Menampilkan icon, nama, dan description setiap modul
+### Four Flavors
+```ts
+import { query, form, command, prerender } from '$app/server';
 
-### Navigation Config
-- Navigation items defined in `$lib/config/navigation.ts`
-- Easy to add new sections/modules by extending the config array
-- Team/instansi configuration centralized
+// READ — auto-deduped, cached per argument
+export const getItems = query(schema, async (args) => { ... });
 
-### Shared Components
-- `data-table.svelte` - Reusable table with columns, custom cell rendering, empty state
-- `page-layout.svelte` - Consistent page wrapper with title/description
-- All pages use these shared components for consistency
+// WRITE (form) — tied to <form>, progressive enhancement
+export const createItem = form(schema, async (data) => { ... });
 
-### Dark Mode
-- Uses `mode-watcher` library (per shadcn-svelte docs)
-- `<ModeWatcher />` in root layout
-- `toggleMode` from `mode-watcher` in site-header.svelte
-- Sun/Moon Lucide icons in header (not emoji)
-- CSS variables: `:root` for light, `.dark` for dark, `@theme inline` for Tailwind v4
+// WRITE (command) — callable from anywhere (event handler, etc.)
+export const deleteItem = command(schema, async (id) => { ... });
 
-### Authentication
-- Session check via `/api/me` in `hooks.server.ts`
-- Redirects unauthenticated users to `/login`
-- `{ user, isLogin }` passed from `+layout.server.ts`
-- Logout via POST to `/logout` endpoint
-- Default credentials: `hasbi` / `admin123`
+// STATIC — built at build time
+export const getStatic = prerender(async () => { ... });
+```
 
-### Icons
-- Use Lucide icons (`@lucide/svelte`) throughout
-- No emoji in UI components
+### Validation
+- Always use Valibot (Standard Schema) as first argument
+- Server-side validation is automatic
+- Client-side preflight: `.preflight(schema)` on forms
 
-### Toast / Notifikasi (WAJIB - pokok)
-- Library: **Sonner** via shadcn-svelte (`svelte-sonner`), `<Toaster />` sudah dipasang di `+layout.svelte`
-- Helper terpusat: `$lib/toast.ts` → `notify.success/error/info/warning` dan `notify.fromForm(form)`
-- SEMUA aksi user (simpan, hapus, toggle, login gagal, error API) WAJIB pakai toast, bukan hanya alert inline
-- Pola action SvelteKit: selalu return `{ ok: true, pesan: '...' }` atau `fail(4xx, { ok: false, error: '...' })`
-- Di komponen: `$effect(() => notify.fromForm(form, 'Pesan default sukses'))`
-- Pesan dalam Bahasa Indonesia, singkat & jelas
+### Single-Flight Mutations
+```ts
+// In form/command handler:
+void getItems().refresh();           // refresh all instances
+getItem(id).set(updatedData);       // set specific instance
+```
 
-## CSS Theme Variables
-Defined in `src/app.css`:
-- `--sidebar`, `--sidebar-foreground`, `--sidebar-primary`, `--sidebar-accent`, etc.
-- Mapped via `@theme inline` for Tailwind v4 compatibility
-- Light/dark mode variants for all sidebar colors
+### Auth in Remote Functions
+```ts
+import { getRequestEvent } from '$app/server';
 
-## Known Warnings (non-blocking)
-- `state_referenced_locally` in `skakpt/+page.svelte` and `skbk/+page.svelte` (pre-existing)
-- `a11y_missing_attribute` in `PdfViewer.svelte` (pre-existing)
-- `config.kit.csrf.checkOrigin` deprecated in favor of `csrf.trustedOrigins`
+export const getProfile = query(async () => {
+  const { cookies } = getRequestEvent();
+  const user = await findUser(cookies.get('session_id'));
+  return user;
+});
+```
 
-## PM2 Services
-1. **mtsn-app-api** — Go API on port 3730
-2. **mtsn-app-bff** — SvelteKit build on port 3720
-3. **simad-bel** — Worker bel sekolah (port 8093, baca jam_bel dari local.db, suara di static/uploads/bel)
+## Data Model (20 Tables)
 
-## Modul Bel (mandiri)
-- Tabel `jam_bel` + `bel_settings` (master switch) di local.db — MILIK SIMAD
-- Worker: `worker-bel/` (Go, port dari webapp/bel) — poll jadwal, playback MCI via proses anak
-- API: /api/bel/status|play|stop|master|jadwal (CRUD)|suara (list/upload/delete)
-- Perpustakaan Suara: halaman `/bel/suara` — grid file (badge "dipakai N"), Putar per file
-  (kontrol manual pindah ke sini), Stop global, Upload (mp3/wav/m4a/wma maks 10MB),
-  Hapus (ditolak jika masih direferensikan jam_bel)
-- UI /bel: monitoring, kontrol darurat, CRUD jadwal, master switch (konfirmasi ketik NONAKTIF/AKTIF)
+| Table | Purpose |
+|-------|---------|
+| `users` | Login accounts (admin/guru/siswa/orangtua) |
+| `sessions` | Auth tokens |
+| `ptk` | Guru & tenaga kependidikan |
+| `jtm_semester` | Jam tatap muka per semester |
+| `skmt_ajuan` | SKMT submissions |
+| `skbk_ajuan` | SKBK submissions |
+| `skakpt` | SKAKPT data (11 indikator TPG) |
+| `dokumen` | File attachments per PTK |
+| `roster` | Jadwal mengajar |
+| `siswa` | Data siswa |
+| `rombel` | Rombongan belajar (kelas) |
+| `perubahan_siswa` | Pending data changes (approval) |
+| `activity_log` | Audit trail |
+| `ortu` | Data orang tua |
+| `siswa_ortu` | Siswa ↔ Ortu relation |
+| `jam_bel` | Jadwal bel sekolah |
+| `bel_settings` | Bell master switch |
+| `cuti` | Data cuti PTK |
+| `schema_migrations` | Migration tracking |
+| `kartu_cache` | Generated card PNGs metadata |
 
-## Conventions
-- Follow shadcn-svelte patterns exactly (do not hack/modify UI components)
-- Use `pnpm dlx shadcn-svelte@latest add <component>` to install components
-- Use `--overwrite` flag when reinstalling components
-- Prefer Lucide icons over emoji
-- Keep sidebar flat (no sub-items) unless explicitly needed
-- Use shared components (`data-table`, `page-layout`) for new pages
-- Add new navigation items to `$lib/config/navigation.ts`
+## Key Conventions
+
+### UI Components
+- shadcn-svelte primitives: `pnpm dlx shadcn-svelte@latest add <component>`
+- Shared components: `data-table.svelte`, `page-layout.svelte`
+- Lucide icons only (no emoji)
+- Dark mode via `mode-watcher`
+
+### Toast / Notifikasi (WAJIB)
+- Library: Sonner (`svelte-sonner`), `<Toaster />` in root layout
+- Helper: `$lib/toast.ts` → `notify.success/error/info/warning`
+- SEMUA aksi user WAJIB pakai toast
+- Remote form pattern: `createItem.enhance(async (form) => { ... showToast('...'); })`
+- Pesan dalam Bahasa Indonesia
+
+### Testing (TDD)
+- Write spec (markdown) → Write test → FAIL → Write code → PASS → Commit
+- E2E: `tests/e2e/[module].spec.ts` (Playwright)
+- Unit: `src/lib/server/**/*.test.ts` (Vitest)
+
+### Markdown-Driven Development (MDD)
+- Every feature starts in `specs/NNN-name/spec.md`
+- AI reads spec → generates remote function + page + test
+- Spec includes: user story, acceptance criteria, data model, API contract
 
 ### Svelte Validation (WAJIB)
-- Setiap membuat, mengubah, atau menganalisis file `.svelte`, `.svelte.ts`, atau `.svelte.js`, wajib menjalankan Svelte autofixer sebelum menyelesaikan pekerjaan.
-- Gunakan perintah: `npx @sveltejs/mcp svelte-autofixer <path-file> --svelte-version 5`.
-- Jika `npx` diblokir oleh PowerShell, gunakan `npx.cmd` dengan argumen yang sama.
-- Setelah autofixer, jalankan `npm run check` dan laporkan error/warning yang relevan.
+- Run `npx @sveltejs/mcp svelte-autofixer <file> --svelte-version 5` before completing
+- Then run `npm run check`
 
-## Future Modules (Mendatang)
-- Kesiswaan — Data Siswa & Kelas
-- Perpustakaan — Buku & Peminjaman
-- Sarana & Prasarana — Inventaris Sekolah
-- Pengaturan — Konfigurasi Sistem
+### State Management
+- Remote queries: auto-cached, auto-deduped
+- Component state: `$state()` runes
+- URL state: `$app/state` for search params, page data
+- NO stores (use runes or remote queries instead)
+
+## PM2 Services
+1. **mtsn-app-bff** — SvelteKit on port 3720 (ONLY service needed)
+2. ~~mtsn-app-api~~ — DELETED (migrated to remote functions)
+3. **simad-bel** — Worker bel sekolah (port 8093, independent Go process)
+
+## Database
+- SQLite file: `local.db`
+- ORM: Drizzle with `drizzle-kit` for migrations
+- Schema: `src/lib/server/db/schema.ts`
+- Migrations: `drizzle/` (auto-generated)
+
+## Migration Status
+See `plan.md` for full migration plan from Go API → SvelteKit remote functions.
