@@ -79,6 +79,7 @@ output/
 static/uploads/foto_siswa/
 static/uploads/skbk/
 static/uploads/skmt/
+static/uploads/skakpt/
 static/uploads/s35/
 
 # Kartu cache (generated)
@@ -91,3 +92,7 @@ scripts/__pycache__/
 # EMIS scripts output
 scripts/nisn-hasil/
 scripts/emis-*.csv
+scripts/emis-*.py
+scripts/emis-*.mjs
+scripts/emis-*.md
+scripts/nisn-verify.py
