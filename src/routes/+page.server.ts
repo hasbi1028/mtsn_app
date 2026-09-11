@@ -1,82 +1,32 @@
-const API = process.env.API_BASE || 'http://localhost:3730';
+import { getGeneralStats, getRombelStats, getBansosStats } from '$modules/dashboard/dashboard.service';
 
-type BansosRaw = {
-	total_siswa?: number;
-	belum_cek?: number;
-	layak_pkh?: number;
-	sembako_aktif?: number;
-	layak_pbi?: number;
-	tenggang_90?: number;
-	per_desil?: Record<string, number>;
-	per_kelas?: { category: string; total: number }[];
-};
-
-export const load = async ({ cookies }) => {
-	const token = cookies.get('mtsn_session');
-	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
-
-	const [stats, bansosRaw, rombelRaw] = await Promise.all([
-		fetch(`${API}/api/stats`, { headers: h }).then((r) => (r.ok ? r.json() : {})).catch(() => ({})),
-		fetch(`${API}/api/bansos/stats`, { headers: h }).then((r) => (r.ok ? r.json() : {})).catch(() => ({})),
-		fetch(`${API}/api/rombel/stats`, { headers: h }).then((r) => (r.ok ? r.json() : {})).catch(() => ({}))
-	]) as [Record<string, number>, BansosRaw, Record<string, any>];
-
-	// Transform bansos stats to frontend format
-	const totalSiswa = bansosRaw.total_siswa || 0;
-	const belumCek = bansosRaw.belum_cek || 0;
-	const sudahCek = totalSiswa - belumCek;
-	const layakPkh = bansosRaw.layak_pkh || 0;
-	const layakSembako = bansosRaw.sembako_aktif || 0;
-	const layakPbijk = bansosRaw.layak_pbi || 0;
-	const tenggang90 = bansosRaw.tenggang_90 || 0;
-
-	// Desil distribution (from per_desil) — 2 kategori non-desil: Belum Dicek & Tidak Ditemukan
-	const desilDist: Record<string, number> = {};
-	let belumDesil = 0;
-	let tidakDitemukan = 0;
-	if (bansosRaw.per_desil) {
-		for (const [k, v] of Object.entries(bansosRaw.per_desil)) {
-			const num = parseInt(k);
-			if (num >= 1 && num <= 10) {
-				desilDist[k] = v as number;
-			} else if (k === 'TIDAK DITEMUKAN') {
-				tidakDitemukan += (v as number) || 0;
-			} else {
-				belumDesil += (v as number) || 0;
-			}
-		}
-	}
-	if (belumDesil > 0) desilDist['Belum Dicek'] = belumDesil;
-	if (tidakDitemukan > 0) desilDist['Tidak Ditemukan'] = tidakDitemukan;
-
-	// Kelas breakdown (from per_kelas)
-	const kelasDist: Record<string, number> = {};
-	if (bansosRaw.per_kelas) {
-		for (const item of bansosRaw.per_kelas) {
-			kelasDist[item.category] = item.total;
-		}
-	}
+export const load = async () => {
+	// Direct DB queries — no fetch to Go API
+	const [stats, rombelStats, bansosStats] = await Promise.all([
+		Promise.resolve(getGeneralStats()),
+		Promise.resolve(getRombelStats()),
+		Promise.resolve(getBansosStats())
+	]);
 
 	return {
-		user: { username: 'hasbi' },
 		stats,
 		rombelStats: {
-			totalRombel: rombelRaw.total_rombel || 0,
-			teralokasi: rombelRaw.total_siswa_teralokasi || 0,
-			tanpa: rombelRaw.siswa_tanpa_rombel || 0,
-			totalSiswa: rombelRaw.total_siswa || 0,
-			perKelas: rombelRaw.per_kelas || {}
+			totalRombel: rombelStats.totalRombel,
+			teralokasi: rombelStats.teralokasi,
+			tanpa: rombelStats.tanpaRombel,
+			totalSiswa: rombelStats.totalSiswa,
+			perKelas: rombelStats.perKelas
 		},
 		bansosStats: {
-			totalSiswa,
-			sudahCek,
-			belumCek,
-			desilDist,
-			kelasDist,
-			layakPkh,
-			layakSembako,
-			layakPbijk,
-			tenggang90
+			totalSiswa: bansosStats.totalSiswa,
+			sudahCek: bansosStats.sudahCek,
+			belumCek: bansosStats.belumCek,
+			desilDist: bansosStats.desilDist,
+			kelasDist: bansosStats.kelasDist,
+			layakPkh: bansosStats.layakPkh,
+			layakSembako: bansosStats.layakSembako,
+			layakPbijk: bansosStats.layakPbijk,
+			tenggang90: 0 // TODO: calculate tenggang 90
 		}
 	};
 };
