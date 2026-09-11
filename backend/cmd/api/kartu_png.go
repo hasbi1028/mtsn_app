@@ -10,10 +10,13 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
+	qrcode "github.com/skip2/go-qrcode"
 	_ "modernc.org/sqlite"
 )
 
@@ -33,7 +36,8 @@ func kartuDir() string {
 	}
 	return filepath.Join("data", "kartu")
 }
-func kartuPath(id string) string { return filepath.Join(kartuDir(), id+".png") }
+func kartuPath(id string) string      { return filepath.Join(kartuDir(), id+".png") }
+func kartuBackPath(id string) string  { return filepath.Join(kartuDir(), id+"-back.png") }
 
 func fileMtime(p string) time.Time {
 	st, err := os.Stat(p)
@@ -60,6 +64,20 @@ func fotoFullPath(fotoRel string) string {
 // student's photo (i.e. data hasn't changed since last render).
 func kartuFresh(id, fotoPath string) bool {
 	ks, err := os.Stat(kartuPath(id))
+	if err != nil {
+		return false
+	}
+	if fotoPath != "" {
+		fm := fileMtime(fotoPath)
+		if !fm.IsZero() && ks.ModTime().Before(fm) {
+			return false
+		}
+	}
+	return true
+}
+
+func kartuBackFresh(id, fotoPath string) bool {
+	ks, err := os.Stat(kartuBackPath(id))
 	if err != nil {
 		return false
 	}
@@ -167,10 +185,54 @@ func renderKartuToFile(id string, d kartuHTMLData) error {
 	cmd.Dir = filepath.Join("..")
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
-	if err := cmd.Run(); err != nil {
+	if err := runWithTimeout(cmd, 60*time.Second); err != nil {
 		return fmt.Errorf("generate kartu: %s — %s", err.Error(), stderr.String())
 	}
 	return nil
+}
+
+func renderKartuBackToFile(id string, d kartuHTMLData) error {
+	html := generateKartuBackHTML(d)
+	tmpHTML := filepath.Join(os.TempDir(), fmt.Sprintf("kartu-back-%s-%d.html", id, time.Now().UnixNano()))
+	if err := os.WriteFile(tmpHTML, []byte(html), 0644); err != nil {
+		return err
+	}
+	defer os.Remove(tmpHTML)
+
+	out := kartuBackPath(id)
+	if err := os.MkdirAll(filepath.Dir(out), 0755); err != nil {
+		return err
+	}
+
+	scriptsDir, _ := filepath.Abs(filepath.Join("..", "scripts"))
+	scriptPath := filepath.Join(scriptsDir, "kartu-screenshot.mjs")
+	cmd := exec.Command("node", scriptPath, tmpHTML, out)
+	cmd.Dir = filepath.Join("..")
+	var stderr bytes.Buffer
+	cmd.Stderr = &stderr
+	if err := runWithTimeout(cmd, 60*time.Second); err != nil {
+		return fmt.Errorf("generate kartu back: %s — %s", err.Error(), stderr.String())
+	}
+	return nil
+}
+
+func runWithTimeout(cmd *exec.Cmd, timeout time.Duration) error {
+	if runtime.GOOS == "windows" {
+		cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: 0x08000000} // CREATE_NO_WINDOW
+	}
+	if err := cmd.Start(); err != nil {
+		return err
+	}
+	done := make(chan error, 1)
+	go func() { done <- cmd.Wait() }()
+
+	select {
+	case err := <-done:
+		return err
+	case <-time.After(timeout):
+		cmd.Process.Kill()
+		return fmt.Errorf("timeout after %v", timeout)
+	}
 }
 
 func serveKartuFile(w http.ResponseWriter, id string) {
@@ -183,6 +245,72 @@ func serveKartuFile(w http.ResponseWriter, id string) {
 	w.Header().Set("Content-Disposition", fmt.Sprintf(`attachment; filename="kartu-siswa-%s.png"`, id))
 	w.Header().Set("Cache-Control", "no-cache")
 	w.Write(pngData)
+}
+
+func serveKartuBackFile(w http.ResponseWriter, id string) {
+	pngData, err := os.ReadFile(kartuBackPath(id))
+	if err != nil {
+		fail(w, 500, "gagal baca kartu belakang: "+err.Error())
+		return
+	}
+	w.Header().Set("Content-Type", "image/png")
+	w.Header().Set("Content-Disposition", fmt.Sprintf(`attachment; filename="kartu-siswa-%s-belakang.png"`, id))
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Write(pngData)
+}
+
+// GET /api/siswa/{id}/kartu-back.png — serve cached kartu back, generate once if needed
+func (s *apiServer) handleSiswaKartuBackPNG(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	if id == "" {
+		fail(w, 400, "id wajib")
+		return
+	}
+	sd, err := s.getSiswaKartu(id)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			fail(w, 404, "siswa tidak ditemukan")
+		} else {
+			fail(w, 500, err.Error())
+		}
+		return
+	}
+	fotoPath := fotoFullPath(sd.FotoRel)
+	if !kartuBackFresh(id, fotoPath) {
+		if err := renderKartuBackToFile(id, buildKartuHTMLData(sd)); err != nil {
+			fail(w, 500, err.Error())
+			return
+		}
+	}
+	serveKartuBackFile(w, id)
+}
+
+// POST /api/siswa/{id}/kartu/regenerate — force regenerate front + back for one student
+func (s *apiServer) handleKartuRegenerate(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	if id == "" {
+		fail(w, 400, "id wajib")
+		return
+	}
+	sd, err := s.getSiswaKartu(id)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			fail(w, 404, "siswa tidak ditemukan")
+		} else {
+			fail(w, 500, err.Error())
+		}
+		return
+	}
+	d := buildKartuHTMLData(sd)
+	if err := renderKartuToFile(id, d); err != nil {
+		fail(w, 500, "gagal generate depan: "+err.Error())
+		return
+	}
+	if err := renderKartuBackToFile(id, d); err != nil {
+		fail(w, 500, "gagal generate belakang: "+err.Error())
+		return
+	}
+	writeJSON(w, 200, map[string]any{"ok": true, "message": "kartu berhasil digenerate ulang"})
 }
 
 // GET /api/siswa/{id}/kartu.png — serve cached kartu, generate once if needed
@@ -238,9 +366,15 @@ func (s *apiServer) handleKartuGenerateAll(w http.ResponseWriter, r *http.Reques
 			failed++
 			continue
 		}
-		if gerr := renderKartuToFile(id, buildKartuHTMLData(sd)); gerr != nil {
+		d := buildKartuHTMLData(sd)
+		if gerr := renderKartuToFile(id, d); gerr != nil {
 			failed++
-			errs = append(errs, id+": "+gerr.Error())
+			errs = append(errs, id+": front: "+gerr.Error())
+			continue
+		}
+		if gerr := renderKartuBackToFile(id, d); gerr != nil {
+			failed++
+			errs = append(errs, id+": back: "+gerr.Error())
 			continue
 		}
 		generated++
@@ -266,11 +400,12 @@ func (s *apiServer) handleKartuList(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	type item struct {
-		ID       int    `json:"id"`
-		Nama     string `json:"nama"`
-		Kelas    string `json:"kelas"`
-		Rombel   string `json:"rombel"`
-		HasKartu bool   `json:"has_kartu"`
+		ID         int    `json:"id"`
+		Nama       string `json:"nama"`
+		Kelas      string `json:"kelas"`
+		Rombel     string `json:"rombel"`
+		HasKartu   bool   `json:"has_kartu"`
+		HasKartuBack bool `json:"has_kartu_back"`
 	}
 	list := []item{}
 	for rows.Next() {
@@ -280,9 +415,10 @@ func (s *apiServer) handleKartuList(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 		_, kerr := os.Stat(kartuPath(strconv.Itoa(id)))
+		_, kerrBack := os.Stat(kartuBackPath(strconv.Itoa(id)))
 		list = append(list, item{
 			ID: id, Nama: nama.String, Kelas: kelas.String,
-			Rombel: rombel.String, HasKartu: kerr == nil,
+			Rombel: rombel.String, HasKartu: kerr == nil, HasKartuBack: kerrBack == nil,
 		})
 	}
 	writeJSON(w, 200, map[string]any{"rows": list})
@@ -411,6 +547,188 @@ func generateKartuHTML(d kartuHTMLData) string {
     <span>BERLAKU SELAMA TERDAFTAR</span>
     <strong>TA 2026 / 2027</strong>
   </footer>
+</div>
+	</body>
+	</html>`
+}
+
+func generateQRCodeDataURL(content string, size int) string {
+	png, err := qrcode.Encode(content, qrcode.Medium, size)
+	if err != nil {
+		return ""
+	}
+	return "data:image/png;base64," + base64.StdEncoding.EncodeToString(png)
+}
+
+func generateKartuBackHTML(d kartuHTMLData) string {
+	qrDataURL := generateQRCodeDataURL(d.NISN, 200)
+	qrImg := ""
+	if qrDataURL != "" {
+		qrImg = `<img src="` + qrDataURL + `" alt="QR" />`
+	} else {
+		qrImg = `<span class="qr-fallback">QR</span>`
+	}
+
+	return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .card {
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    width: 85mm;
+    height: 55mm;
+    padding: 4mm;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 3mm;
+    border: 1px solid #d1b56a;
+    color: #173d2b;
+  }
+  .watermark {
+    position: absolute;
+    width: 50mm;
+    height: 50mm;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.06;
+    z-index: 0;
+  }
+  .watermark img { width: 100%; height: 100%; object-fit: contain; }
+  .stripe {
+    height: 1.5mm;
+    background: linear-gradient(90deg, #b38732, #e5cc8b, #b38732);
+    margin: 0 0 3mm;
+    border-radius: 0.5mm;
+    z-index: 1;
+  }
+  .stripe-bottom {
+    height: 1.5mm;
+    background: linear-gradient(90deg, #b38732, #e5cc8b, #b38732);
+    margin: auto 0 0;
+    border-radius: 0.5mm;
+    z-index: 1;
+  }
+  .content {
+    flex: 1;
+    display: flex;
+    gap: 3mm;
+    z-index: 1;
+  }
+  .info { flex: 1; min-width: 0; }
+  .info p {
+    font-size: 5.5pt;
+    margin: 1.2mm 0;
+    line-height: 1.35;
+    color: #3a5040;
+  }
+  .info .label {
+    font-size: 4.8pt;
+    color: #77857b;
+    font-weight: 700;
+    letter-spacing: 0.3pt;
+    text-transform: uppercase;
+  }
+  .info .value { font-weight: 600; }
+  .qr-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5mm;
+    flex-shrink: 0;
+  }
+  .qr-section img {
+    width: 16mm;
+    height: 16mm;
+    object-fit: contain;
+  }
+  .qr-fallback {
+    width: 16mm;
+    height: 16mm;
+    display: grid;
+    place-items: center;
+    border: 1pt dashed #c9ae62;
+    font-size: 5pt;
+    color: #77857b;
+  }
+  .qr-label {
+    font-size: 4.2pt;
+    color: #77857b;
+    letter-spacing: 0.2pt;
+    text-align: center;
+  }
+  .notes {
+    z-index: 1;
+    border-top: 0.8pt solid #e1d6b8;
+    padding-top: 2mm;
+    margin-top: 2mm;
+  }
+  .notes p {
+    font-size: 4.3pt;
+    color: #758078;
+    line-height: 1.4;
+    margin: 0.5mm 0;
+  }
+  .notes strong { color: #3a5040; }
+  .student-id {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    z-index: 1;
+    margin-bottom: 2mm;
+  }
+  .student-name {
+    font-size: 7pt;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #173d2b;
+    letter-spacing: 0.3pt;
+  }
+  .student-nisn {
+    font-size: 5pt;
+    color: #77857b;
+    font-weight: 700;
+    letter-spacing: 0.2pt;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="watermark"><img src="` + d.LogoDataURL + `" alt="" /></div>
+  <div class="stripe"></div>
+  <div class="student-id">
+    <span class="student-name">` + d.Nama + `</span>
+    <span class="student-nisn">NISN: ` + d.NISN + `</span>
+  </div>
+  <div class="content">
+    <div class="info">
+      <p><span class="label">Alamat</span><br/><span class="value">Jl. Lalume No. 42 Kelurahan Olo-Oloho<br/>Kec. Pakue, Kab. Kolaka Utara<br/>Sulawesi Tenggara 93954</span></p>
+      <p><span class="label">Website</span> <span class="value">mtsn2kolut.sch.id</span></p>
+      <p><span class="label">Email</span> <span class="value">mtsn.pakue@gmail.com</span></p>
+    </div>
+    <div class="qr-section">
+      ` + qrImg + `
+      <span class="qr-label">Scan untuk<br/>verifikasi data</span>
+    </div>
+  </div>
+  <div class="notes">
+    <p><strong>Ketentuan:</strong> Kartu ini berlaku selama terdaftar sebagai siswa MTsN 2 Kolaka Utara. Harap dikembalikan jika sudah tidak menempuh pendidikan. Kartu tidak dapat dialihkan ke orang lain.</p>
+  </div>
+  <div class="stripe-bottom"></div>
 </div>
 </body>
 </html>`

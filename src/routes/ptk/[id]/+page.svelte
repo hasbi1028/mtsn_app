@@ -197,12 +197,12 @@
 								{/if}
 							</TableCell>
 							<TableCell>
-								{#if det?.layak && totalOk >= total}
+								{#if s.status === 'Sudah Terbit' || s.status === 'Disetujui'}
+									<Badge variant="default" class="text-[10px]">✓ Sudah Terbit</Badge>
+								{:else if det?.layak && totalOk >= total}
 									<Badge class="text-[10px] bg-emerald-600 hover:bg-emerald-600 text-white">✓ Indikator Hijau (belum terbit)</Badge>
 								{:else if det?.indikator_unmet?.length > 0}
 									<Badge variant="destructive" class="text-[10px]">Belum Layak</Badge>
-								{:else if s.status === 'Disetujui' || s.status === 'Sudah Terbit'}
-									<Badge variant="default" class="text-[10px]">✓ Sudah Terbit</Badge>
 								{:else}
 									<Badge variant="secondary" class="text-[10px]">{s.status}</Badge>
 								{/if}

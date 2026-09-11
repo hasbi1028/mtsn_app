@@ -26,10 +26,10 @@ vite.config.ts.timestamp-*
 *.db
 *.db-shm
 *.db-wal
+*.bak-*
 
 # Logs
 *.log
-*_log.txt
 *_log.txt
 addlog_*.txt
 bff_build.log
@@ -45,18 +45,20 @@ backend/api.exe
 backend/api.exe~
 backend-api.exe
 backend.exe
+bin/
 
 # Temp
 _hash.txt
 dev_test.txt
 s29a_extract.json
+tmp_*
 
 # worker-bel
 worker-bel/worker-bel.exe
 worker-bel/sound-cache/
 worker-bel/*.log
 
-# artefak Windows
+# Artefak Windows
 nul
 
 # Konfigurasi lokal asisten/editor
@@ -72,6 +74,20 @@ GEMINI.md
 
 # Artefak pengujian dan unggahan runtime
 test-results/
+screenshots/
+output/
 static/uploads/foto_siswa/
 static/uploads/skbk/
 static/uploads/skmt/
+static/uploads/s35/
+
+# Kartu cache (generated)
+data/kartu/
+
+# Python
+scripts/__pycache__/
+*.pyc
+
+# EMIS scripts output
+scripts/nisn-hasil/
+scripts/emis-*.csv

@@ -13,13 +13,13 @@
 </button>
 
 <Dialog.Root bind:open>
-	<Dialog.Content class="max-w-4xl h-[90vh] p-0 gap-0">
-		<Dialog.Header class="px-3 py-2 border-b space-y-0">
+	<Dialog.Content class="w-[calc(100vw-2rem)] max-w-6xl h-[92vh] p-0 gap-0 flex flex-col">
+		<Dialog.Header class="px-4 py-2.5 border-b space-y-0 flex flex-row items-center justify-between gap-3">
 			<Dialog.Title class="text-sm truncate">{title}</Dialog.Title>
-			<a href={src} target="_blank" class="text-xs text-primary hover:underline">
+			<a href={src} target="_blank" class="text-xs text-primary hover:underline shrink-0">
 				Buka di Tab Baru
 			</a>
 		</Dialog.Header>
-		<iframe {src} {title} class="flex-1 w-full border-0"></iframe>
+		<iframe {src} {title} class="flex-1 w-full min-h-0 border-0"></iframe>
 	</Dialog.Content>
 </Dialog.Root>

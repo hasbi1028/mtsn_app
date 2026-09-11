@@ -36,10 +36,11 @@
 	];
 
 	function getPdfUrl(row: any): string {
-		const nama = row.nama.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_');
-		const bln = (row.bulan || 'Juli 2026').replace(/\s+/g, '');
-		return `/uploads/skakpt/SKAKPT_${nama}_${bln}.pdf`;
-	}
+			// Samakan dengan konvensi backend (main.go): spasi→_, koma dibuang, titik dipertahankan
+			const nama = String(row.nama || '').replace(/ /g, '_').replace(/,/g, '');
+			const bln = (row.bulan || 'Juli 2026').replace(/\s+/g, '');
+			return `/uploads/skakpt/SKAKPT_${nama}_${bln}.pdf`;
+		}
 	function getPdfTitle(row: any): string {
 		return `SKAKPT ${row.nama} — ${row.bulan || 'Juli 2026'}`;
 	}

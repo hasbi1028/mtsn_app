@@ -22,6 +22,8 @@ type apiServer struct {
 	db *sql.DB
 }
 
+var globalAPI *apiServer
+
 func toTime(v any) time.Time {
 	switch t := v.(type) {
 	case int64:
@@ -69,6 +71,8 @@ func main() {
 		log.Fatalf("open db: %v", err)
 	}
 	s := &apiServer{db: db}
+	globalAPI = s
+	globalQueue = NewJobQueue()
 
 	mux := http.NewServeMux()
 	// health
@@ -106,8 +110,12 @@ func main() {
 	mux.HandleFunc("GET /api/siswa/{id}/bansos", s.auth(s.handleSiswaBansos))
 	mux.HandleFunc("POST /api/siswa/{id}/foto", s.auth(s.handleSiswaFotoUpload))
 	mux.HandleFunc("GET /api/siswa/{id}/kartu.png", s.auth(s.handleSiswaKartuPNG))
+	mux.HandleFunc("GET /api/siswa/{id}/kartu-back.png", s.auth(s.handleSiswaKartuBackPNG))
+	mux.HandleFunc("POST /api/siswa/{id}/kartu/regenerate", s.auth(s.handleQueueSingleRegenerate))
 	mux.HandleFunc("GET /api/siswa/kartu/list", s.auth(s.handleKartuList))
-	mux.HandleFunc("POST /api/siswa/kartu/generate-all", s.auth(s.handleKartuGenerateAll))
+	mux.HandleFunc("POST /api/siswa/kartu/generate-all", s.auth(s.handleQueueGenerateAll))
+	mux.HandleFunc("GET /api/kartu/queue/{batch_id}", s.auth(s.handleQueueStatus))
+	mux.HandleFunc("POST /api/kartu/queue/{batch_id}/cancel", s.auth(s.handleQueueCancel))
 	// profile siswa sendiri + approval foto
 	mux.HandleFunc("GET /api/siswa/me", s.auth(s.handleSiswaMe))
 	mux.HandleFunc("POST /api/siswa/me/foto", s.auth(s.handleSiswaMeFotoUpload))
@@ -465,20 +473,18 @@ func (s *apiServer) handlePtkDetail(w http.ResponseWriter, r *http.Request) {
 			if det.String != "" {
 				_ = json.Unmarshal([]byte(det.String), &detObj)
 			}
-			// Cek apakah PDF SKAKPT untuk bulan ini sudah ada (scan folder, toleran variasi nama)
+			// Cek apakah PDF SKAKPT untuk bulan ini sudah ada (scan folder, nama lengkap + bulan)
 			bulanStr := bul.String
 			monthSlug := strings.ReplaceAll(bulanStr, " ", "")
-			firstToken := strings.Fields(strings.TrimSpace(nama.String))
-			firstWord := ""
-			if len(firstToken) > 0 {
-				firstWord = firstToken[0]
-			}
+			nameSlug := strings.ToLower(strings.ReplaceAll(strings.TrimSpace(nama.String), " ", "_"))
+			nameSlug = strings.ReplaceAll(nameSlug, ",", "")
+			monthLow := strings.ToLower(monthSlug)
 			terbit := false
 			actualFileName := ""
 			matches, _ := filepath.Glob("C:/Users/LENOVO/webapp/mtsn_app/static/uploads/skakpt/*.pdf")
 			for _, fp := range matches {
 				fn := strings.ToLower(filepath.Base(fp))
-				if strings.Contains(fn, strings.ToLower(firstWord)) && strings.Contains(fn, strings.ToLower(monthSlug)) {
+				if strings.Contains(fn, nameSlug) && strings.Contains(fn, monthLow) {
 					terbit = true
 					actualFileName = filepath.Base(fp)
 					break
@@ -496,6 +502,8 @@ func (s *apiServer) handlePtkDetail(w http.ResponseWriter, r *http.Request) {
 	// Tambah SKBK & SKAKPT PDF jika sudah Disetujui
 	namaFile = strings.ReplaceAll(strings.TrimSpace(nama.String), " ", "_")
 	namaFile = strings.ReplaceAll(namaFile, ".", "")
+	namaSKAKPT := strings.ReplaceAll(strings.TrimSpace(nama.String), " ", "_")
+	namaSKAKPT = strings.ReplaceAll(namaSKAKPT, ",", "")
 	for _, sk := range skbks {
 		if sk["status"] == "Disetujui" {
 			skbkPath := "/uploads/skbk/" + namaFile + "_SKBK_2026S1.pdf"
@@ -509,7 +517,7 @@ func (s *apiServer) handlePtkDetail(w http.ResponseWriter, r *http.Request) {
 				bulanStr = "Juli 2026"
 			}
 			monthSlug := strings.ReplaceAll(bulanStr, " ", "")
-			skakptPath := "/uploads/skakpt/SKAKPT_" + namaFile + "_" + monthSlug + ".pdf"
+			skakptPath := "/uploads/skakpt/SKAKPT_" + namaSKAKPT + "_" + monthSlug + ".pdf"
 			doks = append(doks, map[string]any{"jenis": "SKAKPT", "filePath": skakptPath, "periode": sa["bulan"]})
 		}
 	}
