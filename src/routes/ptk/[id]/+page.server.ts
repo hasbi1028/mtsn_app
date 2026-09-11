@@ -1,12 +1,8 @@
 import { error } from '@sveltejs/kit';
+import { getPtkDetail } from '$modules/ptk/ptk.service';
 
-const API = process.env.API_BASE || 'http://localhost:3730';
-
-export const load = async ({ cookies, params }) => {
-	const token = cookies.get('mtsn_session');
-	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
-	const res = await fetch(`${API}/api/ptk/${params.id}`, { headers: h });
-	if (!res.ok) error(404, 'PTK tidak ditemukan');
-	const p = await res.json();
+export const load = async ({ params }) => {
+	const p = getPtkDetail(params.id);
+	if (!p) error(404, 'PTK tidak ditemukan');
 	return { p };
 };
