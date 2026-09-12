@@ -30,11 +30,13 @@ export const sessions = sqliteTable('sessions', {
 
 export const ptk = sqliteTable('ptk', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
+	publicId: text('public_id').unique(),
 	nama: text('nama').notNull(),
 	pegId: text('peg_id'),
 	nip: text('nip'),
 	nik: text('nik'),
 	nuptk: text('nuptk'),
+	jk: text('jk'), // L | P
 	fungsi: text('fungsi'), // Guru | Staf
 	kepegawaian: text('kepegawaian'), // PNS | P3K | Non PNS
 	sertifikasi: integer('sertifikasi', { mode: 'boolean' }).default(false),
@@ -44,7 +46,9 @@ export const ptk = sqliteTable('ptk', {
 	jabatanStruktural: text('jabatan_struktural'), // Wakamad dll
 	catatan: text('catatan'),
 	userEmis: text('user_emis'),
-	passEmis: text('pass_emis')
+	passEmis: text('pass_emis'),
+	fotoPath: text('foto_path'),
+	biografi: text('biografi')
 });
 
 export const jtmSemester = sqliteTable('jtm_semester', {
@@ -137,6 +141,7 @@ export const roster = sqliteTable('roster', {
 
 export const siswa = sqliteTable('siswa', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
+	publicId: text('public_id').unique(),
 	nis: text('nis').unique(),
 	nisn: text('nisn'),
 	nama: text('nama').notNull(),
@@ -180,6 +185,7 @@ export const siswa = sqliteTable('siswa', {
 
 export const rombel = sqliteTable('rombel', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
+	publicId: text('public_id').unique(),
 	nama: text('nama').notNull().unique(),
 	kelas: integer('kelas').notNull(), // 7, 8, 9
 	label: text('label').notNull(), // A, B, C, D, E
@@ -282,4 +288,76 @@ export const kartuCache = sqliteTable('kartu_cache', {
 export const schemaMigrations = sqliteTable('schema_migrations', {
 	version: integer('version').primaryKey(),
 	appliedAt: text('applied_at').default(sql`datetime('now','localtime')`)
+});
+
+// ============================================
+// KONTEN PUBLIC (Berita, Pengumuman, Agenda, Galeri, Ekskul, Prestasi)
+// ============================================
+
+export const berita = sqliteTable('berita', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	slug: text('slug').unique().notNull(),
+	judul: text('judul').notNull(),
+	ringkasan: text('ringkasan'),
+	konten: text('konten'),
+	gambar: text('gambar'),
+	penulis: text('penulis').default('Admin'),
+	kategori: text('kategori').default('umum'), // umum | kegiatan | prestasi
+	published: integer('published', { mode: 'boolean' }).default(false),
+	publishedAt: text('published_at'),
+	createdAt: text('created_at').default(sql`datetime('now','localtime')`),
+	updatedAt: text('updated_at').default(sql`datetime('now','localtime')`)
+});
+
+export const pengumuman = sqliteTable('pengumuman', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	judul: text('judul').notNull(),
+	konten: text('konten').notNull(),
+	penting: integer('penting', { mode: 'boolean' }).default(false),
+	published: integer('published', { mode: 'boolean' }).default(false),
+	publishedAt: text('published_at'),
+	createdAt: text('created_at').default(sql`datetime('now','localtime')`)
+});
+
+export const agenda = sqliteTable('agenda', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	judul: text('judul').notNull(),
+	deskripsi: text('deskripsi'),
+	tanggalMulai: text('tanggal_mulai').notNull(),
+	tanggalSelesai: text('tanggal_selesai'),
+	lokasi: text('lokasi'),
+	warna: text('warna').default('#3b82f6'),
+	createdAt: text('created_at').default(sql`datetime('now','localtime')`)
+});
+
+export const galeri = sqliteTable('galeri', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	judul: text('judul').notNull(),
+	deskripsi: text('deskripsi'),
+	gambar: text('gambar').notNull(),
+	kategori: text('kategori').default('kegiatan'), // kegiatan | wisata | olahraga | lainnya
+	createdAt: text('created_at').default(sql`datetime('now','localtime')`)
+});
+
+export const ekskul = sqliteTable('ekskul', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	nama: text('nama').notNull(),
+	slug: text('slug').unique().notNull(),
+	deskripsi: text('deskripsi'),
+	gambar: text('gambar'),
+	pembina: text('pembina'),
+	jadwal: text('jadwal'),
+	aktif: integer('aktif', { mode: 'boolean' }).default(true),
+	createdAt: text('created_at').default(sql`datetime('now','localtime')`)
+});
+
+export const prestasi = sqliteTable('prestasi', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	judul: text('judul').notNull(),
+	deskripsi: text('deskripsi'),
+	gambar: text('gambar'),
+	pemenang: text('pemenang'),
+	tingkat: text('tingkat').default('sekolah'), // sekolah | kabupaten | provinsi | nasional
+	tahun: integer('tahun'),
+	createdAt: text('created_at').default(sql`datetime('now','localtime')`)
 });
