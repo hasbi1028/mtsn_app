@@ -126,6 +126,10 @@ export async function getRombelSiswa(rombelId: number) {
 	return db.all(sql`SELECT id, nama, nis, nisn, jk, status_emis FROM siswa WHERE rombel=${nama} ORDER BY nama`);
 }
 
+export async function getAllPtk() {
+	return db.all(sql`SELECT id, nama FROM ptk ORDER BY nama`);
+}
+
 export async function getAvailableSiswa() {
 	return db.all(sql`SELECT id, nama, nis, nisn, jk, kelas FROM siswa WHERE rombel IS NULL OR rombel='' ORDER BY nama`);
 }

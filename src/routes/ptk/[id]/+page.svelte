@@ -4,21 +4,15 @@
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
 	import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '$lib/components/ui/table/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { Separator } from '$lib/components/ui/separator/index.js';
-	import { Alert, AlertDescription } from '$lib/components/ui/alert/index.js';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import CheckCircle from '@lucide/svelte/icons/check-circle-2';
 	import XCircle from '@lucide/svelte/icons/x-circle';
 	import Eye from '@lucide/svelte/icons/eye';
-	import ImageIcon from '@lucide/svelte/icons/image';
 	import { getPtkDetailQ } from '$modules/ptk/ptk.remote';
-	import { page } from '$app/state';
 
-	const pQuery = getPtkDetailQ({ id: page.params.id! }) as Promise<any>;
+	let { params } = $props();
+	const p = $derived(await getPtkDetailQ({ id: params.id }));
 
-	let pageTitle = $state('Loading...');
-
-	// Modal 11 indikator & bukti
 	let detailOpen = $state(false);
 	let detailRow = $state<any>(null);
 	const detailIndikator = $derived((detailRow?.detail?.indikator as any[]) || []);
@@ -36,20 +30,12 @@
 		buktiNama = namaPtk;
 		buktiOpen = true;
 	}
-
-	function formatJtm(jtm: any) {
-		const total = Number(jtm.mengajar || 0) + Number(jtm.tugas || 0);
-		return { total, emisDiffers: Number(jtm.dashboardTotal || 0) !== total };
-	}
 </script>
 
-<svelte:head><title>{pageTitle} — MTsN App</title></svelte:head>
+<svelte:head><title>{p?.nama ?? 'PTK'} — MTsN App</title></svelte:head>
 
-{#await pQuery}
-	<p class="text-sm text-muted-foreground text-center py-8">Memuat data PTK...</p>
-{:then p}
-	{pageTitle = p.nama}
-	{@const jtm = p.jtm || {}}
+{#if p}
+	{@const jtm = (Array.isArray(p.jtm) ? p.jtm[0] : p.jtm) || {}}
 	{@const totalJtm = Number(jtm.mengajar || 0) + Number(jtm.tugas || 0)}
 	{@const emisDiffers = Number(jtm.dashboardTotal || 0) !== totalJtm}
 
@@ -72,7 +58,6 @@
 	</div>
 
 	<div class="grid gap-3 md:grid-cols-2">
-		<!-- Identitas -->
 		<Card>
 			<CardHeader class="pb-2"><CardTitle class="text-sm">Identitas</CardTitle></CardHeader>
 			<CardContent>
@@ -88,7 +73,6 @@
 			</CardContent>
 		</Card>
 
-		<!-- JTM -->
 		<Card>
 			<CardHeader class="pb-2"><CardTitle class="text-sm">JTM (Satminkal, TA 2026/2027)</CardTitle></CardHeader>
 			<CardContent>
@@ -123,7 +107,6 @@
 			</CardContent>
 		</Card>
 
-		<!-- SKMT -->
 		<Card>
 			<CardHeader class="pb-2"><CardTitle class="text-sm">Riwayat SKMT</CardTitle></CardHeader>
 			<CardContent>
@@ -152,7 +135,6 @@
 			</CardContent>
 		</Card>
 
-		<!-- SKBK -->
 		<Card>
 			<CardHeader class="pb-2"><CardTitle class="text-sm">Riwayat SKBK</CardTitle></CardHeader>
 			<CardContent>
@@ -181,7 +163,6 @@
 			</CardContent>
 		</Card>
 
-		<!-- SKAKPT -->
 		<Card>
 			<CardHeader class="pb-2"><CardTitle class="text-sm">Riwayat SKAKPT</CardTitle></CardHeader>
 			<CardContent>
@@ -197,8 +178,6 @@
 								{@const det = s.detail as any}
 								{@const totalOk = Number(det?.totalOk ?? 0)}
 								{@const total = Number(det?.total ?? 11)}
-								{@const buktiRel = det?.bukti || ''}
-								{@const buktiName = buktiRel ? buktiRel.split('/').pop() : ''}
 								<TableRow>
 									<TableCell class="text-xs">{s.bulan || '—'}</TableCell>
 									<TableCell>
@@ -222,22 +201,11 @@
 										{/if}
 									</TableCell>
 									<TableCell class="text-xs">
-										<div class="flex flex-wrap gap-1.5">
-											{#if det}
-												<Button size="sm" variant="outline" class="h-6 text-[10px] cursor-pointer" onclick={() => lihatDetail(s)}>
-													<Eye class="size-3" /> Indikator
-												</Button>
-												{#if buktiName}
-													<Button size="sm" variant="outline" class="h-6 text-[10px] cursor-pointer" onclick={() => lihatBukti(buktiName, p.nama)}>
-														<ImageIcon class="size-3" /> Bukti
-													</Button>
-												{/if}
-											{/if}
-											{#if s.download}
-												{@const pdfUrl = `/uploads/skakpt/${s.filename || ''}`}
-												<PdfViewer src={pdfUrl} title="SKAKPT {p.nama} — {s.bulan || 'Juli 2026'}" />
-											{/if}
-										</div>
+										{#if det}
+											<Button size="sm" variant="outline" class="h-6 text-[10px] cursor-pointer" onclick={() => lihatDetail(s)}>
+												<Eye class="size-3" /> Indikator
+											</Button>
+										{/if}
 									</TableCell>
 								</TableRow>
 							{/each}
@@ -247,7 +215,6 @@
 			</CardContent>
 		</Card>
 
-		<!-- Dokumen -->
 		<Card>
 			<CardHeader class="pb-2"><CardTitle class="text-sm">Dokumen</CardTitle></CardHeader>
 			<CardContent>
@@ -265,7 +232,6 @@
 			</CardContent>
 		</Card>
 
-		<!-- Roster -->
 		<Card class="md:col-span-2">
 			<CardHeader class="pb-2"><CardTitle class="text-sm">Roster Mengajar ({(p.roster || []).length} slot)</CardTitle></CardHeader>
 			<CardContent>
@@ -294,7 +260,6 @@
 		</Card>
 	</div>
 
-	<!-- Modal: 11 indikator kelayakan -->
 	<Dialog.Root bind:open={detailOpen}>
 		<Dialog.Content class="max-w-2xl p-0 gap-0">
 			<Dialog.Header class="px-4 py-3 border-b">
@@ -341,7 +306,6 @@
 		</Dialog.Content>
 	</Dialog.Root>
 
-	<!-- Modal: bukti screenshot -->
 	<Dialog.Root bind:open={buktiOpen}>
 		<Dialog.Content class="max-w-4xl p-0 gap-0">
 			<Dialog.Header class="px-4 py-3 border-b">
@@ -359,4 +323,6 @@
 			</div>
 		</Dialog.Content>
 	</Dialog.Root>
-{/await}
+{:else}
+	<p class="text-sm text-muted-foreground text-center py-8">PTK tidak ditemukan</p>
+{/if}

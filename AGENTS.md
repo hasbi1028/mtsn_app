@@ -26,6 +26,7 @@ npx playwright test  # Run e2e tests
 
 ```
 Browser → SvelteKit (3720) → Drizzle ORM → SQLite (local.db)
+                                └─ worker-bel (8093) — hanya untuk playback suara bel
 ```
 
 - **NO separate Go API** — all logic lives in SvelteKit

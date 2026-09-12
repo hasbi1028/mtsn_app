@@ -41,6 +41,7 @@ export const siswaByRefSchema = v.object({
  * Schema untuk perubahan data
  */
 export const perubahanSchema = v.object({
+	siswaId: v.number(),
 	field: v.pipe(v.string(), v.nonEmpty()),
 	nilai_baru: v.pipe(v.string(), v.nonEmpty())
 });

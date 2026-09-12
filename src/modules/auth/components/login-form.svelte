@@ -4,7 +4,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { FieldGroup, Field, FieldLabel, FieldSeparator } from '$lib/components/ui/field/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
-	import { enhance } from '$app/forms';
+	import { login } from '../auth.remote';
 	import { cn } from '$lib/utils.js';
 	import SchoolIcon from '@lucide/svelte/icons/school';
 	import EyeIcon from '@lucide/svelte/icons/eye';
@@ -25,20 +25,20 @@
 	<Card.Root class="overflow-hidden p-0">
 		<div class="grid grid-cols-1 md:grid-cols-2 p-0">
 			<form
-				method="POST"
-				use:enhance={() => {
+				{...login.enhance(async (form) => {
 					loading = true;
 					formError = '';
-					return async ({ result, update }) => {
-						if (result.type === 'redirect') {
-							await update();
-						} else if (result.type === 'failure') {
-							formError = (result.data?.error as string) || 'Username atau kata sandi salah';
-							notify.error(formError);
+					try {
+						await form.submit();
+						const result = (form as any).result as { error?: string } | undefined;
+						if (result?.error) {
+							formError = result.error;
+							notify.error(result.error);
 						}
+					} finally {
 						loading = false;
-					};
-				}}
+					}
+				})}
 				class="p-6 md:p-8"
 				aria-label="Formulir masuk"
 			>

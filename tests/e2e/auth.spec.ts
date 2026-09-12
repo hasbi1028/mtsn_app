@@ -31,4 +31,14 @@ test.describe('Auth', () => {
     await expect(page).toHaveURL('/');
     await expect(page.locator('h1').filter({ hasText: 'Dashboard' })).toBeVisible({ timeout: 8000 });
   });
+
+  test('logout via UI -> session dihapus dan redirect ke /login', async ({ page }) => {
+    await loginAs(page);
+    await gotoAndWait(page, '/');
+    await expect(page).toHaveURL('/');
+
+    await page.getByRole('button', { name: /keluar/i }).first().click();
+    await page.waitForURL(/\/login/, { timeout: 10000 });
+    expect(await page.evaluate(() => document.cookie)).not.toContain('session_id=');
+  });
 });

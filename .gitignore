@@ -41,11 +41,8 @@ svlog.txt
 err.txt
 
 # Binaries
-backend/api.exe
-backend/api.exe~
-backend-api.exe
-backend.exe
-bin/
+backend/
+*.exe
 
 # Temp
 _hash.txt

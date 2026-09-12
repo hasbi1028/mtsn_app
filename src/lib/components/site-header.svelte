@@ -6,6 +6,7 @@
 	import Sun from '@lucide/svelte/icons/sun';
 	import Moon from '@lucide/svelte/icons/moon';
 	import LogOutIcon from '@lucide/svelte/icons/log-out';
+	import { logoutForm } from '$modules/auth/auth.remote';
 
 	let { user } = $props();
 </script>
@@ -23,7 +24,7 @@
 			<span class="sr-only">Toggle theme</span>
 		</Button>
 		<span class="hidden text-xs text-muted-foreground sm:inline">{user?.username}</span>
-		<form method="POST" action="/logout">
+		<form {...logoutForm}>
 			<Button variant="ghost" size="sm" type="submit" class="h-7 px-2 text-xs cursor-pointer">
 				<LogOutIcon class="size-3.5" />
 				<span class="hidden sm:inline">Keluar</span>

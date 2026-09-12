@@ -4,9 +4,10 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import UsersRoundIcon from '@lucide/svelte/icons/users-round';
 	import LogOutIcon from '@lucide/svelte/icons/log-out';
+	import { logoutForm, getMe } from '$modules/auth/auth.remote';
 
-	let { data } = $props();
-	const user = $derived(data.user);
+	const userQuery = $derived(getMe());
+	const user = $derived(userQuery.current);
 </script>
 
 <svelte:head><title>Profil Anak — SIMAD</title></svelte:head>
@@ -38,7 +39,7 @@
 		</Card.Content>
 	</Card.Root>
 
-	<form method="POST" action="/logout" class="flex justify-center">
+	<form {...logoutForm} class="flex justify-center">
 		<Button variant="outline" type="submit" class="cursor-pointer">
 			<LogOutIcon class="size-4 mr-2" />
 			Keluar

@@ -10,7 +10,9 @@ import {
 	deleteRombel as svcDelete,
 	allocateSiswa as svcAllocate,
 	removeSiswa as svcRemove,
-	setWaliKelas as svcSetWali
+	setWaliKelas as svcSetWali,
+	getAvailableSiswa as svcGetAvailable,
+	getAllPtk as svcGetAllPtk
 } from './rombel.service';
 
 export const getRombelListQ = query(async () => svcGetList());
@@ -40,3 +42,6 @@ export const removeSiswaC = command(v.object({ rombelId: rombelIdSchema, siswaId
 export const setWaliKelasC = command(v.object({ rombelId: rombelIdSchema, ptkId: v.pipe(v.number(), v.minValue(1)) }), async ({ rombelId, ptkId }) => {
 	return svcSetWali(rombelId, ptkId);
 });
+
+export const getAvailableSiswaQ = query(async () => svcGetAvailable());
+export const getAllPtkQ = query(async () => svcGetAllPtk());

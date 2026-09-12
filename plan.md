@@ -334,17 +334,19 @@ Browser → SvelteKit (3720) → Drizzle ORM → SQLite (local.db)
 
 ---
 
-## Phase 11: Cleanup
+## Phase 11: Cleanup ✅ DONE
 
 **Goal:** Hapus Go API, update PM2
 
 **Tasks:**
-- [ ] Verify semua module berjalan tanpa Go API
-- [ ] Update `ecosystem.config.cjs` — hapus `mtsn-app-api`
-- [ ] `rm -rf backend/`
-- [ ] Update `.gitignore` — hapus backend references
-- [ ] Update README.md — hapus Go API mention
-- [ ] Commit: `refactor: delete Go API — fully migrated to SvelteKit`
+- [x] Verify semua module berjalan tanpa Go API
+- [x] Update `ecosystem.config.cjs` — hapus `mtsn-app-api`
+- [x] `rm -rf backend/`
+- [x] Update `.gitignore` — hapus backend references
+- [x] Update README.md — hapus Go API mention
+- [x] Commit: `refactor: delete Go API — fully migrated to SvelteKit`
+
+> Full migration details: `plan-full-remote.md` (Milestone A: remote functions, Milestone B: cleanup)
 
 ---
 

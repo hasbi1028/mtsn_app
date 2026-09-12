@@ -1,10 +1,13 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import PrinterIcon from '@lucide/svelte/icons/printer';
 	import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
+	import { getOrtuSiswaQ } from '$modules/ortu/ortu.remote';
 
-	let { data } = $props();
-	const siswa = $derived(data.siswa as any);
-	const ortu = $derived(data.ortu as any);
+	const ortuQuery = $derived(getOrtuSiswaQ());
+	const ortuData = $derived(ortuQuery.current as any);
+	const siswa = $derived(ortuData?.siswa as any);
+	const ortu = $derived(ortuData?.ortu as any);
 
 	const now = new Date();
 	const tanggalCetak = now.toLocaleDateString('id-ID', {
@@ -36,7 +39,7 @@
 <!-- Screen-only controls -->
 <div class="no-print flex items-center justify-between border-b bg-background px-4 py-2">
 	<a
-		href="/ortu/bansos"
+		href={resolve('/ortu/bansos')}
 		class="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
 	>
 		<ArrowLeftIcon class="size-4" />

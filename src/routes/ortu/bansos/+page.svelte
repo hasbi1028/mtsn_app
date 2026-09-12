@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import * as Alert from '$lib/components/ui/alert/index.js';
@@ -10,10 +11,12 @@
 	import XCircleIcon from '@lucide/svelte/icons/circle-x';
 	import UsersRoundIcon from '@lucide/svelte/icons/users-round';
 	import PrinterIcon from '@lucide/svelte/icons/printer';
+	import { getOrtuSiswaQ } from '$modules/ortu/ortu.remote';
 
-	let { data } = $props();
-	const siswa = $derived(data.siswa as any);
-	const ortu = $derived(data.ortu as any);
+	const ortuQuery = $derived(getOrtuSiswaQ());
+	const ortuData = $derived(ortuQuery.current as any);
+	const siswa = $derived(ortuData?.siswa as any);
+	const ortu = $derived(ortuData?.ortu as any);
 
 	function desilBadgeClass(desil: string | null): string {
 		if (!desil || desil === '' || desil === 'TIDAK DITEMUKAN' || desil === 'BELUM ADA DESIL') {
@@ -69,7 +72,7 @@
 			{#if siswa}
 				<div class="mb-3">
 					<a
-						href="/ortu/bansos/cetak"
+						href={resolve('/ortu/bansos/cetak')}
 						target="_blank"
 						rel="noopener noreferrer"
 						class="inline-flex items-center gap-1.5 rounded-md bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/20 transition-colors cursor-pointer"

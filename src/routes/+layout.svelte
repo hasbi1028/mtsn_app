@@ -16,6 +16,7 @@
 	import { siswaNavItems, ortuNavItems } from '$lib/config/navigation.js';
 	import { page } from '$app/state';
 	import { notify } from '$lib/toast';
+	import { logoutForm } from '$modules/auth/auth.remote';
 
 	let { children, data } = $props();
 
@@ -63,7 +64,7 @@
 					<Moon class="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
 					<span class="sr-only">Toggle theme</span>
 				</Button>
-				<form method="POST" action="/logout">
+				<form {...logoutForm}>
 					<Button variant="ghost" size="icon" type="submit" class="size-8 cursor-pointer" title="Keluar">
 						<LogOutIcon class="size-4" />
 					</Button>

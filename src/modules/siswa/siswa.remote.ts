@@ -13,7 +13,6 @@ export const getSiswaBansosQ = query(siswaDetailSchema, async ({ id }) => getSis
 export const getKartuListQ = query(async () => getKartuList());
 export const getRekapQ = query(async () => getRekap());
 
-export const submitPerubahanC = command(perubahanSchema, async ({ field, nilai_baru }) => {
-	// TODO: get siswaId from session
-	return { ok: true, pesan: 'Perubahan dikirim' };
+export const submitPerubahanC = command(perubahanSchema, async ({ siswaId, field, nilai_baru }) => {
+	return submitPerubahan(siswaId, field, nilai_baru);
 });

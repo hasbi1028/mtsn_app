@@ -1,6 +1,7 @@
-import { form, command, query } from '$app/server';
-import { error, redirect } from '@sveltejs/kit';
+import { form, query } from '$app/server';
+import { redirect } from '@sveltejs/kit';
 import { getRequestEvent } from '$app/server';
+import * as v from 'valibot';
 import { loginSchema } from './auth.validation';
 import {
 	validateCredentials,
@@ -27,7 +28,7 @@ export const login = form(loginSchema, async ({ username, password }) => {
 	// 1. Validate credentials (service handles DB query + password check)
 	const user = validateCredentials(username, password);
 	if (!user) {
-		error(401, 'Username atau password salah');
+		return { error: 'Username atau password salah' };
 	}
 
 	// 2. Create session (service handles DB insert)
@@ -50,16 +51,21 @@ export const login = form(loginSchema, async ({ username, password }) => {
 });
 
 /**
- * Logout command — thin wrapper
+ * Logout form — dipakai pada <form {...logoutForm}>
+ *
+ * Form (bukan command) karena `redirect()` tidak diizinkan di dalam `command`.
+ * Progressive enhancement milik `form()`: tanpa JS tetap berfungsi.
  */
-export const logout = command(async () => {
+export const logoutForm = form(v.object({}), async () => {
 	const { cookies } = getRequestEvent();
 	const token = cookies.get('session_id');
 
 	if (token) {
 		deleteSessionByToken(token);
-		cookies.delete('session_id', { path: '/' });
 	}
+
+	cookies.delete('session_id', { path: '/' });
+	cookies.delete('mtsn_session', { path: '/' });
 
 	redirect(303, '/login');
 });

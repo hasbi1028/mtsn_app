@@ -13,6 +13,7 @@
 	import PencilIcon from '@lucide/svelte/icons/pencil';
 	import CheckCircle from '@lucide/svelte/icons/check-circle-2';
 	import ClockIcon from '@lucide/svelte/icons/clock';
+	import { logoutForm } from '$modules/auth/auth.remote';
 
 	let { data, form } = $props();
 	const user = $derived(data.user);
@@ -163,7 +164,7 @@
 		</Card.Content>
 	</Card.Root>
 
-	<form method="POST" action="/logout" class="flex justify-center">
+	<form {...logoutForm} class="flex justify-center">
 		<Button variant="outline" type="submit" class="cursor-pointer">
 			<LogOutIcon class="size-4 mr-2" /> Keluar
 		</Button>

@@ -2,6 +2,46 @@ import { db } from '$lib/server/db';
 import { sql } from 'drizzle-orm';
 import { jamBel, belSettings } from '$lib/server/db/schema';
 
+const BEL_API = 'http://localhost:8093';
+
+export async function belProxy(method: string, path: string, body?: any) {
+	const res = await fetch(`${BEL_API}${path}`, {
+		method,
+		headers: body ? { 'Content-Type': 'application/json' } : {},
+		body: body ? JSON.stringify(body) : undefined
+	});
+	return await res.json().catch(() => ({ ok: false, error: 'Bel service offline' }));
+}
+
+export async function getBelStatus() {
+	return belProxy('GET', '/api/status').catch(() => ({ ok: false, offline: true }));
+}
+
+export async function getBelSuaraFromWorker() {
+	return belProxy('GET', '/api/suara').catch(() => ({ files: [] }));
+}
+
+export async function playBell(file: string) {
+	return belProxy('POST', '/api/play', { path: file, repeat: 1 });
+}
+
+export async function stopBell() {
+	return belProxy('POST', '/api/stop');
+}
+
+export async function toggleMaster(enabled: boolean) {
+	return belProxy('POST', '/api/master', { enabled });
+}
+
+export async function uploadSuaraToWorker(formData: FormData) {
+	const res = await fetch(`${BEL_API}/api/suara`, { method: 'POST', body: formData });
+	return res.json();
+}
+
+export async function deleteSuaraFromWorker(name: string) {
+	return belProxy('DELETE', `/api/suara/${encodeURIComponent(name)}`);
+}
+
 export function getBelJadwal() {
 	const rows = db.all(sql`
 		SELECT id, hari, jam, jenis, COALESCE(label,'') as label, sound_path, repeat, aktif
