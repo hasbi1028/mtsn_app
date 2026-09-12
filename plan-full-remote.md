@@ -8,6 +8,26 @@
 
 ---
 
+## ✅ STATUS: SELESAI (Milestone A & B)
+
+Semua milestone A1–A7 dan B1–B4 telah dieksekusi. Rekap:
+
+| Milestone | Spec | Status |
+|-----------|------|--------|
+| A1 Auth | 012-remote-auth | ✅ |
+| A2 Approval | 013-remote-approval | ✅ |
+| A3 Skakpt | 014-remote-skakpt | ✅ |
+| A4 Rombel detail | 015-remote-rombel | ✅ |
+| A5 Siswa profil + foto | 020-remote-siswa-profil | ✅ |
+| A6 Kartu (queue + regenerate) | 016-remote-cetak, 017-remote-kartu | ✅ |
+| A7 Bel | 018-remote-bel | ✅ |
+| B Cleanup Go | 019-cleanup-go | ✅ |
+
+Verifikasi: `npm run check` 0 error · `npx playwright test` hijau · `tests/e2e/full-remote.spec.ts` guard rekursif + 404 endpoint legacy.
+
+---
+
+
 ## Status Saat Ini (hasil review)
 
 | Item | Status |

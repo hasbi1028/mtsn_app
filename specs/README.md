@@ -12,20 +12,34 @@
 
 ## Index
 
-| # | Module | Status | Spec | Test | Migrated |
-|---|--------|--------|------|------|----------|
-| 001 | Auth | Pending | [spec](001-auth/spec.md) | — | ❌ |
-| 002 | Dashboard | Pending | [spec](002-dashboard/spec.md) | — | ❌ |
-| 003 | PTK | Pending | [spec](003-ptk/spec.md) | — | ❌ |
-| 004 | Siswa | Pending | [spec](004-siswa/spec.md) | — | ❌ |
-| 005 | Rombel | Pending | [spec](005-rombel/spec.md) | — | ❌ |
-| 006 | Roster | Pending | [spec](006-roster/spec.md) | — | ❌ |
-| 007 | Dokumen | Pending | [spec](007-dokumen/spec.md) | — | ❌ |
-| 008 | Kartu | Pending | [spec](008-kartu/spec.md) | — | ❌ |
-| 009 | Bel | Pending | [spec](009-bel/spec.md) | — | ❌ |
-| 010 | Approval | Pending | [spec](010-approval/spec.md) | — | ❌ |
-| 011 | Bansos | Pending | [spec](011-bansos/spec.md) | — | ❌ |
-| 012 | Activity | Pending | [spec](012-activity/spec.md) | — | ❌ |
+### Spec modul awal (Go → SvelteKit)
+
+| # | Module | Status | Spec | Test |
+|---|--------|--------|------|------|
+| 001 | Auth | ✅ Done | [spec](001-auth/spec.md) | `tests/e2e/auth.spec.ts` |
+| 002 | Dashboard | ✅ Done | [spec](002-dashboard/spec.md) | `tests/e2e/dashboard.spec.ts` |
+| 003 | PTK | ✅ Done | [spec](003-ptk/spec.md) | `tests/e2e/ptk.spec.ts` |
+| 004 | Siswa | ✅ Done | [spec](004-siswa/spec.md) | `tests/e2e/siswa.spec.ts` |
+| 005 | Rombel | ✅ Done | [spec](005-rombel/spec.md) | `tests/e2e/rombel.spec.ts` |
+| 006 | Dokumen (SKMT/SKBK/SKAKPT) | ✅ Done | [spec](006-dokumen/spec.md) | `tests/e2e/dokumen.spec.ts` |
+| 008 | Bel | ✅ Done | [spec](008-bel/spec.md) | `tests/e2e/bel.spec.ts` |
+| 009 | Approval | ✅ Done | [spec](009-approval/spec.md) | `tests/e2e/approval.spec.ts` |
+| 010 | Activity | ✅ Done | [spec](010-activity/spec.md) | `tests/e2e/activity.spec.ts` |
+| 011 | Roster | ✅ Done | [spec](011-roster/spec.md) | `tests/e2e/roster.spec.ts` |
+
+### Spec migrasi full remote function
+
+| # | Module | Status | Spec | E2E |
+|---|--------|--------|------|-----|
+| 012 | Remote Auth | ✅ Done | [spec](012-remote-auth/spec.md) | `auth.spec.ts` |
+| 013 | Remote Approval | ✅ Done | [spec](013-remote-approval/spec.md) | `approval.spec.ts` |
+| 014 | Remote Skakpt | ✅ Done | [spec](014-remote-skakpt/spec.md) | `dokumen.spec.ts` |
+| 015 | Remote Rombel | ✅ Done | [spec](015-remote-rombel/spec.md) | `rombel.spec.ts` |
+| 016 | Remote Cetak Kartu | ✅ Done | [spec](016-remote-cetak/spec.md) | `kartu.spec.ts` |
+| 017 | Remote Kartu (queue/regenerate) | ✅ Done | [spec](017-remote-kartu/spec.md) | `kartu.spec.ts` |
+| 018 | Remote Bel | ✅ Done | [spec](018-remote-bel/spec.md) | `bel.spec.ts` |
+| 019 | Cleanup Go Backend | ✅ Done | [spec](019-cleanup-go/spec.md) | `full-remote.spec.ts` |
+| 020 | Remote Siswa Profil & Foto | ✅ Done | [spec](020-remote-siswa-profil/spec.md) | `siswa.spec.ts` |
 
 ## Status Legend
 
@@ -44,18 +58,9 @@
 ## Migration Order
 
 ```
-Phase 0: Database Foundation (schema.ts)
-Phase 1: Auth (login/logout/me)
-Phase 2: Dashboard (stats)
-Phase 3: PTK (list/detail)
-Phase 4: Siswa (list/detail/upload)
-Phase 5: Rombel (CRUD + allocate)
-Phase 6: Dokumen (SKMT/SKBK/SKAKPT)
-Phase 7: Kartu (render + queue)
-Phase 8: Bel (control + CRUD)
-Phase 9: Approval (foto + perubahan)
-Phase 10: Bansos + Activity
-Phase 11: Cleanup (delete Go API)
+Phase 0–10 : DB → Auth → Dashboard → PTK → Siswa → Rombel → Dokumen → Kartu → Bel → Approval → Activity
+Phase 11   : Cleanup Go API (spec 019)
+Full Remote: spec 012–020 (remote functions, hapus legacy)
 ```
 
 ## Conventions
