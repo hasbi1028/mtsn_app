@@ -6,8 +6,13 @@
 	import RotateCw from '@lucide/svelte/icons/rotate-cw';
 	import X from '@lucide/svelte/icons/x';
 	import { notify } from '$lib/toast';
-	import { invalidate } from '$app/navigation';
 	import { getKartuListQ } from '$modules/siswa/siswa.remote';
+	import {
+		generateAllKartu,
+		regenerateKartuCmd,
+		getBatchStatusQ,
+		cancelBatchC
+	} from '$modules/kartu/kartu.remote';
 
 	const listQuery = getKartuListQ() as Promise<any[]>;
 
@@ -42,9 +47,12 @@
 	async function generateAll() {
 		generating = true;
 		try {
-			const res = await fetch('/api/kartu/generate-all', { method: 'POST', credentials: 'include' });
-			if (!res.ok) throw new Error('Gagal generate');
-			const d = await res.json();
+			const d = await generateAllKartu();
+			if ('error' in d) {
+				notify.error(d.error ?? 'Gagal generate');
+				generating = false;
+				return;
+			}
 			batchId = d.batch_id;
 			batchTotal = d.total;
 			batchDone = 0;
@@ -67,9 +75,10 @@
 	async function pollStatus() {
 		if (!batchId) return;
 		try {
-			const res = await fetch(`/api/kartu/queue/${batchId}`, { credentials: 'include' });
-			if (!res.ok) return;
-			const d = await res.json();
+			const q = getBatchStatusQ(batchId);
+			await q.refresh();
+			const d = q.current;
+			if (!d) return;
 			batchDone = d.done;
 			batchFailed = d.failed;
 			batchStatus = d.status;
@@ -82,7 +91,7 @@
 				} else {
 					notify.success(`Semua ${d.done} kartu berhasil digenerate.`);
 				}
-				await invalidate('/siswa/kartu');
+				void getKartuListQ().refresh();
 			}
 		} catch {
 			// ignore poll errors
@@ -99,12 +108,12 @@
 	async function cancelBatch() {
 		if (!batchId) return;
 		try {
-			await fetch(`/api/kartu/queue/${batchId}/cancel`, { method: 'POST', credentials: 'include' });
+			await cancelBatchC(batchId);
 			stopPolling();
 			batchStatus = 'completed';
 			generating = false;
 			notify.info('Generate dibatalkan.');
-			await invalidate('/siswa/kartu');
+			void getKartuListQ().refresh();
 		} catch {
 			notify.error('Gagal membatalkan.');
 		}
@@ -115,9 +124,7 @@
 	async function handleRegenerateOne(id: number) {
 		regeneratingId = id;
 		try {
-			const res = await fetch(`/api/siswa/${id}/kartu-regenerate`, { method: 'POST', credentials: 'include' });
-			if (!res.ok) throw new Error('Gagal regenerate');
-			const d = await res.json();
+			const d = await regenerateKartuCmd(String(id));
 
 			// Poll single job until done
 			if (d.batch_id) {
@@ -125,13 +132,14 @@
 				const poll = setInterval(async () => {
 					tries++;
 					try {
-						const sRes = await fetch(`/api/kartu/queue/${d.batch_id}`, { credentials: 'include' });
-						const sData = await sRes.json();
-						if (sData.status === 'completed' || tries > 60) {
+						const q = getBatchStatusQ(d.batch_id);
+						await q.refresh();
+						const sData = q.current;
+						if (sData?.status === 'completed' || tries > 60) {
 							clearInterval(poll);
 							regeneratingId = null;
 							cacheBusts = { ...cacheBusts, [id]: Date.now() };
-							if (sData.failed > 0) {
+							if (sData && sData.failed > 0) {
 								notify.error('Gagal regenerate kartu.');
 							} else {
 								notify.success('Kartu berhasil digenerate ulang.');

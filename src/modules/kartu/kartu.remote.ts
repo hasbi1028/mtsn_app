@@ -1,11 +1,10 @@
 import { query, command } from '$app/server';
+import { error } from '@sveltejs/kit';
 import * as v from 'valibot';
 import {
 	getKartuList,
 	getAllActiveSiswaWithFoto,
-	getOrGenerateKartu,
-	getOrGenerateKartuBack,
-	regenerateKartu,
+	getSiswaKartu,
 	enqueueBatch,
 	enqueueSingle,
 	getBatchStatus,
@@ -28,11 +27,30 @@ export const generateAllKartu = command(async () => {
 });
 
 export const regenerateKartuCmd = command(v.string(), async (id) => {
-	const { job, batch } = enqueueSingle(id, '');
+	const sd = getSiswaKartu(id);
+	if (!sd) error(404, 'Siswa tidak ditemukan');
+	const { job, batch } = enqueueSingle(sd.id, sd.nama);
 	return {
 		ok: true,
 		job_id: job.id,
 		batch_id: batch.id,
 		message: 'Regenerate sedang diproses',
 	};
+});
+
+export const getBatchStatusQ = query(v.string(), async (batchId) => {
+	const batch = getBatchStatus(batchId);
+	if (!batch) return null;
+	return {
+		batch_id: batch.id,
+		status: batch.status,
+		total: batch.total,
+		done: batch.done,
+		failed: batch.failed,
+	};
+});
+
+export const cancelBatchC = command(v.string(), async (batchId) => {
+	const cancelled = cancelBatch(batchId);
+	return { ok: true, cancelled, message: `${cancelled} job dibatalkan` };
 });

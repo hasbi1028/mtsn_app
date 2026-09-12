@@ -10,6 +10,7 @@
 	import RefreshCw from '@lucide/svelte/icons/refresh-cw';
 	import { notify } from '$lib/toast';
 	import { getSiswaDetailQ } from '$modules/siswa/siswa.remote';
+	import { regenerateKartuCmd, getBatchStatusQ } from '$modules/kartu/kartu.remote';
 
 	const siswaQuery = $derived(getSiswaDetailQ({ id: page.params.id ?? '' }));
 	const siswa = $derived(siswaQuery.current);
@@ -88,25 +89,21 @@
 	async function handleRegenerate(s: any) {
 		regenerating = true;
 		try {
-			const res = await fetch(`/api/siswa/${s.id}/kartu-regenerate`, { method: 'POST', credentials: 'include' });
-			if (!res.ok) {
-				const err = await res.json().catch(() => ({ error: 'Gagal regenerate' }));
-				throw new Error(err.error || 'Gagal regenerate');
-			}
-			const d = await res.json();
+			const d = await regenerateKartuCmd(String(s.id));
 
 			if (d.batch_id) {
 				let tries = 0;
 				const poll = setInterval(async () => {
 					tries++;
 					try {
-						const sRes = await fetch(`/api/kartu/queue/${d.batch_id}`, { credentials: 'include' });
-						const sData = await sRes.json();
-						if (sData.status === 'completed' || tries > 60) {
+						const q = getBatchStatusQ(d.batch_id);
+						await q.refresh();
+						const sData = q.current;
+						if (sData?.status === 'completed' || tries > 60) {
 							clearInterval(poll);
 							regenerating = false;
 							cacheBust = Date.now();
-							if (sData.failed > 0) {
+							if (sData && sData.failed > 0) {
 								notify.error('Gagal regenerate kartu.');
 							} else {
 								notify.success('Kartu berhasil digenerate ulang.');

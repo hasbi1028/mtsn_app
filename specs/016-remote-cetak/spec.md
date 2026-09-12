@@ -20,7 +20,7 @@ preview kartu berjalan tanpa server-side load.
 - [ ] `siswa/[id]/kartu/+page.server.ts` TIDAK ada (dihapus)
 - [ ] Tidak ada `use:enhance` dari `$app/forms`
 - [ ] Tidak ada `action="?/..."` di form
-- [ ] Download & Regenerate tetap berfungsi (via `/api/...` endpoints)
+- [ ] Download memakai endpoint PNG; Regenerate memakai remote (lihat `017-remote-kartu`)
 
 ### Edge Cases
 
