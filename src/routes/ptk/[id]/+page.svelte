@@ -14,7 +14,7 @@
 	import { getPtkDetailQ } from '$modules/ptk/ptk.remote';
 	import { page } from '$app/state';
 
-	const pQuery = getPtkDetailQ(page.params.id) as Promise<any>;
+	const pQuery = getPtkDetailQ({ id: page.params.id! }) as Promise<any>;
 
 	let pageTitle = $state('Loading...');
 
@@ -112,7 +112,7 @@
 							{#if jtm.dashboardTotal != null}
 								<TableRow><TableCell class="text-muted-foreground text-xs">Dashboard EMIS</TableCell><TableCell class="text-xs">{jtm.dashboardTotal}</TableCell></TableRow>
 								{#if emisDiffers}
-									<TableRow><TableCell colspan="2" class="text-[10px] text-muted-foreground italic">* EMIS termasuk tugas tambahan lain</TableCell></TableRow>
+									<TableRow><TableCell colspan={2} class="text-[10px] text-muted-foreground italic">* EMIS termasuk tugas tambahan lain</TableCell></TableRow>
 								{/if}
 							{/if}
 						</TableBody>

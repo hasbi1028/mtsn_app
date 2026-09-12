@@ -12,7 +12,7 @@
 	import { getSiswaDetailQ, getSiswaBansosQ } from '$modules/siswa/siswa.remote';
 	import { page } from '$app/state';
 
-	const dataQuery = Promise.all([getSiswaDetailQ(page.params.id), getSiswaBansosQ(page.params.id)]) as Promise<[any, any]>;
+	const dataQuery = Promise.all([getSiswaDetailQ({ id: page.params.id! }), getSiswaBansosQ({ id: page.params.id! })]) as Promise<[any, any]>;
 
 	function desilColor(d: string | null | undefined): string {
 		if (!d || d === 'TIDAK DITEMUKAN') return 'bg-gray-100 text-gray-700';

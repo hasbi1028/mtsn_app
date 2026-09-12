@@ -17,10 +17,24 @@ export const siswaListSchema = v.object({
 export type SiswaListInput = v.InferOutput<typeof siswaListSchema>;
 
 /**
- * Schema untuk siswa detail
+ * Schema untuk siswa detail (by ID string)
  */
 export const siswaDetailSchema = v.object({
 	id: v.pipe(v.string(), v.nonEmpty())
+});
+
+/**
+ * Schema untuk siswa detail (by user ID number)
+ */
+export const siswaByUserSchema = v.object({
+	userId: v.number()
+});
+
+/**
+ * Schema untuk siswa by ref ID
+ */
+export const siswaByRefSchema = v.object({
+	refId: v.number()
 });
 
 /**

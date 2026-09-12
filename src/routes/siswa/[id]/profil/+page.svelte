@@ -36,7 +36,7 @@
 		<Card.Root>
 			<Card.Header>
 				<Card.Title class="flex items-center gap-2 text-base">
-					<div class="relative size-16 overflow-hidden rounded-full bg-primary text-primary-foreground text-lg font-bold">{#if preview || siswa.foto_path}<img src={preview || fotoUrl(siswa.foto_path)} alt="Foto {siswa.nama}" class="size-full object-cover" />{:else}<div class="grid size-full place-items-center">{siswa.nama?.charAt(0) ?? '?'}</div>{/if}<button type="button" onclick={choosePhoto} class="absolute inset-x-0 bottom-0 bg-black/60 py-1 text-center text-[10px] text-white"><Camera class="mx-auto size-3" />Ubah</button></div>
+					<div class="relative size-16 overflow-hidden rounded-full bg-primary text-primary-foreground text-lg font-bold">{#if preview || siswa.fotoPath}<img src={preview || fotoUrl(siswa.fotoPath!)} alt="Foto {siswa.nama}" class="size-full object-cover" />{:else}<div class="grid size-full place-items-center">{siswa.nama?.charAt(0) ?? '?'}</div>{/if}<button type="button" onclick={choosePhoto} class="absolute inset-x-0 bottom-0 bg-black/60 py-1 text-center text-[10px] text-white"><Camera class="mx-auto size-3" />Ubah</button></div>
 					{siswa.nama}
 				</Card.Title>
 				<Card.Description>{siswa.kelas} · {siswa.rombel || '—'}</Card.Description>
@@ -58,7 +58,7 @@
 						</div>
 						<div>
 							<p class="text-muted-foreground text-xs">Tempat, Tgl Lahir</p>
-							<p>{siswa.tempat_lahir ?? '—'}, {siswa.tgl_lahir ?? '—'}</p>
+							<p>{siswa.tempatLahir ?? '—'}, {siswa.tglLahir ?? '—'}</p>
 						</div>
 						<div>
 							<p class="text-muted-foreground text-xs">Ayah</p>
@@ -74,21 +74,21 @@
 						</div>
 						<div>
 							<p class="text-muted-foreground text-xs">Asal Sekolah</p>
-							<p>{siswa.asal_sekolah ?? '—'}</p>
+							<p>{siswa.asalSekolah ?? '—'}</p>
 						</div>
 						<div>
 							<p class="text-muted-foreground text-xs">NPSN Asal Sekolah</p>
-							<p class="font-mono">{siswa.asal_sekolah_npsn ?? '—'}</p>
+							<p class="font-mono">{siswa.asalSekolahNpsn ?? '—'}</p>
 						</div>
 						<div>
 							<p class="text-muted-foreground text-xs">Status EMIS</p>
-							<Badge variant={siswa.status_emis === 'Aktif' ? 'outline' : 'destructive'} class="text-xs">
-								{siswa.status_emis ?? '—'}
+							<Badge variant={siswa.statusEmis === 'Aktif' ? 'outline' : 'destructive'} class="text-xs">
+								{siswa.statusEmis ?? '—'}
 							</Badge>
 						</div>
 						<div>
 							<p class="text-muted-foreground text-xs">Sumber Data</p>
-							<p class="text-xs">{siswa.sumber_data ?? '—'}</p>
+							<p class="text-xs">{siswa.sumberData ?? '—'}</p>
 						</div>
 					</div>
 				</Card.Content>

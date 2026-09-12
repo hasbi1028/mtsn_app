@@ -21,7 +21,7 @@
 
 	$effect(() => {
 		if (siswa?.nama) pageTitle = `Kartu Siswa — ${siswa.nama}`;
-		setFotoPreview(siswa?.fotoPath);
+		setFotoPreview(siswa?.fotoPath ?? null);
 	});
 
 	function setFotoPreview(path: string | null) {

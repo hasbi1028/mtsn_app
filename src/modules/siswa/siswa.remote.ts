@@ -1,15 +1,15 @@
 import { query, command } from '$app/server';
-import { siswaListSchema, perubahanSchema } from './siswa.validation';
+import { siswaListSchema, siswaDetailSchema, siswaByUserSchema, siswaByRefSchema, perubahanSchema } from './siswa.validation';
 import {
 	getSiswaList, getSiswaDetail, getMyProfile, getSiswaByRefId,
 	getSiswaBansos, submitPerubahan, getKartuList, getRekap
 } from './siswa.service';
 
 export const getSiswaListQ = query(siswaListSchema, async (args) => getSiswaList(args));
-export const getSiswaDetailQ = query(async (id: string) => getSiswaDetail(id));
-export const getMyProfileQ = query(async (userId: number) => getMyProfile(userId));
-export const getSiswaByRefIdQ = query(async (refId: number) => getSiswaByRefId(refId));
-export const getSiswaBansosQ = query(async (id: string) => getSiswaBansos(id));
+export const getSiswaDetailQ = query(siswaDetailSchema, async ({ id }) => getSiswaDetail(id));
+export const getMyProfileQ = query(siswaByUserSchema, async ({ userId }) => getMyProfile(userId));
+export const getSiswaByRefIdQ = query(siswaByRefSchema, async ({ refId }) => getSiswaByRefId(refId));
+export const getSiswaBansosQ = query(siswaDetailSchema, async ({ id }) => getSiswaBansos(id));
 export const getKartuListQ = query(async () => getKartuList());
 export const getRekapQ = query(async () => getRekap());
 
