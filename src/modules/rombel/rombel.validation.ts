@@ -1,7 +1,5 @@
 import * as v from 'valibot';
 
-export const rombelIdSchema = v.pipe(v.number(), v.minValue(1));
-
 export const createRombelSchema = v.object({
 	nama: v.pipe(v.string(), v.minLength(1)),
 	kelas: v.pipe(v.number(), v.minValue(7), v.maxValue(9)),

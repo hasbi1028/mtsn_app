@@ -70,11 +70,8 @@ export function getSiswaList(args: SiswaListInput) {
 // DETAIL SISWA
 // ============================================
 
-export function getSiswaDetail(id: string) {
-	const siswaId = parseInt(id, 10);
-	if (isNaN(siswaId)) return null;
-
-	return db.select().from(siswa).where(eq(siswa.id, siswaId)).get() ?? null;
+export function getSiswaDetail(publicId: string) {
+	return db.select().from(siswa).where(eq(siswa.publicId, publicId)).get() ?? null;
 }
 
 // ============================================
@@ -106,11 +103,8 @@ export function getSiswaByRefId(refId: number) {
 // BANSOS DETAIL
 // ============================================
 
-export function getSiswaBansos(id: string) {
-	const siswaId = parseInt(id, 10);
-	if (isNaN(siswaId)) return null;
-
-	const s = db.select().from(siswa).where(eq(siswa.id, siswaId)).get();
+export function getSiswaBansos(publicId: string) {
+	const s = db.select().from(siswa).where(eq(siswa.publicId, publicId)).get();
 	if (!s) return null;
 
 	// Interpret bansos data

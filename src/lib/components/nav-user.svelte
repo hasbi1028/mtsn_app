@@ -1,9 +1,11 @@
 <script lang="ts">
 	import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
 	import LogOutIcon from "@lucide/svelte/icons/log-out";
+	import GlobeIcon from "@lucide/svelte/icons/globe";
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
 	import { useSidebar } from "$lib/components/ui/sidebar/index.js";
+	import { logoutForm } from '$modules/auth/auth.remote';
 
 	let { user }: { user?: { username: string; role: string; ref_id: number | null } | null } = $props();
 
@@ -52,9 +54,29 @@
 					</div>
 				</DropdownMenu.Label>
 				<DropdownMenu.Separator />
+
+				<!-- Situs Web (link ke public) -->
 				<DropdownMenu.Item>
-					<LogOutIcon />
-					Keluar
+					{#snippet child({ props })}
+						<a {...props} href="/" class="flex w-full items-center gap-2">
+							<GlobeIcon class="size-4" />
+							Situs Web
+						</a>
+					{/snippet}
+				</DropdownMenu.Item>
+
+				<DropdownMenu.Separator />
+
+				<!-- Logout -->
+				<DropdownMenu.Item>
+					{#snippet child({ props })}
+						<form {...logoutForm} class="w-full">
+							<button {...props} type="submit" class="flex w-full items-center gap-2 cursor-pointer">
+								<LogOutIcon class="size-4" />
+								Keluar
+							</button>
+						</form>
+					{/snippet}
 				</DropdownMenu.Item>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>

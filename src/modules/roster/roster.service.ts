@@ -15,7 +15,7 @@ export function getRosterList(kelas: string) {
 	}
 
 	const rows = db.all(sql`
-		SELECT r.hari, r.jam_ke, r.mapel, r.guru_nama
+		SELECT r.hari, r.jam_ke AS jamKe, r.mapel, r.guru_nama AS guru
 		FROM roster r
 		WHERE r.kelas = ${kelas}
 		ORDER BY

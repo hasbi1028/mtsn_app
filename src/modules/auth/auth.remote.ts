@@ -46,7 +46,7 @@ export const login = form(loginSchema, async ({ username, password }) => {
 	updateLastLogin(user.id);
 
 	// 5. Role-based redirect
-	const redirectTo = user.role === 'siswa' ? '/siswa/profil' : '/';
+	const redirectTo = user.role === 'siswa' ? '/siswa/profil' : '/dashboard';
 	redirect(303, redirectTo);
 });
 

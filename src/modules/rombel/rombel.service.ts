@@ -1,11 +1,12 @@
 import { db } from '$lib/server/db';
 import { rombel, siswa, ptk } from '$lib/server/db/schema';
 import { eq, sql, count, and, ne, like } from 'drizzle-orm';
+import { generatePublicId } from '$lib/server/id';
 import type { CreateRombel, UpdateRombel } from './rombel.validation';
 
 export async function getRombelList() {
 	const rows = db.all(sql`
-		SELECT r.id, r.nama, r.kelas, r.label, COALESCE(r.wali_ptk_id,0) as wali_ptk_id,
+		SELECT r.id, r.public_id, r.nama, r.kelas, r.label, COALESCE(r.wali_ptk_id,0) as wali_ptk_id,
 			r.kapasitas, r.aktif,
 			COALESCE(p.nama,'') AS wali_nama,
 			(SELECT COUNT(*) FROM siswa s WHERE s.rombel = r.nama) AS jml_siswa
@@ -48,18 +49,18 @@ export async function getRombelStats() {
 	};
 }
 
-export async function getRombelDetail(id: number) {
+export async function getRombelDetail(publicId: string) {
 	const row = db.all(sql`
-		SELECT r.id, r.nama, r.kelas, r.label, COALESCE(r.wali_ptk_id,0) as wali_ptk_id,
+		SELECT r.id, r.public_id, r.nama, r.kelas, r.label, COALESCE(r.wali_ptk_id,0) as wali_ptk_id,
 			r.kapasitas, r.aktif, COALESCE(p.nama,'') as wali_nama
 		FROM rombel r LEFT JOIN ptk p ON r.wali_ptk_id = p.id
-		WHERE r.id = ${id}
+		WHERE r.public_id = ${publicId}
 	`);
 	if (!row.length) return null;
 
 	const rom = row[0] as any;
 	const siswaRows = db.all(sql`
-		SELECT id, nama, nis, nisn, jk, status_emis
+		SELECT id, public_id, nama, nis, nisn, jk, status_emis
 		FROM siswa WHERE rombel = ${rom.nama} ORDER BY nama
 	`);
 
@@ -67,7 +68,8 @@ export async function getRombelDetail(id: number) {
 }
 
 export async function createRombel(data: CreateRombel) {
-	db.run(sql`INSERT INTO rombel (nama, kelas, label, kapasitas) VALUES (${data.nama}, ${data.kelas}, ${data.label}, ${data.kapasitas})`);
+	const publicId = generatePublicId('RMB');
+	db.run(sql`INSERT INTO rombel (public_id, nama, kelas, label, kapasitas) VALUES (${publicId}, ${data.nama}, ${data.kelas}, ${data.label}, ${data.kapasitas})`);
 }
 
 export async function updateRombel(id: number, data: UpdateRombel) {
@@ -123,13 +125,13 @@ export async function getRombelSiswa(rombelId: number) {
 	const row = db.all(sql`SELECT nama FROM rombel WHERE id=${rombelId}`);
 	if (!row.length) return [];
 	const nama = (row[0] as any).nama;
-	return db.all(sql`SELECT id, nama, nis, nisn, jk, status_emis FROM siswa WHERE rombel=${nama} ORDER BY nama`);
+	return db.all(sql`SELECT id, public_id, nama, nis, nisn, jk, status_emis FROM siswa WHERE rombel=${nama} ORDER BY nama`);
 }
 
 export async function getAllPtk() {
-	return db.all(sql`SELECT id, nama FROM ptk ORDER BY nama`);
+	return db.all(sql`SELECT id, public_id, nama FROM ptk ORDER BY nama`);
 }
 
 export async function getAvailableSiswa() {
-	return db.all(sql`SELECT id, nama, nis, nisn, jk, kelas FROM siswa WHERE rombel IS NULL OR rombel='' ORDER BY nama`);
+	return db.all(sql`SELECT id, public_id, nama, nis, nisn, jk, kelas FROM siswa WHERE rombel IS NULL OR rombel='' ORDER BY nama`);
 }

@@ -1,6 +1,6 @@
 import { db } from '$lib/server/db';
 import { ptk, jtmSemester, skmtAjuan, skbkAjuan, skakpt, dokumen, roster } from '$lib/server/db/schema';
-import { eq, or, like, sql, count, desc } from 'drizzle-orm';
+import { eq, or, like, sql, count, desc, asc } from 'drizzle-orm';
 import type { PtkListInput, PtkRow } from './ptk.validation';
 
 /**
@@ -12,8 +12,21 @@ import type { PtkListInput, PtkRow } from './ptk.validation';
 // LIST PTK
 // ============================================
 
+// Allowed sort columns
+const SORT_COLUMNS: Record<string, any> = {
+	nama: ptk.nama,
+	nip: ptk.nip,
+	nuptk: ptk.nuptk,
+	fungsi: ptk.fungsi,
+	kepegawaian: ptk.kepegawaian,
+	sertifikasi: ptk.sertifikasi,
+	waliKelas: ptk.waliKelas,
+	jabatanStruktural: ptk.jabatanStruktural,
+	kelengkapan: ptk.kelengkapan
+};
+
 export function getPtkList(args: PtkListInput) {
-	const { q, filter, page, perPage } = args;
+	const { q, filter, page, perPage, sortBy, sortDir } = args;
 	const offset = (page - 1) * perPage;
 
 	// Build where conditions
@@ -35,6 +48,8 @@ export function getPtkList(args: PtkListInput) {
 		conditions.push(eq(ptk.sertifikasi, false));
 	} else if (filter === 'wali') {
 		conditions.push(sql`${ptk.waliKelas} IS NOT NULL AND ${ptk.waliKelas} != ''`);
+	} else if (filter === 'jtm-rendah') {
+		// Will be handled in HAVING clause
 	}
 
 	// Get total count
@@ -45,11 +60,16 @@ export function getPtkList(args: PtkListInput) {
 		.where(whereClause)
 		.get();
 
-	// Get rows
+	// Determine sort column and direction
+	const sortCol = SORT_COLUMNS[sortBy] || ptk.nama;
+	const orderFn = sortDir === 'desc' ? desc : asc;
+
+	// Get rows with sorting
 	const rows = db
 		.select()
 		.from(ptk)
 		.where(whereClause)
+		.orderBy(orderFn(sortCol))
 		.limit(perPage)
 		.offset(offset)
 		.all();
@@ -58,7 +78,9 @@ export function getPtkList(args: PtkListInput) {
 		rows: rows as PtkRow[],
 		total: totalResult?.count ?? 0,
 		page,
-		perPage
+		perPage,
+		sortBy,
+		sortDir
 	};
 }
 
@@ -66,13 +88,11 @@ export function getPtkList(args: PtkListInput) {
 // DETAIL PTK
 // ============================================
 
-export function getPtkDetail(id: string) {
-	const ptkId = parseInt(id, 10);
-	if (isNaN(ptkId)) return null;
-
-	// Get PTK
-	const p = db.select().from(ptk).where(eq(ptk.id, ptkId)).get();
+export function getPtkDetail(publicId: string) {
+	// Lookup by public_id
+	const p = db.select().from(ptk).where(eq(ptk.publicId, publicId)).get();
 	if (!p) return null;
+	const ptkId = p.id;
 
 	// Get JTM
 	const jtm = db
@@ -98,13 +118,17 @@ export function getPtkDetail(id: string) {
 		.orderBy(desc(skbkAjuan.id))
 		.all();
 
-	// Get SKAKPT
+	// Get SKAKPT — parse detail JSON
 	const skakptList = db
 		.select()
 		.from(skakpt)
 		.where(eq(skakpt.ptkId, ptkId))
 		.orderBy(desc(skakpt.bulan))
-		.all();
+		.all()
+		.map((row) => ({
+			...row,
+			detail: row.detail ? JSON.parse(row.detail) : null
+		}));
 
 	// Get Documents
 	const docs = db
@@ -114,11 +138,11 @@ export function getPtkDetail(id: string) {
 		.orderBy(desc(dokumen.uploadedAt))
 		.all();
 
-	// Get Roster
+	// Get Roster — match by guru_nama (data uses name text, not guru_kode integer)
 	const rosterList = db
 		.select()
 		.from(roster)
-		.where(eq(roster.guruKode, ptkId))
+		.where(eq(roster.guruNama, p.nama))
 		.all();
 
 	return {

@@ -23,6 +23,14 @@ export const getSiswaBansosQ = query(siswaDetailSchema, async ({ id }) => getSis
 export const getKartuListQ = query(async () => getKartuList());
 export const getRekapQ = query(async () => getRekap());
 
+export const getCurrentSiswaQ = query(async () => {
+	const { cookies } = getRequestEvent();
+	const token = cookies.get('session_id');
+	const user = token ? getUserFromSession(token) : null;
+	if (!user || user.role !== 'siswa' || !user.ref_id) return null;
+	return getSiswaByRefId(user.ref_id);
+});
+
 export const submitPerubahanC = command(perubahanSchema, async ({ siswaId, field, nilai_baru }) => {
 	return submitPerubahan(siswaId, field, nilai_baru);
 });

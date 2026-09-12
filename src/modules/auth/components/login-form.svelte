@@ -22,8 +22,8 @@
 </script>
 
 <div class={cn('flex flex-col gap-6 animate-in fade-in duration-500', className)} {...restProps}>
-	<Card.Root class="overflow-hidden p-0">
-		<div class="grid grid-cols-1 md:grid-cols-2 p-0">
+	<Card.Root class="overflow-hidden p-0 shadow-lg">
+		<div class="grid grid-cols-1 md:grid-cols-5 p-0">
 			<form
 				{...login.enhance(async (form) => {
 					loading = true;
@@ -104,7 +104,7 @@
 					</Button>
 				</FieldGroup>
 			</form>
-			<div class="relative hidden bg-muted md:block">
+			<div class="relative hidden bg-muted md:flex md:col-span-2">
 				<img
 					src="/uploads/logo-kemenag.png"
 					alt="Logo Kementerian Agama"
@@ -115,7 +115,7 @@
 						<SchoolIcon class="size-10" />
 					</div>
 					<p class="text-lg font-semibold">MTsN 2 Kolaka Utara</p>
-					<p class="text-sm text-muted-foreground">SIMAD — MTsN 2 Kolaka Utara</p>
+					<p class="text-sm text-muted-foreground">SIMAD — Sistem Informasi Manajemen Madrasah</p>
 				</div>
 			</div>
 		</div>

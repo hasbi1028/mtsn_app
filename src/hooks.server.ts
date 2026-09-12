@@ -57,11 +57,27 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// Attach user to event.locals
 	event.locals.user = user;
 
-	// Public paths
+	// Public paths — tidak perlu login
+	// Route groups: (public) = public, (admin) = login required, (auth) = login page
 	const pathname = event.url.pathname;
-	const isPublic = pathname.startsWith('/login') || pathname.startsWith('/uploads');
 
-	if (!event.locals.user && !isPublic) {
+	// API routes and static files - skip auth check
+	if (pathname.startsWith('/api/') || pathname.startsWith('/uploads/')) {
+		return resolve(event);
+	}
+
+	// Login page - redirect to dashboard if already logged in
+	if (pathname === '/login') {
+		if (user) {
+			redirect(302, '/dashboard');
+		}
+		return resolve(event);
+	}
+
+	// Admin routes — require login
+	const isAdminRoute = pathname.startsWith('/admin/');
+
+	if (isAdminRoute && !user) {
 		redirect(302, '/login');
 	}
 
