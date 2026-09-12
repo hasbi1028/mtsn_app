@@ -1,389 +1,526 @@
-# plan.md — Migrasi SIMAD ke Fullstack SvelteKit Remote Functions
+# Plan: Website Public + Admin Management
 
-## Target Architecture
+## Overview
+Pembangunan website public lengkap dengan modul admin untuk mengelola konten (berita, pengumuman, agenda, galeri, ekskul, prestasi).
+
+---
+
+## Architecture
 
 ```
-Browser → SvelteKit (3720) → Drizzle ORM → SQLite (local.db)
+src/
+├── modules/
+│   ├── berita/
+│   │   ├── berita.validation.ts
+│   │   ├── berita.service.ts
+│   │   └── berita.remote.ts
+│   ├── pengumuman/
+│   │   ├── pengumuman.validation.ts
+│   │   ├── pengumuman.service.ts
+│   │   └── pengumuman.remote.ts
+│   ├── agenda/
+│   │   ├── agenda.validation.ts
+│   │   ├── agenda.service.ts
+│   │   └── agenda.remote.ts
+│   ├── galeri/
+│   │   ├── galeri.validation.ts
+│   │   ├── galeri.service.ts
+│   │   └── galeri.remote.ts
+│   ├── ekskul/
+│   │   ├── ekskul.validation.ts
+│   │   ├── ekskul.service.ts
+│   │   └── ekskul.remote.ts
+│   └── prestasi/
+│       ├── prestasi.validation.ts
+│       ├── prestasi.service.ts
+│       └── prestasi.remote.ts
+│
+├── routes/
+│   ├── (public)/
+│   │   ├── berita/
+│   │   ├── pengumuman/
+│   │   ├── agenda/
+│   │   ├── galeri/
+│   │   ├── ekskul/
+│   │   └── prestasi/
+│   │
+│   └── (admin)/
+│       ├── berita/
+│       ├── pengumuman/
+│       ├── agenda/
+│       ├── galeri/
+│       ├── ekskul/
+│       └── prestasi/
+│
+└── lib/server/db/
+    └── schema.ts (add new tables)
 ```
 
-- Go API dihapus
-- Semua logic di `+page.server.ts` / `data.remote.ts`
-- Remote functions: `query`, `form`, `command`
-- Co-located: `data.remote.ts` di sebelah `+page.svelte`
-
-## Migration Strategy
-
-### Prinsip
-1. **Spec First** — buat spec dulu, baru code
-2. **TDD** — write test → FAIL → write code → PASS
-3. **MDD** — markdown drives AI context
-4. **Incremental** — satu module per phase, Go API jalan paralel sampai selesai
-5. **No breaking changes** — user tidak boleh merasakan migrasi
-
-### Go API Paralel
-- Selama migrasi, Go API tetap jalan di port 3730
-- SvelteKit remote functions di `$lib/server/db` query langsung ke SQLite
-- Setelah semua module selesai, Go API dihapus
-
 ---
 
-## Phase 0: Database Foundation
-
-**Goal:** Semua 20 tabel ada di Drizzle schema
-
-**Tasks:**
-- [ ] Expand `src/lib/server/db/schema.ts` — tambah tabel yang belum ada
-- [ ] Pastikan tabel: `users`, `sessions`, `ptk`, `jtm_semester`, `skmt_ajuan`, `skbk_ajuan`, `skakpt`, `dokumen`, `roster`, `siswa`, `rombel`, `perubahan_siswa`, `activity_log`, `ortu`, `siswa_ortu`, `jam_bel`, `bel_settings`, `cuti`, `schema_migrations`, `kartu_cache`
-- [ ] Setup `drizzle.config.ts` untuk migrations
-- [ ] Test: `npx drizzle-kit generate` berhasil
-
-**Files:**
-- `src/lib/server/db/schema.ts` (expand)
-- `drizzle.config.ts` (new)
-
----
-
-## Phase 1: Auth (Login/Logout/Session)
-
-**Goal:** Login, logout, session check via remote functions
-
-**Spec:** `specs/001-auth/spec.md`
-
-**Endpoints to migrate:**
-| Go | Remote Function |
-|----|----------------|
-| `POST /api/login` | `login()` form |
-| `POST /api/logout` | `logout()` command |
-| `GET /api/me` | `getMe()` query |
-
-**Tasks:**
-- [ ] Create `src/lib/server/auth.ts` — `getUser()`, `createSession()`, `deleteSession()`
-- [ ] Create `src/routes/login/data.remote.ts` — `login()`, `logout()`
-- [ ] Update `src/hooks.server.ts` — use `getMe()` remote query
-- [ ] Update `src/routes/+layout.server.ts` — use remote query
-- [ ] Write e2e test: `tests/e2e/auth.spec.ts`
-- [ ] Remove old `src/routes/login/+page.server.ts` fetch logic
-- [ ] Remove `src/routes/api/login/` and `src/routes/api/logout/` proxy endpoints
-
-**Files:**
-- `src/lib/server/auth.ts` (new)
-- `src/routes/login/data.remote.ts` (new)
-- `src/hooks.server.ts` (update)
-- `src/routes/+layout.server.ts` (update)
-- `tests/e2e/auth.spec.ts` (new)
-- DELETE: `src/routes/login/+page.server.ts`, `src/routes/api/login/`, `src/routes/api/logout/`
-
----
-
-## Phase 2: Dashboard Stats
-
-**Goal:** Stats dashboard via remote queries
-
-**Spec:** `specs/002-dashboard/spec.md`
-
-**Endpoints to migrate:**
-| Go | Remote Function |
-|----|----------------|
-| `GET /api/stats` | `getStats()` query |
-| `GET /api/bansos/stats` | `getBansosStats()` query |
-| `GET /api/rombel/stats` | `getRombelStats()` query |
-
-**Tasks:**
-- [ ] Create `src/routes/+page.server.ts` — direct DB queries (stats are read-only)
-- [ ] Write e2e test: `tests/e2e/dashboard.spec.ts`
-- [ ] Remove fetch calls to Go API
-
-**Files:**
-- `src/routes/+page.server.ts` (update — remove fetch, direct DB)
-
----
-
-## Phase 3: PTK (Pendidik & Tenaga Kependidikan)
-
-**Goal:** List + detail PTK via remote functions
-
-**Spec:** `specs/003-ptk/spec.md`
-
-**Endpoints to migrate:**
-| Go | Remote Function |
-|----|----------------|
-| `GET /api/ptk` | `getPtkList()` query |
-| `GET /api/ptk/:id` | `getPtkDetail()` query |
-
-**Tasks:**
-- [ ] Create `src/routes/ptk/data.remote.ts`
-- [ ] Create `src/routes/ptk/[id]/data.remote.ts`
-- [ ] Update `src/routes/ptk/+page.svelte` — use remote query
-- [ ] Update `src/routes/ptk/[id]/+page.svelte` — use remote query
-- [ ] Write e2e test: `tests/e2e/ptk.spec.ts`
-
-**Files:**
-- `src/routes/ptk/data.remote.ts` (new)
-- `src/routes/ptk/[id]/data.remote.ts` (new)
-- DELETE: `src/routes/ptk/+page.server.ts`, `src/routes/ptk/[id]/+page.server.ts`
-
----
-
-## Phase 4: Siswa (Students)
-
-**Goal:** List + detail + foto upload via remote functions
-
-**Spec:** `specs/004-siswa/spec.md`
-
-**Endpoints to migrate:**
-| Go | Remote Function |
-|----|----------------|
-| `GET /api/siswa` | `getSiswaList()` query |
-| `GET /api/siswa/:id` | `getSiswaDetail()` query |
-| `POST /api/siswa/:id/foto` | `uploadFoto()` form |
-| `GET /api/siswa/me` | `getMyProfile()` query |
-| `POST /api/siswa/me/foto` | `uploadMyFoto()` form |
-| `POST /api/siswa/me/perubahan` | `submitPerubahan()` form |
-
-**Tasks:**
-- [ ] Create `src/routes/siswa/data.remote.ts`
-- [ ] Create `src/routes/siswa/[id]/ profil/data.remote.ts`
-- [ ] Create `src/routes/siswa/[id]/bansos/data.remote.ts`
-- [ ] Create `src/routes/siswa/[id]/kartu/data.remote.ts`
-- [ ] Create `src/routes/siswa/profil/data.remote.ts` (self-service)
-- [ ] Create `src/routes/siswa/bansos/data.remote.ts` (self-service)
-- [ ] Write e2e test: `tests/e2e/siswa.spec.ts`
-- [ ] Remove all `+page.server.ts` with fetch calls
-
-**Files:**
-- `src/routes/siswa/data.remote.ts` (new)
-- `src/routes/siswa/[id]/profil/data.remote.ts` (new)
-- `src/routes/siswa/[id]/bansos/data.remote.ts` (new)
-- `src/routes/siswa/[id]/kartu/data.remote.ts` (new)
-- `src/routes/siswa/profil/data.remote.ts` (new)
-- `src/routes/siswa/bansos/data.remote.ts` (new)
-
----
-
-## Phase 5: Rombel (Class Groups)
-
-**Goal:** CRUD rombel + allocate siswa via remote functions
-
-**Spec:** `specs/005-rombel/spec.md`
-
-**Endpoints to migrate:**
-| Go | Remote Function |
-|----|----------------|
-| `GET /api/rombel` | `getRombelList()` query |
-| `GET /api/rombel/stats` | `getRombelStats()` query |
-| `GET /api/rombel/:id` | `getRombelDetail()` query |
-| `POST /api/rombel` | `createRombel()` form |
-| `PUT /api/rombel/:id` | `updateRombel()` command |
-| `DELETE /api/rombel/:id` | `deleteRombel()` command |
-| `POST /api/rombel/:id/siswa` | `allocateSiswa()` command |
-| `DELETE /api/rombel/:id/siswa/:sid` | `removeSiswa()` command |
-| `POST /api/rombel/:id/wali` | `setWaliKelas()` command |
-
-**Tasks:**
-- [ ] Create `src/routes/rombel/data.remote.ts`
-- [ ] Create `src/routes/rombel/[id]/data.remote.ts`
-- [ ] Write e2e test: `tests/e2e/rombel.spec.ts`
-
-**Files:**
-- `src/routes/rombel/data.remote.ts` (new)
-- `src/routes/rombel/[id]/data.remote.ts` (new)
-
----
-
-## Phase 6: Dokumen (SKMT + SKBK + SKAKPT)
-
-**Goal:** List dokumen via remote queries
-
-**Spec:** `specs/007-dokumen/spec.md`
-
-**Endpoints to migrate:**
-| Go | Remote Function |
-|----|----------------|
-| `GET /api/skmt` | `getSkmtList()` query |
-| `GET /api/skbk` | `getSkbkList()` query |
-| `GET /api/skakpt` | `getSkakptList()` query |
-| `GET /api/skakpt/months` | `getSkakptMonths()` query |
-| `GET /api/skakpt/bukti/:name` | Keep as `+server.ts` proxy |
-
-**Tasks:**
-- [ ] Create `src/routes/skmt/data.remote.ts`
-- [ ] Create `src/routes/skbk/data.remote.ts`
-- [ ] Create `src/routes/skakpt/data.remote.ts`
-- [ ] Keep `src/routes/api/skakpt/bukti/[name]/+server.ts` (image proxy)
-- [ ] Write e2e test: `tests/e2e/dokumen.spec.ts`
-
-**Files:**
-- `src/routes/skmt/data.remote.ts` (new)
-- `src/routes/skbk/data.remote.ts` (new)
-- `src/routes/skakpt/data.remote.ts` (new)
-
----
-
-## Phase 7: Kartu (Student ID Card)
-
-**Goal:** Generate kartu + batch queue via remote functions
-
-**Spec:** `specs/008-kartu/spec.md`
-
-**Endpoints to migrate:**
-| Go | Remote Function |
-|----|----------------|
-| `GET /api/siswa/kartu/list` | `getKartuList()` query |
-| `POST /api/siswa/kartu/generate-all` | `generateAllKartu()` command |
-| `GET /api/siswa/:id/kartu.png` | Keep as `+server.ts` (static file) |
-| `GET /api/siswa/:id/kartu-back.png` | Keep as `+server.ts` (static file) |
-| `POST /api/siswa/:id/kartu/regenerate` | `regenerateKartu()` command |
-| `GET /api/kartu/queue/:id` | `getQueueStatus()` query |
-| `POST /api/kartu/queue/:id/cancel` | `cancelQueue()` command |
-
-**Tasks:**
-- [ ] Move `backend/cmd/api/kartu_png.go` → `src/lib/server/kartu/render.ts`
-- [ ] Move `backend/cmd/api/jobqueue.go` → `src/lib/server/kartu/queue.ts`
-- [ ] Create `src/routes/siswa/kartu/data.remote.ts`
-- [ ] Create `src/routes/siswa/[id]/kartu/data.remote.ts`
-- [ ] Keep `+server.ts` for PNG file serving (not remote function)
-- [ ] Write e2e test: `tests/e2e/kartu.spec.ts`
-
-**Files:**
-- `src/lib/server/kartu/render.ts` (new — port Go to TS)
-- `src/lib/server/kartu/queue.ts` (new — port Go to TS)
-- `src/routes/siswa/kartu/data.remote.ts` (new)
-- `src/routes/siswa/[id]/kartu/data.remote.ts` (new)
-
----
-
-## Phase 8: Bel (School Bell)
-
-**Goal:** Bell control + CRUD jadwal + suara via remote functions
-
-**Spec:** `specs/009-bel/spec.md`
-
-**Endpoints to migrate:**
-| Go | Remote Function |
-|----|----------------|
-| `GET /api/bel/status` | `getBelStatus()` query |
-| `POST /api/bel/play` | `playBell()` command |
-| `POST /api/bel/stop` | `stopBell()` command |
-| `GET /api/bel/jadwal` | `getJadwalList()` query |
-| `POST /api/bel/jadwal` | `createJadwal()` form |
-| `PUT /api/bel/jadwal/:id` | `updateJadwal()` command |
-| `DELETE /api/bel/jadwal/:id` | `deleteJadwal()` command |
-| `POST /api/bel/master` | `toggleMaster()` command |
-| `GET /api/bel/suara` | `getSuaraList()` query |
-| `POST /api/bel/suara` | `uploadSuara()` form |
-| `DELETE /api/bel/suara/:name` | `deleteSuara()` command |
-
-**Note:** Worker-bel (port 8093) tetap berjalan sebagai独立 process. Remote functions proxy ke worker.
-
-**Tasks:**
-- [ ] Create `src/lib/server/bel.ts` — proxy functions ke worker-bel
-- [ ] Create `src/routes/bel/data.remote.ts`
-- [ ] Create `src/routes/bel/suara/data.remote.ts`
-- [ ] Write e2e test: `tests/e2e/bel.spec.ts`
-
-**Files:**
-- `src/lib/server/bel.ts` (new — worker proxy)
-- `src/routes/bel/data.remote.ts` (new)
-- `src/routes/bel/suara/data.remote.ts` (new)
-
----
-
-## Phase 9: Approval
-
-**Goal:** Approve/reject foto + perubahan via remote functions
-
-**Spec:** `specs/010-approval/spec.md`
-
-**Endpoints to migrate:**
-| Go | Remote Function |
-|----|----------------|
-| `GET /api/approval/foto` | `getApprovalFoto()` query |
-| `POST /api/approval/foto/:id/approve` | `approveFoto()` command |
-| `POST /api/approval/foto/:id/reject` | `rejectFoto()` command |
-| `GET /api/approval/perubahan` | `getApprovalPerubahan()` query |
-| `POST /api/approval/perubahan/:id/approve` | `approvePerubahan()` command |
-| `POST /api/approval/perubahan/:id/reject` | `rejectPerubahan()` command |
-
-**Tasks:**
-- [ ] Create `src/routes/approval/data.remote.ts`
-- [ ] Write e2e test: `tests/e2e/approval.spec.ts`
-
-**Files:**
-- `src/routes/approval/data.remote.ts` (new)
-
----
-
-## Phase 10: Bansos + Activity
-
-**Goal:** Stats + activity log via remote queries
-
-**Spec:** `specs/011-bansos/spec.md`, `specs/012-activity/spec.md`
-
-**Endpoints to migrate:**
-| Go | Remote Function |
-|----|----------------|
-| `GET /api/bansos/stats` | (done in Phase 2) |
-| `GET /api/activity` | `getActivityLog()` query |
-
-**Tasks:**
-- [ ] Create `src/routes/activity/data.remote.ts`
-- [ ] Write e2e test: `tests/e2e/activity.spec.ts`
-
-**Files:**
-- `src/routes/activity/data.remote.ts` (new)
-
----
-
-## Phase 11: Cleanup ✅ DONE
-
-**Goal:** Hapus Go API, update PM2
-
-**Tasks:**
-- [x] Verify semua module berjalan tanpa Go API
-- [x] Update `ecosystem.config.cjs` — hapus `mtsn-app-api`
-- [x] `rm -rf backend/`
-- [x] Update `.gitignore` — hapus backend references
-- [x] Update README.md — hapus Go API mention
-- [x] Commit: `refactor: delete Go API — fully migrated to SvelteKit`
-
-> Full migration details: `plan-full-remote.md` (Milestone A: remote functions, Milestone B: cleanup)
-
----
-
-## Execution Order
-
-```
-Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5
-    → Phase 6 → Phase 7 → Phase 8 → Phase 9 → Phase 10 → Phase 11
+## Phase 1: Database Schema
+
+### New Tables
+
+```sql
+-- Berita
+CREATE TABLE berita (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  slug TEXT UNIQUE NOT NULL,
+  judul TEXT NOT NULL,
+  ringkasan TEXT,
+  konten TEXT,
+  gambar TEXT,
+  penulis TEXT DEFAULT 'Admin',
+  kategori TEXT DEFAULT 'umum',
+  published INTEGER DEFAULT 0,
+  published_at DATETIME,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Pengumuman
+CREATE TABLE pengumuman (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  judul TEXT NOT NULL,
+  konten TEXT NOT NULL,
+  penting INTEGER DEFAULT 0,
+  published INTEGER DEFAULT 0,
+  published_at DATETIME,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Agenda
+CREATE TABLE agenda (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  judul TEXT NOT NULL,
+  deskripsi TEXT,
+  tanggal_mulai TEXT NOT NULL,
+  tanggal_selesai TEXT,
+  lokasi TEXT,
+  warna TEXT DEFAULT '#3b82f6',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Galeri
+CREATE TABLE galeri (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  judul TEXT NOT NULL,
+  deskripsi TEXT,
+  gambar TEXT NOT NULL,
+  kategori TEXT DEFAULT 'kegiatan',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Ekstrakurikuler
+CREATE TABLE ekskul (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nama TEXT NOT NULL,
+  slug TEXT UNIQUE NOT NULL,
+  deskripsi TEXT,
+  gambar TEXT,
+  pembina TEXT,
+  jadwal TEXT,
+  aktif INTEGER DEFAULT 1,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Prestasi
+CREATE TABLE prestasi (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  judul TEXT NOT NULL,
+  deskripsi TEXT,
+  gambar TEXT,
+  pemenang TEXT,
+  tingkat TEXT DEFAULT 'sekolah',
+  tahun INTEGER,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
-Setiap phase:
-1. Buat spec di `specs/NNN-name/spec.md`
-2. Buat test di `tests/e2e/[module].spec.ts`
-3. Run test → FAIL
-4. Buat remote function + page
-5. Run test → PASS
-6. Commit
-7. Next phase
+---
+
+## Phase 2: Admin Modules
+
+### 2.1 Berita Module
+
+**List Page** (`/admin/berita`):
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| Judul | text | Judul berita |
+| Kategori | badge | umum, kegiatan, prestasi |
+| Status | badge | Draft, Published |
+| Tanggal | date | Tanggal publish |
+| Aksi | button | Edit, Hapus |
+
+**Form Page** (`/admin/berita/new`, `/admin/berita/[id]/edit`):
+| Field | Tipe | Validasi |
+|-------|------|----------|
+| Judul | input | required, min:5 |
+| Slug | input | auto-generate dari judul |
+| Ringkasan | textarea | optional |
+| Konten | textarea | required |
+| Gambar | file/image | optional |
+| Kategori | select | umum, kegiatan, prestasi |
+| Publish | switch | boolean |
+
+### 2.2 Pengumuman Module
+
+**List Page** (`/admin/pengumuman`):
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| Judul | text | Judul pengumuman |
+| Penting | badge | Ya/Tidak |
+| Status | badge | Draft, Published |
+| Tanggal | date | Tanggal publish |
+| Aksi | button | Edit, Hapus |
+
+**Form Page** (`/admin/pengumuman/new`, `/admin/pengumuman/[id]/edit`):
+| Field | Tipe | Validasi |
+|-------|------|----------|
+| Judul | input | required |
+| Konten | textarea | required |
+| Penting | switch | boolean |
+| Publish | switch | boolean |
+
+### 2.3 Agenda Module
+
+**List Page** (`/admin/agenda`):
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| Judul | text | Judul agenda |
+| Tanggal | date | Tanggal mulai - selesai |
+| Lokasi | text | Lokasi kegiatan |
+| Aksi | button | Edit, Hapus |
+
+**Form Page** (`/admin/agenda/new`, `/admin/agenda/[id]/edit`):
+| Field | Tipe | Validasi |
+|-------|------|----------|
+| Judul | input | required |
+| Deskripsi | textarea | optional |
+| Tanggal Mulai | date | required |
+| Tanggal Selesai | date | optional |
+| Lokasi | input | optional |
+| Warna | color | default #3b82f6 |
+
+### 2.4 Galeri Module
+
+**List Page** (`/admin/galeri`):
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| Gambar | thumbnail | Preview |
+| Judul | text | Judul foto |
+| Kategori | badge | kegiatan, wisata, olahraga |
+| Tanggal | date | Tanggal upload |
+| Aksi | button | Edit, Hapus |
+
+**Form Page** (`/admin/galeri/new`, `/admin/galeri/[id]/edit`):
+| Field | Tipe | Validasi |
+|-------|------|----------|
+| Judul | input | required |
+| Deskripsi | textarea | optional |
+| Gambar | file/image | required |
+| Kategori | select | kegiatan, wisata, olahraga, lainnya |
+
+### 2.5 Ekstrakurikuler Module
+
+**List Page** (`/admin/ekskul`):
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| Gambar | thumbnail | Preview |
+| Nama | text | Nama ekskul |
+| Pembina | text | Guru pembina |
+| Status | badge | Aktif, Nonaktif |
+| Aksi | button | Edit, Hapus |
+
+**Form Page** (`/admin/ekskul/new`, `/admin/ekskul/[id]/edit`):
+| Field | Tipe | Validasi |
+|-------|------|----------|
+| Nama | input | required |
+| Slug | input | auto-generate |
+| Deskripsi | textarea | optional |
+| Gambar | file/image | optional |
+| Pembina | input | optional |
+| Jadwal | input | optional |
+| Aktif | switch | boolean |
+
+### 2.6 Prestasi Module
+
+**List Page** (`/admin/prestasi`):
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| Gambar | thumbnail | Preview |
+| Judul | text | Judul prestasi |
+| Pemenang | text | Nama pemenang |
+| Tingkat | badge | sekolah, kabupaten, nasional |
+| Tahun | number | Tahun prestasi |
+| Aksi | button | Edit, Hapus |
+
+**Form Page** (`/admin/prestasi/new`, `/admin/prestasi/[id]/edit`):
+| Field | Tipe | Validasi |
+|-------|------|----------|
+| Judul | input | required |
+| Deskripsi | textarea | optional |
+| Gambar | file/image | optional |
+| Pemenang | input | optional |
+| Tingkat | select | sekolah, kabupaten, provinsi, nasional |
+| Tahun | number | required |
 
 ---
 
-## Risk Mitigation
+## Phase 3: Public Pages
 
-| Risk | Mitigation |
-|------|-----------|
-| Remote functions experimental | Pin SvelteKit version, test thoroughly |
-| Playwright render (kartu) | Keep as `+server.ts`, not remote function |
-| Worker-bel (Go) | Tetap独立, SvelteKit proxy via `src/lib/server/bel.ts` |
-| SQLite concurrency | Drizzle handles this, no change needed |
-| Breaking changes mid-migration | Go API tetap jalan sampai Phase 11 |
+### 3.1 Berita Pages
+
+**List** (`/berita`):
+- Grid layout (2-3 columns)
+- Card dengan gambar, judul, ringkasan, tanggal
+- Kategori badge
+- Pagination
+- Search/filter
+
+**Detail** (`/berita/[slug]`):
+- Gambar hero
+- Judul, penulis, tanggal
+- Konten lengkap
+- Share buttons
+- Berita terkait
+
+### 3.2 Pengumuman Pages
+
+**List** (`/pengumuman`):
+- List layout (vertical)
+- Card dengan badge "Penting" jika penting
+- Judul, konten preview, tanggal
+- Pagination
+
+**Detail** (`/pengumuman/[id]`):
+- Badge "Penting" jika penting
+- Judul, tanggal publish
+- Konten lengkap
+
+### 3.3 Agenda Page
+
+**Calendar View** (`/agenda`):
+- Kalender bulanan
+- Event dots pada tanggal
+- Klik tanggal → list agenda hari itu
+- Filter: bulan, kategori
+
+### 3.4 Galeri Page
+
+**Grid View** (`/galeri`):
+- Masonry grid layout
+- Filter by kategori
+- Lightbox untuk preview
+- Lazy loading gambar
+
+### 3.5 Ekstrakurikuler Page
+
+**List** (`/ekskul`):
+- Grid layout (2-3 columns)
+- Card dengan gambar, nama, pembina, jadwal
+- Status badge (Aktif/Nonaktif)
+
+### 3.6 Prestasi Page
+
+**List** (`/prestasi`):
+- Grid layout
+- Card dengan gambar, judul, pemenang, tingkat, tahun
+- Filter by tahun, tingkat
 
 ---
 
-## Success Criteria
+## Phase 4: Components
 
-- [ ] Semua 55 Go endpoints migrated
-- [ ] Semua e2e tests pass
-- [ ] Go API deleted
-- [ ] PM2 hanya menjalankan 1 service (mtsn-app-bff)
-- [ ] Spec untuk semua 12 modules selesai
+### Admin Components
+```
+src/lib/components/admin/
+├── data-table.svelte           ← Reusable table
+├── form-field.svelte           ← Form field wrapper
+├── image-upload.svelte         ← Image upload component
+├── rich-text-editor.svelte     ← Rich text editor
+├── status-badge.svelte         ← Status badge
+├── confirm-dialog.svelte       ← Delete confirmation
+└── search-input.svelte         ← Search input
+```
+
+### Public Components
+```
+src/lib/components/public/
+├── berita-card.svelte          ← Card berita
+├── pengumuman-card.svelte      ← Card pengumuman
+├── agenda-calendar.svelte      ← Kalender agenda
+├── galeri-grid.svelte          ← Grid galeri
+├── ekskul-card.svelte          ← Card ekskul
+├── prestasi-card.svelte        ← Card prestasi
+├── pagination.svelte           ← Pagination
+├── search-filter.svelte        ← Search & filter
+└── lightbox.svelte             ← Image lightbox
+```
+
+---
+
+## Phase 5: Navigation Updates
+
+### Admin Sidebar
+```typescript
+// src/lib/config/navigation.ts
+{
+  title: "Konten",
+  url: "/admin/berita",
+  icon: NewspaperIcon,
+  group: "Konten",
+  roles: ["admin"],
+  children: [
+    { title: "Berita", url: "/admin/berita", icon: NewspaperIcon },
+    { title: "Pengumuman", url: "/admin/pengumuman", icon: MegaphoneIcon },
+    { title: "Agenda", url: "/admin/agenda", icon: CalendarIcon },
+    { title: "Galeri", url: "/admin/galeri", icon: ImageIcon },
+    { title: "Ekstrakurikuler", url: "/admin/ekskul", icon: TrophyIcon },
+    { title: "Prestasi", url: "/admin/prestasi", icon: MedalIcon },
+  ],
+}
+```
+
+### Public Navbar
+```typescript
+const navItems = [
+  { href: '/profil', label: 'Profil' },
+  { href: '/berita', label: 'Berita' },
+  { href: '/ppdb', label: 'PPDB' },
+  { href: '/kontak', label: 'Kontak' },
+];
+```
+
+### Public Footer
+```typescript
+const footerLinks = [
+  { label: 'Profil', href: '/profil' },
+  { label: 'Berita', href: '/berita' },
+  { label: 'Pengumuman', href: '/pengumuman' },
+  { label: 'PPDB', href: '/ppdb' },
+  { label: 'Kontak', href: '/kontak' },
+];
+```
+
+---
+
+## Phase 6: Implementation Checklist
+
+### Database
+- [ ] Add new tables to schema.ts
+- [ ] Create migration
+- [ ] Seed sample data
+
+### Admin Modules
+- [ ] Berita module (validation, service, remote, pages)
+- [ ] Pengumuman module
+- [ ] Agenda module
+- [ ] Galeri module
+- [ ] Ekskul module
+- [ ] Prestasi module
+
+### Public Pages
+- [ ] Berita list + detail
+- [ ] Pengumuman list + detail
+- [ ] Agenda calendar
+- [ ] Galeri grid
+- [ ] Ekskul list
+- [ ] Prestasi list
+
+### Components
+- [ ] Admin components
+- [ ] Public components
+
+### Navigation
+- [ ] Update admin sidebar
+- [ ] Update public navbar
+- [ ] Update public footer
+
+### Testing
+- [ ] Unit tests
+- [ ] E2E tests
+
+---
+
+## Phase 7: File Structure
+
+```
+src/modules/
+├── berita/
+│   ├── berita.validation.ts
+│   ├── berita.service.ts
+│   └── berita.remote.ts
+├── pengumuman/
+│   ├── pengumuman.validation.ts
+│   ├── pengumuman.service.ts
+│   └── pengumuman.remote.ts
+├── agenda/
+│   ├── agenda.validation.ts
+│   ├── agenda.service.ts
+│   └── agenda.remote.ts
+├── galeri/
+│   ├── galeri.validation.ts
+│   ├── galeri.service.ts
+│   └── galeri.remote.ts
+├── ekskul/
+│   ├── ekskul.validation.ts
+│   ├── ekskul.service.ts
+│   └── ekskul.remote.ts
+└── prestasi/
+    ├── prestasi.validation.ts
+    ├── prestasi.service.ts
+    └── prestasi.remote.ts
+
+src/routes/(admin)/
+├── berita/
+│   ├── +page.svelte              ← List
+│   ├── new/+page.svelte          ← Create
+│   └── [id]/edit/+page.svelte    ← Edit
+├── pengumuman/
+│   ├── +page.svelte
+│   ├── new/+page.svelte
+│   └── [id]/edit/+page.svelte
+├── agenda/
+│   ├── +page.svelte
+│   ├── new/+page.svelte
+│   └── [id]/edit/+page.svelte
+├── galeri/
+│   ├── +page.svelte
+│   ├── new/+page.svelte
+│   └── [id]/edit/+page.svelte
+├── ekskul/
+│   ├── +page.svelte
+│   ├── new/+page.svelte
+│   └── [id]/edit/+page.svelte
+└── prestasi/
+    ├── +page.svelte
+    ├── new/+page.svelte
+    └── [id]/edit/+page.svelte
+
+src/routes/(public)/
+├── berita/
+│   ├── +page.svelte              ← List
+│   └── [slug]/+page.svelte       ← Detail
+├── pengumuman/
+│   ├── +page.svelte              ← List
+│   └── [id]/+page.svelte         ← Detail
+├── agenda/
+│   └── +page.svelte              ← Calendar
+├── galeri/
+│   └── +page.svelte              ← Grid
+├── ekskul/
+│   └── +page.svelte              ← List
+└── prestasi/
+    └── +page.svelte              ← List
+```
+
+---
+
+## References
+
+- [shadcn-svelte docs](https://www.shadcn-svelte.com)
+- [SvelteKit routing](https://kit.svelte.dev/docs/routing)
+- [Svelte 5 runes](https://svelte.dev/docs/svelte/$state)
+- Website sekolah Indonesia typical patterns
