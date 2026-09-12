@@ -43,10 +43,14 @@ export function findUserByUsername(username: string) {
  * Update last login timestamp
  */
 export function updateLastLogin(userId: number) {
-	db.update(users)
-		.set({ lastLogin: new Date().toISOString() })
-		.where(eq(users.id, userId))
-		.run();
+	try {
+		db.update(users)
+			.set({ lastLogin: new Date().toISOString() })
+			.where(eq(users.id, userId))
+			.run();
+	} catch (e) {
+		console.error('Failed to update last login:', e);
+	}
 }
 
 // ============================================

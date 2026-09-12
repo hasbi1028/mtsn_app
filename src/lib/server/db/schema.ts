@@ -53,7 +53,7 @@ export const ptk = sqliteTable('ptk', {
 
 export const jtmSemester = sqliteTable('jtm_semester', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
-	ptkId: integer('ptk_id').notNull(),
+	ptkId: integer('ptk_id').notNull().references(() => ptk.id),
 	periode: text('periode').notNull().default('2026/2027 Ganjil'),
 	mengajar: real('mengajar').default(0),
 	tugas: real('tugas').default(0),
@@ -64,7 +64,7 @@ export const jtmSemester = sqliteTable('jtm_semester', {
 
 export const cuti = sqliteTable('cuti', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
-	ptkId: integer('ptk_id').notNull(),
+	ptkId: integer('ptk_id').notNull().references(() => ptk.id),
 	jenis: text('jenis').notNull(),
 	tanggalMulai: text('tanggal_mulai').notNull(),
 	tanggalSelesai: text('tanggal_selesai').notNull(),
@@ -79,7 +79,7 @@ export const cuti = sqliteTable('cuti', {
 
 export const skmtAjuan = sqliteTable('skmt_ajuan', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
-	ptkId: integer('ptk_id').notNull(),
+	ptkId: integer('ptk_id').notNull().references(() => ptk.id),
 	periode: text('periode').notNull().default('2026/Semester 1'),
 	instansi: text('instansi').default('MTSN 2 KOLAKA UTARA'),
 	status: text('status'), // Menunggu / Disetujui Kamad / Disetujui Pengawas / Ditolak
@@ -91,7 +91,7 @@ export const skmtAjuan = sqliteTable('skmt_ajuan', {
 
 export const skbkAjuan = sqliteTable('skbk_ajuan', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
-	ptkId: integer('ptk_id').notNull(),
+	ptkId: integer('ptk_id').notNull().references(() => ptk.id),
 	periode: text('periode').default('2026/Semester 1'),
 	instansi: text('instansi'),
 	status: text('status').default('Belum Diajukan'), // Belum Diajukan | Sudah Diajukan
@@ -103,7 +103,7 @@ export const skbkAjuan = sqliteTable('skbk_ajuan', {
 
 export const skakpt = sqliteTable('skakpt', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
-	ptkId: integer('ptk_id').notNull(),
+	ptkId: integer('ptk_id').notNull().references(() => ptk.id),
 	periode: text('periode').default('2026/Semester 1'),
 	bulan: text('bulan').default('Juli 2026'),
 	status: text('status').default('Menunggu'),
@@ -114,7 +114,7 @@ export const skakpt = sqliteTable('skakpt', {
 
 export const dokumen = sqliteTable('dokumen', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
-	ptkId: integer('ptk_id').notNull(),
+	ptkId: integer('ptk_id').notNull().references(() => ptk.id),
 	jenis: text('jenis').default('SKMT Rekap'),
 	filePath: text('file_path').notNull(),
 	periode: text('periode'),
@@ -202,7 +202,7 @@ export const rombel = sqliteTable('rombel', {
 
 export const perubahanSiswa = sqliteTable('perubahan_siswa', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
-	siswaId: integer('siswa_id').notNull(),
+	siswaId: integer('siswa_id').notNull().references(() => siswa.id),
 	field: text('field').notNull(), // nama, nisn, nik, ayah, ibu, etc.
 	nilaiLama: text('nilai_lama'),
 	nilaiBaru: text('nilai_baru').notNull(),
@@ -241,8 +241,8 @@ export const ortu = sqliteTable('ortu', {
 });
 
 export const siswaOrtu = sqliteTable('siswa_ortu', {
-	siswaId: integer('siswa_id').notNull(),
-	ortuId: integer('ortu_id').notNull(),
+	siswaId: integer('siswa_id').notNull().references(() => siswa.id),
+	ortuId: integer('ortu_id').notNull().references(() => ortu.id),
 	hubungan: text('hubungan') // ayah | ibu | wali
 });
 
@@ -274,7 +274,7 @@ export const belSettings = sqliteTable('bel_settings', {
 
 export const kartuCache = sqliteTable('kartu_cache', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
-	siswaId: integer('siswa_id').notNull(),
+	siswaId: integer('siswa_id').notNull().references(() => siswa.id),
 	filePath: text('file_path').notNull(),
 	fileType: text('file_type').notNull(), // front | back
 	generatedAt: text('generated_at').default(sql`datetime('now','localtime')`),

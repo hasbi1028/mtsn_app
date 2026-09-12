@@ -69,7 +69,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// Login page - redirect to dashboard if already logged in
 	if (pathname === '/login') {
 		if (user) {
-			redirect(302, '/dashboard');
+			redirect(302, '/admin/dashboard');
 		}
 		return resolve(event);
 	}

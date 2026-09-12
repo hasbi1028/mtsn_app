@@ -10,17 +10,13 @@ const config = {
 			$modules: 'src/modules'
 		},
 		csrf: {
-			// Dev stage: lax — trust all origins
-			checkOrigin: false,
 			trustedOrigins: [
 				'http://localhost:3720',
 				'http://127.0.0.1:3720',
 				'http://localhost:5173',
 				'http://127.0.0.1:5173',
 				'http://localhost:4173',
-				'http://127.0.0.1:4173',
-				'http://192.168.0.105:3720',
-				'http://192.168.100.77:3720'
+				'http://127.0.0.1:4173'
 			]
 		},
 		experimental: {

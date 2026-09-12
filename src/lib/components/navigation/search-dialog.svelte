@@ -14,14 +14,14 @@
 	let selectedIndex = $state(0);
 
 	const quickLinks = [
-		{ label: 'Dashboard', href: '/dashboard', icon: FileTextIcon },
-		{ label: 'Data PTK', href: '/ptk', icon: UsersIcon },
-		{ label: 'Data Siswa', href: '/siswa', icon: GraduationCapIcon },
-		{ label: 'Roster', href: '/roster', icon: CalendarIcon },
-		{ label: 'SKMT', href: '/skmt', icon: FileTextIcon },
-		{ label: 'SKBK', href: '/skbk', icon: FileTextIcon },
-		{ label: 'SKAKPT', href: '/skakpt', icon: FileTextIcon },
-		{ label: 'Rombel', href: '/rombel', icon: UsersIcon },
+		{ label: 'Dashboard', href: '/admin/dashboard', icon: FileTextIcon },
+		{ label: 'Data PTK', href: '/admin/ptk', icon: UsersIcon },
+		{ label: 'Data Siswa', href: '/admin/siswa', icon: GraduationCapIcon },
+		{ label: 'Roster', href: '/admin/roster', icon: CalendarIcon },
+		{ label: 'SKMT', href: '/admin/skmt', icon: FileTextIcon },
+		{ label: 'SKBK', href: '/admin/skbk', icon: FileTextIcon },
+		{ label: 'SKAKPT', href: '/admin/skakpt', icon: FileTextIcon },
+		{ label: 'Rombel', href: '/admin/rombel', icon: UsersIcon },
 	];
 
 	const filteredLinks = $derived(

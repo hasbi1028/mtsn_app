@@ -1,6 +1,6 @@
 import { db } from '$lib/server/db';
 import { ptk, siswa, rombel, skmtAjuan, skbkAjuan, skakpt, jtmSemester } from '$lib/server/db/schema';
-import { count, eq, sql } from 'drizzle-orm';
+import { count, eq, sql, and, isNull, or } from 'drizzle-orm';
 
 /**
  * Dashboard statistics — pure business logic
@@ -12,26 +12,37 @@ import { count, eq, sql } from 'drizzle-orm';
 // ============================================
 
 export function getGeneralStats() {
-	const totalPtk = db.select({ count: count() }).from(ptk).get();
-	const guru = db.select({ count: count() }).from(ptk).where(eq(ptk.fungsi, 'Guru')).get();
-	const sertifikasi = db.select({ count: count() }).from(ptk).where(eq(ptk.sertifikasi, true)).get();
-	const belumSertifikasi = (totalPtk?.count ?? 0) - (sertifikasi?.count ?? 0);
+	const [
+		totalPtkRow,
+		guruRow,
+		sertifikasiRow,
+		pendingSkmtRow,
+		pendingSkbkRow,
+		pendingSkakptRow,
+		totalSiswaRow
+	] = db.all(sql`
+		SELECT
+			(SELECT COUNT(*) FROM ptk) as total_ptk,
+			(SELECT COUNT(*) FROM ptk WHERE fungsi = 'Guru') as guru,
+			(SELECT COUNT(*) FROM ptk WHERE sertifikasi = 1) as sertifikasi,
+			(SELECT COUNT(*) FROM skmt_ajuan WHERE status = 'Menunggu') as pending_skmt,
+			(SELECT COUNT(*) FROM skbk_ajuan WHERE status = 'Belum Diajukan') as pending_skbk,
+			(SELECT COUNT(*) FROM skakpt WHERE status = 'Menunggu') as pending_skakpt,
+			(SELECT COUNT(*) FROM siswa) as total_siswa
+	`);
 
-	const totalSiswa = db.select({ count: count() }).from(siswa).get();
-
-	const pendingSkmt = db.select({ count: count() }).from(skmtAjuan).where(eq(skmtAjuan.status, 'Menunggu')).get();
-	const pendingSkbk = db.select({ count: count() }).from(skbkAjuan).where(eq(skbkAjuan.status, 'Belum Diajukan')).get();
-	const pendingSkakpt = db.select({ count: count() }).from(skakpt).where(eq(skakpt.status, 'Menunggu')).get();
+	const totalPtk = (totalPtkRow as any)?.total_ptk ?? 0;
+	const sertifikasi = (sertifikasiRow as any)?.sertifikasi ?? 0;
 
 	return {
-		totalPtk: totalPtk?.count ?? 0,
-		guru: guru?.count ?? 0,
-		sertifikasi: sertifikasi?.count ?? 0,
-		belumSertifikasi,
-		totalSiswa: totalSiswa?.count ?? 0,
-		pendingSkmt: pendingSkmt?.count ?? 0,
-		pendingSkbk: pendingSkbk?.count ?? 0,
-		pendingSkakpt: pendingSkakpt?.count ?? 0
+		totalPtk,
+		guru: (guruRow as any)?.guru ?? 0,
+		sertifikasi,
+		belumSertifikasi: totalPtk - sertifikasi,
+		totalSiswa: (totalSiswaRow as any)?.total_siswa ?? 0,
+		pendingSkmt: (pendingSkmtRow as any)?.pending_skmt ?? 0,
+		pendingSkbk: (pendingSkbkRow as any)?.pending_skbk ?? 0,
+		pendingSkakpt: (pendingSkakptRow as any)?.pending_skakpt ?? 0
 	};
 }
 
@@ -43,7 +54,6 @@ export function getRombelStats() {
 	const totalRombel = db.select({ count: count() }).from(rombel).where(eq(rombel.aktif, true)).get();
 	const totalSiswa = db.select({ count: count() }).from(siswa).get();
 
-	// Count siswa with rombel assigned
 	const teralokasi = db
 		.select({ count: count() })
 		.from(siswa)
@@ -52,7 +62,6 @@ export function getRombelStats() {
 
 	const tanpaRombel = (totalSiswa?.count ?? 0) - (teralokasi?.count ?? 0);
 
-	// Per kelas breakdown
 	const perKelas = db
 		.select({
 			kelas: siswa.kelas,
@@ -83,91 +92,60 @@ export function getRombelStats() {
 // ============================================
 
 export function getBansosStats() {
-	const totalSiswa = db.select({ count: count() }).from(siswa).get();
+	const [
+		totalSiswaRow,
+		belumCekRow,
+		layakPkhRow,
+		layakSembakoRow,
+		layakPbijkRow,
+		desilRows,
+		kelasRows
+	] = db.all(sql`
+		SELECT
+			(SELECT COUNT(*) FROM siswa) as total_siswa,
+			(SELECT COUNT(*) FROM siswa WHERE bansos_cek_at IS NULL OR bansos_cek_at = '') as belum_cek,
+			(SELECT COUNT(*) FROM siswa WHERE bansos_pkh = 'LAYAK') as layak_pkh,
+			(SELECT COUNT(*) FROM siswa WHERE bansos_sembako = 'AKTIF') as layak_sembako,
+			(SELECT COUNT(*) FROM siswa WHERE bansos_pbijk = 'LAYAK') as layak_pbijk,
+			(SELECT bansos_desil, COUNT(*) as cnt FROM siswa GROUP BY bansos_desil) as desil_data,
+			(SELECT kelas, COUNT(*) as cnt FROM siswa GROUP BY kelas) as kelas_data
+	`);
 
-	// Belum dicek
-	const belumCek = db
-		.select({ count: count() })
-		.from(siswa)
-		.where(sql`${siswa.bansosCekAt} IS NULL OR ${siswa.bansosCekAt} = ''`)
-		.get();
-
-	// Layak PKH
-	const layakPkh = db
-		.select({ count: count() })
-		.from(siswa)
-		.where(eq(siswa.bansosPkh, 'LAYAK'))
-		.get();
-
-	// Sembako aktif
-	const layakSembako = db
-		.select({ count: count() })
-		.from(siswa)
-		.where(eq(siswa.bansosSembako, 'AKTIF'))
-		.get();
-
-	// PBI JK
-	const layakPbijk = db
-		.select({ count: count() })
-		.from(siswa)
-		.where(eq(siswa.bansosPbijk, 'LAYAK'))
-		.get();
-
-	// Desil distribution
-	const desilRows = db
-		.select({
-			desil: siswa.bansosDesil,
-			count: count()
-		})
-		.from(siswa)
-		.groupBy(siswa.bansosDesil)
-		.all();
+	const total = (totalSiswaRow as any)?.total_siswa ?? 0;
+	const bc = (belumCekRow as any)?.belum_cek ?? 0;
 
 	const desilDist: Record<string, number> = {};
 	let belumDesil = 0;
 	let tidakDitemukan = 0;
 
-	for (const row of desilRows) {
-		const key = row.desil || 'Belum Dicek';
+	for (const row of (desilRows as any)?.desil_data ?? []) {
+		const key = row.bansos_desil || 'Belum Dicek';
 		const num = parseInt(key);
 		if (num >= 1 && num <= 10) {
-			desilDist[key] = row.count;
+			desilDist[key] = row.cnt;
 		} else if (key === 'TIDAK DITEMUKAN') {
-			tidakDitemukan += row.count;
+			tidakDitemukan += row.cnt;
 		} else {
-			belumDesil += row.count;
+			belumDesil += row.cnt;
 		}
 	}
 	if (belumDesil > 0) desilDist['Belum Dicek'] = belumDesil;
 	if (tidakDitemukan > 0) desilDist['Tidak Ditemukan'] = tidakDitemukan;
 
-	// Kelas breakdown
-	const kelasRows = db
-		.select({
-			kelas: siswa.kelas,
-			count: count()
-		})
-		.from(siswa)
-		.groupBy(siswa.kelas)
-		.all();
-
 	const kelasDist: Record<string, number> = {};
-	for (const row of kelasRows) {
+	for (const row of (kelasRows as any)?.kelas_data ?? []) {
 		if (row.kelas) {
-			kelasDist[row.kelas] = row.count;
+			kelasDist[row.kelas] = row.cnt;
 		}
 	}
-
-	const total = totalSiswa?.count ?? 0;
-	const bc = belumCek?.count ?? 0;
 
 	return {
 		totalSiswa: total,
 		belumCek: bc,
 		sudahCek: total - bc,
-		layakPkh: layakPkh?.count ?? 0,
-		layakSembako: layakSembako?.count ?? 0,
-		layakPbijk: layakPbijk?.count ?? 0,
+		layakPkh: (layakPkhRow as any)?.layak_pkh ?? 0,
+		layakSembako: (layakSembakoRow as any)?.layak_sembako ?? 0,
+		layakPbijk: (layakPbijkRow as any)?.layak_pbijk ?? 0,
 		desilDist,
 		kelasDist
 	};

@@ -2,7 +2,7 @@ import { db } from '$lib/server/db';
 import { sql } from 'drizzle-orm';
 import { jamBel, belSettings } from '$lib/server/db/schema';
 
-const BEL_API = 'http://localhost:8093';
+const BEL_API = process.env.BEL_API_URL || 'http://localhost:8093';
 
 export async function belProxy(method: string, path: string, body?: any) {
 	const res = await fetch(`${BEL_API}${path}`, {

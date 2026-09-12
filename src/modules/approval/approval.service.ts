@@ -70,7 +70,7 @@ export function approvePerubahan(id: number, approvedBy: string) {
 	const col = FIELD_LABELS[field] ? field : null;
 	if (!col) return { ok: false, error: 'Field tidak valid' };
 
-	db.run(sql`UPDATE siswa SET ${sql.raw(col)}=${nilai_baru}, updated_at=datetime('now','localtime') WHERE id=${siswa_id}`);
+	db.run(sql`UPDATE siswa SET ${sql.identifier(col)}=${nilai_baru}, updated_at=datetime('now','localtime') WHERE id=${siswa_id}`);
 	db.run(sql`UPDATE perubahan_siswa SET status='approved', disetujui_at=datetime('now','localtime'), disetujui_oleh=${approvedBy} WHERE id=${id}`);
 	return { ok: true, pesan: 'Perubahan disetujui & diterapkan' };
 }

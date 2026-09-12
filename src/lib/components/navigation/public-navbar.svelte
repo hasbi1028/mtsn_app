@@ -4,8 +4,9 @@
 	import { page } from '$app/state';
 	import Menu from '@lucide/svelte/icons/menu';
 	import ChevronDown from '@lucide/svelte/icons/chevron-down';
+	import type { UserSession } from '$modules/auth/auth.validation';
 
-	let { user } = $props<{ user?: any }>();
+	let { user }: { user?: UserSession | null } = $props();
 
 	const navItems = [
 		{ href: '/', label: 'Beranda' },

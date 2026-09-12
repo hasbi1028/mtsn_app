@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db';
-import { siswa, perubahanSiswa, ortu, siswaOrtu } from '$lib/server/db/schema';
+import { siswa, perubahanSiswa, ortu, siswaOrtu, users } from '$lib/server/db/schema';
 import { eq, or, like, sql, count, and, isNull } from 'drizzle-orm';
 import { writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
@@ -9,6 +9,24 @@ const UPLOADS_DIR = process.env.UPLOADS_DIR || path.join(process.cwd(), 'static'
 const FOTO_PENDING_DIR = path.join(UPLOADS_DIR, 'foto_siswa', 'pending');
 const FOTO_ACTIVE_DIR = path.join(UPLOADS_DIR, 'foto_siswa');
 const ALLOWED_FOTO = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+
+const MAGIC_BYTES: Record<string, number[][]> = {
+	'image/png': [[0x89, 0x50, 0x4E, 0x47]],
+	'image/jpeg': [[0xFF, 0xD8, 0xFF]],
+	'image/jpg': [[0xFF, 0xD8, 0xFF]],
+	'image/webp': [[0x52, 0x49, 0x46, 0x46]]
+};
+
+async function validateMagicBytes(file: File, expectedType: string): Promise<boolean> {
+	const buffer = Buffer.from(await file.arrayBuffer());
+	const signatures = MAGIC_BYTES[expectedType];
+	if (!signatures) return true;
+
+	return signatures.some((sig) => {
+		if (buffer.length < sig.length) return false;
+		return sig.every((byte, i) => buffer[i] === byte);
+	});
+}
 
 /**
  * Siswa service — pure business logic
@@ -79,11 +97,10 @@ export function getSiswaDetail(publicId: string) {
 // ============================================
 
 export function getMyProfile(userId: number) {
-	// Get user's ref_id to find siswa record
 	const user = db
-		.select({ refId: sql<number>`ref_id` })
-		.from(sql`users`)
-		.where(eq(sql`id`, userId))
+		.select({ refId: users.refId })
+		.from(users)
+		.where(eq(users.id, userId))
 		.get();
 
 	if (!user?.refId) return null;
@@ -144,7 +161,11 @@ export function submitPerubahan(siswaId: number, field: string, nilaiBaru: strin
 
 	// Get current value
 	const s = db.select().from(siswa).where(eq(siswa.id, siswaId)).get();
-	const nilaiLama = s ? String(s[field as keyof typeof s] ?? '') : '';
+	if (!s) {
+		return { error: 'Siswa tidak ditemukan' };
+	}
+
+	const nilaiLama = String(s[field as keyof typeof s] ?? '');
 
 	// Insert perubahan
 	db.insert(perubahanSiswa)
@@ -168,6 +189,11 @@ export function submitPerubahan(siswaId: number, field: string, nilaiBaru: strin
 async function simpanFoto(siswaId: number, file: File, dir: string, relPrefix: string) {
 	if (!ALLOWED_FOTO.includes(file.type)) {
 		return { error: 'Format tidak didukung (hanya PNG, JPG, WEBP)' };
+	}
+
+	const magicValid = await validateMagicBytes(file, file.type);
+	if (!magicValid) {
+		return { error: 'File tidak valid — format tidak sesuai' };
 	}
 
 	const ext = path.extname(file.name) || '.png';
