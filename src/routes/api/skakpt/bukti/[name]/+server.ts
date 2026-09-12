@@ -1,27 +1,29 @@
 import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 
-// Proxy bukti screenshot dari Go API (port 3730) → browser via BFF (port 3720)
-const API = process.env.API_BASE || 'http://localhost:3730';
+const BUKTI_DIR = path.join(process.cwd(), 'output', 'bukti-skakpt');
 
-export const GET: RequestHandler = async ({ params, fetch, cookies }) => {
-	const token = cookies.get('mtsn_session');
+export const GET: RequestHandler = async ({ params }) => {
 	const name = params.name;
 	if (name.includes('..') || name.includes('/') || name.includes('\\')) {
 		throw error(400, 'Filename tidak valid');
 	}
-	const res = await fetch(`${API}/api/skakpt/bukti/${encodeURIComponent(name)}`, {
-		headers: { Authorization: `Bearer ${token}` }
-	});
-	if (!res.ok) {
-		throw error(res.status, 'Bukti tidak ditemukan');
-	}
-	const contentType = res.headers.get('content-type') || 'image/png';
-	const body = await res.arrayBuffer();
-	return new Response(body, {
-		headers: {
-			'Content-Type': contentType,
-			'Cache-Control': 'public, max-age=3600'
+
+	const filepath = path.join(BUKTI_DIR, name);
+	try {
+		const buf = await readFile(filepath);
+		return new Response(buf, {
+			headers: {
+				'Content-Type': 'image/png',
+				'Cache-Control': 'public, max-age=3600'
+			}
+		});
+	} catch (e) {
+		if ((e as NodeJS.ErrnoException).code === 'ENOENT') {
+			throw error(404, 'Bukti tidak ditemukan');
 		}
-	});
+		throw error(500, 'Gagal membaca file');
+	}
 };

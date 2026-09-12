@@ -1,9 +1,11 @@
 <script lang="ts">
 	import PageLayout from '$lib/components/page-layout.svelte';
 	import DataTable from '$lib/components/data-table.svelte';
+	import { getRosterListQ } from '$modules/roster/roster.remote';
+	import { page } from '$app/state';
 
-	let { data } = $props();
-	const rows = $derived(data.rows as any[]);
+	let kelasParam = $derived(page.url.searchParams.get('kelas') || '');
+	const rosterQuery = $derived(getRosterListQ(kelasParam) as Promise<any>);
 
 	const columns = [
 		{ key: 'hari', label: 'Hari' },
@@ -19,19 +21,24 @@
 </script>
 
 <PageLayout title="Roster" description="Jadwal pelajaran per kelas">
-	{#snippet actions()}
-		<select
-			class="border border-input bg-background rounded-md px-3 py-1.5 text-sm cursor-pointer"
-			value={data.kelas}
-			onchange={onChange}
-		>
-			{#each data.daftarKelas as k}
-				<option value={k}>{k}</option>
-			{/each}
-		</select>
-	{/snippet}
+	{#await rosterQuery}
+		<p class="text-sm text-muted-foreground">Memuat jadwal...</p>
+	{:then rosterData}
+		{@const rows = rosterData.rows as any[]}
+		{#snippet actions()}
+			<select
+				class="border border-input bg-background rounded-md px-3 py-1.5 text-sm cursor-pointer"
+				value={rosterData.kelas}
+				onchange={onChange}
+			>
+				{#each rosterData.daftarKelas as k}
+					<option value={k}>{k}</option>
+				{/each}
+			</select>
+		{/snippet}
 
-	<DataTable {columns} data={rows} emptyMessage="Tidak ada jadwal pelajaran" />
+		<DataTable {columns} data={rows} emptyMessage="Tidak ada jadwal pelajaran" />
 
-	<p class="mt-2 text-xs text-muted-foreground">{rows.length} jam pelajaran/minggu</p>
+		<p class="mt-2 text-xs text-muted-foreground">{rows.length} jam pelajaran/minggu</p>
+	{/await}
 </PageLayout>

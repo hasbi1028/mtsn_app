@@ -1,8 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { loginAs, gotoAndWait } from './helpers';
 
-const API = 'http://localhost:3730';
-
 test.describe('Kartu Siswa', () => {
   test.beforeEach(async ({ page }) => {
     await loginAs(page);
@@ -11,7 +9,7 @@ test.describe('Kartu Siswa', () => {
   // ─── API ────────────────────────────────────────────────────────
 
   test('API: kartu/list returns rows with has_kartu + has_kartu_back', async ({ page }) => {
-    const res = await page.request.get(`${API}/api/siswa/kartu/list`);
+    const res = await page.request.get('/api/siswa/kartu/list');
     expect(res.ok()).toBeTruthy();
     const data = await res.json();
     expect(data.rows.length).toBeGreaterThan(0);
@@ -22,28 +20,28 @@ test.describe('Kartu Siswa', () => {
     expect(first).toHaveProperty('kelas');
   });
 
-  test('API: kartu.png returns valid PNG', async ({ page }) => {
-    const rows = ((await (await page.request.get(`${API}/api/siswa/kartu/list`)).json())).rows;
+  test('API: kartu-front returns valid PNG', async ({ page }) => {
+    const rows = ((await (await page.request.get('/api/siswa/kartu/list')).json())).rows;
     test.skip(rows.length === 0, 'No students');
-    const res = await page.request.get(`${API}/api/siswa/${rows[0].id}/kartu.png`);
+    const res = await page.request.get(`/api/siswa/${rows[0].id}/kartu-front`);
     expect(res.ok()).toBeTruthy();
     expect(res.headers()['content-type']).toContain('image/png');
     expect((await res.body()).length).toBeGreaterThan(1000);
   });
 
-  test('API: kartu-back.png returns valid PNG', async ({ page }) => {
-    const rows = ((await (await page.request.get(`${API}/api/siswa/kartu/list`)).json())).rows;
+  test('API: kartu-back returns valid PNG', async ({ page }) => {
+    const rows = ((await (await page.request.get('/api/siswa/kartu/list')).json())).rows;
     test.skip(rows.length === 0, 'No students');
-    const res = await page.request.get(`${API}/api/siswa/${rows[0].id}/kartu-back.png`);
+    const res = await page.request.get(`/api/siswa/${rows[0].id}/kartu-back`);
     expect(res.ok()).toBeTruthy();
     expect(res.headers()['content-type']).toContain('image/png');
     expect((await res.body()).length).toBeGreaterThan(1000);
   });
 
   test('API: regenerate returns batch_id', async ({ page }) => {
-    const rows = ((await (await page.request.get(`${API}/api/siswa/kartu/list`)).json())).rows;
+    const rows = ((await (await page.request.get('/api/siswa/kartu/list')).json())).rows;
     test.skip(rows.length === 0, 'No students');
-    const res = await page.request.post(`${API}/api/siswa/${rows[0].id}/kartu/regenerate`);
+    const res = await page.request.post(`/api/siswa/${rows[0].id}/kartu-regenerate`);
     expect(res.ok()).toBeTruthy();
     const data = await res.json();
     expect(data.ok).toBe(true);
@@ -51,14 +49,12 @@ test.describe('Kartu Siswa', () => {
   });
 
   test('API: queue status endpoint works', async ({ page }) => {
-    const rows = ((await (await page.request.get(`${API}/api/siswa/kartu/list`)).json())).rows;
+    const rows = ((await (await page.request.get('/api/siswa/kartu/list')).json())).rows;
     test.skip(rows.length === 0, 'No students');
-    // Regenerate first to get a batch_id
-    const regRes = await page.request.post(`${API}/api/siswa/${rows[0].id}/kartu/regenerate`);
+    const regRes = await page.request.post(`/api/siswa/${rows[0].id}/kartu-regenerate`);
     const regData = await regRes.json();
-    // Poll status
     await expect(async () => {
-      const sRes = await page.request.get(`${API}/api/kartu/queue/${regData.batch_id}`);
+      const sRes = await page.request.get(`/api/kartu/queue/${regData.batch_id}`);
       expect(sRes.ok()).toBeTruthy();
       const sData = await sRes.json();
       expect(['processing', 'completed']).toContain(sData.status);
@@ -111,7 +107,7 @@ test.describe('Kartu Siswa', () => {
   // ─── SINGLE PAGE ───────────────────────────────────────────────
 
   test('single: front card tampil dengan data sekolah', async ({ page }) => {
-    const rows = ((await (await page.request.get(`${API}/api/siswa/kartu/list`)).json())).rows;
+    const rows = ((await (await page.request.get('/api/siswa/kartu/list')).json())).rows;
     test.skip(rows.length === 0, 'No students');
     await gotoAndWait(page, `/siswa/${rows[0].id}/kartu`);
     await expect(page.getByText('Preview Kartu Siswa')).toBeVisible({ timeout: 8000 });
@@ -122,7 +118,7 @@ test.describe('Kartu Siswa', () => {
   });
 
   test('single: toggle ke belakang', async ({ page }) => {
-    const rows = ((await (await page.request.get(`${API}/api/siswa/kartu/list`)).json())).rows;
+    const rows = ((await (await page.request.get('/api/siswa/kartu/list')).json())).rows;
     test.skip(rows.length === 0, 'No students');
     await gotoAndWait(page, `/siswa/${rows[0].id}/kartu`);
     await expect(page.getByText('Preview Kartu Siswa')).toBeVisible({ timeout: 8000 });
@@ -138,7 +134,7 @@ test.describe('Kartu Siswa', () => {
   });
 
   test('single: toggle balik ke depan', async ({ page }) => {
-    const rows = ((await (await page.request.get(`${API}/api/siswa/kartu/list`)).json())).rows;
+    const rows = ((await (await page.request.get('/api/siswa/kartu/list')).json())).rows;
     test.skip(rows.length === 0, 'No students');
     await gotoAndWait(page, `/siswa/${rows[0].id}/kartu`);
     await page.getByRole('button', { name: /lihat belakang/i }).click();
@@ -149,7 +145,7 @@ test.describe('Kartu Siswa', () => {
   });
 
   test('single: tombol generate ulang ada', async ({ page }) => {
-    const rows = ((await (await page.request.get(`${API}/api/siswa/kartu/list`)).json())).rows;
+    const rows = ((await (await page.request.get('/api/siswa/kartu/list')).json())).rows;
     test.skip(rows.length === 0, 'No students');
     await gotoAndWait(page, `/siswa/${rows[0].id}/kartu`);
     await expect(page.getByText('Preview Kartu Siswa')).toBeVisible({ timeout: 8000 });
@@ -159,7 +155,7 @@ test.describe('Kartu Siswa', () => {
   });
 
   test('single: tombol kembali ke profil', async ({ page }) => {
-    const rows = ((await (await page.request.get(`${API}/api/siswa/kartu/list`)).json())).rows;
+    const rows = ((await (await page.request.get('/api/siswa/kartu/list')).json())).rows;
     test.skip(rows.length === 0, 'No students');
     await gotoAndWait(page, `/siswa/${rows[0].id}/kartu`);
     await expect(page.getByText('Preview Kartu Siswa')).toBeVisible({ timeout: 8000 });

@@ -1,30 +1,23 @@
-const API = process.env.API_BASE || 'http://localhost:3730';
 import { fail } from '@sveltejs/kit';
+import { env } from '$env/dynamic/private';
 
-async function api(cookies: any, fetchFn: any, path: string, opts: any = {}) {
-	const token = cookies.get('mtsn_session');
-	if (!token) return fail(401, { ok: false, error: 'Sesi berakhir' });
-	const res = await fetchFn(`${API}${path}`, {
-		...opts,
-		headers: { Authorization: `Bearer ${token}`, ...(opts.headers || {}) }
-	});
-	return await res.json();
+const BEL_API = env.BEL_API || 'http://127.0.0.1:8093';
+
+async function belFetch(path: string, opts: RequestInit = {}) {
+	const res = await fetch(`${BEL_API}${path}`, opts);
+	return res.json();
 }
 
-export const load = async ({ cookies, fetch }) => {
-	const token = cookies.get('mtsn_session');
-	const res = await fetch(`${API}/api/bel/suara`, {
-		headers: token ? { Authorization: `Bearer ${token}` } : {}
-	});
-	const suara = res.ok ? await res.json() : { files: [] };
+export const load = async () => {
+	const suara = await belFetch('/api/suara').catch(() => ({ files: [] }));
 	return { suara };
 };
 
 export const actions = {
-	play: async ({ cookies, fetch, request }) => {
+	play: async ({ request }) => {
 		const fd = await request.formData();
 		const file = String(fd.get('file') || '');
-		const res = await api(cookies, fetch, '/api/bel/play', {
+		const res = await belFetch('/api/play', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ path: file, repeat: 1 })
@@ -33,15 +26,13 @@ export const actions = {
 		return fail(409, { ok: false, error: res?.error || 'Gagal memutar (mungkin suara lain sedang berbunyi).' });
 	},
 
-	stop: async ({ cookies, fetch }) => {
-		const res = await api(cookies, fetch, '/api/bel/stop', { method: 'POST' });
+	stop: async () => {
+		const res = await belFetch('/api/stop', { method: 'POST' });
 		if (res?.ok) return { ok: true, pesan: 'Pemutaran dihentikan.' };
 		return fail(500, { ok: false, error: 'Gagal stop.' });
 	},
 
-	upload: async ({ cookies, fetch, request }) => {
-		const token = cookies.get('mtsn_session');
-		if (!token) return fail(401, { ok: false, error: 'Sesi berakhir' });
+	upload: async ({ request }) => {
 		const fd = await request.formData();
 		const file = fd.get('file');
 		if (!file || typeof file === 'string') {
@@ -53,9 +44,8 @@ export const actions = {
 		const up = new FormData();
 		up.append('file', file, file.name);
 		try {
-			const res = await fetch(`${API}/api/bel/suara`, {
+			const res = await fetch(`${BEL_API}/api/suara`, {
 				method: 'POST',
-				headers: { Authorization: `Bearer ${token}` },
 				body: up
 			});
 			const data = await res.json();
@@ -68,10 +58,10 @@ export const actions = {
 		}
 	},
 
-	delete: async ({ cookies, fetch, request }) => {
+	delete: async ({ request }) => {
 		const fd = await request.formData();
 		const name = String(fd.get('name') || '');
-		const res = await api(cookies, fetch, `/api/bel/suara/${encodeURIComponent(name)}`, {
+		const res = await belFetch(`/api/suara/${encodeURIComponent(name)}`, {
 			method: 'DELETE'
 		});
 		if (res?.error) return fail(409, { ok: false, error: res.error });

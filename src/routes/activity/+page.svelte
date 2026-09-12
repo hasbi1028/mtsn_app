@@ -2,9 +2,9 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import DataTable from '$lib/components/data-table.svelte';
 	import PageLayout from '$lib/components/page-layout.svelte';
+	import { getActivityLogQ } from '$modules/activity/activity.remote';
 	
-	let { data } = $props();
-	const rows = $derived(data.rows as any[]);
+	const rowsQuery = getActivityLogQ() as Promise<any[]>;
 	
 	function fmtAction(a: string) {
 		if (a === 'login') return 'Login';
@@ -22,17 +22,21 @@
 </script>
 
 <PageLayout title="Riwayat Aktivitas" description="Log aktivitas pengguna">
-	<DataTable {columns} data={rows} emptyMessage="Tidak ada aktivitas">
-		{#snippet children({ row, column })}
-			{#if column.key === 'createdAt'}
-				<span class="text-xs">{new Date(row.createdAt).toLocaleString('id-ID')}</span>
-			{:else if column.key === 'action'}
-				<Badge variant="outline" class="text-[10px]">{fmtAction(row.action)}</Badge>
-			{:else}
-				{row[column.key] ?? '—'}
-			{/if}
-		{/snippet}
-	</DataTable>
-	
-	<p class="mt-2 text-xs text-muted-foreground">{rows.length} aktivitas tercatat</p>
+	{#await rowsQuery}
+		<p class="text-sm text-muted-foreground">Memuat data...</p>
+	{:then rows}
+		<DataTable {columns} data={rows} emptyMessage="Tidak ada aktivitas">
+			{#snippet children({ row, column })}
+				{#if column.key === 'createdAt'}
+					<span class="text-xs">{new Date(row.createdAt).toLocaleString('id-ID')}</span>
+				{:else if column.key === 'action'}
+					<Badge variant="outline" class="text-[10px]">{fmtAction(row.action)}</Badge>
+				{:else}
+					{row[column.key] ?? '—'}
+				{/if}
+			{/snippet}
+		</DataTable>
+		
+		<p class="mt-2 text-xs text-muted-foreground">{rows.length} aktivitas tercatat</p>
+	{/await}
 </PageLayout>

@@ -8,13 +8,13 @@
 	import { notify } from '$lib/toast';
 
 	let { data } = $props();
-	const siswa = $derived(data.siswa as any);
+	let siswa = $derived(data.siswa);
 	let fileInput = $state<HTMLInputElement>(); let preview = $state<string | null>(null); let pendingFile = $state<File | null>(null); let saving = $state(false);
 	function fotoUrl(path: string) { return path.startsWith('/') ? path : `/${path}`; }
 	function choosePhoto() { fileInput?.click(); }
 	function selectPhoto(e: Event) { const file = (e.target as HTMLInputElement).files?.[0]; if (!file) return; if (!/^image\/(jpeg|jpg|png|gif)$/.test(file.type)) return notify.error('Gunakan foto JPG, PNG, atau GIF.'); if (file.size > 2 * 1024 * 1024) return notify.error('Ukuran foto maksimal 2MB.'); pendingFile = file; preview = URL.createObjectURL(file); }
-	async function savePhoto() { if (!pendingFile) return; saving = true; try { const fd = new FormData(); fd.append('foto', pendingFile); const res = await fetch(`/siswa/${siswa.id}/profil`, { method: 'POST', body: fd }); if (!res.ok) throw new Error('Upload foto gagal.'); const result = await res.json(); siswa.foto_path = result.foto_path; pendingFile = null; preview = null; notify.success('Foto siswa berhasil diperbarui.'); } catch (err: any) { notify.error(err.message || 'Upload foto gagal.'); } finally { saving = false; if (fileInput) fileInput.value = ''; } }
- function cancelPhoto() { pendingFile = null; preview = null; if (fileInput) fileInput.value = ''; }
+	async function savePhoto() { if (!pendingFile || !siswa) return; saving = true; try { const fd = new FormData(); fd.append('foto', pendingFile); const res = await fetch(`/siswa/${siswa.id}/profil`, { method: 'POST', body: fd }); if (!res.ok) throw new Error('Upload foto gagal.'); const result = await res.json(); pendingFile = null; preview = null; notify.success('Foto siswa berhasil diperbarui.'); } catch (err: any) { notify.error(err.message || 'Upload foto gagal.'); } finally { saving = false; if (fileInput) fileInput.value = ''; } }
+	function cancelPhoto() { pendingFile = null; preview = null; if (fileInput) fileInput.value = ''; }
 </script>
 
 <svelte:head>
@@ -42,72 +42,72 @@
 				<Card.Description>{siswa.kelas} · {siswa.rombel || '—'}</Card.Description>
 			</Card.Header>
 			{#if pendingFile}<div class="mx-6 mb-3 flex items-center justify-between rounded-md border bg-muted/40 p-2 text-xs"><span>Foto baru siap disimpan</span><span class="flex gap-1"><Button size="sm" class="h-7 text-xs" onclick={savePhoto} disabled={saving}>{saving ? 'Menyimpan...' : 'Simpan Foto'}</Button><Button variant="ghost" size="sm" class="h-7 px-2" onclick={cancelPhoto}><X class="size-4" /></Button></span></div>{/if}
-			<Card.Content class="space-y-3 text-sm">
-				<div class="grid grid-cols-2 gap-2">
-					<div>
-						<p class="text-muted-foreground text-xs">NISN</p>
-						<p class="font-mono">{siswa.nisn ?? '—'}</p>
+				<Card.Content class="space-y-3 text-sm">
+					<div class="grid grid-cols-2 gap-2">
+						<div>
+							<p class="text-muted-foreground text-xs">NISN</p>
+							<p class="font-mono">{siswa.nisn ?? '—'}</p>
+						</div>
+						<div>
+							<p class="text-muted-foreground text-xs">NIK</p>
+							<p class="font-mono">{siswa.nik ?? '—'}</p>
+						</div>
+						<div>
+							<p class="text-muted-foreground text-xs">Jenis Kelamin</p>
+							<p>{siswa.jk ?? '—'}</p>
+						</div>
+						<div>
+							<p class="text-muted-foreground text-xs">Tempat, Tgl Lahir</p>
+							<p>{siswa.tempat_lahir ?? '—'}, {siswa.tgl_lahir ?? '—'}</p>
+						</div>
+						<div>
+							<p class="text-muted-foreground text-xs">Ayah</p>
+							<p>{siswa.ayah ?? '—'}</p>
+						</div>
+						<div>
+							<p class="text-muted-foreground text-xs">Ibu</p>
+							<p>{siswa.ibu ?? '—'}</p>
+						</div>
+						<div class="col-span-2">
+							<p class="text-muted-foreground text-xs">Alamat</p>
+							<p>{siswa.alamat ?? '—'}</p>
+						</div>
+						<div>
+							<p class="text-muted-foreground text-xs">Asal Sekolah</p>
+							<p>{siswa.asal_sekolah ?? '—'}</p>
+						</div>
+						<div>
+							<p class="text-muted-foreground text-xs">NPSN Asal Sekolah</p>
+							<p class="font-mono">{siswa.asal_sekolah_npsn ?? '—'}</p>
+						</div>
+						<div>
+							<p class="text-muted-foreground text-xs">Status EMIS</p>
+							<Badge variant={siswa.status_emis === 'Aktif' ? 'outline' : 'destructive'} class="text-xs">
+								{siswa.status_emis ?? '—'}
+							</Badge>
+						</div>
+						<div>
+							<p class="text-muted-foreground text-xs">Sumber Data</p>
+							<p class="text-xs">{siswa.sumber_data ?? '—'}</p>
+						</div>
 					</div>
-					<div>
-						<p class="text-muted-foreground text-xs">NIK</p>
-						<p class="font-mono">{siswa.nik ?? '—'}</p>
-					</div>
-					<div>
-						<p class="text-muted-foreground text-xs">Jenis Kelamin</p>
-						<p>{siswa.jk ?? '—'}</p>
-					</div>
-					<div>
-						<p class="text-muted-foreground text-xs">Tempat, Tgl Lahir</p>
-						<p>{siswa.tempat_lahir ?? '—'}, {siswa.tgl_lahir ?? '—'}</p>
-					</div>
-					<div>
-						<p class="text-muted-foreground text-xs">Ayah</p>
-						<p>{siswa.ayah ?? '—'}</p>
-					</div>
-					<div>
-						<p class="text-muted-foreground text-xs">Ibu</p>
-						<p>{siswa.ibu ?? '—'}</p>
-					</div>
-					<div class="col-span-2">
-						<p class="text-muted-foreground text-xs">Alamat</p>
-						<p>{siswa.alamat ?? '—'}</p>
-					</div>
-					<div>
-						<p class="text-muted-foreground text-xs">Asal Sekolah</p>
-						<p>{siswa.asal_sekolah ?? '—'}</p>
-					</div>
-					<div>
-						<p class="text-muted-foreground text-xs">NPSN Asal Sekolah</p>
-						<p class="font-mono">{siswa.asal_sekolah_npsn ?? '—'}</p>
-					</div>
-					<div>
-						<p class="text-muted-foreground text-xs">Status EMIS</p>
-						<Badge variant={siswa.status_emis === 'Aktif' ? 'outline' : 'destructive'} class="text-xs">
-							{siswa.status_emis ?? '—'}
-						</Badge>
-					</div>
-					<div>
-						<p class="text-muted-foreground text-xs">Sumber Data</p>
-						<p class="text-xs">{siswa.sumber_data ?? '—'}</p>
-					</div>
-				</div>
-			</Card.Content>
-		</Card.Root>
-		<input bind:this={fileInput} type="file" accept="image/jpeg,image/jpg,image/png,image/gif" class="hidden" onchange={selectPhoto} />
+				</Card.Content>
+			</Card.Root>
+			<input bind:this={fileInput} type="file" accept="image/jpeg,image/jpg,image/png,image/gif" class="hidden" onchange={selectPhoto} />
 
-		<div class="flex gap-2">
-			<a href="/siswa/{siswa.id}/bansos">
-				<Button variant="outline" size="sm" class="text-xs">Lihat Bansos</Button>
-			</a>
-			<a href="/siswa/{siswa.id}/kartu">
-				<Button variant="outline" size="sm" class="text-xs">Kartu Siswa</Button>
-			</a>
-		</div>
-	{:else}
-		<Card.Root>
-			<Card.Content class="py-8 text-center text-muted-foreground">
-				Siswa tidak ditemukan
-			</Card.Content>
-		</Card.Root>
-	{/if}
+			<div class="flex gap-2">
+				<a href="/siswa/{siswa.id}/bansos">
+					<Button variant="outline" size="sm" class="text-xs">Lihat Bansos</Button>
+				</a>
+				<a href="/siswa/{siswa.id}/kartu">
+					<Button variant="outline" size="sm" class="text-xs">Kartu Siswa</Button>
+				</a>
+			</div>
+		{:else}
+			<Card.Root>
+				<Card.Content class="py-8 text-center text-muted-foreground">
+					Siswa tidak ditemukan
+				</Card.Content>
+			</Card.Root>
+		{/if}
 </div>

@@ -8,7 +8,7 @@ export const load = async ({ locals }) => {
 	const siswa = getSiswaByRefId(user.ref_id ?? 0);
 	if (!siswa) error(404, 'Data siswa tidak ditemukan');
 
-	return { siswa };
+	return { profile: siswa };
 };
 
 export const actions = {

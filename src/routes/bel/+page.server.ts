@@ -1,54 +1,43 @@
-const API = process.env.API_BASE || 'http://localhost:3730';
 import { fail } from '@sveltejs/kit';
+import { getBelJadwal, getBelSuara, createBelJadwal, updateBelJadwal, toggleBelJadwal, deleteBelJadwal } from '$modules/bel/bel.service';
 
-async function api(cookies: any, fetchFn: any, path: string, opts: any = {}) {
-	const token = cookies.get('mtsn_session');
-	if (!token) return fail(401, { ok: false, error: 'Sesi berakhir' });
-	const res = await fetchFn(`${API}${path}`, {
-		...opts,
-		headers: { Authorization: `Bearer ${token}`, ...(opts.headers || {}) }
+const BEL_API = 'http://localhost:8093';
+
+async function belProxy(method: string, path: string, body?: any) {
+	const res = await fetch(`${BEL_API}${path}`, {
+		method,
+		headers: body ? { 'Content-Type': 'application/json' } : {},
+		body: body ? JSON.stringify(body) : undefined
 	});
-	return await res.json();
+	return await res.json().catch(() => ({ ok: false, error: 'Bel service offline' }));
 }
 
-export const load = async ({ cookies, fetch }) => {
-	const token = cookies.get('mtsn_session');
-	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
-	const [statusRes, jadwalRes, suaraRes] = await Promise.all([
-		fetch(`${API}/api/bel/status`, { headers: h }),
-		fetch(`${API}/api/bel/jadwal`, { headers: h }),
-		fetch(`${API}/api/bel/suara`, { headers: h })
+export const load = async () => {
+	const [status, jadwal, suara] = await Promise.all([
+		belProxy('GET', '/api/status').catch(() => ({ ok: false, offline: true })),
+		Promise.resolve(getBelJadwal()),
+		Promise.resolve(getBelSuara())
 	]);
-	const status = statusRes.ok ? await statusRes.json() : { ok: false, offline: true };
-	const jadwal = jadwalRes.ok
-		? await jadwalRes.json()
-		: { hari_ini: '', jadwal_hari_ini: [], semua: [] };
-	const suara = suaraRes.ok ? await suaraRes.json() : { files: [] };
 	return { status, jadwal, suara };
 };
 
 export const actions = {
-	stop: async ({ cookies, fetch }) => {
-		const res = await api(cookies, fetch, '/api/bel/stop', { method: 'POST' });
+	stop: async () => {
+		const res = await belProxy('POST', '/api/stop');
 		if (res?.ok) return { ok: true, pesan: 'Pemutaran dihentikan.' };
 		return res;
 	},
 
-	play: async ({ cookies, fetch, request }) => {
+	play: async ({ request }) => {
 		const fd = await request.formData();
 		const file = String(fd.get('file') || '');
-		const res = await api(cookies, fetch, '/api/bel/play', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ path: file, repeat: 1 })
-		});
+		const res = await belProxy('POST', '/api/play', { path: file, repeat: 1 });
 		if (res?.ok) return { ok: true, pesan: `Memutar ${file}...` };
 		if (res?.error) return fail(409, { ok: false, error: res.error });
 		return fail(400, { ok: false, error: 'Gagal memutar suara.' });
 	},
 
-	// Master switch — konfirmasi kata wajib
-	master: async ({ cookies, fetch, request }) => {
+	master: async ({ request }) => {
 		const fd = await request.formData();
 		const confirm = String(fd.get('confirm') || '').toUpperCase().trim();
 		const target = String(fd.get('target')) === '1' ? 'AKTIF' : 'NONAKTIF';
@@ -56,19 +45,14 @@ export const actions = {
 			return fail(400, { ok: false, error: `Ketik "${target}" untuk konfirmasi.` });
 		}
 		const enabled = target === 'AKTIF';
-		const res = await api(cookies, fetch, '/api/bel/master', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ enabled })
-		});
+		const res = await belProxy('POST', '/api/master', { enabled });
 		if (res?.ok) return { ok: true, pesan: `Bel sekarang ${enabled ? 'AKTIF' : 'NONAKTIF (mode darurat)'}.` };
 		return fail(500, { ok: false, error: 'Gagal mengubah master switch.' });
 	},
 
-	// Tambah jadwal
-	create: async ({ cookies, fetch, request }) => {
+	create: async ({ request }) => {
 		const fd = await request.formData();
-		const body = {
+		const data = {
 			hari: String(fd.get('hari') || ''),
 			jam: String(fd.get('jam') || ''),
 			jenis: String(fd.get('jenis') || 'khusus'),
@@ -76,20 +60,14 @@ export const actions = {
 			sound_path: String(fd.get('sound_path') || ''),
 			repeat: Number(fd.get('repeat') || 2)
 		};
-		const res = await api(cookies, fetch, '/api/bel/jadwal', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(body)
-		});
-		if (!res.ok) return fail(400, res);
-		return { ok: true, pesan: `Jadwal ${body.hari} ${body.jam} ditambahkan.` };
+		createBelJadwal(data);
+		return { ok: true, pesan: `Jadwal ${data.hari} ${data.jam} ditambahkan.` };
 	},
 
-	// Toggle aktif/nonaktif satu jadwal
-	update: async ({ cookies, fetch, request }) => {
+	update: async ({ request }) => {
 		const fd = await request.formData();
 		const id = String(fd.get('id') || '');
-		const body = {
+		const data = {
 			hari: String(fd.get('hari') || ''),
 			jam: String(fd.get('jam') || ''),
 			jenis: String(fd.get('jenis') || 'khusus'),
@@ -97,37 +75,22 @@ export const actions = {
 			sound_path: String(fd.get('sound_path') || ''),
 			repeat: Number(fd.get('repeat') || 2)
 		};
-		const res = await api(cookies, fetch, `/api/bel/jadwal/${id}`, {
-			method: 'PUT',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(body)
-		});
-		if (res?.error) return fail(400, { ok: false, error: res.error });
-		if (!res?.ok) return fail(400, { ok: false, error: 'Gagal menyimpan perubahan.' });
-		return { ok: true, pesan: `Jadwal ${body.hari} ${body.jam} diperbarui.` };
+		updateBelJadwal(id, data);
+		return { ok: true, pesan: `Jadwal ${data.hari} ${data.jam} diperbarui.` };
 	},
 
-	toggle: async ({ cookies, fetch, request }) => {
+	toggle: async ({ request }) => {
 		const fd = await request.formData();
 		const id = String(fd.get('id'));
 		const aktif = Number(fd.get('aktif'));
-		const res = await api(cookies, fetch, `/api/bel/jadwal/${id}`, {
-			method: 'PUT',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ aktif })
-		});
-		if (res?.error) return fail(404, { ok: false, error: res.error });
-		if (!res?.ok) return fail(400, { ok: false, error: 'Gagal mengubah jadwal.' });
+		toggleBelJadwal(id, aktif);
 		return { ok: true, pesan: `Jadwal ${aktif ? 'diaktifkan' : 'dinonaktifkan'}.` };
 	},
 
-	// Hapus jadwal
-	delete: async ({ cookies, fetch, request }) => {
+	delete: async ({ request }) => {
 		const fd = await request.formData();
 		const id = String(fd.get('id'));
-		const res = await api(cookies, fetch, `/api/bel/jadwal/${id}`, { method: 'DELETE' });
-		if (res?.error) return fail(404, { ok: false, error: res.error });
-		if (!res.ok) return fail(400, { ok: false, error: 'Gagal menghapus jadwal.' });
+		deleteBelJadwal(id);
 		return { ok: true, pesan: 'Jadwal dihapus.' };
 	}
 };

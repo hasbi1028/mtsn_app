@@ -1,34 +1,51 @@
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { writeFile, mkdir } from 'node:fs/promises';
+import path from 'node:path';
+import { db } from '$lib/server/db';
+import { siswa } from '$lib/server/db/schema';
+import { eq } from 'drizzle-orm';
 
-// Proxy upload foto siswa → Go API (port 3730)
-// Meneruskan raw multipart body agar file terbawa dengan benar.
-const API = process.env.API_BASE || 'http://localhost:3730';
+const UPLOADS_DIR = process.env.UPLOADS_DIR || path.join(process.cwd(), 'static', 'uploads');
+const FOTO_DIR = path.join(UPLOADS_DIR, 'foto_siswa', 'pending');
 
-export const POST: RequestHandler = async ({ request, cookies }) => {
-	const token = cookies.get('mtsn_session');
-	if (!token) throw error(401, 'tidak terautentikasi');
+export const POST: RequestHandler = async ({ request, locals }) => {
+	const user = locals.user;
+	if (!user) throw error(401, 'tidak terautentikasi');
 
-	const contentType = request.headers.get('content-type') || 'multipart/form-data';
-	let upstreamRes: Response;
-	try {
-		upstreamRes = await fetch(`${API}/api/siswa/me/foto`, {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${token}`,
-				'Content-Type': contentType,
-			},
-			body: request.body,
-			// @ts-ignore duplex required for stream body in undici
-			duplex: 'half'
-		});
-	} catch (e) {
-		throw error(502, 'gagal terhubung ke server API');
+	const fd = await request.formData();
+	const file = fd.get('foto');
+	if (!file || typeof file === 'string') throw error(400, 'Pilih file foto');
+
+	const ext = path.extname(file.name) || '.png';
+	const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+	if (!allowedTypes.includes(file.type)) {
+		throw error(400, 'Format tidak didukung (hanya PNG, JPG, WEBP)');
 	}
 
-	const data = await upstreamRes.json().catch(() => ({}));
-	if (!upstreamRes.ok) {
-		return json({ ok: false, error: data?.message || data?.error || 'Gagal upload foto' }, { status: upstreamRes.status });
-	}
-	return json({ ok: true, pesan: data.message || 'Foto dikirim untuk persetujuan' });
+	// Get siswa id from user ref_id
+	const siswaId = user.ref_id;
+	if (!siswaId) throw error(400, 'Tidak ada data siswa terkait');
+
+	// Check siswa exists
+	const s = db.select().from(siswa).where(eq(siswa.id, siswaId)).get();
+	if (!s) throw error(404, 'Siswa tidak ditemukan');
+
+	// Ensure directory exists
+	await mkdir(FOTO_DIR, { recursive: true });
+
+	// Save file
+	const filename = `${siswaId}${ext}`;
+	const filepath = path.join(FOTO_DIR, filename);
+	const buffer = Buffer.from(await file.arrayBuffer());
+	await writeFile(filepath, buffer);
+
+	// Update DB — set pending
+	const relativePath = `uploads/foto_siswa/pending/${filename}`;
+	db.update(siswa)
+		.set({ fotoPending: relativePath, fotoStatus: 'pending' })
+		.where(eq(siswa.id, siswaId))
+		.run();
+
+	return json({ ok: true, pesan: 'Foto dikirim untuk persetujuan' });
 };

@@ -22,29 +22,52 @@ As an admin, I want to see school statistics at a glance so that I can monitor o
 
 ---
 
-## Remote Functions
+## Data Model
 
-### src/routes/+page.server.ts
+### Tables Used
+
+| Table | Columns | Purpose |
+|-------|---------|---------|
+| `ptk` | `fungsi`, `sertifikasi` | PTK stats |
+| `siswa` | `kelas`, `bansos_*` | Siswa + bansos stats |
+| `rombel` | `aktif` | Rombel stats |
+| `skmt_ajuan` | `status` | Pending SKMT |
+| `skbk_ajuan` | `status` | Pending SKBK |
+| `skakpt` | `status` | Pending SKAKPT |
+
+---
+
+## Domain Module Structure
+
+```
+src/modules/dashboard/
+└── dashboard.service.ts    # DB queries (no remote needed)
+```
+
+### dashboard.service.ts
 
 ```ts
-import { db } from '$lib/server/db';
-import { ptk, siswa, rombel, skmt_ajuan, skbk_ajuan, skakpt } from '$lib/server/db/schema';
-import { count, eq } from 'drizzle-orm';
+export function getGeneralStats() {
+  // Returns: { totalPtk, guru, sertifikasi, belumSertifikasi, totalSiswa, pendingSkmt, pendingSkbk, pendingSkakpt }
+}
 
+export function getRombelStats() {
+  // Returns: { totalRombel, totalSiswa, teralokasi, tanpaRombel, perKelas }
+}
+
+export function getBansosStats() {
+  // Returns: { totalSiswa, belumCek, sudahCek, layakPkh, layakSembako, layakPbijk, desilDist, kelasDist }
+}
+```
+
+### +page.server.ts
+
+```ts
 export const load = async () => {
-  const totalPtk = db.select({ count: count() }).from(ptk).get();
-  const totalSiswa = db.select({ count: count() }).from(siswa).get();
-  const totalRombel = db.select({ count: count() }).from(rombel).where(eq(rombel.aktif, 1)).get();
-  const pendingSkmt = db.select({ count: count() }).from(skmt_ajuan).where(eq(skmt_ajuan.status, 'Menunggu')).get();
-  const pendingSkbk = db.select({ count: count() }).from(skbk_ajuan).where(eq(skbk_ajuan.status, 'Belum Diajukan')).get();
-
-  return {
-    ptk: totalPtk.count,
-    siswa: totalSiswa.count,
-    rombel: totalRombel.count,
-    pendingSkmt: pendingSkmt.count,
-    pendingSkbk: pendingSkbk.count
-  };
+  const stats = getGeneralStats();
+  const rombelStats = getRombelStats();
+  const bansosStats = getBansosStats();
+  return { stats, rombelStats, bansosStats };
 };
 ```
 
@@ -60,7 +83,30 @@ test.describe('Dashboard', () => {
   test('shows statistics cards', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('h1')).toContainText('Dashboard');
-    // Check stats are visible
+  });
+
+  test('shows PTK count', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('text=PTK')).toBeVisible();
+  });
+
+  test('shows Siswa count', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('text=Siswa')).toBeVisible();
   });
 });
 ```
+
+---
+
+## Migration Checklist
+
+- [ ] Spec reviewed & approved
+- [ ] E2E test written
+- [ ] Test runs and fails (red)
+- [ ] Service layer created
+- [ ] +page.server.ts updated
+- [ ] Test passes (green)
+- [ ] Svelte autofixer run
+- [ ] `npm run check` passes
+- [ ] Committed

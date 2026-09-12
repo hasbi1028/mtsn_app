@@ -1,6 +1,6 @@
 import { db } from '$lib/server/db';
 import { siswa, perubahanSiswa, ortu, siswaOrtu } from '$lib/server/db/schema';
-import { eq, or, like, sql, count, and } from 'drizzle-orm';
+import { eq, or, like, sql, count, and, isNull } from 'drizzle-orm';
 import type { SiswaListInput } from './siswa.validation';
 
 /**
@@ -172,10 +172,16 @@ export function getKartuList() {
 			nis: siswa.nis,
 			nisn: siswa.nisn,
 			kelas: siswa.kelas,
+			rombel: siswa.rombel,
 			fotoPath: siswa.fotoPath
 		})
 		.from(siswa)
-		.where(eq(siswa.statusEmis, 'AKTIF'))
+		.where(
+			and(
+				or(eq(siswa.statusEmis, 'AKTIF'), eq(siswa.statusEmis, 'Aktif'), isNull(siswa.statusEmis)),
+				sql`${siswa.fotoPath} IS NOT NULL AND ${siswa.fotoPath} != ''`
+			)
+		)
 		.all();
 }
 

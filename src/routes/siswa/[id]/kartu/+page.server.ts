@@ -1,8 +1,7 @@
-import { error } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 import { getSiswaDetail } from '$modules/siswa/siswa.service';
 
-export const load = async ({ params }) => {
+export const load: PageServerLoad = async ({ params }) => {
 	const siswa = getSiswaDetail(params.id);
-	if (!siswa) error(404, 'Siswa tidak ditemukan');
 	return { siswa };
 };

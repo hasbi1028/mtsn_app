@@ -6,13 +6,10 @@
 	import RotateCw from '@lucide/svelte/icons/rotate-cw';
 	import X from '@lucide/svelte/icons/x';
 	import { notify } from '$lib/toast';
-	import { env } from '$env/dynamic/public';
 	import { invalidate } from '$app/navigation';
+	import { getKartuListQ } from '$modules/siswa/siswa.remote';
 
-	const API = env.PUBLIC_API_BASE || 'http://localhost:3730';
-
-	let { data } = $props();
-	const list = $derived(data.list as any[]);
+	const listQuery = getKartuListQ() as Promise<any[]>;
 
 	let generating = $state(false);
 	let regeneratingId = $state<number | null>(null);
@@ -26,11 +23,11 @@
 	let pollTimer = $state<ReturnType<typeof setInterval> | null>(null);
 
 	function cardUrl(id: number | string, bust?: number) {
-		return `${API}/api/siswa/${id}/kartu.png${bust ? '?t=' + bust : ''}`;
+		return `/api/siswa/${id}/kartu-front${bust ? '?t=' + bust : ''}`;
 	}
 
 	function cardBackUrl(id: number | string, bust?: number) {
-		return `${API}/api/siswa/${id}/kartu-back.png${bust ? '?t=' + bust : ''}`;
+		return `/api/siswa/${id}/kartu-back${bust ? '?t=' + bust : ''}`;
 	}
 
 	function roman(k: string) {
@@ -45,7 +42,7 @@
 	async function generateAll() {
 		generating = true;
 		try {
-			const res = await fetch(`${API}/api/siswa/kartu/generate-all`, { method: 'POST', credentials: 'include' });
+			const res = await fetch('/api/kartu/generate-all', { method: 'POST', credentials: 'include' });
 			if (!res.ok) throw new Error('Gagal generate');
 			const d = await res.json();
 			batchId = d.batch_id;
@@ -70,7 +67,7 @@
 	async function pollStatus() {
 		if (!batchId) return;
 		try {
-			const res = await fetch(`${API}/api/kartu/queue/${batchId}`, { credentials: 'include' });
+			const res = await fetch(`/api/kartu/queue/${batchId}`, { credentials: 'include' });
 			if (!res.ok) return;
 			const d = await res.json();
 			batchDone = d.done;
@@ -102,7 +99,7 @@
 	async function cancelBatch() {
 		if (!batchId) return;
 		try {
-			await fetch(`${API}/api/kartu/queue/${batchId}/cancel`, { method: 'POST', credentials: 'include' });
+			await fetch(`/api/kartu/queue/${batchId}/cancel`, { method: 'POST', credentials: 'include' });
 			stopPolling();
 			batchStatus = 'completed';
 			generating = false;
@@ -118,7 +115,7 @@
 	async function handleRegenerateOne(id: number) {
 		regeneratingId = id;
 		try {
-			const res = await fetch(`${API}/api/siswa/${id}/kartu/regenerate`, { method: 'POST', credentials: 'include' });
+			const res = await fetch(`/api/siswa/${id}/kartu-regenerate`, { method: 'POST', credentials: 'include' });
 			if (!res.ok) throw new Error('Gagal regenerate');
 			const d = await res.json();
 
@@ -128,7 +125,7 @@
 				const poll = setInterval(async () => {
 					tries++;
 					try {
-						const sRes = await fetch(`${API}/api/kartu/queue/${d.batch_id}`, { credentials: 'include' });
+						const sRes = await fetch(`/api/kartu/queue/${d.batch_id}`, { credentials: 'include' });
 						const sData = await sRes.json();
 						if (sData.status === 'completed' || tries > 60) {
 							clearInterval(poll);
@@ -182,7 +179,7 @@
 				{generating ? 'Generating...' : 'Generate Semua Kartu'}
 			</Button>
 		{/if}
-		<Button size="sm" onclick={printAll} disabled={!list.length || batchStatus === 'processing'}>
+		<Button size="sm" onclick={printAll} disabled={batchStatus === 'processing'}>
 			<Printer class="size-4" /> Print Semua Kartu
 		</Button>
 	</div>
@@ -201,42 +198,46 @@
 	</div>
 {/if}
 
-<div class="page-heading no-print">
-	<h1>Kartu Siswa</h1>
-	<p>{list.length} siswa dengan foto • depan + belakang • kartu disimpan sebagai cache privat</p>
-</div>
+{#await listQuery}
+	<p class="text-sm text-muted-foreground text-center py-8">Memuat daftar kartu...</p>
+{:then list}
+	<div class="page-heading no-print">
+		<h1>Kartu Siswa</h1>
+		<p>{list.length} siswa dengan foto • depan + belakang • kartu disimpan sebagai cache privat</p>
+	</div>
 
-{#if list.length}
-	<div class="kartu-grid">
-		{#each list as row (row.id)}
-			<div class="kartu-item print-item">
-				<div class="kartu-pair">
-					<div class="kartu-side">
-						<span class="side-label no-print">Depan</span>
-						<img src={cardUrl(row.id, cacheBusts[row.id])} alt="Kartu Depan {row.nama}" class="kartu-img" loading="lazy" />
+	{#if list.length}
+		<div class="kartu-grid">
+			{#each list as row (row.id)}
+				<div class="kartu-item print-item">
+					<div class="kartu-pair">
+						<div class="kartu-side">
+							<span class="side-label no-print">Depan</span>
+							<img src={cardUrl(row.id, cacheBusts[row.id])} alt="Kartu Depan {row.nama}" class="kartu-img" loading="lazy" />
+						</div>
+						<div class="kartu-side">
+							<span class="side-label no-print">Belakang</span>
+							<img src={cardBackUrl(row.id, cacheBusts[row.id])} alt="Kartu Belakang {row.nama}" class="kartu-img" loading="lazy" />
+						</div>
 					</div>
-					<div class="kartu-side">
-						<span class="side-label no-print">Belakang</span>
-						<img src={cardBackUrl(row.id, cacheBusts[row.id])} alt="Kartu Belakang {row.nama}" class="kartu-img" loading="lazy" />
+					<div class="caption no-print">
+						<span class="name">{row.nama}</span>
+						<span class="sub">Kls {roman(row.kelas)}{row.rombel ? ' · ' + row.rombel : ''}</span>
+						<Button variant="ghost" size="sm" class="mt-1 h-7 text-xs" onclick={() => handleRegenerateOne(row.id)} disabled={regeneratingId === row.id || batchStatus === 'processing'}>
+							<RotateCw class="size-3 {regeneratingId === row.id ? 'animate-spin' : ''}"/>
+							{regeneratingId === row.id ? 'Generating...' : 'Regenerate'}
+						</Button>
 					</div>
 				</div>
-				<div class="caption no-print">
-					<span class="name">{row.nama}</span>
-					<span class="sub">Kls {roman(row.kelas)}{row.rombel ? ' · ' + row.rombel : ''}</span>
-					<Button variant="ghost" size="sm" class="mt-1 h-7 text-xs" onclick={() => handleRegenerateOne(row.id)} disabled={regeneratingId === row.id || batchStatus === 'processing'}>
-						<RotateCw class="size-3 {regeneratingId === row.id ? 'animate-spin' : ''}"/>
-						{regeneratingId === row.id ? 'Generating...' : 'Regenerate'}
-					</Button>
-				</div>
-			</div>
-		{/each}
-	</div>
-{:else}
-	<div class="empty no-print">
-		<p>Belum ada siswa yang mengupload foto.</p>
-		<p class="hint">Upload foto siswa dulu di halaman profil/kartu siswa, lalu kembali ke sini.</p>
-	</div>
-{/if}
+			{/each}
+		</div>
+	{:else}
+		<div class="empty no-print">
+			<p>Belum ada siswa yang mengupload foto.</p>
+			<p class="hint">Upload foto siswa dulu di halaman profil/kartu siswa, lalu kembali ke sini.</p>
+		</div>
+	{/if}
+{/await}
 
 <style>
 	.toolbar {

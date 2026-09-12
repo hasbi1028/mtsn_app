@@ -1,15 +1,23 @@
 import { db } from '$lib/server/db';
 import { users, sessions } from '$lib/server/db/schema';
 import { eq, and, gt } from 'drizzle-orm';
-import { createHash, randomBytes } from 'crypto';
+import { randomBytes, scryptSync } from 'crypto';
 import type { UserSession } from './auth.validation';
 
 // ============================================
-// PASSWORD UTILS
+// PASSWORD UTILS (scrypt N=16384 r=8 p=1 keyLen=64)
 // ============================================
 
 export function hashPassword(password: string): string {
-	return createHash('sha256').update(password).digest('hex');
+	const salt = randomBytes(16).toString('hex');
+	const hash = scryptSync(password, salt, 64, { N: 16384, r: 8, p: 1 });
+	return `${salt}:${hash.toString('hex')}`;
+}
+
+function verifyPassword(password: string, stored: string): boolean {
+	const [salt, want] = stored.split(':');
+	const got = scryptSync(password, salt, 64, { N: 16384, r: 8, p: 1 });
+	return got.toString('hex') === want;
 }
 
 export function createToken(): string {
@@ -94,6 +102,6 @@ export function getUserFromSession(token: string): UserSession | null {
 export function validateCredentials(username: string, password: string) {
 	const user = findUserByUsername(username);
 	if (!user) return null;
-	if (user.passwordHash !== hashPassword(password)) return null;
+	if (!verifyPassword(password, user.passwordHash)) return null;
 	return user;
 }

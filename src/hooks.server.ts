@@ -59,7 +59,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	// Public paths
 	const pathname = event.url.pathname;
-	const isPublic = pathname.startsWith('/login') || pathname.startsWith('/api/') || pathname.startsWith('/uploads');
+	const isPublic = pathname.startsWith('/login') || pathname.startsWith('/uploads');
 
 	if (!event.locals.user && !isPublic) {
 		redirect(302, '/login');

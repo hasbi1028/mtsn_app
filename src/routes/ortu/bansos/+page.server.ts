@@ -1,32 +1,19 @@
-const API = process.env.API_BASE || 'http://localhost:3730';
+import { getSiswaForOrtu, getSiswaList } from '$modules/ortu/ortu.service';
 
-export const load = async ({ cookies, locals }) => {
-	const user = locals.user;
+export const load = async ({ locals }) => {
+	const user = (locals as any).user;
 	if (!user || user.role !== 'ortu') {
 		return { siswa: null, ortu: null };
 	}
 
-	const token = cookies.get('mtsn_session');
-	const h: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+	// Try to find child via siswa_ortu table
+	let siswa = getSiswaForOrtu(user.refId || user.id);
 
-	try {
-		// Get ortu info
-		const ortuRes = await fetch(`${API}/api/siswa?page=1&per_page=1`, { headers: h });
-		// Get all siswa to find child via ref_id
-		const siswaRes = await fetch(`${API}/api/siswa?page=1&per_page=200`, { headers: h });
-
-		if (!siswaRes.ok) return { siswa: null, ortu: null };
-
-		const siswaData = await siswaRes.json();
-		const rows = siswaData.rows || [];
-
-		// For now, return first siswa as child (placeholder logic)
-		// In real app, this would query siswa_ortu table
-		return {
-			siswa: rows.length > 0 ? rows[0] : null,
-			ortu: { nama: user.username }
-		};
-	} catch {
-		return { siswa: null, ortu: null };
+	// Fallback: if no siswa_ortu link, return first siswa (placeholder)
+	if (!siswa) {
+		const all = getSiswaList() as any[];
+		siswa = all.length > 0 ? all[0] : null;
 	}
+
+	return { siswa, ortu: { nama: user.username } };
 };

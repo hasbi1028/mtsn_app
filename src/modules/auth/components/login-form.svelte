@@ -4,7 +4,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { FieldGroup, Field, FieldLabel, FieldSeparator } from '$lib/components/ui/field/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
-	import { login } from '../auth.remote';
+	import { enhance } from '$app/forms';
 	import { cn } from '$lib/utils.js';
 	import SchoolIcon from '@lucide/svelte/icons/school';
 	import EyeIcon from '@lucide/svelte/icons/eye';
@@ -13,24 +13,32 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	let { class: className, ...restProps }: HTMLAttributes<HTMLDivElement> = $props();
-	
+
 	let loading = $state(false);
 	let showPassword = $state(false);
+	let username = $state('');
+	let password = $state('');
+	let formError = $state('');
 </script>
 
 <div class={cn('flex flex-col gap-6 animate-in fade-in duration-500', className)} {...restProps}>
 	<Card.Root class="overflow-hidden p-0">
 		<div class="grid grid-cols-1 md:grid-cols-2 p-0">
-			<form 
-				{...login.enhance(async (form) => {
+			<form
+				method="POST"
+				use:enhance={() => {
 					loading = true;
-					if (await form.submit()) {
-						// redirect handled by remote function
-					} else {
-						notify.error('Username atau kata sandi salah');
-					}
-					loading = false;
-				})}
+					formError = '';
+					return async ({ result, update }) => {
+						if (result.type === 'redirect') {
+							await update();
+						} else if (result.type === 'failure') {
+							formError = (result.data?.error as string) || 'Username atau kata sandi salah';
+							notify.error(formError);
+						}
+						loading = false;
+					};
+				}}
 				class="p-6 md:p-8"
 				aria-label="Formulir masuk"
 			>
@@ -43,25 +51,29 @@
 						<p class="text-balance text-muted-foreground">Masuk ke akun MTsN 2 Kolaka Utara Anda</p>
 					</div>
 
+					{#if formError}
+						<p class="text-sm text-destructive text-center">{formError}</p>
+					{/if}
+
 					<Field>
 						<FieldLabel for="username">Username</FieldLabel>
-						<Input 
-							id="username" 
-							{...login.fields.username.as('text')}
-							placeholder="username" 
+						<Input
+							id="username"
+							name="username"
+							bind:value={username}
+							placeholder="username"
 							autocomplete="username"
 							disabled={loading}
 						/>
-						{#each login.fields.username.issues() ?? [] as issue (issue.message)}
-							<p class="text-sm text-destructive">{issue.message}</p>
-						{/each}
 					</Field>
 					<Field>
 						<FieldLabel for="password">Kata Sandi</FieldLabel>
 						<div class="relative">
-							<Input 
-								id="password" 
-								{...login.fields.password.as('password')}
+							<Input
+								id="password"
+								name="password"
+								type={showPassword ? 'text' : 'password'}
+								bind:value={password}
 								autocomplete="current-password"
 								disabled={loading}
 								class="pr-10"
@@ -81,9 +93,6 @@
 								{/if}
 							</button>
 						</div>
-						{#each login.fields.password.issues() ?? [] as issue (issue.message)}
-							<p class="text-sm text-destructive">{issue.message}</p>
-						{/each}
 					</Field>
 					<Button type="submit" class="w-full cursor-pointer" disabled={loading}>
 						{#if loading}

@@ -7,13 +7,11 @@
 	import RotateCw from '@lucide/svelte/icons/rotate-cw';
 	import RefreshCw from '@lucide/svelte/icons/refresh-cw';
 	import { notify } from '$lib/toast';
-	import { env } from '$env/dynamic/public';
-
-	const API = env.PUBLIC_API_BASE || 'http://localhost:3730';
 
 	let { data } = $props();
-	const siswa = $derived(data.siswa as any);
+	let siswa = $derived(data.siswa);
 
+	let pageTitle = $state('Kartu Siswa');
 	let cardEl = $state<HTMLDivElement>();
 	let fotoPreview = $state<string | null>(null);
 	let downloading = $state(false);
@@ -22,10 +20,15 @@
 	let cacheBust = $state(Date.now());
 
 	$effect(() => {
-		if (siswa?.foto_path) {
-			fotoPreview = siswa.foto_path.startsWith('/') ? siswa.foto_path : `/${siswa.foto_path}`;
-		}
+		if (siswa?.nama) pageTitle = `Kartu Siswa — ${siswa.nama}`;
+		setFotoPreview(siswa?.fotoPath);
 	});
+
+	function setFotoPreview(path: string | null) {
+		if (path) {
+			fotoPreview = path.startsWith('/') ? path : `/${path}`;
+		}
+	}
 
 	function initials(name = '') {
 		return name.split(' ').map((w: string) => w[0]).join('').substring(0, 2).toUpperCase() || '?';
@@ -45,15 +48,15 @@
 		return k ? `${k}${r ? ` ${r}` : ''}` : '—';
 	}
 
-	function cardFrontUrl() {
-		return `${API}/api/siswa/${siswa.id}/kartu.png?t=${cacheBust}`;
+	function cardFrontUrl(siswa: any) {
+		return `/api/siswa/${siswa.id}/kartu-front?t=${cacheBust}`;
 	}
 
-	function cardBackUrl() {
-		return `${API}/api/siswa/${siswa.id}/kartu-back.png?t=${cacheBust}`;
+	function cardBackUrl(siswa: any) {
+		return `/api/siswa/${siswa.id}/kartu-back?t=${cacheBust}`;
 	}
 
-	function safeName() {
+	function safeName(siswa: any) {
 		return siswa.nama?.replace(/\s+/g, '-').toLowerCase() || 'siswa';
 	}
 
@@ -66,12 +69,12 @@
 		document.body.removeChild(link);
 	}
 
-	async function handleDownload() {
+	async function handleDownload(siswa: any) {
 		downloading = true;
 		try {
-			await downloadFile(cardFrontUrl().split('?')[0], `kartu-${safeName()}-depan.png`);
+			await downloadFile(cardFrontUrl(siswa).split('?')[0], `kartu-${safeName(siswa)}-depan.png`);
 			await new Promise(r => setTimeout(r, 500));
-			await downloadFile(cardBackUrl().split('?')[0], `kartu-${safeName()}-belakang.png`);
+			await downloadFile(cardBackUrl(siswa).split('?')[0], `kartu-${safeName(siswa)}-belakang.png`);
 			notify.success('Kartu depan & belakang berhasil diunduh.');
 		} catch (err) {
 			console.error('Download kartu gagal:', err);
@@ -81,10 +84,10 @@
 		}
 	}
 
-	async function handleRegenerate() {
+	async function handleRegenerate(siswa: any) {
 		regenerating = true;
 		try {
-			const res = await fetch(`${API}/api/siswa/${siswa.id}/kartu/regenerate`, { method: 'POST', credentials: 'include' });
+			const res = await fetch(`/api/siswa/${siswa.id}/kartu-regenerate`, { method: 'POST', credentials: 'include' });
 			if (!res.ok) {
 				const err = await res.json().catch(() => ({ error: 'Gagal regenerate' }));
 				throw new Error(err.error || 'Gagal regenerate');
@@ -97,7 +100,7 @@
 				const poll = setInterval(async () => {
 					tries++;
 					try {
-						const sRes = await fetch(`${API}/api/kartu/queue/${d.batch_id}`, { credentials: 'include' });
+						const sRes = await fetch(`/api/kartu/queue/${d.batch_id}`, { credentials: 'include' });
 						const sData = await sRes.json();
 						if (sData.status === 'completed' || tries > 60) {
 							clearInterval(poll);
@@ -129,84 +132,86 @@
 	}
 </script>
 
-<svelte:head><title>Kartu Siswa — {siswa?.nama || 'SIMAD'}</title></svelte:head>
+<svelte:head><title>{pageTitle} — SIMAD</title></svelte:head>
 
-<div class="no-print toolbar">
-	<a href="/siswa/{siswa?.id}/profil" class="back"><ArrowLeft class="size-4"/> Kembali ke profil</a>
-	<div class="actions">
-		<Button variant="outline" size="sm" onclick={handleRegenerate} disabled={regenerating}>
-			<RefreshCw class="size-4 {regenerating ? 'animate-spin' : ''}"/> {regenerating ? 'Generate Ulang...' : 'Generate Ulang'}
-		</Button>
-		<Button variant="outline" size="sm" onclick={() => showBack = !showBack}>
-			<RotateCw class="size-4"/> {showBack ? 'Lihat Depan' : 'Lihat Belakang'}
-		</Button>
-		<Button variant="outline" size="sm" onclick={() => window.print()}>
-			<Printer class="size-4"/> Cetak
-		</Button>
-		<Button size="sm" onclick={handleDownload} disabled={downloading}>
-			<Download class="size-4"/> {downloading ? 'Menyiapkan...' : 'Download PNG'}
-		</Button>
-	</div>
-</div>
-
-<main class="preview">
-	<div class="heading">
-		<p class="eyebrow">DOKUMEN IDENTITAS</p>
-		<h1>Preview Kartu Siswa</h1>
-		<p>{showBack ? 'Bagian belakang kartu — alamat, QR code, dan ketentuan.' : 'Pastikan foto dan data siswa sudah sesuai sebelum dicetak.'}</p>
+{#if siswa}
+	<div class="no-print toolbar">
+		<a href="/siswa/{siswa.id}/profil" class="back"><ArrowLeft class="size-4"/> Kembali ke profil</a>
+		<div class="actions">
+			<Button variant="outline" size="sm" onclick={() => handleRegenerate(siswa!)} disabled={regenerating}>
+				<RefreshCw class="size-4 {regenerating ? 'animate-spin' : ''}"/> {regenerating ? 'Generate Ulang...' : 'Generate Ulang'}
+			</Button>
+			<Button variant="outline" size="sm" onclick={() => showBack = !showBack}>
+				<RotateCw class="size-4"/> {showBack ? 'Lihat Depan' : 'Lihat Belakang'}
+			</Button>
+			<Button variant="outline" size="sm" onclick={() => window.print()}>
+				<Printer class="size-4"/> Cetak
+			</Button>
+			<Button size="sm" onclick={() => handleDownload(siswa)} disabled={downloading}>
+				<Download class="size-4"/> {downloading ? 'Menyiapkan...' : 'Download PNG'}
+			</Button>
+		</div>
 	</div>
 
-	<div class="stage">
-		{#if !showBack}
-			<!-- FRONT CARD -->
-			<div bind:this={cardEl} class="card">
-				<div class="orbit"></div>
-				<header>
-					<img src="/uploads/logo-kemenag.png" alt="Logo Kementerian Agama"/>
-					<div>
-						<p class="kicker">KEMENTERIAN AGAMA REPUBLIK INDONESIA</p>
-						<p class="school">MTsN 2 KOLAKA UTARA</p>
-						<p class="meta">NSM 121174080002 · NPSN 40406031</p>
-					</div>
-				</header>
-				<div class="rule"></div>
-				<section>
-					<div class="photo">
-						{#if fotoPreview}
-							<img src={fotoPreview} alt="Foto {siswa?.nama}"/>
+	<main class="preview">
+		<div class="heading">
+			<p class="eyebrow">DOKUMEN IDENTITAS</p>
+			<h1>Preview Kartu Siswa</h1>
+			<p>{showBack ? 'Bagian belakang kartu — alamat, QR code, dan ketentuan.' : 'Pastikan foto dan data siswa sudah sesuai sebelum dicetak.'}</p>
+		</div>
+
+		<div class="stage">
+			{#if !showBack}
+				<!-- FRONT CARD -->
+				<div bind:this={cardEl} class="card">
+					<div class="orbit"></div>
+					<header>
+						<img src="/uploads/logo-kemenag.png" alt="Logo Kementerian Agama"/>
+						<div>
+							<p class="kicker">KEMENTERIAN AGAMA REPUBLIK INDONESIA</p>
+							<p class="school">MTsN 2 KOLAKA UTARA</p>
+							<p class="meta">NSM 121174080002 · NPSN 40406031</p>
+						</div>
+					</header>
+					<div class="rule"></div>
+					<section>
+						<div class="photo">
+							{#if fotoPreview}
+							<img src={fotoPreview} alt="Foto {siswa.nama}"/>
 						{:else}
-							<span>{initials(siswa?.nama)}</span>
-						{/if}
-					</div>
-					<div class="data">
-						<p class="name">{siswa?.nama || 'Nama siswa'}</p>
-						<div><span>NISN</span><strong>{siswa?.nisn || '—'}</strong></div>
-						<div><span>KELAS</span><strong>{className(siswa?.kelas, siswa?.rombel)}</strong></div>
-						<div><span>JENIS KELAMIN</span><strong>{gender(siswa?.jk)}</strong></div>
-						<div class="birth"><span>LAHIR</span><strong>{siswa?.tempat_lahir || '—'}, {birth(siswa?.tgl_lahir)}</strong></div>
-					</div>
-				</section>
-				<footer>
-					<span><ShieldCheck class="size-3"/> BERLAKU SELAMA TERDAFTAR</span>
-					<strong>TA 2026 / 2027</strong>
-				</footer>
-			</div>
-		{:else}
-			<!-- BACK CARD (server-rendered PNG) -->
-			<div class="card-back-wrapper">
-				<img src={cardBackUrl()} alt="Kartu Belakang {siswa?.nama}" class="card-back-img"/>
-			</div>
-		{/if}
-	</div>
+							<span>{initials(siswa.nama)}</span>
+							{/if}
+						</div>
+						<div class="data">
+						<p class="name">{siswa.nama || 'Nama siswa'}</p>
+						<div><span>NISN</span><strong>{siswa.nisn || '—'}</strong></div>
+						<div><span>KELAS</span><strong>{className(siswa.kelas, siswa.rombel)}</strong></div>
+						<div><span>JENIS KELAMIN</span><strong>{gender(siswa.jk)}</strong></div>
+						<div class="birth"><span>LAHIR</span><strong>{siswa.tempatLahir || '—'}, {birth(siswa.tglLahir)}</strong></div>
+						</div>
+					</section>
+					<footer>
+						<span><ShieldCheck class="size-3"/> BERLAKU SELAMA TERDAFTAR</span>
+						<strong>TA 2026 / 2027</strong>
+					</footer>
+				</div>
+			{:else}
+				<!-- BACK CARD (server-rendered PNG) -->
+				<div class="card-back-wrapper">
+					<img src={cardBackUrl(siswa)} alt="Kartu Belakang {siswa.nama}" class="card-back-img"/>
+				</div>
+			{/if}
+		</div>
 
-	<p class="note">Ukuran kartu standar 85 × 55 mm · Gunakan kertas PVC untuk hasil terbaik.</p>
+		<p class="note">Ukuran kartu standar 85 × 55 mm · Gunakan kertas PVC untuk hasil terbaik.</p>
 
-	<!-- Print: both sides -->
-	<div class="print-only">
-		<img src={cardFrontUrl()} alt="Kartu Depan" class="print-card"/>
-		<img src={cardBackUrl()} alt="Kartu Belakang" class="print-card"/>
-	</div>
-</main>
+		<!-- Print: both sides -->
+		<div class="print-only">
+			<img src={cardFrontUrl(siswa)} alt="Kartu Depan" class="print-card"/>
+			<img src={cardBackUrl(siswa)} alt="Kartu Belakang" class="print-card"/>
+		</div>
+	</main>
+{/if}
 
 <style>
 	:global(body) { background: #f5f7f5; }

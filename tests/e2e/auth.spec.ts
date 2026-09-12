@@ -16,8 +16,8 @@ test.describe('Auth', () => {
     await page.getByPlaceholder('username').fill('hasbi');
     await page.locator('#password').fill('salah123');
     await page.getByRole('button', { name: 'Masuk' }).click();
-    // Error appears as alert div
-    await expect(page.locator('[role="alert"]')).toBeVisible({ timeout: 5000 });
+    // Error appears as toast notification (Sonner)
+    await expect(page.locator('[data-sonner-toast], [role="status"]').first()).toBeVisible({ timeout: 5000 });
   });
 
   test('akses halaman tanpa login -> redirect ke login', async ({ page }) => {
