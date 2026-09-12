@@ -1,7 +1,14 @@
 import { db } from '$lib/server/db';
 import { siswa, perubahanSiswa, ortu, siswaOrtu } from '$lib/server/db/schema';
 import { eq, or, like, sql, count, and, isNull } from 'drizzle-orm';
+import { writeFile, mkdir } from 'node:fs/promises';
+import path from 'node:path';
 import type { SiswaListInput } from './siswa.validation';
+
+const UPLOADS_DIR = process.env.UPLOADS_DIR || path.join(process.cwd(), 'static', 'uploads');
+const FOTO_PENDING_DIR = path.join(UPLOADS_DIR, 'foto_siswa', 'pending');
+const FOTO_ACTIVE_DIR = path.join(UPLOADS_DIR, 'foto_siswa');
+const ALLOWED_FOTO = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
 
 /**
  * Siswa service — pure business logic
@@ -158,6 +165,54 @@ export function submitPerubahan(siswaId: number, field: string, nilaiBaru: strin
 		.run();
 
 	return { success: true };
+}
+
+// ============================================
+// UPLOAD FOTO SISWA
+// ============================================
+
+async function simpanFoto(siswaId: number, file: File, dir: string, relPrefix: string) {
+	if (!ALLOWED_FOTO.includes(file.type)) {
+		return { error: 'Format tidak didukung (hanya PNG, JPG, WEBP)' };
+	}
+
+	const ext = path.extname(file.name) || '.png';
+	await mkdir(dir, { recursive: true });
+	const filename = `${siswaId}${ext}`;
+	await writeFile(path.join(dir, filename), Buffer.from(await file.arrayBuffer()));
+	return { filename, relativePath: `${relPrefix}/${filename}` };
+}
+
+/** Self-service: simpan sebagai pending, tunggu approval admin */
+export async function uploadFotoSiswa(siswaId: number, file: File) {
+	const s = db.select().from(siswa).where(eq(siswa.id, siswaId)).get();
+	if (!s) return { error: 'Siswa tidak ditemukan' };
+
+	const saved = await simpanFoto(siswaId, file, FOTO_PENDING_DIR, 'uploads/foto_siswa/pending');
+	if ('error' in saved) return saved;
+
+	db.update(siswa)
+		.set({ fotoPending: saved.relativePath, fotoStatus: 'pending' })
+		.where(eq(siswa.id, siswaId))
+		.run();
+
+	return { success: true, pesan: 'Foto dikirim untuk persetujuan' };
+}
+
+/** Admin/kepsek: langsung aktifkan foto */
+export async function uploadFotoAdminSiswa(siswaId: number, file: File) {
+	const s = db.select().from(siswa).where(eq(siswa.id, siswaId)).get();
+	if (!s) return { error: 'Siswa tidak ditemukan' };
+
+	const saved = await simpanFoto(siswaId, file, FOTO_ACTIVE_DIR, 'uploads/foto_siswa');
+	if ('error' in saved) return saved;
+
+	db.update(siswa)
+		.set({ fotoPath: saved.relativePath, fotoPending: null, fotoStatus: 'approved' })
+		.where(eq(siswa.id, siswaId))
+		.run();
+
+	return { success: true, pesan: 'Foto siswa berhasil diperbarui' };
 }
 
 // ============================================

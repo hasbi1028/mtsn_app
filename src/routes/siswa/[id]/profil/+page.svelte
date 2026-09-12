@@ -6,7 +6,7 @@
 	import Camera from '@lucide/svelte/icons/camera';
 	import X from '@lucide/svelte/icons/x';
 	import { notify } from '$lib/toast';
-	import { getSiswaDetailQ } from '$modules/siswa/siswa.remote';
+	import { getSiswaDetailQ, uploadFotoAdmin } from '$modules/siswa/siswa.remote';
 
 	let { params } = $props();
 	const siswa = $derived(await getSiswaDetailQ({ id: params.id }));
@@ -26,25 +26,22 @@
 		pendingFile = file;
 		preview = URL.createObjectURL(file);
 	}
-	async function savePhoto() {
-		if (!pendingFile || !siswa) return;
+	const uploadAdminForm = uploadFotoAdmin.enhance(async (form) => {
 		saving = true;
-		try {
-			const fd = new FormData();
-			fd.append('foto', pendingFile);
-			const res = await fetch(`/siswa/${siswa.id}/profil`, { method: 'POST', body: fd });
-			if (!res.ok) throw new Error('Upload foto gagal.');
-			await res.json();
+		const valid = await form.submit();
+		saving = false;
+		if (!valid) return;
+		const result = form.result as any;
+		if (result?.error) {
+			notify.error(result.error);
+		} else {
+			notify.success(result?.pesan || 'Foto siswa berhasil diperbarui.');
 			pendingFile = null;
 			preview = null;
-			notify.success('Foto siswa berhasil diperbarui.');
-		} catch (err: any) {
-			notify.error(err.message || 'Upload foto gagal.');
-		} finally {
-			saving = false;
 			if (fileInput) fileInput.value = '';
+			void getSiswaDetailQ({ id: params.id }).refresh();
 		}
-	}
+	});
 	function cancelPhoto() {
 		pendingFile = null;
 		preview = null;
@@ -85,15 +82,19 @@
 				</Card.Title>
 				<Card.Description>{siswa.kelas} · {siswa.rombel || '—'}</Card.Description>
 			</Card.Header>
-			{#if pendingFile}
-				<div class="mx-6 mb-3 flex items-center justify-between rounded-md border bg-muted/40 p-2 text-xs">
-					<span>Foto baru siap disimpan</span>
-					<span class="flex gap-1">
-						<Button size="sm" class="h-7 text-xs" onclick={savePhoto} disabled={saving}>{saving ? 'Menyimpan...' : 'Simpan Foto'}</Button>
-						<Button variant="ghost" size="sm" class="h-7 px-2" onclick={cancelPhoto}><X class="size-4" /></Button>
-					</span>
-				</div>
-			{/if}
+			<form {...uploadAdminForm} enctype="multipart/form-data">
+				<input {...uploadFotoAdmin.fields.id.as('hidden', siswa.id)} />
+				<input {...uploadFotoAdmin.fields.foto.as('file')} bind:this={fileInput} accept="image/*" class="hidden" onchange={selectPhoto} />
+				{#if pendingFile}
+					<div class="mx-6 mb-3 flex items-center justify-between rounded-md border bg-muted/40 p-2 text-xs">
+						<span>Foto baru siap disimpan</span>
+						<span class="flex gap-1">
+							<Button type="submit" size="sm" class="h-7 text-xs" disabled={saving}>{saving ? 'Menyimpan...' : 'Simpan Foto'}</Button>
+							<Button type="button" variant="ghost" size="sm" class="h-7 px-2" onclick={cancelPhoto}><X class="size-4" /></Button>
+						</span>
+					</div>
+				{/if}
+			</form>
 			<Card.Content class="space-y-3 text-sm">
 				<div class="grid grid-cols-2 gap-2">
 					<div>
@@ -145,7 +146,6 @@
 				</div>
 			</Card.Content>
 		</Card.Root>
-		<input bind:this={fileInput} type="file" accept="image/jpeg,image/jpg,image/png,image/gif" class="hidden" onchange={selectPhoto} />
 
 		<div class="flex gap-2">
 			<a href="/siswa/{siswa.id}/bansos">

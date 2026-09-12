@@ -47,3 +47,26 @@ export const perubahanSchema = v.object({
 });
 
 export type PerubahanInput = v.InferOutput<typeof perubahanSchema>;
+
+/**
+ * Schema upload foto siswa (self-service) — multipart/form-data
+ */
+export const fotoSchema = v.object({
+	foto: v.pipe(
+		v.file('Pilih file foto'),
+		v.mimeType(['image/png', 'image/jpeg', 'image/webp'], 'Format tidak didukung (hanya PNG, JPG, WEBP)'),
+		v.maxSize(2_000_000, 'Ukuran foto maksimal 2MB')
+	)
+});
+
+/**
+ * Schema upload foto oleh admin/kepsek — butuh id siswa
+ */
+export const fotoAdminSchema = v.object({
+	id: v.number(),
+	foto: v.pipe(
+		v.file('Pilih file foto'),
+		v.mimeType(['image/png', 'image/jpeg', 'image/webp'], 'Format tidak didukung (hanya PNG, JPG, WEBP)'),
+		v.maxSize(2_000_000, 'Ukuran foto maksimal 2MB')
+	)
+});

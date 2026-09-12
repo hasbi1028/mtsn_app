@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import UsersRoundIcon from '@lucide/svelte/icons/users-round';
-	import LogOutIcon from '@lucide/svelte/icons/log-out';
-	import { logoutForm, getMe } from '$modules/auth/auth.remote';
+	import { getMe } from '$modules/auth/auth.remote';
 
 	const userQuery = $derived(getMe());
 	const user = $derived(userQuery.current);
@@ -38,11 +36,4 @@
 			</div>
 		</Card.Content>
 	</Card.Root>
-
-	<form {...logoutForm} class="flex justify-center">
-		<Button variant="outline" type="submit" class="cursor-pointer">
-			<LogOutIcon class="size-4 mr-2" />
-			Keluar
-		</Button>
-	</form>
 </div>

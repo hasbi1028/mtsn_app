@@ -6,22 +6,17 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import { Field, FieldGroup, FieldLabel } from '$lib/components/ui/field/index.js';
 	import { notify } from '$lib/toast';
-	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import UserIcon from '@lucide/svelte/icons/user';
-	import LogOutIcon from '@lucide/svelte/icons/log-out';
 	import CameraIcon from '@lucide/svelte/icons/camera';
 	import PencilIcon from '@lucide/svelte/icons/pencil';
 	import CheckCircle from '@lucide/svelte/icons/check-circle-2';
 	import ClockIcon from '@lucide/svelte/icons/clock';
-	import { logoutForm } from '$modules/auth/auth.remote';
+	import { submitPerubahanC, uploadFoto } from '$modules/siswa/siswa.remote';
 
-	let { data, form } = $props();
+	let { data } = $props();
 	const user = $derived(data.user);
 	const profile = $derived(data.profile as any);
-
-	$effect(() => {
-		notify.fromForm(form, 'Aksi berhasil');
-	});
 
 	const fotoUrl = $derived(profile?.foto_path ? `/${profile.foto_path}` : '');
 	// Foto pending menunggu approve: tampilkan preview + status
@@ -55,32 +50,45 @@
 	let editOpen = $state(false);
 	const editLabel = $derived(fields.find((f) => f.key === editField)?.label || editField);
 
-	// Upload foto via BFF proxy (client fetch)
-	let fotoInput: HTMLInputElement | undefined = $state();
-	let uploading = $state(false);
-	async function submitFoto() {
-		const file = fotoInput?.files?.[0];
-		if (!file) {
-			notify.warning('Pilih file foto dulu');
+	// Ajukan perubahan data via remote command
+	let submitting = $state(false);
+	async function ajukanPerubahan() {
+		if (!editField || !editValue) {
+			notify.warning('Pilih field dan isi nilai baru');
 			return;
 		}
-		uploading = true;
-		const fd = new FormData();
-		fd.append('foto', file);
+		submitting = true;
 		try {
-			const res = await fetch('/api/siswa/me/foto', { method: 'POST', body: fd });
-			const data = await res.json().catch(() => ({}));
-			if (res.ok && data.ok) {
-				notify.success(data.pesan || 'Foto dikirim untuk persetujuan');
-				window.location.reload();
+			const res = await submitPerubahanC({
+				siswaId: profile.id,
+				field: editField,
+				nilai_baru: editValue
+			});
+			if (res?.error) {
+				notify.error(res.error);
 			} else {
-				notify.error(data.error || data.pesan || 'Gagal upload foto');
+				notify.success('Perubahan berhasil diajukan, menunggu persetujuan admin.');
+				editOpen = false;
+				await invalidateAll();
 			}
-		} catch {
-			notify.error('Gagal upload foto');
+		} catch (err: any) {
+			notify.error('Gagal mengajukan perubahan: ' + (err.message || ''));
 		}
-		uploading = false;
+		submitting = false;
 	}
+
+	// Upload foto via remote form()
+	const uploadForm = uploadFoto.enhance(async (form) => {
+		const valid = await form.submit();
+		if (!valid) return;
+		const result = form.result as any;
+		if (result?.error) {
+			notify.error(result.error);
+		} else {
+			notify.success(result?.pesan || 'Foto dikirim untuk persetujuan');
+			await invalidateAll();
+		}
+	});
 </script>
 
 <svelte:head><title>Profil Saya — SIMAD</title></svelte:head>
@@ -126,15 +134,15 @@
 					</div>
 				{/if}
 
-				<!-- Upload foto -->
-				<div class="flex items-center gap-2">
+				<!-- Upload foto (remote form) -->
+				<form {...uploadForm} enctype="multipart/form-data" class="flex items-center gap-2">
 					<label class="flex flex-1 items-center gap-2 rounded-lg border border-dashed px-3 py-2 text-sm text-muted-foreground cursor-pointer" for="foto-input">
 						<CameraIcon class="size-4 shrink-0" />
 						<span>Pilih foto...</span>
 					</label>
-					<input id="foto-input" type="file" accept="image/*" class="hidden" bind:this={fotoInput} />
-					<Button size="sm" class="cursor-pointer" onclick={submitFoto}>Upload & Kirim</Button>
-				</div>
+					<input id="foto-input" {...uploadFoto.fields.foto.as('file')} accept="image/*" class="hidden" />
+					<Button type="submit" size="sm" class="cursor-pointer">Upload & Kirim</Button>
+				</form>
 				<p class="text-[10px] text-muted-foreground mt-1">JPG/PNG max 2MB. Foto perlu persetujuan admin sebelum aktif.</p>
 			</div>
 		</Card.Content>
@@ -147,7 +155,7 @@
 		</Card.Header>
 		<Card.Content>
 			<div class="grid grid-cols-2 gap-x-3 gap-y-2.5">
-				{#each fields as f}
+				{#each fields as f (f.key)}
 					{@const val = profile?.[f.key] }
 					<div class="min-w-0">
 						<p class="text-[11px] text-muted-foreground">{f.label}</p>
@@ -163,12 +171,6 @@
 			</div>
 		</Card.Content>
 	</Card.Root>
-
-	<form {...logoutForm} class="flex justify-center">
-		<Button variant="outline" type="submit" class="cursor-pointer">
-			<LogOutIcon class="size-4 mr-2" /> Keluar
-		</Button>
-	</form>
 </div>
 
 <!-- Dialog: pilih field & isi nilai baru -->
@@ -191,21 +193,20 @@
 					}}
 				>
 					<option value="">— Pilih field —</option>
-					{#each fields as f}
+					{#each fields as f (f.key)}
 						<option value={f.key}>{f.label}</option>
 					{/each}
 				</select>
 			</Field>
 			{#if editField}
-				<form method="POST" action="?/ubahData" use:enhance class="space-y-3">
-					<input type="hidden" name="field" value={editField} />
+				<form onsubmit={(e) => { e.preventDefault(); ajukanPerubahan(); }} class="space-y-3">
 					<Field>
 						<FieldLabel>Nilai Baru ({editLabel})</FieldLabel>
-						<Input name="nilai_baru" bind:value={editValue} placeholder={profile?.[editField] || ''} class="h-9 text-sm" />
+						<Input bind:value={editValue} placeholder={profile?.[editField] || ''} class="h-9 text-sm" />
 					</Field>
 					<div class="flex justify-end gap-2">
 						<Button type="button" variant="outline" size="sm" onclick={() => (editOpen = false)}>Batal</Button>
-						<Button type="submit" size="sm" class="cursor-pointer">Ajukan Perubahan</Button>
+						<Button type="submit" size="sm" class="cursor-pointer" disabled={submitting}>Ajukan Perubahan</Button>
 					</div>
 				</form>
 			{/if}
