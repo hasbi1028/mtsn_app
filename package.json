@@ -14,8 +14,11 @@
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio",
-		"test": "playwright test",
-		"test:ui": "playwright test --ui"
+		"test": "vitest run",
+		"test:unit": "vitest run",
+		"test:unit:watch": "vitest",
+		"test:e2e": "playwright test",
+		"test:e2e:ui": "playwright test --ui"
 	},
 	"devDependencies": {
 		"@internationalized/date": "^3.12.0",
@@ -39,7 +42,8 @@
 		"tailwindcss": "^4.3.0",
 		"tsx": "^4.23.12",
 		"typescript": "^6.0.3",
-		"vite": "^8.0.16"
+		"vite": "^8.0.16",
+		"vitest": "^5.0.0"
 	},
 	"dependencies": {
 		"@types/better-sqlite3": "^9.6.0",

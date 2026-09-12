@@ -18,8 +18,8 @@ SIMAD — Sistem Informasi Manajemen Madrasah untuk MTsN 2 Kolaka Utara.
 npm run dev          # Start dev server
 npm run build        # Build for production
 npm run check        # Type check
-npm run test         # Run unit tests
-npx playwright test  # Run e2e tests
+npm run test         # Run unit tests (Vitest)
+npm run test:e2e     # Run e2e tests (Playwright)
 ```
 
 ## Architecture: Domain-Centric Modular Monolith
