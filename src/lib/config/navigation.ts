@@ -23,6 +23,7 @@ import TrophyIcon from "@lucide/svelte/icons/trophy";
 import StarIcon from "@lucide/svelte/icons/star";
 import MedalIcon from "@lucide/svelte/icons/medal";
 import ArchiveRestoreIcon from "@lucide/svelte/icons/archive-restore";
+import SettingsIcon from "@lucide/svelte/icons/settings";
 
 export interface NavItem {
 	title: string;
@@ -134,6 +135,7 @@ export const navItems: NavItem[] = [
 		group: "Sistem",
 		roles: ["admin"],
 		children: [
+			{ title: "Pengaturan", url: `${A}/pengaturan`, icon: SettingsIcon },
 			{ title: "Backup & Restore", url: `${A}/backup`, icon: ArchiveRestoreIcon },
 		],
 	},

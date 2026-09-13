@@ -12,15 +12,7 @@ import { count, eq, sql, and, isNull, or } from 'drizzle-orm';
 // ============================================
 
 export function getGeneralStats() {
-	const [
-		totalPtkRow,
-		guruRow,
-		sertifikasiRow,
-		pendingSkmtRow,
-		pendingSkbkRow,
-		pendingSkakptRow,
-		totalSiswaRow
-	] = db.all(sql`
+	const row = (db.all(sql`
 		SELECT
 			(SELECT COUNT(*) FROM ptk) as total_ptk,
 			(SELECT COUNT(*) FROM ptk WHERE fungsi = 'Guru') as guru,
@@ -29,20 +21,20 @@ export function getGeneralStats() {
 			(SELECT COUNT(*) FROM skbk_ajuan WHERE status = 'Belum Diajukan') as pending_skbk,
 			(SELECT COUNT(*) FROM skakpt WHERE status = 'Menunggu') as pending_skakpt,
 			(SELECT COUNT(*) FROM siswa) as total_siswa
-	`);
+	`)[0] as any) ?? {};
 
-	const totalPtk = (totalPtkRow as any)?.total_ptk ?? 0;
-	const sertifikasi = (sertifikasiRow as any)?.sertifikasi ?? 0;
+	const totalPtk = row.total_ptk ?? 0;
+	const sertifikasi = row.sertifikasi ?? 0;
 
 	return {
 		totalPtk,
-		guru: (guruRow as any)?.guru ?? 0,
+		guru: row.guru ?? 0,
 		sertifikasi,
 		belumSertifikasi: totalPtk - sertifikasi,
-		totalSiswa: (totalSiswaRow as any)?.total_siswa ?? 0,
-		pendingSkmt: (pendingSkmtRow as any)?.pending_skmt ?? 0,
-		pendingSkbk: (pendingSkbkRow as any)?.pending_skbk ?? 0,
-		pendingSkakpt: (pendingSkakptRow as any)?.pending_skakpt ?? 0
+		totalSiswa: row.total_siswa ?? 0,
+		pendingSkmt: row.pending_skmt ?? 0,
+		pendingSkbk: row.pending_skbk ?? 0,
+		pendingSkakpt: row.pending_skakpt ?? 0
 	};
 }
 
@@ -92,33 +84,34 @@ export function getRombelStats() {
 // ============================================
 
 export function getBansosStats() {
-	const [
-		totalSiswaRow,
-		belumCekRow,
-		layakPkhRow,
-		layakSembakoRow,
-		layakPbijkRow,
-		desilRows,
-		kelasRows
-	] = db.all(sql`
+	const totals = (db.all(sql`
 		SELECT
 			(SELECT COUNT(*) FROM siswa) as total_siswa,
 			(SELECT COUNT(*) FROM siswa WHERE bansos_cek_at IS NULL OR bansos_cek_at = '') as belum_cek,
 			(SELECT COUNT(*) FROM siswa WHERE bansos_pkh = 'LAYAK') as layak_pkh,
 			(SELECT COUNT(*) FROM siswa WHERE bansos_sembako = 'AKTIF') as layak_sembako,
-			(SELECT COUNT(*) FROM siswa WHERE bansos_pbijk = 'LAYAK') as layak_pbijk,
-			(SELECT bansos_desil, COUNT(*) as cnt FROM siswa GROUP BY bansos_desil) as desil_data,
-			(SELECT kelas, COUNT(*) as cnt FROM siswa GROUP BY kelas) as kelas_data
+			(SELECT COUNT(*) FROM siswa WHERE bansos_pbijk = 'LAYAK') as layak_pbijk
+	`)[0] as any) ?? {};
+
+	const desilRows = db.all(sql`
+		SELECT COALESCE(NULLIF(bansos_desil, ''), 'Belum Dicek') as bansos_desil, COUNT(*) as cnt
+		FROM siswa GROUP BY bansos_desil
 	`);
 
-	const total = (totalSiswaRow as any)?.total_siswa ?? 0;
-	const bc = (belumCekRow as any)?.belum_cek ?? 0;
+	const kelasRows = db.all(sql`
+		SELECT kelas, COUNT(*) as cnt
+		FROM siswa WHERE kelas IS NOT NULL AND kelas != ''
+		GROUP BY kelas
+	`);
+
+	const total = totals.total_siswa ?? 0;
+	const bc = totals.belum_cek ?? 0;
 
 	const desilDist: Record<string, number> = {};
 	let belumDesil = 0;
 	let tidakDitemukan = 0;
 
-	for (const row of (desilRows as any)?.desil_data ?? []) {
+	for (const row of desilRows as any[]) {
 		const key = row.bansos_desil || 'Belum Dicek';
 		const num = parseInt(key);
 		if (num >= 1 && num <= 10) {
@@ -133,7 +126,7 @@ export function getBansosStats() {
 	if (tidakDitemukan > 0) desilDist['Tidak Ditemukan'] = tidakDitemukan;
 
 	const kelasDist: Record<string, number> = {};
-	for (const row of (kelasRows as any)?.kelas_data ?? []) {
+	for (const row of kelasRows as any[]) {
 		if (row.kelas) {
 			kelasDist[row.kelas] = row.cnt;
 		}
@@ -143,9 +136,9 @@ export function getBansosStats() {
 		totalSiswa: total,
 		belumCek: bc,
 		sudahCek: total - bc,
-		layakPkh: (layakPkhRow as any)?.layak_pkh ?? 0,
-		layakSembako: (layakSembakoRow as any)?.layak_sembako ?? 0,
-		layakPbijk: (layakPbijkRow as any)?.layak_pbijk ?? 0,
+		layakPkh: totals.layak_pkh ?? 0,
+		layakSembako: totals.layak_sembako ?? 0,
+		layakPbijk: totals.layak_pbijk ?? 0,
 		desilDist,
 		kelasDist
 	};

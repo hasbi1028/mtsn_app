@@ -1,8 +1,10 @@
+import { getPengaturan } from '$modules/pengaturan/pengaturan.service';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ locals, url }) => {
 	return {
 		user: locals.user,
-		isLogin: url.pathname === '/login'
+		isLogin: url.pathname === '/login',
+		pengaturan: getPengaturan()
 	};
 };

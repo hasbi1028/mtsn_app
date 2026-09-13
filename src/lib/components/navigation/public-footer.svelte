@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { Separator } from '$lib/components/ui/separator/index.js';
+	import { page } from '$app/state';
+
+	const appSubtitle = $derived((page.data as any)?.pengaturan?.appSubtitle ?? 'MTsN 2 Kolaka Utara');
 </script>
 
 <footer class="border-t bg-muted/40">
@@ -7,7 +10,7 @@
 		<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 			<!-- Brand -->
 			<div>
-				<h3 class="font-semibold text-sm mb-2">MTsN 2 Kolaka Utara</h3>
+				<h3 class="font-semibold text-sm mb-2">{appSubtitle}</h3>
 				<p class="text-xs text-muted-foreground leading-relaxed">Madrasah Tsanawiyah Negeri 2 Kolaka Utara — Mendidik Generasi Berakhlak Mulia</p>
 			</div>
 
@@ -51,7 +54,7 @@
 		<Separator class="my-6" />
 
 		<div class="text-center text-[11px] text-muted-foreground">
-			&copy; {new Date().getFullYear()} MTsN 2 Kolaka Utara. Hak Cipta Dilindungi.
+			&copy; {new Date().getFullYear()} {appSubtitle}. Hak Cipta Dilindungi.
 		</div>
 	</div>
 </footer>

@@ -5,13 +5,18 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { login } from '../auth.remote';
 	import { cn } from '$lib/utils.js';
-	import SchoolIcon from '@lucide/svelte/icons/school';
+	import { page } from '$app/state';
 	import EyeIcon from '@lucide/svelte/icons/eye';
 	import EyeOffIcon from '@lucide/svelte/icons/eye-off';
 	import LoaderCircleIcon from '@lucide/svelte/icons/loader-circle';
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	let { class: className, ...restProps }: HTMLAttributes<HTMLDivElement> = $props();
+
+	const pengaturan = $derived((page.data as any)?.pengaturan ?? {});
+	const logoUrl = $derived(pengaturan.logoUrl ?? '/uploads/logo-kemenag.png');
+	const appName = $derived(pengaturan.appName ?? 'SIMAD');
+	const appSubtitle = $derived(pengaturan.appSubtitle ?? 'MTsN 2 Kolaka Utara');
 
 	let loading = $state(false);
 	let showPassword = $state(false);
@@ -41,11 +46,11 @@
 <div class={cn('flex min-h-[calc(100vh-3.5rem)] flex-col md:flex-row', className)} {...restProps}>
 	<!-- Left side: branding -->
 	<div class="hidden bg-muted md:flex md:w-1/2 flex-col items-center justify-center p-10">
-		<div class="flex items-center justify-center w-16 h-16 rounded-xl bg-primary text-primary-foreground mb-6">
-			<SchoolIcon class="size-8" />
+		<div class="flex items-center justify-center w-16 h-16 overflow-hidden rounded-xl bg-primary text-primary-foreground mb-6">
+			<img src={logoUrl} alt="Logo" class="size-full object-contain p-1" />
 		</div>
 		<div class="text-center space-y-2">
-			<h2 class="text-xl font-semibold">MTsN 2 Kolaka Utara</h2>
+			<h2 class="text-xl font-semibold">{appSubtitle}</h2>
 			<p class="text-sm text-muted-foreground max-w-xs">
 				Sistem Informasi Manajemen Madrasah — akses data PTK, kesiswaan, dan administrasi sekolah.
 			</p>
@@ -56,16 +61,16 @@
 	<div class="flex w-full md:w-1/2 items-center justify-center p-6 md:p-10">
 		<div class="w-full max-w-sm space-y-6">
 			<div class="flex flex-col items-center gap-2 text-center md:hidden">
-				<div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary text-primary-foreground">
-					<SchoolIcon class="size-6" />
+				<div class="flex items-center justify-center w-12 h-12 overflow-hidden rounded-lg bg-primary text-primary-foreground">
+					<img src={logoUrl} alt="Logo" class="size-full object-contain p-1" />
 				</div>
-				<h1 class="text-xl font-bold">MTsN 2 Kolaka Utara</h1>
-				<p class="text-sm text-muted-foreground">SIMAD</p>
+				<h1 class="text-xl font-bold">{appSubtitle}</h1>
+				<p class="text-sm text-muted-foreground">{appName}</p>
 			</div>
 
 			<div class="hidden md:block text-center">
 				<h1 class="text-2xl font-bold">Selamat Datang</h1>
-				<p class="text-balance text-muted-foreground">Masuk ke akun MTsN 2 Kolaka Utara Anda</p>
+				<p class="text-balance text-muted-foreground">Masuk ke akun {appSubtitle} Anda</p>
 			</div>
 
 			{#if formError}

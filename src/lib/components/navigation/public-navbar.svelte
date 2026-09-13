@@ -24,6 +24,11 @@
 		{ href: '/kontak', label: 'Kontak' },
 	];
 
+	const pengaturan = $derived((page.data as any)?.pengaturan ?? {});
+	const logoUrl = $derived(pengaturan.logoUrl ?? '/uploads/logo-kemenag.png');
+	const appName = $derived(pengaturan.appName ?? 'SIMAD');
+	const appSubtitle = $derived(pengaturan.appSubtitle ?? 'MTsN 2 Kolaka Utara');
+
 	const pathname = $derived(page?.url?.pathname ?? '');
 	let mobileOpen = $state(false);
 	let profilOpen = $state(false);
@@ -38,9 +43,11 @@
 	<div class="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
 		<!-- Logo -->
 		<a href="/" class="flex items-center gap-2 font-bold text-lg">
-			<span class="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground text-xs font-bold">MT</span>
-			<span class="hidden sm:inline">MTsN 2 Kolaka Utara</span>
-			<span class="sm:hidden">MTsN 2 Kolut</span>
+			<span class="flex size-8 items-center justify-center overflow-hidden rounded-lg bg-primary text-primary-foreground text-xs font-bold">
+				<img src={logoUrl} alt="Logo" class="size-full object-contain p-0.5" />
+			</span>
+			<span class="hidden sm:inline">{appSubtitle}</span>
+			<span class="sm:hidden">{appName}</span>
 		</a>
 
 		<!-- Desktop nav -->
@@ -93,10 +100,12 @@
 		<!-- Mobile hamburger -->
 		<Sheet.Root bind:open={mobileOpen}>
 			<Sheet.Trigger>
-				<Button variant="ghost" size="icon" class="md:hidden size-8 cursor-pointer">
-					<Menu class="size-5" />
-					<span class="sr-only">Menu</span>
-				</Button>
+				{#snippet child({ props })}
+					<Button {...props} variant="ghost" size="icon" class="md:hidden size-8 cursor-pointer">
+						<Menu class="size-5" />
+						<span class="sr-only">Menu</span>
+					</Button>
+				{/snippet}
 			</Sheet.Trigger>
 			<Sheet.Content side="right" class="w-[280px]">
 				<Sheet.Header>

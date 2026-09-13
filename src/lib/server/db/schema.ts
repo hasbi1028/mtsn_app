@@ -269,6 +269,16 @@ export const belSettings = sqliteTable('bel_settings', {
 });
 
 // ============================================
+// PENGATURAN APLIKASI (key-value)
+// ============================================
+
+export const pengaturan = sqliteTable('pengaturan', {
+	key: text('key').primaryKey(),
+	value: text('value'),
+	updatedAt: text('updated_at').default(sql`datetime('now','localtime')`)
+});
+
+// ============================================
 // KARTU CACHE (Generated Card PNGs)
 // ============================================
 

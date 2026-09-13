@@ -13,8 +13,14 @@
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
 	import { useSidebar } from "$lib/components/ui/sidebar/index.js";
 	import { getActiveModule, setActiveModule } from './module-active.svelte.js';
+	import { page } from "$app/state";
 
 	const sidebar = useSidebar();
+
+	const pengaturan = $derived((page.data as any)?.pengaturan ?? {});
+	const logoUrl = $derived(pengaturan.logoUrl ?? '/uploads/logo-kemenag.png');
+	const appName = $derived(pengaturan.appName ?? 'SIMAD');
+	const appSubtitle = $derived(pengaturan.appSubtitle ?? 'MTsN 2 Kolaka Utara');
 
 	const modules = [
 		{ name: "Semua", icon: LayoutDashboardIcon, description: "Tampilkan semua menu", key: "semua", active: true, url: "/" },
@@ -43,12 +49,12 @@
 						size="lg"
 						class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 					>
-						<div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-							<span class="text-xs font-bold">MTsN</span>
+						<div class="flex aspect-square size-8 items-center justify-center overflow-hidden rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+							<img src={logoUrl} alt="Logo" class="size-full object-contain p-0.5" />
 						</div>
 						<div class="grid flex-1 text-left text-sm leading-tight">
-							<span class="truncate font-semibold">{activeKey === 'semua' ? 'SIMAD' : activeKey}</span>
-							<span class="truncate text-xs">MTsN 2 Kolaka Utara</span>
+							<span class="truncate font-semibold">{activeKey === 'semua' ? appName : activeKey}</span>
+							<span class="truncate text-xs">{appSubtitle}</span>
 						</div>
 						<ChevronsUpDownIcon class="ms-auto" />
 					</Sidebar.MenuButton>

@@ -11,6 +11,9 @@
 
 	const user = $derived(data?.user);
 	const role = $derived(user?.role ?? '');
+	const pengaturan = $derived((data as any)?.pengaturan ?? {});
+	const logoUrl = $derived(pengaturan.logoUrl ?? '/uploads/logo-kemenag.png');
+	const appName = $derived(pengaturan.appName ?? 'SIMAD');
 
 	let searchOpen = $state(false);
 </script>
@@ -21,11 +24,11 @@
 		<!-- Header -->
 		<header class="flex h-14 shrink-0 items-center justify-between border-b px-4">
 			<div class="flex items-center gap-2">
-				<a href="/" class="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground text-xs font-bold">
-					MT
+				<a href="/" class="flex size-8 items-center justify-center overflow-hidden rounded-lg bg-primary text-primary-foreground text-xs font-bold">
+					<img src={logoUrl} alt="Logo" class="size-full object-contain" />
 				</a>
 				<div>
-					<h1 class="text-sm font-semibold leading-tight">SIMAD</h1>
+					<h1 class="text-sm font-semibold leading-tight">{appName}</h1>
 					<p class="text-[11px] text-muted-foreground leading-tight">{role === 'siswa' ? 'Siswa' : 'Orang Tua'}</p>
 				</div>
 			</div>
