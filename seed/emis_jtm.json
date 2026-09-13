@@ -1,274 +1,266 @@
 {
  "ABDILLAH": {
-  "mengajar": 20,
-  "tugas": 6,
-  "total": 26,
-  "dashboard": 26,
+  "mengajar": 14,
+  "tugas": 7,
+  "total": 21,
+  "dashboard": 22,
   "sertifikasi": false,
-  "kelengkapan": 100
+  "kelengkapan": 72
  },
  "ANDI MIRNA": {
   "mengajar": 12,
-  "tugas": 6,
-  "total": 18,
-  "dashboard": 24,
-  "sertifikasi": false,
-  "kelengkapan": 80
+  "tugas": 4,
+  "total": 16,
+  "dashboard": 15,
+  "sertifikasi": true,
+  "kelengkapan": 78
  },
  "ANDI RASNIA RASJID": {
-  "mengajar": 15,
-  "tugas": 12,
-  "total": 27,
-  "dashboard": 27,
+  "mengajar": 24,
+  "tugas": 10,
+  "total": 34,
+  "dashboard": 34,
   "sertifikasi": true,
-  "kelengkapan": 100
- },
- "ANWAR": {
-  "mengajar": 0,
-  "tugas": 24,
-  "total": 24,
-  "dashboard": 0,
-  "sertifikasi": true,
-  "kelengkapan": 100
+  "kelengkapan": 81
  },
  "ASNIAR": {
-  "mengajar": 10,
-  "tugas": 0,
-  "total": 10,
-  "dashboard": 10,
-  "sertifikasi": false,
-  "kelengkapan": 80
- },
- "CHAIRUDDIN": {
-  "mengajar": 12,
-  "tugas": 12,
+  "mengajar": 20,
+  "tugas": 4,
   "total": 24,
   "dashboard": 24,
   "sertifikasi": true,
-  "kelengkapan": 100
+  "kelengkapan": 71
+ },
+ "CHAIRUDDIN": {
+  "mengajar": 22,
+  "tugas": 2,
+  "total": 24,
+  "dashboard": 25,
+  "sertifikasi": false,
+  "kelengkapan": 83
  },
  "ERNAWATI": {
-  "mengajar": 6,
-  "tugas": 6,
-  "total": 12,
-  "dashboard": 25,
-  "sertifikasi": true,
-  "kelengkapan": 80
+  "mengajar": 22,
+  "tugas": 11,
+  "total": 33,
+  "dashboard": 34,
+  "sertifikasi": false,
+  "kelengkapan": 88
  },
  "HERNIATI": {
-  "mengajar": 20,
+  "mengajar": 15,
   "tugas": 6,
-  "total": 26,
-  "dashboard": 26,
-  "sertifikasi": true,
-  "kelengkapan": 100
+  "total": 21,
+  "dashboard": 24,
+  "sertifikasi": false,
+  "kelengkapan": 72
  },
  "IRMAWATI NUR": {
-  "mengajar": 16,
-  "tugas": 12,
-  "total": 28,
-  "dashboard": 28,
-  "sertifikasi": true,
-  "kelengkapan": 100
- },
- "JAYANTI JUFRI": {
-  "mengajar": 12,
-  "tugas": 2,
-  "total": 14,
-  "dashboard": 14,
+  "mengajar": 22,
+  "tugas": 9,
+  "total": 31,
+  "dashboard": 37,
   "sertifikasi": false,
-  "kelengkapan": 80
+  "kelengkapan": 84
  },
  "KAHARUDDIN": {
-  "mengajar": 23,
-  "tugas": 2,
-  "total": 25,
-  "dashboard": 25,
-  "sertifikasi": false,
-  "kelengkapan": 80
- },
- "KARDI": {
-  "mengajar": 20,
-  "tugas": 12,
+  "mengajar": 24,
+  "tugas": 8,
   "total": 32,
   "dashboard": 32,
-  "sertifikasi": false,
-  "kelengkapan": 100
+  "sertifikasi": true,
+  "kelengkapan": 72
  },
- "MIDA": {
+ "KARDI": {
   "mengajar": 16,
   "tugas": 2,
   "total": 18,
-  "dashboard": 26,
+  "dashboard": 24,
+  "sertifikasi": false,
+  "kelengkapan": 83
+ },
+ "MALIK": {
+  "mengajar": 11,
+  "tugas": 10,
+  "total": 21,
+  "dashboard": 20,
   "sertifikasi": true,
-  "kelengkapan": 100
+  "kelengkapan": 78
+ },
+ "MIDA": {
+  "mengajar": 13,
+  "tugas": 6,
+  "total": 19,
+  "dashboard": 19,
+  "sertifikasi": false,
+  "kelengkapan": 92
  },
  "MIRNAWATI": {
-  "mengajar": 12,
-  "tugas": 2,
-  "total": 14,
-  "dashboard": 14,
-  "sertifikasi": false,
-  "kelengkapan": 80
+  "mengajar": 21,
+  "tugas": 3,
+  "total": 24,
+  "dashboard": 27,
+  "sertifikasi": true,
+  "kelengkapan": 88
  },
  "MUH. SAIN": {
-  "mengajar": 25,
-  "tugas": 6,
-  "total": 31,
-  "dashboard": 31,
+  "mengajar": 8,
+  "tugas": 8,
+  "total": 16,
+  "dashboard": 22,
   "sertifikasi": true,
-  "kelengkapan": 100
+  "kelengkapan": 85
  },
  "MUHAMMAD YANI": {
-  "mengajar": 16,
-  "tugas": 0,
-  "total": 16,
-  "dashboard": 16,
+  "mengajar": 19,
+  "tugas": 5,
+  "total": 24,
+  "dashboard": 27,
   "sertifikasi": false,
-  "kelengkapan": 80
+  "kelengkapan": 65
  },
  "MUTMAINNAH": {
-  "mengajar": 25,
-  "tugas": 0,
-  "total": 25,
-  "dashboard": 25,
+  "mengajar": 15,
+  "tugas": 2,
+  "total": 17,
+  "dashboard": 20,
   "sertifikasi": false,
-  "kelengkapan": 80
+  "kelengkapan": 66
  },
  "NIRMAWATI TAHIR": {
-  "mengajar": 6,
-  "tugas": 6,
-  "total": 12,
-  "dashboard": 22,
-  "sertifikasi": false,
-  "kelengkapan": 80
+  "mengajar": 12,
+  "tugas": 4,
+  "total": 16,
+  "dashboard": 21,
+  "sertifikasi": true,
+  "kelengkapan": 78
  },
  "NURILMI": {
+  "mengajar": 12,
+  "tugas": 9,
+  "total": 21,
+  "dashboard": 19,
+  "sertifikasi": false,
+  "kelengkapan": 99
+ },
+ "NURUL FITRI USMAN": {
   "mengajar": 10,
   "tugas": 2,
   "total": 12,
   "dashboard": 12,
   "sertifikasi": false,
-  "kelengkapan": 80
+  "kelengkapan": 73
  },
- "NURUL FITRI USMAN": {
+ "NURUN NISAA ALIMAH ANWAR": {
   "mengajar": 24,
-  "tugas": 6,
-  "total": 30,
-  "dashboard": 30,
-  "sertifikasi": false,
-  "kelengkapan": 80
- },
- "NURUNNISAA ALIMAH ANWAR": {
-  "mengajar": 10,
-  "tugas": 0,
-  "total": 10,
-  "dashboard": 18,
-  "sertifikasi": false,
-  "kelengkapan": 80
+  "tugas": 8,
+  "total": 32,
+  "dashboard": 33,
+  "sertifikasi": true,
+  "kelengkapan": 78
  },
  "RATNAWATI": {
+  "mengajar": 17,
+  "tugas": 3,
+  "total": 20,
+  "dashboard": 24,
+  "sertifikasi": true,
+  "kelengkapan": 75
+ },
+ "RUSTIANI": {
+  "mengajar": 22,
+  "tugas": 3,
+  "total": 25,
+  "dashboard": 31,
+  "sertifikasi": true,
+  "kelengkapan": 91
+ },
+ "RUSNAWATI": {
+  "mengajar": 8,
+  "tugas": 12,
+  "total": 20,
+  "dashboard": 22,
+  "sertifikasi": true,
+  "kelengkapan": 69
+ },
+ "SAIMANG": {
+  "mengajar": 21,
+  "tugas": 2,
+  "total": 23,
+  "dashboard": 27,
+  "sertifikasi": false,
+  "kelengkapan": 75
+ },
+ "SITTI RAHMAH": {
   "mengajar": 13,
   "tugas": 12,
   "total": 25,
-  "dashboard": 25,
+  "dashboard": 28,
   "sertifikasi": true,
-  "kelengkapan": 100
- },
- "RUSNAWATI": {
-  "mengajar": 18,
-  "tugas": 6,
-  "total": 24,
-  "dashboard": 24,
-  "sertifikasi": true,
-  "kelengkapan": 100
- },
- "RUSTIANI": {
-  "mengajar": 6,
-  "tugas": 6,
-  "total": 12,
-  "dashboard": 24,
-  "sertifikasi": false,
-  "kelengkapan": 100
- },
- "SAIMANG": {
-  "mengajar": 6,
-  "tugas": 0,
-  "total": 6,
-  "dashboard": 17,
-  "sertifikasi": true,
-  "kelengkapan": 100
+  "kelengkapan": 93
  },
  "SITTI RAFIDAH": {
-  "mengajar": 26,
-  "tugas": 6,
-  "total": 32,
-  "dashboard": 32,
-  "sertifikasi": true,
-  "kelengkapan": 100
- },
- "SITTI RAHMAH": {
-  "mengajar": 14,
-  "tugas": 6,
-  "total": 20,
-  "dashboard": 20,
-  "sertifikasi": true,
-  "kelengkapan": 100
- },
- "SRIHARDIANTI": {
   "mengajar": 10,
-  "tugas": 0,
-  "total": 10,
-  "dashboard": 10,
+  "tugas": 10,
+  "total": 20,
+  "dashboard": 25,
+  "sertifikasi": true,
+  "kelengkapan": 84
+ },
+ "SUSIANTI": {
+  "mengajar": 9,
+  "tugas": 12,
+  "total": 21,
+  "dashboard": 23,
   "sertifikasi": false,
-  "kelengkapan": 80
+  "kelengkapan": 83
+ },
+ "SUTRA": {
+  "mengajar": 8,
+  "tugas": 7,
+  "total": 15,
+  "dashboard": 16,
+  "sertifikasi": true,
+  "kelengkapan": 82
  },
  "SUPRIADI": {
+  "mengajar": 11,
+  "tugas": 11,
+  "total": 22,
+  "dashboard": 20,
+  "sertifikasi": false,
+  "kelengkapan": 68
+ },
+ "TAUFIK": {
+  "mengajar": 19,
+  "tugas": 10,
+  "total": 29,
+  "dashboard": 34,
+  "sertifikasi": false,
+  "kelengkapan": 71
+ },
+ "WATI ZAELANI SIDIG ELLYANANDO": {
+  "mengajar": 23,
+  "tugas": 12,
+  "total": 35,
+  "dashboard": 34,
+  "sertifikasi": true,
+  "kelengkapan": 68
+ },
+ "YURNIANTI": {
   "mengajar": 22,
   "tugas": 2,
   "total": 24,
-  "dashboard": 24,
-  "sertifikasi": true,
-  "kelengkapan": 100
- },
- "SUSIANTI": {
-  "mengajar": 24,
-  "tugas": 6,
-  "total": 30,
-  "dashboard": 30,
+  "dashboard": 22,
   "sertifikasi": false,
-  "kelengkapan": 80
+  "kelengkapan": 72
  },
- "SUTRA": {
-  "mengajar": 21,
-  "tugas": 3,
-  "total": 24,
-  "dashboard": 24,
-  "sertifikasi": true,
-  "kelengkapan": 100
- },
- "TAUFIK": {
-  "mengajar": 12,
-  "tugas": 12,
-  "total": 24,
-  "dashboard": 24,
-  "sertifikasi": true,
-  "kelengkapan": 100
- },
- "WATI ZAELANI SIDIG ELLYANANDO": {
-  "mengajar": 21,
-  "tugas": 6,
-  "total": 27,
-  "dashboard": 27,
-  "sertifikasi": true,
-  "kelengkapan": 100
- },
- "YURNIANTI": {
-  "mengajar": 18,
-  "tugas": 6,
-  "total": 24,
-  "dashboard": 24,
+ "JAYANTI JUFRI": {
+  "mengajar": 14,
+  "tugas": 2,
+  "total": 16,
+  "dashboard": 22,
   "sertifikasi": false,
-  "kelengkapan": 80
+  "kelengkapan": 79
  }
 }

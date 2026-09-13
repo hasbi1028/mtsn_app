@@ -1,1 +1,3842 @@
-[{"kelas": "IXA", "hari": "SENIN", "jam": "I", "mapel": "MAT", "guru": "TAUFIK", "kode": 5}, {"kelas": "IXB", "hari": "SENIN", "jam": "I", "mapel": "INFO", "guru": "ANDI MIRNA", "kode": 21}, {"kelas": "IXC", "hari": "SENIN", "jam": "I", "mapel": "FIQHI", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "I", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "I", "mapel": "BHS.ARAB", "guru": "MUH TANG", "kode": 23}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "I", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIID", "hari": "SENIN", "jam": "I", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIA", "hari": "SENIN", "jam": "I", "mapel": "AA", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIB", "hari": "SENIN", "jam": "I", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "VIIC", "hari": "SENIN", "jam": "I", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIID", "hari": "SENIN", "jam": "I", "mapel": "IPA", "guru": "MIRNAWATI", "kode": 32}, {"kelas": "VIIE", "hari": "SENIN", "jam": "I", "mapel": "PENJAS", "guru": "ASNIAR", "kode": 34}, {"kelas": "IXA", "hari": "SENIN", "jam": "II", "mapel": "MAT", "guru": "TAUFIK", "kode": 5}, {"kelas": "IXB", "hari": "SENIN", "jam": "II", "mapel": "INFO", "guru": "ANDI MIRNA", "kode": 21}, {"kelas": "IXC", "hari": "SENIN", "jam": "II", "mapel": "FIQHI", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "II", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "II", "mapel": "BHS.ARAB", "guru": "MUH TANG", "kode": 23}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "II", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIID", "hari": "SENIN", "jam": "II", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIA", "hari": "SENIN", "jam": "II", "mapel": "AA", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIB", "hari": "SENIN", "jam": "II", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "VIIC", "hari": "SENIN", "jam": "II", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIID", "hari": "SENIN", "jam": "II", "mapel": "IPA", "guru": "MIRNAWATI", "kode": 32}, {"kelas": "VIIE", "hari": "SENIN", "jam": "II", "mapel": "PENJAS", "guru": "ASNIAR", "kode": 34}, {"kelas": "IXA", "hari": "SENIN", "jam": "III", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "IXB", "hari": "SENIN", "jam": "III", "mapel": "INFO", "guru": "ANDI MIRNA", "kode": 21}, {"kelas": "IXC", "hari": "SENIN", "jam": "III", "mapel": "IPS", "guru": "CHAIRUDDIN", "kode": 4}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "III", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "III", "mapel": "BHS.ARAB", "guru": "MUH TANG", "kode": 23}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "III", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIID", "hari": "SENIN", "jam": "III", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIA", "hari": "SENIN", "jam": "III", "mapel": "INFO", "guru": "MALIK", "kode": 13}, {"kelas": "VIIB", "hari": "SENIN", "jam": "III", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "VIIC", "hari": "SENIN", "jam": "III", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "VIID", "hari": "SENIN", "jam": "III", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIIE", "hari": "SENIN", "jam": "III", "mapel": "PENJAS", "guru": "ASNIAR", "kode": 34}, {"kelas": "IXA", "hari": "SENIN", "jam": "IV", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "IXB", "hari": "SENIN", "jam": "IV", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "IXC", "hari": "SENIN", "jam": "IV", "mapel": "IPS", "guru": "CHAIRUDDIN", "kode": 4}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "IV", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "IV", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "IV", "mapel": "FIQHI", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIID", "hari": "SENIN", "jam": "IV", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIA", "hari": "SENIN", "jam": "IV", "mapel": "INFO", "guru": "MALIK", "kode": 13}, {"kelas": "VIIB", "hari": "SENIN", "jam": "IV", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIC", "hari": "SENIN", "jam": "IV", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "VIID", "hari": "SENIN", "jam": "IV", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIIE", "hari": "SENIN", "jam": "IV", "mapel": "BHS.INA", "guru": "RUSTIANI", "kode": 25}, {"kelas": "IXA", "hari": "SENIN", "jam": "V", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "IXB", "hari": "SENIN", "jam": "V", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "IXC", "hari": "SENIN", "jam": "V", "mapel": "BHS.ARAB", "guru": "NURILMI", "kode": 36}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "V", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "V", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "V", "mapel": "FIQHI", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIID", "hari": "SENIN", "jam": "V", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIA", "hari": "SENIN", "jam": "V", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "VIIB", "hari": "SENIN", "jam": "V", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIC", "hari": "SENIN", "jam": "V", "mapel": "INFO", "guru": "MALIK", "kode": 13}, {"kelas": "VIID", "hari": "SENIN", "jam": "V", "mapel": "FIQHI", "guru": "MIDA", "kode": 14}, {"kelas": "VIIE", "hari": "SENIN", "jam": "V", "mapel": "BHS.INA", "guru": "RUSTIANI", "kode": 25}, {"kelas": "IXA", "hari": "SENIN", "jam": "VI", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "IXB", "hari": "SENIN", "jam": "VI", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "IXC", "hari": "SENIN", "jam": "VI", "mapel": "BHS.ARAB", "guru": "NURILMI", "kode": 36}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VI", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VI", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VI", "mapel": "FIQHI", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VI", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VI", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VI", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VI", "mapel": "INFO", "guru": "MALIK", "kode": 13}, {"kelas": "VIID", "hari": "SENIN", "jam": "VI", "mapel": "FIQHI", "guru": "MIDA", "kode": 14}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VI", "mapel": "BHS.INA", "guru": "RUSTIANI", "kode": 25}, {"kelas": "IXA", "hari": "SENIN", "jam": "VII", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "IXB", "hari": "SENIN", "jam": "VII", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "IXC", "hari": "SENIN", "jam": "VII", "mapel": "BHS.ARAB", "guru": "NURILMI", "kode": 36}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VII", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VII", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VII", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VII", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VII", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VII", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VII", "mapel": "BHS.INA", "guru": "ERNAWATI", "kode": 20}, {"kelas": "VIID", "hari": "SENIN", "jam": "VII", "mapel": "BHS.INA", "guru": "ANDI MIRNA", "kode": 21}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VII", "mapel": "IPS", "guru": "MIDA", "kode": 14}, {"kelas": "IXA", "hari": "SENIN", "jam": "VIII", "mapel": "IPS", "guru": "CHAIRUDDIN", "kode": 4}, {"kelas": "IXB", "hari": "SENIN", "jam": "VIII", "mapel": "QH", "guru": "SAIMANG", "kode": 16}, {"kelas": "IXC", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VIII", "mapel": "AA", "guru": "RATNAWATI", "kode": 7}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VIII", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VIII", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VIII", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.INA", "guru": "ERNAWATI", "kode": 20}, {"kelas": "VIID", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.INA", "guru": "ANDI MIRNA", "kode": 21}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VIII", "mapel": "IPS", "guru": "MIDA", "kode": 14}, {"kelas": "IXA", "hari": "SENIN", "jam": "IX", "mapel": "IPS", "guru": "CHAIRUDDIN", "kode": 4}, {"kelas": "IXB", "hari": "SENIN", "jam": "IX", "mapel": "QH", "guru": "SAIMANG", "kode": 16}, {"kelas": "IXC", "hari": "SENIN", "jam": "IX", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "IX", "mapel": "AA", "guru": "RATNAWATI", "kode": 7}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "IX", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "IX", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIID", "hari": "SENIN", "jam": "IX", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIA", "hari": "SENIN", "jam": "IX", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "VIIB", "hari": "SENIN", "jam": "IX", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIIC", "hari": "SENIN", "jam": "IX", "mapel": "BHS.INA", "guru": "ERNAWATI", "kode": 20}, {"kelas": "VIID", "hari": "SENIN", "jam": "IX", "mapel": "BHS.INA", "guru": "ANDI MIRNA", "kode": 21}, {"kelas": "VIIE", "hari": "SENIN", "jam": "IX", "mapel": "IPS", "guru": "MIDA", "kode": 14}, {"kelas": "IXA", "hari": "SENIN", "jam": "I", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "IXB", "hari": "SENIN", "jam": "I", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "IXC", "hari": "SENIN", "jam": "I", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "I", "mapel": "FIQHI", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "I", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "I", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIID", "hari": "SENIN", "jam": "I", "mapel": "PKN", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIA", "hari": "SENIN", "jam": "I", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIB", "hari": "SENIN", "jam": "I", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIC", "hari": "SENIN", "jam": "I", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIID", "hari": "SENIN", "jam": "I", "mapel": "PENJAS", "guru": "ASNIAR", "kode": 34}, {"kelas": "VIIE", "hari": "SENIN", "jam": "I", "mapel": "FIQHI", "guru": "MIDA", "kode": 14}, {"kelas": "IXA", "hari": "SENIN", "jam": "II", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "IXB", "hari": "SENIN", "jam": "II", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "IXC", "hari": "SENIN", "jam": "II", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "II", "mapel": "FIQHI", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "II", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "II", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIID", "hari": "SENIN", "jam": "II", "mapel": "PKN", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIA", "hari": "SENIN", "jam": "II", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIB", "hari": "SENIN", "jam": "II", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIC", "hari": "SENIN", "jam": "II", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIID", "hari": "SENIN", "jam": "II", "mapel": "PENJAS", "guru": "ASNIAR", "kode": 34}, {"kelas": "VIIE", "hari": "SENIN", "jam": "II", "mapel": "FIQHI", "guru": "MIDA", "kode": 14}, {"kelas": "IXA", "hari": "SENIN", "jam": "III", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "IXB", "hari": "SENIN", "jam": "III", "mapel": "MAT", "guru": "TAUFIK", "kode": 5}, {"kelas": "IXC", "hari": "SENIN", "jam": "III", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "III", "mapel": "FIQHI", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "III", "mapel": "QH", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "III", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIID", "hari": "SENIN", "jam": "III", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIA", "hari": "SENIN", "jam": "III", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIB", "hari": "SENIN", "jam": "III", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIIC", "hari": "SENIN", "jam": "III", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIID", "hari": "SENIN", "jam": "III", "mapel": "PENJAS", "guru": "ASNIAR", "kode": 34}, {"kelas": "VIIE", "hari": "SENIN", "jam": "III", "mapel": "BHS.INA", "guru": "RUSTIANI", "kode": 25}, {"kelas": "IXA", "hari": "SENIN", "jam": "IV", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "IXB", "hari": "SENIN", "jam": "IV", "mapel": "MAT", "guru": "TAUFIK", "kode": 5}, {"kelas": "IXC", "hari": "SENIN", "jam": "IV", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "IV", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "IV", "mapel": "QH", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "IV", "mapel": "BHS.ARAB", "guru": "JAYANTI JUFRI", "kode": 30}, {"kelas": "VIIID", "hari": "SENIN", "jam": "IV", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIA", "hari": "SENIN", "jam": "IV", "mapel": "BHS.INA", "guru": "NIRMAWATI TAHIR", "kode": 22}, {"kelas": "VIIB", "hari": "SENIN", "jam": "IV", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIIC", "hari": "SENIN", "jam": "IV", "mapel": "SBD", "guru": "ASNIAR", "kode": 34}, {"kelas": "VIID", "hari": "SENIN", "jam": "IV", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIE", "hari": "SENIN", "jam": "IV", "mapel": "BHS.INA", "guru": "RUSTIANI", "kode": 25}, {"kelas": "IXA", "hari": "SENIN", "jam": "V", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "IXB", "hari": "SENIN", "jam": "V", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "IXC", "hari": "SENIN", "jam": "V", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "V", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "V", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "V", "mapel": "BHS.ARAB", "guru": "JAYANTI JUFRI", "kode": 30}, {"kelas": "VIIID", "hari": "SENIN", "jam": "V", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIA", "hari": "SENIN", "jam": "V", "mapel": "BHS.INA", "guru": "NIRMAWATI TAHIR", "kode": 22}, {"kelas": "VIIB", "hari": "SENIN", "jam": "V", "mapel": "FIQHI", "guru": "MIDA", "kode": 14}, {"kelas": "VIIC", "hari": "SENIN", "jam": "V", "mapel": "SBD", "guru": "ASNIAR", "kode": 34}, {"kelas": "VIID", "hari": "SENIN", "jam": "V", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIE", "hari": "SENIN", "jam": "V", "mapel": "BHS.INA", "guru": "RUSTIANI", "kode": 25}, {"kelas": "IXA", "hari": "SENIN", "jam": "VI", "mapel": "AA", "guru": "RATNAWATI", "kode": 7}, {"kelas": "IXB", "hari": "SENIN", "jam": "VI", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "IXC", "hari": "SENIN", "jam": "VI", "mapel": "INFO", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VI", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VI", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VI", "mapel": "BHS.ARAB", "guru": "JAYANTI JUFRI", "kode": 30}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VI", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VI", "mapel": "BHS.INA", "guru": "NIRMAWATI TAHIR", "kode": 22}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VI", "mapel": "FIQHI", "guru": "MIDA", "kode": 14}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VI", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIID", "hari": "SENIN", "jam": "VI", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VI", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "IXA", "hari": "SENIN", "jam": "VII", "mapel": "AA", "guru": "RATNAWATI", "kode": 7}, {"kelas": "IXB", "hari": "SENIN", "jam": "VII", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "IXC", "hari": "SENIN", "jam": "VII", "mapel": "INFO", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VII", "mapel": "MULOK", "guru": "JAYANTI JUFRI", "kode": 30}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VII", "mapel": "INFO", "guru": "NURUN NISAA ALIMAH ANWAR", "kode": 31}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VII", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VII", "mapel": "AA", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VII", "mapel": "FIQHI", "guru": "MIDA", "kode": 14}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VII", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VII", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIID", "hari": "SENIN", "jam": "VII", "mapel": "IPA", "guru": "MIRNAWATI", "kode": 32}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VII", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "IXA", "hari": "SENIN", "jam": "VIII", "mapel": "AA", "guru": "RATNAWATI", "kode": 7}, {"kelas": "IXB", "hari": "SENIN", "jam": "VIII", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "IXC", "hari": "SENIN", "jam": "VIII", "mapel": "INFO", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VIII", "mapel": "MULOK", "guru": "JAYANTI JUFRI", "kode": 30}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VIII", "mapel": "INFO", "guru": "NURUN NISAA ALIMAH ANWAR", "kode": 31}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VIII", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VIII", "mapel": "AA", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VIII", "mapel": "FIQHI", "guru": "MIDA", "kode": 14}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VIII", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VIII", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIID", "hari": "SENIN", "jam": "VIII", "mapel": "IPA", "guru": "MIRNAWATI", "kode": 32}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "IXA", "hari": "SENIN", "jam": "I", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "IXB", "hari": "SENIN", "jam": "I", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "IXC", "hari": "SENIN", "jam": "I", "mapel": "MAT", "guru": "TAUFIK", "kode": 5}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "I", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "I", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "I", "mapel": "MULOK", "guru": "NURILMI", "kode": 36}, {"kelas": "VIIID", "hari": "SENIN", "jam": "I", "mapel": "INFO", "guru": "ASNIAR", "kode": 34}, {"kelas": "VIIA", "hari": "SENIN", "jam": "I", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIIB", "hari": "SENIN", "jam": "I", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "VIIC", "hari": "SENIN", "jam": "I", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "VIID", "hari": "SENIN", "jam": "I", "mapel": "BHS.INA", "guru": "ANDI MIRNA", "kode": 21}, {"kelas": "VIIE", "hari": "SENIN", "jam": "I", "mapel": "SBD", "guru": "ASNIAR", "kode": 34}, {"kelas": "IXA", "hari": "SENIN", "jam": "II", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "IXB", "hari": "SENIN", "jam": "II", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "IXC", "hari": "SENIN", "jam": "II", "mapel": "MAT", "guru": "TAUFIK", "kode": 5}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "II", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "II", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "II", "mapel": "MULOK", "guru": "NURILMI", "kode": 36}, {"kelas": "VIIID", "hari": "SENIN", "jam": "II", "mapel": "INFO", "guru": "ASNIAR", "kode": 34}, {"kelas": "VIIA", "hari": "SENIN", "jam": "II", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIIB", "hari": "SENIN", "jam": "II", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "VIIC", "hari": "SENIN", "jam": "II", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "VIID", "hari": "SENIN", "jam": "II", "mapel": "BHS.INA", "guru": "ANDI MIRNA", "kode": 21}, {"kelas": "VIIE", "hari": "SENIN", "jam": "II", "mapel": "SBD", "guru": "ASNIAR", "kode": 34}, {"kelas": "IXA", "hari": "SENIN", "jam": "III", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "IXB", "hari": "SENIN", "jam": "III", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "IXC", "hari": "SENIN", "jam": "III", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "III", "mapel": "INFO", "guru": "NURUN NISAA ALIMAH ANWAR", "kode": 31}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "III", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "III", "mapel": "QH", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "VIIID", "hari": "SENIN", "jam": "III", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIA", "hari": "SENIN", "jam": "III", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIIB", "hari": "SENIN", "jam": "III", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIIC", "hari": "SENIN", "jam": "III", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "VIID", "hari": "SENIN", "jam": "III", "mapel": "BHS.INA", "guru": "ANDI MIRNA", "kode": 21}, {"kelas": "VIIE", "hari": "SENIN", "jam": "III", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "IXA", "hari": "SENIN", "jam": "IV", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "IXB", "hari": "SENIN", "jam": "IV", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "IXC", "hari": "SENIN", "jam": "IV", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "IV", "mapel": "INFO", "guru": "NURUN NISAA ALIMAH ANWAR", "kode": 31}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "IV", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "IV", "mapel": "QH", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "VIIID", "hari": "SENIN", "jam": "IV", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIA", "hari": "SENIN", "jam": "IV", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIB", "hari": "SENIN", "jam": "IV", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIIC", "hari": "SENIN", "jam": "IV", "mapel": "FIQHI", "guru": "MIDA", "kode": 14}, {"kelas": "VIID", "hari": "SENIN", "jam": "IV", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "VIIE", "hari": "SENIN", "jam": "IV", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "IXA", "hari": "SENIN", "jam": "V", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "IXB", "hari": "SENIN", "jam": "V", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "IXC", "hari": "SENIN", "jam": "V", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "V", "mapel": "QH", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "V", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "V", "mapel": "INFO", "guru": "ASNIAR", "kode": 34}, {"kelas": "VIIID", "hari": "SENIN", "jam": "V", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIA", "hari": "SENIN", "jam": "V", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIB", "hari": "SENIN", "jam": "V", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIC", "hari": "SENIN", "jam": "V", "mapel": "FIQHI", "guru": "MIDA", "kode": 14}, {"kelas": "VIID", "hari": "SENIN", "jam": "V", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "VIIE", "hari": "SENIN", "jam": "V", "mapel": "AA", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "IXA", "hari": "SENIN", "jam": "VI", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "IXB", "hari": "SENIN", "jam": "VI", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "IXC", "hari": "SENIN", "jam": "VI", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VI", "mapel": "QH", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VI", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VI", "mapel": "INFO", "guru": "ASNIAR", "kode": 34}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VI", "mapel": "BHS.ING", "guru": "NURUN NISAA ALIMAH ANWAR", "kode": 31}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VI", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VI", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VI", "mapel": "BHS.INA", "guru": "ERNAWATI", "kode": 20}, {"kelas": "VIID", "hari": "SENIN", "jam": "VI", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VI", "mapel": "AA", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "IXA", "hari": "SENIN", "jam": "VII", "mapel": "FIQHI", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "IXB", "hari": "SENIN", "jam": "VII", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "IXC", "hari": "SENIN", "jam": "VII", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VII", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VII", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VII", "mapel": "PKN", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VII", "mapel": "BHS.ING", "guru": "NURUN NISAA ALIMAH ANWAR", "kode": 31}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VII", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VII", "mapel": "AA", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VII", "mapel": "BHS.INA", "guru": "ERNAWATI", "kode": 20}, {"kelas": "VIID", "hari": "SENIN", "jam": "VII", "mapel": "SBD", "guru": "ASNIAR", "kode": 34}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VII", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "IXA", "hari": "SENIN", "jam": "VIII", "mapel": "FIQHI", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "IXB", "hari": "SENIN", "jam": "VIII", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "IXC", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VIII", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VIII", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VIII", "mapel": "PKN", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.ING", "guru": "NURUN NISAA ALIMAH ANWAR", "kode": 31}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VIII", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VIII", "mapel": "AA", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.INA", "guru": "ERNAWATI", "kode": 20}, {"kelas": "VIID", "hari": "SENIN", "jam": "VIII", "mapel": "SBD", "guru": "ASNIAR", "kode": 34}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VIII", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "IXA", "hari": "SENIN", "jam": "I", "mapel": "IPS", "guru": "CHAIRUDDIN", "kode": 4}, {"kelas": "IXB", "hari": "SENIN", "jam": "I", "mapel": "MAT", "guru": "TAUFIK", "kode": 5}, {"kelas": "IXC", "hari": "SENIN", "jam": "I", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "I", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "I", "mapel": "FIQHI", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "I", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIID", "hari": "SENIN", "jam": "I", "mapel": "MULOK", "guru": "NURILMI", "kode": 36}, {"kelas": "VIIA", "hari": "SENIN", "jam": "I", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIIB", "hari": "SENIN", "jam": "I", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIC", "hari": "SENIN", "jam": "I", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIID", "hari": "SENIN", "jam": "I", "mapel": "INFO", "guru": "ASNIAR", "kode": 34}, {"kelas": "VIIE", "hari": "SENIN", "jam": "I", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "IXA", "hari": "SENIN", "jam": "II", "mapel": "IPS", "guru": "CHAIRUDDIN", "kode": 4}, {"kelas": "IXB", "hari": "SENIN", "jam": "II", "mapel": "MAT", "guru": "TAUFIK", "kode": 5}, {"kelas": "IXC", "hari": "SENIN", "jam": "II", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "II", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "II", "mapel": "FIQHI", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "II", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIID", "hari": "SENIN", "jam": "II", "mapel": "MULOK", "guru": "NURILMI", "kode": 36}, {"kelas": "VIIA", "hari": "SENIN", "jam": "II", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIIB", "hari": "SENIN", "jam": "II", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIC", "hari": "SENIN", "jam": "II", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIID", "hari": "SENIN", "jam": "II", "mapel": "INFO", "guru": "ASNIAR", "kode": 34}, {"kelas": "VIIE", "hari": "SENIN", "jam": "II", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "IXA", "hari": "SENIN", "jam": "III", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "IXB", "hari": "SENIN", "jam": "III", "mapel": "FIQHI", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "IXC", "hari": "SENIN", "jam": "III", "mapel": "MAT", "guru": "TAUFIK", "kode": 5}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "III", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "III", "mapel": "FIQHI", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "III", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIID", "hari": "SENIN", "jam": "III", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIA", "hari": "SENIN", "jam": "III", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "VIIB", "hari": "SENIN", "jam": "III", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIC", "hari": "SENIN", "jam": "III", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIID", "hari": "SENIN", "jam": "III", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIIE", "hari": "SENIN", "jam": "III", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "IXA", "hari": "SENIN", "jam": "IV", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "IXB", "hari": "SENIN", "jam": "IV", "mapel": "FIQHI", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "IXC", "hari": "SENIN", "jam": "IV", "mapel": "MAT", "guru": "TAUFIK", "kode": 5}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "IV", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "IV", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "IV", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIID", "hari": "SENIN", "jam": "IV", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIA", "hari": "SENIN", "jam": "IV", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "VIIB", "hari": "SENIN", "jam": "IV", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "VIIC", "hari": "SENIN", "jam": "IV", "mapel": "IPA", "guru": "MIRNAWATI", "kode": 32}, {"kelas": "VIID", "hari": "SENIN", "jam": "IV", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIIE", "hari": "SENIN", "jam": "IV", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "IXA", "hari": "SENIN", "jam": "V", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "IXB", "hari": "SENIN", "jam": "V", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "IXC", "hari": "SENIN", "jam": "V", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "V", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "V", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "V", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIID", "hari": "SENIN", "jam": "V", "mapel": "QH", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "VIIA", "hari": "SENIN", "jam": "V", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "VIIB", "hari": "SENIN", "jam": "V", "mapel": "MULOK", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "VIIC", "hari": "SENIN", "jam": "V", "mapel": "IPA", "guru": "MIRNAWATI", "kode": 32}, {"kelas": "VIID", "hari": "SENIN", "jam": "V", "mapel": "FQ", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIE", "hari": "SENIN", "jam": "V", "mapel": "INFO", "guru": "ASNIAR", "kode": 34}, {"kelas": "IXA", "hari": "SENIN", "jam": "VI", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "IXB", "hari": "SENIN", "jam": "VI", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "IXC", "hari": "SENIN", "jam": "VI", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VI", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VI", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VI", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VI", "mapel": "QH", "guru": "SITTI RAHMAH", "kode": 17}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VI", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VI", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VI", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "VIID", "hari": "SENIN", "jam": "VI", "mapel": "FQ", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VI", "mapel": "INFO", "guru": "ASNIAR", "kode": 34}, {"kelas": "IXA", "hari": "SENIN", "jam": "VII", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "IXB", "hari": "SENIN", "jam": "VII", "mapel": "IPS", "guru": "CHAIRUDDIN", "kode": 4}, {"kelas": "IXC", "hari": "SENIN", "jam": "VII", "mapel": "QH", "guru": "SAIMANG", "kode": 16}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VII", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VII", "mapel": "AA", "guru": "RATNAWATI", "kode": 7}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VII", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VII", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VII", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VII", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VII", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "VIID", "hari": "SENIN", "jam": "VII", "mapel": "MUKTAF", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VII", "mapel": "IPA", "guru": "MIRNAWATI", "kode": 32}, {"kelas": "IXA", "hari": "SENIN", "jam": "VIII", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "IXB", "hari": "SENIN", "jam": "VIII", "mapel": "IPS", "guru": "CHAIRUDDIN", "kode": 4}, {"kelas": "IXC", "hari": "SENIN", "jam": "VIII", "mapel": "QH", "guru": "SAIMANG", "kode": 16}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VIII", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VIII", "mapel": "AA", "guru": "RATNAWATI", "kode": 7}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VIII", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VIII", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VIII", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "VIID", "hari": "SENIN", "jam": "VIII", "mapel": "MUKTAF", "guru": "MUHAMMAD YANI", "kode": 33}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VIII", "mapel": "IPA", "guru": "MIRNAWATI", "kode": 32}, {"kelas": "IXA", "hari": "SENIN", "jam": "I", "mapel": "INFO", "guru": "ANDI MIRNA", "kode": 21}, {"kelas": "IXB", "hari": "SENIN", "jam": "I", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "IXC", "hari": "SENIN", "jam": "I", "mapel": "AA", "guru": "RATNAWATI", "kode": 7}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "I", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "I", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "I", "mapel": "BHS.ING", "guru": "NURUN NISAA ALIMAH ANWAR", "kode": 31}, {"kelas": "VIIID", "hari": "SENIN", "jam": "I", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIA", "hari": "SENIN", "jam": "I", "mapel": "BHS.INA", "guru": "NIRMAWATI TAHIR", "kode": 22}, {"kelas": "VIIB", "hari": "SENIN", "jam": "I", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIC", "hari": "SENIN", "jam": "I", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIID", "hari": "SENIN", "jam": "I", "mapel": "IPS", "guru": "MIDA", "kode": 14}, {"kelas": "VIIE", "hari": "SENIN", "jam": "I", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "IXA", "hari": "SENIN", "jam": "II", "mapel": "INFO", "guru": "ANDI MIRNA", "kode": 21}, {"kelas": "IXB", "hari": "SENIN", "jam": "II", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "IXC", "hari": "SENIN", "jam": "II", "mapel": "AA", "guru": "RATNAWATI", "kode": 7}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "II", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "II", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "II", "mapel": "BHS.ING", "guru": "NURUN NISAA ALIMAH ANWAR", "kode": 31}, {"kelas": "VIIID", "hari": "SENIN", "jam": "II", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIA", "hari": "SENIN", "jam": "II", "mapel": "BHS.INA", "guru": "NIRMAWATI TAHIR", "kode": 22}, {"kelas": "VIIB", "hari": "SENIN", "jam": "II", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIC", "hari": "SENIN", "jam": "II", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIID", "hari": "SENIN", "jam": "II", "mapel": "IPS", "guru": "MIDA", "kode": 14}, {"kelas": "VIIE", "hari": "SENIN", "jam": "II", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "IXA", "hari": "SENIN", "jam": "III", "mapel": "INFO", "guru": "ANDI MIRNA", "kode": 21}, {"kelas": "IXB", "hari": "SENIN", "jam": "III", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "IXC", "hari": "SENIN", "jam": "III", "mapel": "AA", "guru": "RATNAWATI", "kode": 7}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "III", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "III", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "III", "mapel": "BHS.ING", "guru": "NURUN NISAA ALIMAH ANWAR", "kode": 31}, {"kelas": "VIIID", "hari": "SENIN", "jam": "III", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIA", "hari": "SENIN", "jam": "III", "mapel": "BHS.INA", "guru": "NIRMAWATI TAHIR", "kode": 22}, {"kelas": "VIIB", "hari": "SENIN", "jam": "III", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIC", "hari": "SENIN", "jam": "III", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIID", "hari": "SENIN", "jam": "III", "mapel": "IPS", "guru": "MIDA", "kode": 14}, {"kelas": "VIIE", "hari": "SENIN", "jam": "III", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "IXA", "hari": "SENIN", "jam": "I", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "IXB", "hari": "SENIN", "jam": "I", "mapel": "IPS", "guru": "CHAIRUDDIN", "kode": 4}, {"kelas": "IXC", "hari": "SENIN", "jam": "I", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "I", "mapel": "BHS.ARAB", "guru": "NURILMI", "kode": 36}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "I", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "I", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIID", "hari": "SENIN", "jam": "I", "mapel": "FQ", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIA", "hari": "SENIN", "jam": "I", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIIB", "hari": "SENIN", "jam": "I", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIC", "hari": "SENIN", "jam": "I", "mapel": "IPA", "guru": "MIRNAWATI", "kode": 32}, {"kelas": "VIID", "hari": "SENIN", "jam": "I", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIE", "hari": "SENIN", "jam": "I", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "IXA", "hari": "SENIN", "jam": "II", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "IXB", "hari": "SENIN", "jam": "II", "mapel": "IPS", "guru": "CHAIRUDDIN", "kode": 4}, {"kelas": "IXC", "hari": "SENIN", "jam": "II", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "II", "mapel": "BHS.ARAB", "guru": "NURILMI", "kode": 36}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "II", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "II", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIID", "hari": "SENIN", "jam": "II", "mapel": "FQ", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIA", "hari": "SENIN", "jam": "II", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIIB", "hari": "SENIN", "jam": "II", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIC", "hari": "SENIN", "jam": "II", "mapel": "IPA", "guru": "MIRNAWATI", "kode": 32}, {"kelas": "VIID", "hari": "SENIN", "jam": "II", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIE", "hari": "SENIN", "jam": "II", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "IXA", "hari": "SENIN", "jam": "III", "mapel": "MAT", "guru": "TAUFIK", "kode": 5}, {"kelas": "IXB", "hari": "SENIN", "jam": "III", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "IXC", "hari": "SENIN", "jam": "III", "mapel": "IPS", "guru": "CHAIRUDDIN", "kode": 4}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "III", "mapel": "BHS.ARAB", "guru": "NURILMI", "kode": 36}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "III", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "III", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIID", "hari": "SENIN", "jam": "III", "mapel": "FQ", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIA", "hari": "SENIN", "jam": "III", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "VIIB", "hari": "SENIN", "jam": "III", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIC", "hari": "SENIN", "jam": "III", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIID", "hari": "SENIN", "jam": "III", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "VIIE", "hari": "SENIN", "jam": "III", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "IXA", "hari": "SENIN", "jam": "IV", "mapel": "MAT", "guru": "TAUFIK", "kode": 5}, {"kelas": "IXB", "hari": "SENIN", "jam": "IV", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "IXC", "hari": "SENIN", "jam": "IV", "mapel": "IPS", "guru": "CHAIRUDDIN", "kode": 4}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "IV", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "IV", "mapel": "MULOK", "guru": "JAYANTI JUFRI", "kode": 30}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "IV", "mapel": "BHS.INA", "guru": "WATI ZAELANI SIDIG ELLYANANDO", "kode": 19}, {"kelas": "VIIID", "hari": "SENIN", "jam": "IV", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIA", "hari": "SENIN", "jam": "IV", "mapel": "IPA", "guru": "ABDILLAH", "kode": 27}, {"kelas": "VIIB", "hari": "SENIN", "jam": "IV", "mapel": "INFO", "guru": "MALIK", "kode": 13}, {"kelas": "VIIC", "hari": "SENIN", "jam": "IV", "mapel": "MAT", "guru": "IRMAWATI NUR", "kode": 3}, {"kelas": "VIID", "hari": "SENIN", "jam": "IV", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "VIIE", "hari": "SENIN", "jam": "IV", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "IXA", "hari": "SENIN", "jam": "V", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "IXB", "hari": "SENIN", "jam": "V", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "IXC", "hari": "SENIN", "jam": "V", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "V", "mapel": "MAT", "guru": "NURUL FITRI USMAN", "kode": 24}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "V", "mapel": "MULOK", "guru": "JAYANTI JUFRI", "kode": 30}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "V", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIID", "hari": "SENIN", "jam": "V", "mapel": "PENJAS", "guru": "KAHARUDDIN", "kode": 28}, {"kelas": "VIIA", "hari": "SENIN", "jam": "V", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIB", "hari": "SENIN", "jam": "V", "mapel": "INFO", "guru": "MALIK", "kode": 13}, {"kelas": "VIIC", "hari": "SENIN", "jam": "V", "mapel": "AA", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIID", "hari": "SENIN", "jam": "V", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "VIIE", "hari": "SENIN", "jam": "V", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "IXA", "hari": "SENIN", "jam": "VI", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "IXB", "hari": "SENIN", "jam": "VI", "mapel": "AA", "guru": "RATNAWATI", "kode": 7}, {"kelas": "IXC", "hari": "SENIN", "jam": "VI", "mapel": "PKN", "guru": "MUH. SAIN", "kode": 11}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VI", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VI", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VI", "mapel": "IPA", "guru": "KARDI", "kode": 2}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VI", "mapel": "BHS.ARAB", "guru": "JAYANTI JUFRI", "kode": 30}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VI", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VI", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VI", "mapel": "AA", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIID", "hari": "SENIN", "jam": "VI", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VI", "mapel": "QH", "guru": "ANDI RASNIA RASJID", "kode": 8}, {"kelas": "IXA", "hari": "SENIN", "jam": "VII", "mapel": "QH", "guru": "SAIMANG", "kode": 16}, {"kelas": "IXB", "hari": "SENIN", "jam": "VII", "mapel": "AA", "guru": "RATNAWATI", "kode": 7}, {"kelas": "IXC", "hari": "SENIN", "jam": "VII", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VII", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VII", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VII", "mapel": "AA", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VII", "mapel": "BHS.ARAB", "guru": "JAYANTI JUFRI", "kode": 30}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VII", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VII", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VII", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIID", "hari": "SENIN", "jam": "VII", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VII", "mapel": "IPA", "guru": "MIRNAWATI", "kode": 32}, {"kelas": "IXA", "hari": "SENIN", "jam": "VIII", "mapel": "QH", "guru": "SAIMANG", "kode": 16}, {"kelas": "IXB", "hari": "SENIN", "jam": "VIII", "mapel": "AA", "guru": "RATNAWATI", "kode": 7}, {"kelas": "IXC", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.INA", "guru": "HERNIATI", "kode": 10}, {"kelas": "VIIIA", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.INGG", "guru": "RUSNAWATI", "kode": 15}, {"kelas": "VIIIB", "hari": "SENIN", "jam": "VIII", "mapel": "IPS", "guru": "MUTMAINNAH", "kode": 26}, {"kelas": "VIIIC", "hari": "SENIN", "jam": "VIII", "mapel": "AA", "guru": "SITTI RAFIDAH", "kode": 9}, {"kelas": "VIIID", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.ARAB", "guru": "JAYANTI JUFRI", "kode": 30}, {"kelas": "VIIA", "hari": "SENIN", "jam": "VIII", "mapel": "SBD", "guru": "SUPRIADI", "kode": 6}, {"kelas": "VIIB", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.ARAB", "guru": "SUTRA", "kode": 12}, {"kelas": "VIIC", "hari": "SENIN", "jam": "VIII", "mapel": "SKI", "guru": "SUSIANTI", "kode": 18}, {"kelas": "VIID", "hari": "SENIN", "jam": "VIII", "mapel": "BHS.ING", "guru": "YURNIANTI", "kode": 29}, {"kelas": "VIIE", "hari": "SENIN", "jam": "VIII", "mapel": "IPA", "guru": "MIRNAWATI", "kode": 32}]
+[
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam": "I",
+  "mapel": "BHS.INGG",
+  "guru": "ANDI MIRNA",
+  "kode": 18
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam": "I",
+  "mapel": "IPA",
+  "guru": "MUHAMMAD YANI",
+  "kode": 9
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam": "I",
+  "mapel": "BHS.INGG",
+  "guru": "ERNAWATI",
+  "kode": 38
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam": "I",
+  "mapel": "PKN",
+  "guru": "ANDI RASNIA RASJID",
+  "kode": 2
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam": "I",
+  "mapel": "BHS.ING",
+  "guru": "MUH. SAIN",
+  "kode": 15
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam": "I",
+  "mapel": "SKI",
+  "guru": "ANDI MIRNA",
+  "kode": 36
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam": "I",
+  "mapel": "INFO",
+  "guru": "SUSIANTI",
+  "kode": 15
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam": "I",
+  "mapel": "QH",
+  "guru": "NURILMI",
+  "kode": 1
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam": "I",
+  "mapel": "FIQHI",
+  "guru": "SUTRA",
+  "kode": 22
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam": "I",
+  "mapel": "IPS",
+  "guru": "KARDI",
+  "kode": 14
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam": "I",
+  "mapel": "MULOK",
+  "guru": "HERNIATI",
+  "kode": 6
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam": "I",
+  "mapel": "PENJAS",
+  "guru": "HERNIATI",
+  "kode": 23
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam": "II",
+  "mapel": "MUKTAF",
+  "guru": "NIRMAWATI TAHIR",
+  "kode": 3
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam": "II",
+  "mapel": "QH",
+  "guru": "IRMAWATI NUR",
+  "kode": 25
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam": "II",
+  "mapel": "BHS.ING",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 40
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam": "II",
+  "mapel": "MUKTAF",
+  "guru": "MIRNAWATI",
+  "kode": 5
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam": "II",
+  "mapel": "BHS.ARAB",
+  "guru": "MUHAMMAD YANI",
+  "kode": 19
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam": "II",
+  "mapel": "BHS.ING",
+  "guru": "MUHAMMAD YANI",
+  "kode": 7
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam": "II",
+  "mapel": "PENJAS",
+  "guru": "NURILMI",
+  "kode": 30
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam": "II",
+  "mapel": "MUKTAF",
+  "guru": "MALIK",
+  "kode": 24
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam": "II",
+  "mapel": "MUKTAF",
+  "guru": "MUH. SAIN",
+  "kode": 18
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam": "II",
+  "mapel": "BHS.ING",
+  "guru": "MALIK",
+  "kode": 35
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam": "II",
+  "mapel": "IPA",
+  "guru": "MALIK",
+  "kode": 30
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam": "II",
+  "mapel": "PENJAS",
+  "guru": "NURILMI",
+  "kode": 36
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam": "III",
+  "mapel": "IPA",
+  "guru": "RATNAWATI",
+  "kode": 4
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam": "III",
+  "mapel": "IPA",
+  "guru": "ANDI RASNIA RASJID",
+  "kode": 21
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam": "III",
+  "mapel": "PENJAS",
+  "guru": "NURILMI",
+  "kode": 5
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam": "III",
+  "mapel": "INFO",
+  "guru": "RATNAWATI",
+  "kode": 14
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam": "III",
+  "mapel": "SBD",
+  "guru": "SITTI RAFIDAH",
+  "kode": 30
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam": "III",
+  "mapel": "BHS.INA",
+  "guru": "NIRMAWATI TAHIR",
+  "kode": 9
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam": "III",
+  "mapel": "IPA",
+  "guru": "NIRMAWATI TAHIR",
+  "kode": 38
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam": "III",
+  "mapel": "PKN",
+  "guru": "SITTI RAFIDAH",
+  "kode": 24
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam": "III",
+  "mapel": "IPA",
+  "guru": "KAHARUDDIN",
+  "kode": 33
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam": "III",
+  "mapel": "SBD",
+  "guru": "ERNAWATI",
+  "kode": 4
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam": "III",
+  "mapel": "BHS.INGG",
+  "guru": "KARDI",
+  "kode": 11
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam": "III",
+  "mapel": "PKN",
+  "guru": "CHAIRUDDIN",
+  "kode": 25
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam": "IV",
+  "mapel": "PENJAS",
+  "guru": "TAUFIK",
+  "kode": 34
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam": "IV",
+  "mapel": "IPS",
+  "guru": "ABDILLAH",
+  "kode": 8
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam": "IV",
+  "mapel": "IPS",
+  "guru": "RUSTIANI",
+  "kode": 8
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam": "IV",
+  "mapel": "MAT",
+  "guru": "SUTRA",
+  "kode": 11
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam": "IV",
+  "mapel": "QH",
+  "guru": "ABDILLAH",
+  "kode": 17
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam": "IV",
+  "mapel": "SKI",
+  "guru": "MIDA",
+  "kode": 33
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam": "IV",
+  "mapel": "BHS.INGG",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 33
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam": "IV",
+  "mapel": "INFO",
+  "guru": "KARDI",
+  "kode": 24
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam": "IV",
+  "mapel": "FIQHI",
+  "guru": "ABDILLAH",
+  "kode": 39
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam": "IV",
+  "mapel": "MULOK",
+  "guru": "YURNIANTI",
+  "kode": 2
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam": "IV",
+  "mapel": "BHS.INGG",
+  "guru": "SAIMANG",
+  "kode": 20
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam": "IV",
+  "mapel": "IPA",
+  "guru": "ASNIAR",
+  "kode": 16
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam": "V",
+  "mapel": "BHS.ING",
+  "guru": "ERNAWATI",
+  "kode": 32
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam": "V",
+  "mapel": "BHS.ING",
+  "guru": "KAHARUDDIN",
+  "kode": 9
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam": "V",
+  "mapel": "SBD",
+  "guru": "MALIK",
+  "kode": 17
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam": "V",
+  "mapel": "SKI",
+  "guru": "SUTRA",
+  "kode": 14
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam": "V",
+  "mapel": "INFO",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 26
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam": "V",
+  "mapel": "MUKTAF",
+  "guru": "SUPRIADI",
+  "kode": 34
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam": "V",
+  "mapel": "QH",
+  "guru": "IRMAWATI NUR",
+  "kode": 16
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam": "V",
+  "mapel": "IPA",
+  "guru": "CHAIRUDDIN",
+  "kode": 22
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam": "V",
+  "mapel": "AA",
+  "guru": "MUHAMMAD YANI",
+  "kode": 38
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam": "V",
+  "mapel": "IPA",
+  "guru": "ABDILLAH",
+  "kode": 5
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam": "V",
+  "mapel": "BHS.ARAB",
+  "guru": "MUHAMMAD YANI",
+  "kode": 5
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam": "V",
+  "mapel": "BHS.ARAB",
+  "guru": "RUSTIANI",
+  "kode": 5
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam": "VI",
+  "mapel": "SKI",
+  "guru": "MUTMAINNAH",
+  "kode": 18
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam": "VI",
+  "mapel": "SBD",
+  "guru": "MUH. SAIN",
+  "kode": 35
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam": "VI",
+  "mapel": "BHS.INA",
+  "guru": "WATI ZAELANI SIDIG ELLYANANDO",
+  "kode": 16
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam": "VI",
+  "mapel": "SBD",
+  "guru": "SUSIANTI",
+  "kode": 13
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam": "VI",
+  "mapel": "BHS.INGG",
+  "guru": "HERNIATI",
+  "kode": 28
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam": "VI",
+  "mapel": "MUKTAF",
+  "guru": "SUTRA",
+  "kode": 27
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam": "VI",
+  "mapel": "QH",
+  "guru": "ASNIAR",
+  "kode": 7
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam": "VI",
+  "mapel": "BHS.ARAB",
+  "guru": "SITTI RAFIDAH",
+  "kode": 22
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam": "VI",
+  "mapel": "BHS.INGG",
+  "guru": "MUTMAINNAH",
+  "kode": 13
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam": "VI",
+  "mapel": "INFO",
+  "guru": "SUPRIADI",
+  "kode": 9
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam": "VI",
+  "mapel": "PKN",
+  "guru": "MIDA",
+  "kode": 18
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam": "VI",
+  "mapel": "QH",
+  "guru": "MUTMAINNAH",
+  "kode": 5
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam": "VII",
+  "mapel": "QH",
+  "guru": "HERNIATI",
+  "kode": 4
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam": "VII",
+  "mapel": "AA",
+  "guru": "ERNAWATI",
+  "kode": 16
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam": "VII",
+  "mapel": "FIQHI",
+  "guru": "SUSIANTI",
+  "kode": 32
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam": "VII",
+  "mapel": "SBD",
+  "guru": "MUH. SAIN",
+  "kode": 26
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam": "VII",
+  "mapel": "BHS.ARAB",
+  "guru": "MALIK",
+  "kode": 25
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam": "VII",
+  "mapel": "AA",
+  "guru": "SITTI RAHMAH",
+  "kode": 17
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam": "VII",
+  "mapel": "QH",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 28
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam": "VII",
+  "mapel": "SBD",
+  "guru": "KARDI",
+  "kode": 13
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam": "VII",
+  "mapel": "MAT",
+  "guru": "MUH. SAIN",
+  "kode": 4
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam": "VII",
+  "mapel": "BHS.ARAB",
+  "guru": "RATNAWATI",
+  "kode": 4
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam": "VII",
+  "mapel": "BHS.ARAB",
+  "guru": "WATI ZAELANI SIDIG ELLYANANDO",
+  "kode": 33
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam": "VII",
+  "mapel": "SKI",
+  "guru": "MALIK",
+  "kode": 4
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SENIN",
+  "jam": "VIII",
+  "mapel": "SKI",
+  "guru": "ERNAWATI",
+  "kode": 12
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SENIN",
+  "jam": "VIII",
+  "mapel": "BHS.ING",
+  "guru": "CHAIRUDDIN",
+  "kode": 16
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SENIN",
+  "jam": "VIII",
+  "mapel": "PENJAS",
+  "guru": "IRMAWATI NUR",
+  "kode": 37
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SENIN",
+  "jam": "VIII",
+  "mapel": "IPA",
+  "guru": "ANDI RASNIA RASJID",
+  "kode": 40
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SENIN",
+  "jam": "VIII",
+  "mapel": "BHS.ING",
+  "guru": "SUSIANTI",
+  "kode": 38
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SENIN",
+  "jam": "VIII",
+  "mapel": "SKI",
+  "guru": "RATNAWATI",
+  "kode": 17
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SENIN",
+  "jam": "VIII",
+  "mapel": "INFO",
+  "guru": "RATNAWATI",
+  "kode": 16
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SENIN",
+  "jam": "VIII",
+  "mapel": "IPS",
+  "guru": "SITTI RAFIDAH",
+  "kode": 9
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SENIN",
+  "jam": "VIII",
+  "mapel": "MAT",
+  "guru": "TAUFIK",
+  "kode": 21
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SENIN",
+  "jam": "VIII",
+  "mapel": "BHS.ING",
+  "guru": "ABDILLAH",
+  "kode": 30
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SENIN",
+  "jam": "VIII",
+  "mapel": "BHS.INGG",
+  "guru": "CHAIRUDDIN",
+  "kode": 35
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SENIN",
+  "jam": "VIII",
+  "mapel": "INFO",
+  "guru": "JAYANTI JUFRI",
+  "kode": 17
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam": "I",
+  "mapel": "BHS.INA",
+  "guru": "RUSNAWATI",
+  "kode": 5
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam": "I",
+  "mapel": "IPA",
+  "guru": "SAIMANG",
+  "kode": 19
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam": "I",
+  "mapel": "FIQHI",
+  "guru": "SUPRIADI",
+  "kode": 35
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam": "I",
+  "mapel": "MAT",
+  "guru": "ABDILLAH",
+  "kode": 36
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam": "I",
+  "mapel": "MAT",
+  "guru": "HERNIATI",
+  "kode": 9
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam": "I",
+  "mapel": "IPS",
+  "guru": "IRMAWATI NUR",
+  "kode": 7
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam": "I",
+  "mapel": "BHS.INA",
+  "guru": "NURILMI",
+  "kode": 19
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam": "I",
+  "mapel": "INFO",
+  "guru": "RUSTIANI",
+  "kode": 14
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam": "I",
+  "mapel": "IPS",
+  "guru": "JAYANTI JUFRI",
+  "kode": 32
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam": "I",
+  "mapel": "IPS",
+  "guru": "ASNIAR",
+  "kode": 6
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam": "I",
+  "mapel": "PKN",
+  "guru": "NURILMI",
+  "kode": 3
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam": "I",
+  "mapel": "AA",
+  "guru": "RUSTIANI",
+  "kode": 9
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam": "II",
+  "mapel": "IPS",
+  "guru": "MALIK",
+  "kode": 29
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam": "II",
+  "mapel": "PKN",
+  "guru": "ABDILLAH",
+  "kode": 8
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam": "II",
+  "mapel": "BHS.ING",
+  "guru": "KARDI",
+  "kode": 35
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam": "II",
+  "mapel": "BHS.ARAB",
+  "guru": "SAIMANG",
+  "kode": 38
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam": "II",
+  "mapel": "BHS.INA",
+  "guru": "SUTRA",
+  "kode": 9
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam": "II",
+  "mapel": "BHS.ARAB",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 24
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam": "II",
+  "mapel": "BHS.ARAB",
+  "guru": "RUSNAWATI",
+  "kode": 14
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam": "II",
+  "mapel": "IPA",
+  "guru": "HERNIATI",
+  "kode": 23
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam": "II",
+  "mapel": "PKN",
+  "guru": "KARDI",
+  "kode": 16
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam": "II",
+  "mapel": "FIQHI",
+  "guru": "MIDA",
+  "kode": 27
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam": "II",
+  "mapel": "AA",
+  "guru": "MIDA",
+  "kode": 22
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam": "II",
+  "mapel": "PKN",
+  "guru": "MUTMAINNAH",
+  "kode": 18
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam": "III",
+  "mapel": "FIQHI",
+  "guru": "HERNIATI",
+  "kode": 25
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam": "III",
+  "mapel": "BHS.ARAB",
+  "guru": "WATI ZAELANI SIDIG ELLYANANDO",
+  "kode": 15
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam": "III",
+  "mapel": "INFO",
+  "guru": "TAUFIK",
+  "kode": 23
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam": "III",
+  "mapel": "MAT",
+  "guru": "MUHAMMAD YANI",
+  "kode": 15
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam": "III",
+  "mapel": "AA",
+  "guru": "MIRNAWATI",
+  "kode": 26
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam": "III",
+  "mapel": "MULOK",
+  "guru": "NURILMI",
+  "kode": 5
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam": "III",
+  "mapel": "IPS",
+  "guru": "RUSNAWATI",
+  "kode": 33
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam": "III",
+  "mapel": "PENJAS",
+  "guru": "RUSTIANI",
+  "kode": 2
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam": "III",
+  "mapel": "BHS.INGG",
+  "guru": "NIRMAWATI TAHIR",
+  "kode": 12
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam": "III",
+  "mapel": "IPS",
+  "guru": "ANDI RASNIA RASJID",
+  "kode": 7
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam": "III",
+  "mapel": "PKN",
+  "guru": "RUSNAWATI",
+  "kode": 21
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam": "III",
+  "mapel": "PKN",
+  "guru": "JAYANTI JUFRI",
+  "kode": 8
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam": "IV",
+  "mapel": "PENJAS",
+  "guru": "MIRNAWATI",
+  "kode": 17
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam": "IV",
+  "mapel": "BHS.ARAB",
+  "guru": "SUTRA",
+  "kode": 1
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam": "IV",
+  "mapel": "SKI",
+  "guru": "MIRNAWATI",
+  "kode": 24
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam": "IV",
+  "mapel": "PKN",
+  "guru": "CHAIRUDDIN",
+  "kode": 22
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam": "IV",
+  "mapel": "MULOK",
+  "guru": "IRMAWATI NUR",
+  "kode": 20
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam": "IV",
+  "mapel": "SKI",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 27
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam": "IV",
+  "mapel": "MULOK",
+  "guru": "SITTI RAFIDAH",
+  "kode": 19
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam": "IV",
+  "mapel": "BHS.INA",
+  "guru": "MIRNAWATI",
+  "kode": 27
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam": "IV",
+  "mapel": "PENJAS",
+  "guru": "MIDA",
+  "kode": 40
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam": "IV",
+  "mapel": "MAT",
+  "guru": "SITTI RAFIDAH",
+  "kode": 36
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam": "IV",
+  "mapel": "AA",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 19
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam": "IV",
+  "mapel": "INFO",
+  "guru": "SUTRA",
+  "kode": 38
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam": "V",
+  "mapel": "MULOK",
+  "guru": "TAUFIK",
+  "kode": 29
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam": "V",
+  "mapel": "QH",
+  "guru": "MUH. SAIN",
+  "kode": 33
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam": "V",
+  "mapel": "SBD",
+  "guru": "MALIK",
+  "kode": 6
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam": "V",
+  "mapel": "MAT",
+  "guru": "JAYANTI JUFRI",
+  "kode": 40
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam": "V",
+  "mapel": "MULOK",
+  "guru": "ERNAWATI",
+  "kode": 16
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam": "V",
+  "mapel": "MAT",
+  "guru": "MUHAMMAD YANI",
+  "kode": 13
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam": "V",
+  "mapel": "BHS.INA",
+  "guru": "ANDI MIRNA",
+  "kode": 3
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam": "V",
+  "mapel": "IPA",
+  "guru": "WATI ZAELANI SIDIG ELLYANANDO",
+  "kode": 40
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam": "V",
+  "mapel": "BHS.ING",
+  "guru": "TAUFIK",
+  "kode": 27
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam": "V",
+  "mapel": "INFO",
+  "guru": "SITTI RAHMAH",
+  "kode": 32
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam": "V",
+  "mapel": "PENJAS",
+  "guru": "MUTMAINNAH",
+  "kode": 10
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam": "V",
+  "mapel": "AA",
+  "guru": "HERNIATI",
+  "kode": 28
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam": "VI",
+  "mapel": "IPA",
+  "guru": "MIDA",
+  "kode": 34
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam": "VI",
+  "mapel": "QH",
+  "guru": "ASNIAR",
+  "kode": 36
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam": "VI",
+  "mapel": "IPA",
+  "guru": "IRMAWATI NUR",
+  "kode": 30
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam": "VI",
+  "mapel": "BHS.INA",
+  "guru": "TAUFIK",
+  "kode": 34
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam": "VI",
+  "mapel": "MULOK",
+  "guru": "SUPRIADI",
+  "kode": 40
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam": "VI",
+  "mapel": "SKI",
+  "guru": "SUTRA",
+  "kode": 36
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam": "VI",
+  "mapel": "QH",
+  "guru": "MALIK",
+  "kode": 31
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam": "VI",
+  "mapel": "QH",
+  "guru": "NIRMAWATI TAHIR",
+  "kode": 16
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam": "VI",
+  "mapel": "IPS",
+  "guru": "YURNIANTI",
+  "kode": 16
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam": "VI",
+  "mapel": "IPS",
+  "guru": "SUPRIADI",
+  "kode": 5
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam": "VI",
+  "mapel": "MAT",
+  "guru": "MUTMAINNAH",
+  "kode": 18
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam": "VI",
+  "mapel": "MULOK",
+  "guru": "RATNAWATI",
+  "kode": 35
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam": "VII",
+  "mapel": "BHS.ING",
+  "guru": "KAHARUDDIN",
+  "kode": 10
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam": "VII",
+  "mapel": "IPA",
+  "guru": "SITTI RAHMAH",
+  "kode": 10
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam": "VII",
+  "mapel": "INFO",
+  "guru": "CHAIRUDDIN",
+  "kode": 27
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam": "VII",
+  "mapel": "PKN",
+  "guru": "RUSTIANI",
+  "kode": 35
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam": "VII",
+  "mapel": "QH",
+  "guru": "SUSIANTI",
+  "kode": 4
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam": "VII",
+  "mapel": "INFO",
+  "guru": "SUSIANTI",
+  "kode": 25
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam": "VII",
+  "mapel": "AA",
+  "guru": "SITTI RAHMAH",
+  "kode": 31
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam": "VII",
+  "mapel": "AA",
+  "guru": "RUSNAWATI",
+  "kode": 20
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam": "VII",
+  "mapel": "PENJAS",
+  "guru": "SUSIANTI",
+  "kode": 35
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam": "VII",
+  "mapel": "IPA",
+  "guru": "YURNIANTI",
+  "kode": 15
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam": "VII",
+  "mapel": "IPS",
+  "guru": "SUTRA",
+  "kode": 32
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam": "VII",
+  "mapel": "AA",
+  "guru": "SITTI RAHMAH",
+  "kode": 22
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "SELASA",
+  "jam": "VIII",
+  "mapel": "PENJAS",
+  "guru": "MALIK",
+  "kode": 30
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "SELASA",
+  "jam": "VIII",
+  "mapel": "BHS.INA",
+  "guru": "ANDI MIRNA",
+  "kode": 26
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "SELASA",
+  "jam": "VIII",
+  "mapel": "AA",
+  "guru": "ERNAWATI",
+  "kode": 28
+ },
+ {
+  "kelas": "VIID",
+  "hari": "SELASA",
+  "jam": "VIII",
+  "mapel": "BHS.INA",
+  "guru": "TAUFIK",
+  "kode": 12
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "SELASA",
+  "jam": "VIII",
+  "mapel": "BHS.ARAB",
+  "guru": "NIRMAWATI TAHIR",
+  "kode": 25
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "SELASA",
+  "jam": "VIII",
+  "mapel": "MULOK",
+  "guru": "MUH. SAIN",
+  "kode": 30
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "SELASA",
+  "jam": "VIII",
+  "mapel": "MULOK",
+  "guru": "RUSTIANI",
+  "kode": 25
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "SELASA",
+  "jam": "VIII",
+  "mapel": "IPS",
+  "guru": "SUSIANTI",
+  "kode": 17
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "SELASA",
+  "jam": "VIII",
+  "mapel": "BHS.ING",
+  "guru": "WATI ZAELANI SIDIG ELLYANANDO",
+  "kode": 2
+ },
+ {
+  "kelas": "IXA",
+  "hari": "SELASA",
+  "jam": "VIII",
+  "mapel": "BHS.ARAB",
+  "guru": "RUSNAWATI",
+  "kode": 15
+ },
+ {
+  "kelas": "IXB",
+  "hari": "SELASA",
+  "jam": "VIII",
+  "mapel": "BHS.ING",
+  "guru": "ANDI RASNIA RASJID",
+  "kode": 2
+ },
+ {
+  "kelas": "IXC",
+  "hari": "SELASA",
+  "jam": "VIII",
+  "mapel": "IPA",
+  "guru": "MIRNAWATI",
+  "kode": 2
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam": "I",
+  "mapel": "BHS.INA",
+  "guru": "MUTMAINNAH",
+  "kode": 9
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam": "I",
+  "mapel": "SBD",
+  "guru": "IRMAWATI NUR",
+  "kode": 37
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam": "I",
+  "mapel": "INFO",
+  "guru": "TAUFIK",
+  "kode": 17
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam": "I",
+  "mapel": "MUKTAF",
+  "guru": "MALIK",
+  "kode": 39
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam": "I",
+  "mapel": "BHS.INGG",
+  "guru": "MALIK",
+  "kode": 20
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam": "I",
+  "mapel": "BHS.INGG",
+  "guru": "ANDI MIRNA",
+  "kode": 20
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam": "I",
+  "mapel": "PENJAS",
+  "guru": "SITTI RAFIDAH",
+  "kode": 13
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam": "I",
+  "mapel": "BHS.ING",
+  "guru": "MUTMAINNAH",
+  "kode": 7
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam": "I",
+  "mapel": "MAT",
+  "guru": "IRMAWATI NUR",
+  "kode": 37
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam": "I",
+  "mapel": "BHS.ARAB",
+  "guru": "RUSNAWATI",
+  "kode": 35
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam": "I",
+  "mapel": "PKN",
+  "guru": "SAIMANG",
+  "kode": 5
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam": "I",
+  "mapel": "SKI",
+  "guru": "RUSTIANI",
+  "kode": 1
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam": "II",
+  "mapel": "PKN",
+  "guru": "YURNIANTI",
+  "kode": 7
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam": "II",
+  "mapel": "PKN",
+  "guru": "SAIMANG",
+  "kode": 30
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam": "II",
+  "mapel": "BHS.INA",
+  "guru": "SUTRA",
+  "kode": 12
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam": "II",
+  "mapel": "SKI",
+  "guru": "NURILMI",
+  "kode": 40
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam": "II",
+  "mapel": "SBD",
+  "guru": "TAUFIK",
+  "kode": 28
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam": "II",
+  "mapel": "IPS",
+  "guru": "RATNAWATI",
+  "kode": 16
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam": "II",
+  "mapel": "BHS.ING",
+  "guru": "NURILMI",
+  "kode": 29
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam": "II",
+  "mapel": "IPA",
+  "guru": "TAUFIK",
+  "kode": 37
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam": "II",
+  "mapel": "PENJAS",
+  "guru": "RUSTIANI",
+  "kode": 2
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam": "II",
+  "mapel": "SBD",
+  "guru": "RATNAWATI",
+  "kode": 12
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam": "II",
+  "mapel": "SBD",
+  "guru": "MUH. SAIN",
+  "kode": 23
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam": "II",
+  "mapel": "IPS",
+  "guru": "RUSTIANI",
+  "kode": 18
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam": "III",
+  "mapel": "IPS",
+  "guru": "ABDILLAH",
+  "kode": 34
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam": "III",
+  "mapel": "INFO",
+  "guru": "ERNAWATI",
+  "kode": 16
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam": "III",
+  "mapel": "PKN",
+  "guru": "YURNIANTI",
+  "kode": 36
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam": "III",
+  "mapel": "IPA",
+  "guru": "WATI ZAELANI SIDIG ELLYANANDO",
+  "kode": 32
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam": "III",
+  "mapel": "QH",
+  "guru": "ANDI MIRNA",
+  "kode": 6
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam": "III",
+  "mapel": "MAT",
+  "guru": "MUHAMMAD YANI",
+  "kode": 26
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam": "III",
+  "mapel": "IPA",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 38
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam": "III",
+  "mapel": "MUKTAF",
+  "guru": "WATI ZAELANI SIDIG ELLYANANDO",
+  "kode": 36
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam": "III",
+  "mapel": "SKI",
+  "guru": "RUSNAWATI",
+  "kode": 28
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam": "III",
+  "mapel": "MULOK",
+  "guru": "RUSNAWATI",
+  "kode": 30
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam": "III",
+  "mapel": "IPS",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 17
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam": "III",
+  "mapel": "IPA",
+  "guru": "IRMAWATI NUR",
+  "kode": 13
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam": "IV",
+  "mapel": "MULOK",
+  "guru": "IRMAWATI NUR",
+  "kode": 35
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam": "IV",
+  "mapel": "FIQHI",
+  "guru": "MIRNAWATI",
+  "kode": 14
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam": "IV",
+  "mapel": "SBD",
+  "guru": "NURILMI",
+  "kode": 38
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam": "IV",
+  "mapel": "SKI",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 7
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam": "IV",
+  "mapel": "INFO",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 15
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam": "IV",
+  "mapel": "MUKTAF",
+  "guru": "MIDA",
+  "kode": 20
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam": "IV",
+  "mapel": "AA",
+  "guru": "KAHARUDDIN",
+  "kode": 18
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam": "IV",
+  "mapel": "BHS.ARAB",
+  "guru": "ASNIAR",
+  "kode": 36
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam": "IV",
+  "mapel": "MAT",
+  "guru": "KAHARUDDIN",
+  "kode": 32
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam": "IV",
+  "mapel": "BHS.INGG",
+  "guru": "ABDILLAH",
+  "kode": 37
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam": "IV",
+  "mapel": "MAT",
+  "guru": "WATI ZAELANI SIDIG ELLYANANDO",
+  "kode": 31
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam": "IV",
+  "mapel": "QH",
+  "guru": "RUSTIANI",
+  "kode": 12
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam": "V",
+  "mapel": "BHS.ARAB",
+  "guru": "NIRMAWATI TAHIR",
+  "kode": 31
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam": "V",
+  "mapel": "BHS.INGG",
+  "guru": "CHAIRUDDIN",
+  "kode": 26
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam": "V",
+  "mapel": "SBD",
+  "guru": "CHAIRUDDIN",
+  "kode": 37
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam": "V",
+  "mapel": "BHS.ARAB",
+  "guru": "KARDI",
+  "kode": 10
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam": "V",
+  "mapel": "MAT",
+  "guru": "ERNAWATI",
+  "kode": 16
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam": "V",
+  "mapel": "BHS.INGG",
+  "guru": "SUSIANTI",
+  "kode": 39
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam": "V",
+  "mapel": "IPA",
+  "guru": "SITTI RAHMAH",
+  "kode": 29
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam": "V",
+  "mapel": "QH",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 38
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam": "V",
+  "mapel": "PKN",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 37
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam": "V",
+  "mapel": "BHS.ARAB",
+  "guru": "HERNIATI",
+  "kode": 14
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam": "V",
+  "mapel": "INFO",
+  "guru": "NIRMAWATI TAHIR",
+  "kode": 6
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam": "V",
+  "mapel": "FIQHI",
+  "guru": "MUTMAINNAH",
+  "kode": 12
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam": "VI",
+  "mapel": "BHS.ING",
+  "guru": "MALIK",
+  "kode": 1
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam": "VI",
+  "mapel": "PKN",
+  "guru": "SUPRIADI",
+  "kode": 39
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam": "VI",
+  "mapel": "SBD",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 3
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam": "VI",
+  "mapel": "IPA",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 19
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam": "VI",
+  "mapel": "QH",
+  "guru": "CHAIRUDDIN",
+  "kode": 15
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam": "VI",
+  "mapel": "IPS",
+  "guru": "MIRNAWATI",
+  "kode": 28
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam": "VI",
+  "mapel": "BHS.INGG",
+  "guru": "MUHAMMAD YANI",
+  "kode": 10
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam": "VI",
+  "mapel": "IPS",
+  "guru": "KARDI",
+  "kode": 5
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam": "VI",
+  "mapel": "BHS.ARAB",
+  "guru": "MALIK",
+  "kode": 20
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam": "VI",
+  "mapel": "MAT",
+  "guru": "SUPRIADI",
+  "kode": 8
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam": "VI",
+  "mapel": "QH",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 26
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam": "VI",
+  "mapel": "IPS",
+  "guru": "JAYANTI JUFRI",
+  "kode": 35
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam": "VII",
+  "mapel": "SBD",
+  "guru": "SUPRIADI",
+  "kode": 6
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam": "VII",
+  "mapel": "BHS.ARAB",
+  "guru": "SUTRA",
+  "kode": 21
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam": "VII",
+  "mapel": "IPS",
+  "guru": "ANDI MIRNA",
+  "kode": 6
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam": "VII",
+  "mapel": "IPA",
+  "guru": "ANDI MIRNA",
+  "kode": 18
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam": "VII",
+  "mapel": "BHS.ARAB",
+  "guru": "MIDA",
+  "kode": 31
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam": "VII",
+  "mapel": "SKI",
+  "guru": "SUPRIADI",
+  "kode": 18
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam": "VII",
+  "mapel": "FIQHI",
+  "guru": "SUTRA",
+  "kode": 32
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam": "VII",
+  "mapel": "BHS.ING",
+  "guru": "WATI ZAELANI SIDIG ELLYANANDO",
+  "kode": 23
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam": "VII",
+  "mapel": "PKN",
+  "guru": "RUSTIANI",
+  "kode": 21
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam": "VII",
+  "mapel": "BHS.INGG",
+  "guru": "MALIK",
+  "kode": 22
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam": "VII",
+  "mapel": "PKN",
+  "guru": "YURNIANTI",
+  "kode": 19
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam": "VII",
+  "mapel": "PENJAS",
+  "guru": "ANDI RASNIA RASJID",
+  "kode": 30
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "RABU",
+  "jam": "VIII",
+  "mapel": "BHS.ING",
+  "guru": "RATNAWATI",
+  "kode": 17
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "RABU",
+  "jam": "VIII",
+  "mapel": "MULOK",
+  "guru": "IRMAWATI NUR",
+  "kode": 26
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "RABU",
+  "jam": "VIII",
+  "mapel": "SKI",
+  "guru": "ABDILLAH",
+  "kode": 35
+ },
+ {
+  "kelas": "VIID",
+  "hari": "RABU",
+  "jam": "VIII",
+  "mapel": "QH",
+  "guru": "SUSIANTI",
+  "kode": 4
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "RABU",
+  "jam": "VIII",
+  "mapel": "INFO",
+  "guru": "SAIMANG",
+  "kode": 40
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "RABU",
+  "jam": "VIII",
+  "mapel": "SBD",
+  "guru": "SUPRIADI",
+  "kode": 4
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "RABU",
+  "jam": "VIII",
+  "mapel": "INFO",
+  "guru": "NURILMI",
+  "kode": 36
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "RABU",
+  "jam": "VIII",
+  "mapel": "BHS.INA",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 29
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "RABU",
+  "jam": "VIII",
+  "mapel": "SBD",
+  "guru": "IRMAWATI NUR",
+  "kode": 2
+ },
+ {
+  "kelas": "IXA",
+  "hari": "RABU",
+  "jam": "VIII",
+  "mapel": "IPA",
+  "guru": "MALIK",
+  "kode": 20
+ },
+ {
+  "kelas": "IXB",
+  "hari": "RABU",
+  "jam": "VIII",
+  "mapel": "AA",
+  "guru": "SUSIANTI",
+  "kode": 6
+ },
+ {
+  "kelas": "IXC",
+  "hari": "RABU",
+  "jam": "VIII",
+  "mapel": "IPA",
+  "guru": "IRMAWATI NUR",
+  "kode": 30
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam": "I",
+  "mapel": "BHS.INGG",
+  "guru": "KARDI",
+  "kode": 32
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam": "I",
+  "mapel": "MAT",
+  "guru": "JAYANTI JUFRI",
+  "kode": 18
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam": "I",
+  "mapel": "PKN",
+  "guru": "WATI ZAELANI SIDIG ELLYANANDO",
+  "kode": 31
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam": "I",
+  "mapel": "IPA",
+  "guru": "TAUFIK",
+  "kode": 36
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam": "I",
+  "mapel": "BHS.INA",
+  "guru": "SITTI RAHMAH",
+  "kode": 13
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam": "I",
+  "mapel": "SKI",
+  "guru": "KAHARUDDIN",
+  "kode": 5
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam": "I",
+  "mapel": "IPS",
+  "guru": "SUSIANTI",
+  "kode": 22
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam": "I",
+  "mapel": "SKI",
+  "guru": "NURILMI",
+  "kode": 1
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam": "I",
+  "mapel": "MAT",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 38
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam": "I",
+  "mapel": "SBD",
+  "guru": "KARDI",
+  "kode": 29
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam": "I",
+  "mapel": "SBD",
+  "guru": "RUSNAWATI",
+  "kode": 22
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam": "I",
+  "mapel": "PENJAS",
+  "guru": "TAUFIK",
+  "kode": 21
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam": "II",
+  "mapel": "INFO",
+  "guru": "MUTMAINNAH",
+  "kode": 37
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam": "II",
+  "mapel": "PENJAS",
+  "guru": "MUHAMMAD YANI",
+  "kode": 27
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam": "II",
+  "mapel": "BHS.ARAB",
+  "guru": "RATNAWATI",
+  "kode": 31
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam": "II",
+  "mapel": "PENJAS",
+  "guru": "SITTI RAHMAH",
+  "kode": 10
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam": "II",
+  "mapel": "SBD",
+  "guru": "ANDI RASNIA RASJID",
+  "kode": 9
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam": "II",
+  "mapel": "SKI",
+  "guru": "RUSTIANI",
+  "kode": 7
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam": "II",
+  "mapel": "QH",
+  "guru": "HERNIATI",
+  "kode": 34
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam": "II",
+  "mapel": "QH",
+  "guru": "ABDILLAH",
+  "kode": 10
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam": "II",
+  "mapel": "PKN",
+  "guru": "KARDI",
+  "kode": 5
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam": "II",
+  "mapel": "SBD",
+  "guru": "NIRMAWATI TAHIR",
+  "kode": 22
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam": "II",
+  "mapel": "PENJAS",
+  "guru": "ERNAWATI",
+  "kode": 22
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam": "II",
+  "mapel": "PENJAS",
+  "guru": "RATNAWATI",
+  "kode": 32
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam": "III",
+  "mapel": "BHS.ARAB",
+  "guru": "CHAIRUDDIN",
+  "kode": 16
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam": "III",
+  "mapel": "MAT",
+  "guru": "MUHAMMAD YANI",
+  "kode": 6
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam": "III",
+  "mapel": "PKN",
+  "guru": "HERNIATI",
+  "kode": 7
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam": "III",
+  "mapel": "QH",
+  "guru": "MALIK",
+  "kode": 20
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam": "III",
+  "mapel": "AA",
+  "guru": "ANDI RASNIA RASJID",
+  "kode": 21
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam": "III",
+  "mapel": "BHS.ARAB",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 23
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam": "III",
+  "mapel": "MUKTAF",
+  "guru": "SUTRA",
+  "kode": 10
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam": "III",
+  "mapel": "IPA",
+  "guru": "SUSIANTI",
+  "kode": 37
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam": "III",
+  "mapel": "FIQHI",
+  "guru": "MALIK",
+  "kode": 12
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam": "III",
+  "mapel": "BHS.ING",
+  "guru": "SITTI RAHMAH",
+  "kode": 40
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam": "III",
+  "mapel": "IPA",
+  "guru": "YURNIANTI",
+  "kode": 38
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam": "III",
+  "mapel": "BHS.INA",
+  "guru": "MUHAMMAD YANI",
+  "kode": 30
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam": "IV",
+  "mapel": "IPS",
+  "guru": "TAUFIK",
+  "kode": 17
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam": "IV",
+  "mapel": "AA",
+  "guru": "TAUFIK",
+  "kode": 19
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam": "IV",
+  "mapel": "FIQHI",
+  "guru": "CHAIRUDDIN",
+  "kode": 29
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam": "IV",
+  "mapel": "MUKTAF",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 28
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam": "IV",
+  "mapel": "IPS",
+  "guru": "TAUFIK",
+  "kode": 20
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam": "IV",
+  "mapel": "INFO",
+  "guru": "SITTI RAHMAH",
+  "kode": 31
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam": "IV",
+  "mapel": "BHS.INGG",
+  "guru": "MUTMAINNAH",
+  "kode": 25
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam": "IV",
+  "mapel": "MUKTAF",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 19
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam": "IV",
+  "mapel": "AA",
+  "guru": "SITTI RAFIDAH",
+  "kode": 18
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam": "IV",
+  "mapel": "AA",
+  "guru": "ASNIAR",
+  "kode": 39
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam": "IV",
+  "mapel": "SBD",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 15
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam": "IV",
+  "mapel": "MUKTAF",
+  "guru": "MUHAMMAD YANI",
+  "kode": 13
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam": "V",
+  "mapel": "IPS",
+  "guru": "KAHARUDDIN",
+  "kode": 7
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam": "V",
+  "mapel": "BHS.ARAB",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 29
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam": "V",
+  "mapel": "BHS.ARAB",
+  "guru": "SAIMANG",
+  "kode": 9
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam": "V",
+  "mapel": "BHS.ING",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 21
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam": "V",
+  "mapel": "PKN",
+  "guru": "MIDA",
+  "kode": 13
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam": "V",
+  "mapel": "BHS.INA",
+  "guru": "SAIMANG",
+  "kode": 34
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam": "V",
+  "mapel": "SKI",
+  "guru": "NURILMI",
+  "kode": 11
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam": "V",
+  "mapel": "IPS",
+  "guru": "WATI ZAELANI SIDIG ELLYANANDO",
+  "kode": 19
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam": "V",
+  "mapel": "MULOK",
+  "guru": "IRMAWATI NUR",
+  "kode": 30
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam": "V",
+  "mapel": "BHS.ING",
+  "guru": "KARDI",
+  "kode": 15
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam": "V",
+  "mapel": "PENJAS",
+  "guru": "SAIMANG",
+  "kode": 6
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam": "V",
+  "mapel": "PENJAS",
+  "guru": "ABDILLAH",
+  "kode": 17
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam": "VI",
+  "mapel": "BHS.INGG",
+  "guru": "TAUFIK",
+  "kode": 24
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam": "VI",
+  "mapel": "IPS",
+  "guru": "SITTI RAHMAH",
+  "kode": 24
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam": "VI",
+  "mapel": "BHS.INGG",
+  "guru": "MUHAMMAD YANI",
+  "kode": 31
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam": "VI",
+  "mapel": "AA",
+  "guru": "RATNAWATI",
+  "kode": 40
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam": "VI",
+  "mapel": "IPA",
+  "guru": "CHAIRUDDIN",
+  "kode": 30
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam": "VI",
+  "mapel": "MAT",
+  "guru": "SUSIANTI",
+  "kode": 8
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam": "VI",
+  "mapel": "BHS.INA",
+  "guru": "ANDI RASNIA RASJID",
+  "kode": 3
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam": "VI",
+  "mapel": "MAT",
+  "guru": "YURNIANTI",
+  "kode": 8
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam": "VI",
+  "mapel": "BHS.INGG",
+  "guru": "MUTMAINNAH",
+  "kode": 35
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam": "VI",
+  "mapel": "BHS.INA",
+  "guru": "SITTI RAHMAH",
+  "kode": 30
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam": "VI",
+  "mapel": "MUKTAF",
+  "guru": "SUSIANTI",
+  "kode": 38
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam": "VI",
+  "mapel": "BHS.INA",
+  "guru": "SUSIANTI",
+  "kode": 7
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam": "VII",
+  "mapel": "SBD",
+  "guru": "SUSIANTI",
+  "kode": 18
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam": "VII",
+  "mapel": "BHS.ARAB",
+  "guru": "SAIMANG",
+  "kode": 14
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam": "VII",
+  "mapel": "QH",
+  "guru": "SUPRIADI",
+  "kode": 16
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam": "VII",
+  "mapel": "MUKTAF",
+  "guru": "HERNIATI",
+  "kode": 24
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam": "VII",
+  "mapel": "MUKTAF",
+  "guru": "ASNIAR",
+  "kode": 26
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam": "VII",
+  "mapel": "IPS",
+  "guru": "MIRNAWATI",
+  "kode": 8
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam": "VII",
+  "mapel": "QH",
+  "guru": "ERNAWATI",
+  "kode": 14
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam": "VII",
+  "mapel": "AA",
+  "guru": "ASNIAR",
+  "kode": 22
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam": "VII",
+  "mapel": "IPA",
+  "guru": "KAHARUDDIN",
+  "kode": 37
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam": "VII",
+  "mapel": "INFO",
+  "guru": "CHAIRUDDIN",
+  "kode": 36
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam": "VII",
+  "mapel": "INFO",
+  "guru": "MUH. SAIN",
+  "kode": 15
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam": "VII",
+  "mapel": "MULOK",
+  "guru": "KARDI",
+  "kode": 39
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "KAMIS",
+  "jam": "VIII",
+  "mapel": "AA",
+  "guru": "NURILMI",
+  "kode": 10
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "KAMIS",
+  "jam": "VIII",
+  "mapel": "BHS.INA",
+  "guru": "NIRMAWATI TAHIR",
+  "kode": 12
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "KAMIS",
+  "jam": "VIII",
+  "mapel": "BHS.INGG",
+  "guru": "ANDI MIRNA",
+  "kode": 9
+ },
+ {
+  "kelas": "VIID",
+  "hari": "KAMIS",
+  "jam": "VIII",
+  "mapel": "AA",
+  "guru": "RUSNAWATI",
+  "kode": 16
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "KAMIS",
+  "jam": "VIII",
+  "mapel": "MULOK",
+  "guru": "ANDI MIRNA",
+  "kode": 12
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "KAMIS",
+  "jam": "VIII",
+  "mapel": "IPS",
+  "guru": "ASNIAR",
+  "kode": 9
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "KAMIS",
+  "jam": "VIII",
+  "mapel": "PKN",
+  "guru": "IRMAWATI NUR",
+  "kode": 5
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "KAMIS",
+  "jam": "VIII",
+  "mapel": "SBD",
+  "guru": "SUPRIADI",
+  "kode": 24
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "KAMIS",
+  "jam": "VIII",
+  "mapel": "SKI",
+  "guru": "HERNIATI",
+  "kode": 29
+ },
+ {
+  "kelas": "IXA",
+  "hari": "KAMIS",
+  "jam": "VIII",
+  "mapel": "SKI",
+  "guru": "MUHAMMAD YANI",
+  "kode": 40
+ },
+ {
+  "kelas": "IXB",
+  "hari": "KAMIS",
+  "jam": "VIII",
+  "mapel": "BHS.ARAB",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 30
+ },
+ {
+  "kelas": "IXC",
+  "hari": "KAMIS",
+  "jam": "VIII",
+  "mapel": "AA",
+  "guru": "ASNIAR",
+  "kode": 31
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "JUMAT",
+  "jam": "I",
+  "mapel": "PENJAS",
+  "guru": "SUTRA",
+  "kode": 7
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "JUMAT",
+  "jam": "I",
+  "mapel": "SBD",
+  "guru": "SUPRIADI",
+  "kode": 5
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "JUMAT",
+  "jam": "I",
+  "mapel": "BHS.ING",
+  "guru": "RATNAWATI",
+  "kode": 39
+ },
+ {
+  "kelas": "VIID",
+  "hari": "JUMAT",
+  "jam": "I",
+  "mapel": "BHS.INA",
+  "guru": "CHAIRUDDIN",
+  "kode": 9
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "JUMAT",
+  "jam": "I",
+  "mapel": "IPS",
+  "guru": "RATNAWATI",
+  "kode": 25
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "JUMAT",
+  "jam": "I",
+  "mapel": "SKI",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 30
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "JUMAT",
+  "jam": "I",
+  "mapel": "SKI",
+  "guru": "SUTRA",
+  "kode": 7
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "JUMAT",
+  "jam": "I",
+  "mapel": "BHS.INGG",
+  "guru": "MUH. SAIN",
+  "kode": 28
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "JUMAT",
+  "jam": "I",
+  "mapel": "QH",
+  "guru": "MUHAMMAD YANI",
+  "kode": 27
+ },
+ {
+  "kelas": "IXA",
+  "hari": "JUMAT",
+  "jam": "I",
+  "mapel": "MULOK",
+  "guru": "TAUFIK",
+  "kode": 26
+ },
+ {
+  "kelas": "IXB",
+  "hari": "JUMAT",
+  "jam": "I",
+  "mapel": "PKN",
+  "guru": "HERNIATI",
+  "kode": 21
+ },
+ {
+  "kelas": "IXC",
+  "hari": "JUMAT",
+  "jam": "I",
+  "mapel": "PKN",
+  "guru": "RATNAWATI",
+  "kode": 17
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "JUMAT",
+  "jam": "II",
+  "mapel": "MUKTAF",
+  "guru": "KARDI",
+  "kode": 31
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "JUMAT",
+  "jam": "II",
+  "mapel": "BHS.ING",
+  "guru": "ERNAWATI",
+  "kode": 6
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "JUMAT",
+  "jam": "II",
+  "mapel": "BHS.ING",
+  "guru": "SUTRA",
+  "kode": 7
+ },
+ {
+  "kelas": "VIID",
+  "hari": "JUMAT",
+  "jam": "II",
+  "mapel": "MUKTAF",
+  "guru": "KAHARUDDIN",
+  "kode": 36
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "JUMAT",
+  "jam": "II",
+  "mapel": "BHS.ARAB",
+  "guru": "RUSTIANI",
+  "kode": 8
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "JUMAT",
+  "jam": "II",
+  "mapel": "PKN",
+  "guru": "RUSNAWATI",
+  "kode": 28
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "JUMAT",
+  "jam": "II",
+  "mapel": "BHS.ARAB",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 39
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "JUMAT",
+  "jam": "II",
+  "mapel": "MAT",
+  "guru": "RUSNAWATI",
+  "kode": 7
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "JUMAT",
+  "jam": "II",
+  "mapel": "SKI",
+  "guru": "MUH. SAIN",
+  "kode": 10
+ },
+ {
+  "kelas": "IXA",
+  "hari": "JUMAT",
+  "jam": "II",
+  "mapel": "SBD",
+  "guru": "MUHAMMAD YANI",
+  "kode": 7
+ },
+ {
+  "kelas": "IXB",
+  "hari": "JUMAT",
+  "jam": "II",
+  "mapel": "MUKTAF",
+  "guru": "SAIMANG",
+  "kode": 8
+ },
+ {
+  "kelas": "IXC",
+  "hari": "JUMAT",
+  "jam": "II",
+  "mapel": "IPS",
+  "guru": "MUHAMMAD YANI",
+  "kode": 28
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "JUMAT",
+  "jam": "III",
+  "mapel": "AA",
+  "guru": "NURILMI",
+  "kode": 2
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "JUMAT",
+  "jam": "III",
+  "mapel": "FIQHI",
+  "guru": "NURILMI",
+  "kode": 20
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "JUMAT",
+  "jam": "III",
+  "mapel": "MULOK",
+  "guru": "RUSNAWATI",
+  "kode": 1
+ },
+ {
+  "kelas": "VIID",
+  "hari": "JUMAT",
+  "jam": "III",
+  "mapel": "FIQHI",
+  "guru": "KARDI",
+  "kode": 37
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "JUMAT",
+  "jam": "III",
+  "mapel": "PENJAS",
+  "guru": "CHAIRUDDIN",
+  "kode": 10
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "JUMAT",
+  "jam": "III",
+  "mapel": "AA",
+  "guru": "ERNAWATI",
+  "kode": 34
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "JUMAT",
+  "jam": "III",
+  "mapel": "INFO",
+  "guru": "SITTI RAHMAH",
+  "kode": 27
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "JUMAT",
+  "jam": "III",
+  "mapel": "QH",
+  "guru": "RUSTIANI",
+  "kode": 11
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "JUMAT",
+  "jam": "III",
+  "mapel": "MUKTAF",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 21
+ },
+ {
+  "kelas": "IXA",
+  "hari": "JUMAT",
+  "jam": "III",
+  "mapel": "BHS.ING",
+  "guru": "ASNIAR",
+  "kode": 10
+ },
+ {
+  "kelas": "IXB",
+  "hari": "JUMAT",
+  "jam": "III",
+  "mapel": "FIQHI",
+  "guru": "ASNIAR",
+  "kode": 6
+ },
+ {
+  "kelas": "IXC",
+  "hari": "JUMAT",
+  "jam": "III",
+  "mapel": "IPS",
+  "guru": "SUPRIADI",
+  "kode": 28
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "JUMAT",
+  "jam": "IV",
+  "mapel": "SBD",
+  "guru": "SUPRIADI",
+  "kode": 27
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "JUMAT",
+  "jam": "IV",
+  "mapel": "IPS",
+  "guru": "MUH. SAIN",
+  "kode": 33
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "JUMAT",
+  "jam": "IV",
+  "mapel": "BHS.INGG",
+  "guru": "RUSNAWATI",
+  "kode": 28
+ },
+ {
+  "kelas": "VIID",
+  "hari": "JUMAT",
+  "jam": "IV",
+  "mapel": "BHS.INGG",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 38
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "JUMAT",
+  "jam": "IV",
+  "mapel": "SBD",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 3
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "JUMAT",
+  "jam": "IV",
+  "mapel": "IPA",
+  "guru": "SITTI RAFIDAH",
+  "kode": 39
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "JUMAT",
+  "jam": "IV",
+  "mapel": "BHS.ARAB",
+  "guru": "ABDILLAH",
+  "kode": 14
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "JUMAT",
+  "jam": "IV",
+  "mapel": "MAT",
+  "guru": "MUH. SAIN",
+  "kode": 9
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "JUMAT",
+  "jam": "IV",
+  "mapel": "IPS",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 21
+ },
+ {
+  "kelas": "IXA",
+  "hari": "JUMAT",
+  "jam": "IV",
+  "mapel": "BHS.INGG",
+  "guru": "ABDILLAH",
+  "kode": 32
+ },
+ {
+  "kelas": "IXB",
+  "hari": "JUMAT",
+  "jam": "IV",
+  "mapel": "PKN",
+  "guru": "MIDA",
+  "kode": 9
+ },
+ {
+  "kelas": "IXC",
+  "hari": "JUMAT",
+  "jam": "IV",
+  "mapel": "PENJAS",
+  "guru": "MUHAMMAD YANI",
+  "kode": 33
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "JUMAT",
+  "jam": "V",
+  "mapel": "MUKTAF",
+  "guru": "CHAIRUDDIN",
+  "kode": 26
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "JUMAT",
+  "jam": "V",
+  "mapel": "BHS.ARAB",
+  "guru": "SUTRA",
+  "kode": 2
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "JUMAT",
+  "jam": "V",
+  "mapel": "QH",
+  "guru": "CHAIRUDDIN",
+  "kode": 21
+ },
+ {
+  "kelas": "VIID",
+  "hari": "JUMAT",
+  "jam": "V",
+  "mapel": "PKN",
+  "guru": "SITTI RAFIDAH",
+  "kode": 27
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "JUMAT",
+  "jam": "V",
+  "mapel": "MAT",
+  "guru": "IRMAWATI NUR",
+  "kode": 26
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "JUMAT",
+  "jam": "V",
+  "mapel": "AA",
+  "guru": "RATNAWATI",
+  "kode": 11
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "JUMAT",
+  "jam": "V",
+  "mapel": "QH",
+  "guru": "SAIMANG",
+  "kode": 6
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "JUMAT",
+  "jam": "V",
+  "mapel": "PKN",
+  "guru": "HERNIATI",
+  "kode": 16
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "JUMAT",
+  "jam": "V",
+  "mapel": "PKN",
+  "guru": "SITTI RAFIDAH",
+  "kode": 34
+ },
+ {
+  "kelas": "IXA",
+  "hari": "JUMAT",
+  "jam": "V",
+  "mapel": "BHS.ING",
+  "guru": "SITTI RAFIDAH",
+  "kode": 20
+ },
+ {
+  "kelas": "IXB",
+  "hari": "JUMAT",
+  "jam": "V",
+  "mapel": "MULOK",
+  "guru": "MUHAMMAD YANI",
+  "kode": 22
+ },
+ {
+  "kelas": "IXC",
+  "hari": "JUMAT",
+  "jam": "V",
+  "mapel": "FIQHI",
+  "guru": "CHAIRUDDIN",
+  "kode": 33
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "JUMAT",
+  "jam": "VI",
+  "mapel": "BHS.INGG",
+  "guru": "JAYANTI JUFRI",
+  "kode": 13
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "JUMAT",
+  "jam": "VI",
+  "mapel": "MUKTAF",
+  "guru": "RUSNAWATI",
+  "kode": 10
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "JUMAT",
+  "jam": "VI",
+  "mapel": "IPA",
+  "guru": "HERNIATI",
+  "kode": 10
+ },
+ {
+  "kelas": "VIID",
+  "hari": "JUMAT",
+  "jam": "VI",
+  "mapel": "IPS",
+  "guru": "MIRNAWATI",
+  "kode": 12
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "JUMAT",
+  "jam": "VI",
+  "mapel": "BHS.INA",
+  "guru": "CHAIRUDDIN",
+  "kode": 12
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "JUMAT",
+  "jam": "VI",
+  "mapel": "SBD",
+  "guru": "TAUFIK",
+  "kode": 37
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "JUMAT",
+  "jam": "VI",
+  "mapel": "QH",
+  "guru": "RATNAWATI",
+  "kode": 21
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "JUMAT",
+  "jam": "VI",
+  "mapel": "BHS.INA",
+  "guru": "SUPRIADI",
+  "kode": 5
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "JUMAT",
+  "jam": "VI",
+  "mapel": "SBD",
+  "guru": "SUPRIADI",
+  "kode": 20
+ },
+ {
+  "kelas": "IXA",
+  "hari": "JUMAT",
+  "jam": "VI",
+  "mapel": "IPS",
+  "guru": "ASNIAR",
+  "kode": 23
+ },
+ {
+  "kelas": "IXB",
+  "hari": "JUMAT",
+  "jam": "VI",
+  "mapel": "SKI",
+  "guru": "CHAIRUDDIN",
+  "kode": 20
+ },
+ {
+  "kelas": "IXC",
+  "hari": "JUMAT",
+  "jam": "VI",
+  "mapel": "QH",
+  "guru": "SUPRIADI",
+  "kode": 3
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "JUMAT",
+  "jam": "VII",
+  "mapel": "BHS.ARAB",
+  "guru": "SAIMANG",
+  "kode": 19
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "JUMAT",
+  "jam": "VII",
+  "mapel": "BHS.ING",
+  "guru": "ERNAWATI",
+  "kode": 40
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "JUMAT",
+  "jam": "VII",
+  "mapel": "SKI",
+  "guru": "SITTI RAHMAH",
+  "kode": 30
+ },
+ {
+  "kelas": "VIID",
+  "hari": "JUMAT",
+  "jam": "VII",
+  "mapel": "BHS.ARAB",
+  "guru": "SUPRIADI",
+  "kode": 37
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "JUMAT",
+  "jam": "VII",
+  "mapel": "INFO",
+  "guru": "RATNAWATI",
+  "kode": 39
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "JUMAT",
+  "jam": "VII",
+  "mapel": "SBD",
+  "guru": "JAYANTI JUFRI",
+  "kode": 10
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "JUMAT",
+  "jam": "VII",
+  "mapel": "BHS.ARAB",
+  "guru": "SUPRIADI",
+  "kode": 7
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "JUMAT",
+  "jam": "VII",
+  "mapel": "MULOK",
+  "guru": "ERNAWATI",
+  "kode": 33
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "JUMAT",
+  "jam": "VII",
+  "mapel": "FIQHI",
+  "guru": "ANDI RASNIA RASJID",
+  "kode": 16
+ },
+ {
+  "kelas": "IXA",
+  "hari": "JUMAT",
+  "jam": "VII",
+  "mapel": "QH",
+  "guru": "SUPRIADI",
+  "kode": 34
+ },
+ {
+  "kelas": "IXB",
+  "hari": "JUMAT",
+  "jam": "VII",
+  "mapel": "SKI",
+  "guru": "MALIK",
+  "kode": 24
+ },
+ {
+  "kelas": "IXC",
+  "hari": "JUMAT",
+  "jam": "VII",
+  "mapel": "MUKTAF",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 25
+ },
+ {
+  "kelas": "VIIA",
+  "hari": "JUMAT",
+  "jam": "VIII",
+  "mapel": "PKN",
+  "guru": "RUSTIANI",
+  "kode": 39
+ },
+ {
+  "kelas": "VIIB",
+  "hari": "JUMAT",
+  "jam": "VIII",
+  "mapel": "BHS.ARAB",
+  "guru": "RUSTIANI",
+  "kode": 5
+ },
+ {
+  "kelas": "VIIC",
+  "hari": "JUMAT",
+  "jam": "VIII",
+  "mapel": "MULOK",
+  "guru": "HERNIATI",
+  "kode": 36
+ },
+ {
+  "kelas": "VIID",
+  "hari": "JUMAT",
+  "jam": "VIII",
+  "mapel": "PENJAS",
+  "guru": "NURUL FITRI USMAN",
+  "kode": 17
+ },
+ {
+  "kelas": "VIIE",
+  "hari": "JUMAT",
+  "jam": "VIII",
+  "mapel": "BHS.INA",
+  "guru": "RUSTIANI",
+  "kode": 6
+ },
+ {
+  "kelas": "VIIIA",
+  "hari": "JUMAT",
+  "jam": "VIII",
+  "mapel": "BHS.INA",
+  "guru": "RUSNAWATI",
+  "kode": 20
+ },
+ {
+  "kelas": "VIIIB",
+  "hari": "JUMAT",
+  "jam": "VIII",
+  "mapel": "PENJAS",
+  "guru": "KAHARUDDIN",
+  "kode": 39
+ },
+ {
+  "kelas": "VIIIC",
+  "hari": "JUMAT",
+  "jam": "VIII",
+  "mapel": "BHS.ING",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 36
+ },
+ {
+  "kelas": "VIIID",
+  "hari": "JUMAT",
+  "jam": "VIII",
+  "mapel": "PENJAS",
+  "guru": "RUSTIANI",
+  "kode": 9
+ },
+ {
+  "kelas": "IXA",
+  "hari": "JUMAT",
+  "jam": "VIII",
+  "mapel": "SKI",
+  "guru": "ERNAWATI",
+  "kode": 28
+ },
+ {
+  "kelas": "IXB",
+  "hari": "JUMAT",
+  "jam": "VIII",
+  "mapel": "SKI",
+  "guru": "SAIMANG",
+  "kode": 2
+ },
+ {
+  "kelas": "IXC",
+  "hari": "JUMAT",
+  "jam": "VIII",
+  "mapel": "MUKTAF",
+  "guru": "NURUN NISAA ALIMAH ANWAR",
+  "kode": 12
+ }
+]
