@@ -82,6 +82,13 @@ static/uploads/s35/
 # Kartu cache (generated)
 data/kartu/
 
+# Backup & restore runtime (spec 027)
+data/backups/
+data/restore/
+data/drill/
+local.db.replaced-*
+static/uploads.replaced-*
+
 # Python
 scripts/__pycache__/
 *.pyc

@@ -116,5 +116,10 @@ test.describe('Full Remote — Endpoint Guards', () => {
 			const p = path.join(root, `src/routes/api/siswa/[id]/${suffix}/+server.ts`);
 			expect(existsSync(p), `${suffix} harus ada`).toBe(true);
 		}
+
+		// endpoint biner modul backup (spec 027) — unduh arsip, dipakai lewat <a href>
+		const backupUnduh = path.join(root, 'src/routes/api/backup/[name]/download/+server.ts');
+		expect(existsSync(backupUnduh)).toBe(true);
+		expect(readFileSync(backupUnduh, 'utf-8')).toContain('export const GET');
 	});
 });

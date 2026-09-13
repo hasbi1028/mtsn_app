@@ -45,6 +45,7 @@
 | 022 | Remote Dashboard | ✅ Done | [spec](022-remote-dashboard/spec.md) | `dashboard.spec.ts` |
 | 023 | Remote Roster | ✅ Done | [spec](023-remote-roster/spec.md) | `roster.spec.ts` |
 | 024 | Remote Activity | ✅ Done | [spec](024-remote-activity/spec.md) | `activity.spec.ts` |
+| 027 | Backup & Restore | ✅ Done | [spec](027-backup-restore/spec.md) · [MDD](027-backup-restore/MDD.md) · [test plan](027-backup-restore/test-plan.md) · [drill](027-backup-restore/drill.md) | `backup.spec.ts` |
 
 ### Structural Guards
 

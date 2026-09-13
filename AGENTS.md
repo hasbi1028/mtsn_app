@@ -20,6 +20,9 @@ npm run build        # Build for production
 npm run check        # Type check
 npm run test         # Run unit tests (Vitest)
 npm run test:e2e     # Run e2e tests (Playwright)
+npm run backup:create   # Buat arsip backup (DB + uploads) — dipakai cron 23:00
+npm run backup:status   # Ringkasan arsip + hasil restore terakhir
+npm run backup:restore  # Eksekusi restore (jalankan saat server BERHENTI)
 ```
 
 ## Architecture: Domain-Centric Modular Monolith
@@ -245,6 +248,49 @@ export const getProfile = query(async () => {
 - ORM: Drizzle with `drizzle-kit` for migrations
 - Schema: `src/lib/server/db/schema.ts`
 - Migrations: `drizzle/` (auto-generated)
+
+## Backup & Restore (spec 027)
+
+Modul: `src/modules/backup/` (remote functions) + `src/lib/server/backup/` (guards & apply) + halaman `/admin/backup`.
+Arsip = **satu file ZIP** berisi `manifest.json` (berversi + sha256 tiap entri) + `local.db` (snapshot Online Backup API) + `uploads/**` (+ `config/ecosystem.config.cjs` sebagai referensi).
+
+### Lokasi & retensi
+- Arsip: `data/backups/simad-backup-<YYYYMMDD-HHMMSS>-<ui|cron|pre-restore>.zip`
+- Snapshot pengaman sebelum restore: `simad-backup-<stamp>-pre-restore.zip`
+- Staging restore: `data/restore/{incoming,staged/<stamp>}/`, `pending.json`, `last-result.json`, `history.log`
+- Retensi otomatis: 30 arsip `cron` + 5 `pre-restore`; arsip `ui` (manual) tidak dipangkas
+- **Tidak** ikut arsip: `data/kartu/` (regenerable), `node_modules`, `build`, `.svelte-kit`, `*.log`, `*.db.bak-*` lama
+
+### Alur pakai
+```bash
+npm run backup:create          # buat arsip (server boleh tetap jalan; konsisten via SQLite Online Backup API)
+npm run backup:create -- --json   # keluaran JSON untuk cron/notifikasi
+npm run backup:status          # daftar arsip + status restore terakhir
+node --import tsx scripts/restore-apply.ts --dry-run   # validasi saja, tanpa mengubah berkas
+```
+
+### Restore (WAJIB 2 tahap — server harus berhenti)
+```bash
+# TAHAP 1 (UI): /admin/backup → unggah ZIP → preview perbandingan → "Siapkan Restore"
+#   (membuat snapshot pengaman + data/restore/pending.json)
+# TAHAP 2 (terminal):
+pm2 stop simad-bel mtsn-app-bff
+node --import tsx scripts/restore-apply.ts
+pm2 start ecosystem.config.cjs
+# Opsi darurat/lain: --file <zip>, --dry-run, --keep-old, --keep-session <token>, --actor <nama>
+```
+Gagal verifikasi setelah swap → **rollback otomatis** dari `*.replaced-<stamp>`; hasil ditulis ke `data/restore/last-result.json` dan tampil di halaman `/admin/backup`.
+
+### Pitfall (jangan diulang)
+- `local.db` dikunci **dua** proses: `mtsn-app-bff` (better-sqlite3) dan `simad-bel` (Go) → swap file HANYA boleh saat keduanya berhenti (`EBUSY` bila dipaksa).
+- **Jangan** copy `local.db` mentah: data terbaru ada di `local.db-wal`. Pakai `db.backup()` (Online Backup API). Setelah restore, `local.db-wal` & `local.db-shm` sisa DB lama WAJIB dihapus — jika tidak, DB baru terlihat korup.
+- `BODY_SIZE_LIMIT` default adapter-node = 512 KB → tanpa `BODY_SIZE_LIMIT=209715200` unggah ZIP arsip PASTI gagal.
+- `hooks.server.ts` melewati seluruh `/api/*` tanpa cek auth → handler `/api/backup/[name]/download` wajib memeriksa `locals.user.role === 'admin'` sendiri (sudah dilakukan).
+- Structural guard `tests/e2e/full-remote.spec.ts` melarang `fetch('/api/...')` di `src/` → UI modul ini memakai **remote functions**; unduhan lewat `<a href>`.
+- Unggah berkas **wajib** memakai `form()` remote, bukan `command()` — SvelteKit mengirim argumen `command` sebagai JSON sehingga `request.formData()` kosong.
+- Restore mengganti tabel `sessions` (ribuan baris) → semua login lain logout; sesi admin pelaku disisipkan ulang best-effort (`--keep-session`).
+- `data/kartu/` tidak dipulihkan — kartu PNG di-generate ulang saat dibuka.
+
 
 ## Migration Status
 See `plan.md` for full migration plan from Go API → SvelteKit remote functions.
