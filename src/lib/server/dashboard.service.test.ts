@@ -42,8 +42,11 @@ describe('dashboard.service', () => {
 			expect(stats).toHaveProperty('belumSertifikasi');
 			expect(stats).toHaveProperty('totalSiswa');
 			expect(stats).toHaveProperty('pendingSkmt');
+			expect(stats).toHaveProperty('selesaiSkmt');
 			expect(stats).toHaveProperty('pendingSkbk');
+			expect(stats).toHaveProperty('selesaiSkbk');
 			expect(stats).toHaveProperty('pendingSkakpt');
+			expect(stats).toHaveProperty('selesaiSkakpt');
 		});
 
 		it('returns numbers', () => {

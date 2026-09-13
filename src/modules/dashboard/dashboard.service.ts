@@ -18,8 +18,11 @@ export function getGeneralStats() {
 			(SELECT COUNT(*) FROM ptk WHERE fungsi = 'Guru') as guru,
 			(SELECT COUNT(*) FROM ptk WHERE sertifikasi = 1) as sertifikasi,
 			(SELECT COUNT(*) FROM skmt_ajuan WHERE status = 'Menunggu') as pending_skmt,
+			(SELECT COUNT(*) FROM skmt_ajuan WHERE status LIKE 'Disetujui%') as selesai_skmt,
 			(SELECT COUNT(*) FROM skbk_ajuan WHERE status = 'Belum Diajukan') as pending_skbk,
-			(SELECT COUNT(*) FROM skakpt WHERE status = 'Menunggu') as pending_skakpt,
+			(SELECT COUNT(*) FROM skbk_ajuan WHERE status = 'Disetujui') as selesai_skbk,
+			(SELECT COUNT(*) FROM skakpt WHERE status IN ('Menunggu', 'Menunggu Verifikasi')) as pending_skakpt,
+			(SELECT COUNT(*) FROM skakpt WHERE status = 'Disetujui') as selesai_skakpt,
 			(SELECT COUNT(*) FROM siswa) as total_siswa
 	`)[0] as any) ?? {};
 
@@ -33,8 +36,11 @@ export function getGeneralStats() {
 		belumSertifikasi: totalPtk - sertifikasi,
 		totalSiswa: row.total_siswa ?? 0,
 		pendingSkmt: row.pending_skmt ?? 0,
+		selesaiSkmt: row.selesai_skmt ?? 0,
 		pendingSkbk: row.pending_skbk ?? 0,
-		pendingSkakpt: row.pending_skakpt ?? 0
+		selesaiSkbk: row.selesai_skbk ?? 0,
+		pendingSkakpt: row.pending_skakpt ?? 0,
+		selesaiSkakpt: row.selesai_skakpt ?? 0
 	};
 }
 
@@ -88,9 +94,9 @@ export function getBansosStats() {
 		SELECT
 			(SELECT COUNT(*) FROM siswa) as total_siswa,
 			(SELECT COUNT(*) FROM siswa WHERE bansos_cek_at IS NULL OR bansos_cek_at = '') as belum_cek,
-			(SELECT COUNT(*) FROM siswa WHERE bansos_pkh = 'LAYAK') as layak_pkh,
-			(SELECT COUNT(*) FROM siswa WHERE bansos_sembako = 'AKTIF') as layak_sembako,
-			(SELECT COUNT(*) FROM siswa WHERE bansos_pbijk = 'LAYAK') as layak_pbijk
+			(SELECT COUNT(*) FROM siswa WHERE bansos_pkh IS NOT NULL AND TRIM(bansos_pkh) != '' AND UPPER(bansos_pkh) != 'TIDAK') as layak_pkh,
+			(SELECT COUNT(*) FROM siswa WHERE bansos_sembako IS NOT NULL AND TRIM(bansos_sembako) != '' AND UPPER(bansos_sembako) != 'TIDAK') as layak_sembako,
+			(SELECT COUNT(*) FROM siswa WHERE bansos_pbijk IS NOT NULL AND TRIM(bansos_pbijk) != '' AND UPPER(bansos_pbijk) != 'TIDAK') as layak_pbijk
 	`)[0] as any) ?? {};
 
 	const desilRows = db.all(sql`

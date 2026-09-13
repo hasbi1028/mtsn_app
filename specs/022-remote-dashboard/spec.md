@@ -25,6 +25,25 @@ As an admin, I want to see school statistics on the dashboard so that I can moni
 
 ---
 
+## Revisi (fix data tidak sesuai)
+
+Bug: dashboard menampilkan `SKMT/SKBK/SKAKPT = 0` dan `PBI-JK = 0` karena query
+memakai literal status yang tidak cocok dengan data.
+
+- **Bansos "layak"** harus mengikuti semantik `isLayak` UI:
+  `bansos_* IS NOT NULL AND TRIM(bansos_*) != '' AND UPPER(bansos_*) != 'TIDAK'`.
+  Sebelumnya `= 'LAYAK'` / `= 'AKTIF'` sehingga `PBI-JK` salah tampil 0
+  (data nyata `'YA (JULI 2026)'` → 149).
+- **Progres Dokumen** menampilkan jumlah **disetujui** (`selesaiSkmt`,
+  `selesaiSkbk`, `selesaiSkakpt`), bukan hanya `pending` yang memang 0.
+  Pending tetap tampil sebagai badge di kartu perhatian atas.
+- `skakpt` pending mencakup `'Menunggu'` dan `'Menunggu Verifikasi'`.
+
+Regression test: `src/modules/dashboard/dashboard.bansos.test.ts`
+(db in-memory nyata) + e2e `dashboard.spec.ts` (assert progres & PBI-JK > 0).
+
+---
+
 ## Data Model
 
 | Table | Columns Used |

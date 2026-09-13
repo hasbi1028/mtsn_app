@@ -32,9 +32,9 @@
 		{ label: 'Bansos belum dicek', value: bansos.belumCek ?? 0, tone: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-900 dark:bg-sky-950/40 dark:text-sky-300' }
 	]}
 	{@const documentCards = [
-		{ label: 'SKMT menunggu', value: s.pendingSkmt ?? 0, icon: FileText },
-		{ label: 'SKBK menunggu', value: s.pendingSkbk ?? 0, icon: ClipboardList },
-		{ label: 'SKAKPT menunggu', value: s.pendingSkakpt ?? 0, icon: FileCheck }
+		{ label: 'SKMT disetujui', value: s.selesaiSkmt ?? 0, pending: s.pendingSkmt ?? 0, icon: FileText },
+		{ label: 'SKBK disetujui', value: s.selesaiSkbk ?? 0, pending: s.pendingSkbk ?? 0, icon: ClipboardList },
+		{ label: 'SKAKPT disetujui', value: s.selesaiSkakpt ?? 0, pending: s.pendingSkakpt ?? 0, icon: FileCheck }
 	]}
 	{@const peopleCards = [
 		{ label: 'Total PTK', value: s.totalPtk ?? 0, helper: `${s.guru ?? 0} guru` },
@@ -104,6 +104,9 @@
 									<span class="text-xl font-bold">{item.value}</span>
 								</div>
 								<p class="text-xs text-muted-foreground">{item.label}</p>
+								{#if item.pending > 0}
+									<p class="text-[10px] text-amber-600 dark:text-amber-400">{item.pending} menunggu</p>
+								{/if}
 							</div>
 						{/each}
 					</div>
