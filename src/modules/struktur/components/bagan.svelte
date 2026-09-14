@@ -176,8 +176,28 @@
 
 		<div class="sp-row1">
 			{#each barisAtas as kotak (kotak.kode)}
-				{@render kotakPuncak(kotak)}
+				{@const isKamad = kotak.kelompok.toUpperCase() !== 'MITRA'}
+				{#if isKamad}
+					<div class="sp-box sp-utama sp-kamad-center">
+						{@render fotoAnggota(kotak.anggota.find((a) => a.kepala) ?? kotak.anggota[0], 'sp-foto-puncak')}
+						<div class="sp-teks">
+							<div class="sp-jab">{(kotak.anggota.find((a) => a.kepala) ?? kotak.anggota[0]).label || kotak.judul}</div>
+							<div class="sp-nama-puncak">{(kotak.anggota.find((a) => a.kepala) ?? kotak.anggota[0]).nama}</div>
+							{#if !publik && (kotak.anggota.find((a) => a.kepala) ?? kotak.anggota[0]).nip}<div class="sp-nip">NIP. {(kotak.anggota.find((a) => a.kepala) ?? kotak.anggota[0]).nip}</div>{/if}
+						</div>
+					</div>
+				{:else}
+					<div class="sp-box sp-mitra sp-komite-left">
+						{@render fotoAnggota(kotak.anggota.find((a) => a.kepala) ?? kotak.anggota[0], 'sp-foto-puncak')}
+						<div class="sp-teks">
+							<div class="sp-jab">{(kotak.anggota.find((a) => a.kepala) ?? kotak.anggota[0]).label || kotak.judul}</div>
+							<div class="sp-nama-puncak">{(kotak.anggota.find((a) => a.kepala) ?? kotak.anggota[0]).nama}</div>
+							{#if !publik && (kotak.anggota.find((a) => a.kepala) ?? kotak.anggota[0]).nip}<div class="sp-nip">NIP. {(kotak.anggota.find((a) => a.kepala) ?? kotak.anggota[0]).nip}</div>{/if}
+						</div>
+					</div>
+				{/if}
 			{/each}
+			<div class="sp-line-h"></div>
 		</div>
 		<div class="sp-ctop"></div>
 
@@ -239,7 +259,7 @@
 					{#if tempatTgl}<div>Ditetapkan di : {tempatTgl}</div>{/if}
 					<div class="sp-ttd-ruang"></div>
 					<div class="sp-ttd-nama">{ttdNama}</div>
-					<div>{ttdNip ? `Kepala Madrasah — NIP. ${ttdNip}` : 'Kepala Madrasah'}</div>
+					<div>{!publik && ttdNip ? `Kepala Madrasah — NIP. ${ttdNip}` : 'Kepala Madrasah'}</div>
 				</div>
 			{/if}
 		</div>
@@ -358,8 +378,10 @@
 		flex: 0 0 auto;
 		display: flex;
 		justify-content: center;
-		gap: 150px;
+		align-items: center;
+		gap: 0;
 		padding: 10px 34px 0;
+		height: 86px;
 	}
 	.sp-box {
 		display: flex;
@@ -369,6 +391,9 @@
 		border: 2.5px solid #0a5c36;
 		border-radius: 10px;
 		padding: 6px 16px;
+		position: absolute;
+		top: 10px;
+		z-index: 1;
 	}
 	.sp-box.sp-mitra {
 		border-style: dashed;
@@ -384,6 +409,27 @@
 		background: #e8f3ec;
 		min-width: 400px;
 		padding: 8px 30px;
+	}
+	.sp-kamad-center {
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	.sp-komite-left {
+		left: 25%;
+		transform: translateX(-50%);
+	}
+	/* Garis horizontal menghubungkan Komite → Kepala Madrasah.
+	   Canvas cetak = 2000 px. Komite center di 25% (500 px), half-w ~148 px.
+	   Kamad center di 50% (1000 px), half-w ~198 px.
+	   Garis dari 648 px sampai 802 px (154 px). */
+	.sp-line-h {
+		position: absolute;
+		top: 47px;
+		left: 648px;
+		width: 154px;
+		height: 2.5px;
+		background: #0a5c36;
+		z-index: 0;
 	}
 	.sp-foto-puncak {
 		width: 50px;

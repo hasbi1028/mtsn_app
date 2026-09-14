@@ -52,6 +52,9 @@
 	const urlCetak = $derived(
 		resolve(`/admin/struktur/bagan/cetak/${preset}?nip=${pakaiNip ? '1' : '0'}`)
 	);
+
+	let previewWidth = $state(1100);
+	const previewScale = $derived(Math.min(1, previewWidth / 2000));
 </script>
 
 <svelte:head><title>Bagan &amp; Cetak — Struktur Organisasi</title></svelte:head>
@@ -112,15 +115,27 @@
 	<!-- Pratinjau -->
 	<div class="rounded-lg border p-3">
 		<p class="mb-2 text-sm font-semibold">Pratinjau bagan</p>
-		<Bagan
-			{kolom}
-			judul={pengaturan.judul}
-			tahun={pengaturan.tahun}
-			kop={pengaturan.kop}
-			badge={data.badge}
-			mode="web"
-			publik={!pakaiNip}
-		/>
+		<div
+			bind:clientWidth={previewWidth}
+			class="overflow-hidden rounded-md border bg-[#fdfcf7]"
+			style="height:{Math.round(1000 * previewScale)}px"
+		>
+			<div style="width:2000px; transform:scale({previewScale}); transform-origin:top left;">
+				<Bagan
+					{kolom}
+					judul={pengaturan.judul}
+					tahun={pengaturan.tahun}
+					kop={pengaturan.kop}
+					badge={data.badge}
+					mode="cetak"
+					publik={!pakaiNip}
+					catatanKaki={pengaturan.catatanKaki || ''}
+					tempatTgl={pengaturan.tempatTgl || ''}
+					ttdNama={pakaiNip ? (pengaturan.kamadNama || '') : ''}
+					ttdNip={pakaiNip ? (pengaturan.kamadNip || '') : ''}
+				/>
+			</div>
+		</div>
 		{#if kolom.length === 0}
 			<p class="mt-2 text-xs text-muted-foreground">
 				Bagan kosong — tambahkan unit &amp; anggota di <a class="underline" href={resolve('/admin/struktur')}>Daftar Unit</a>.
