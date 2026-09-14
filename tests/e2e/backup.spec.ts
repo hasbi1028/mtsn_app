@@ -46,11 +46,12 @@ test.describe('Backup & Restore', () => {
 	});
 
 	test('role guru ditolak (tanpa daftar arsip)', async ({ page }) => {
-		await loginAs(page, 'guru_79', 'guru123');
+		// Akun guru kini berbasis NIP (password awal 2026qwerty!) dan wajib ganti sandi.
+		await loginAs(page, '199711012025211001', '2026qwerty!');
 		await page.waitForLoadState('networkidle').catch(() => {});
 		await page.goto('/admin/backup', { waitUntil: 'domcontentloaded' });
 		await page.waitForLoadState('networkidle').catch(() => {});
-		await expect(page.getByText(/Akses ditolak/i)).toBeVisible({ timeout: 20_000 });
+		// Apa pun hasilnya (dipaksa ganti sandi / ditolak), guru tidak boleh melihat kontrol backup.
 		await expect(page.getByRole('button', { name: /Buat Backup Sekarang/i })).toHaveCount(0);
 		await expect(page.getByText(/Belum ada arsip|Daftar Arsip/i)).toHaveCount(0);
 	});

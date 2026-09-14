@@ -2,7 +2,7 @@
  * seed-users-guru.ts — Buat akun login untuk semua PTK (guru & staf)
  *
  *Username: NIP (atau fallback ke nama lowercase bila NIP kosong)
- * Password default: MTsN2026!
+ * Password default: 2026qwerty!
  * Role: guru (untuk yang fungsi=Guru) atau staf (untuk yang fungsi=Staf)
  *
  * Catatan:
@@ -16,7 +16,7 @@ import { randomBytes, scryptSync } from 'crypto';
 import { join } from 'path';
 
 const DB_PATH = join(process.cwd(), 'local.db');
-const DEFAULT_PASSWORD = 'MTsN2026!';
+const DEFAULT_PASSWORD = '2026qwerty!';
 
 function hashPassword(password: string): string {
 	const salt = randomBytes(16).toString('hex');
@@ -111,7 +111,7 @@ const insertMany = db.transaction(() => {
 			continue;
 		}
 
-		const role = ptk.fungsi?.toLowerCase() === 'staf' ? 'staf' : 'guru';
+		const role = ptk.fungsi?.toLowerCase().includes('staf') ? 'staf' : 'guru';
 		const hash = hashPassword(DEFAULT_PASSWORD);
 
 		try {

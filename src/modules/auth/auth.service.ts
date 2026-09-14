@@ -161,7 +161,7 @@ export function resetPassword(userId: number): { ok: true; pesan: string; defaul
 	const user = db.select().from(users).where(eq(users.id, userId)).get();
 	if (!user) throw new Error('User tidak ditemukan.');
 
-	const defaultPassword = 'MTsN2026!';
+	const defaultPassword = '2026qwerty!';
 	const newHash = hashPassword(defaultPassword);
 	db.update(users)
 		.set({ passwordHash: newHash, mustChangePassword: 1, updatedAt: new Date().toISOString() })

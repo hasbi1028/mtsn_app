@@ -18,7 +18,7 @@
 
 <Sidebar.Root bind:ref {collapsible} {...restProps}>
 	<Sidebar.Header>
-		<ModuleSwitcher />
+		<ModuleSwitcher {user} />
 	</Sidebar.Header>
 	<Sidebar.Content>
 		<NavMain items={filteredItems} />

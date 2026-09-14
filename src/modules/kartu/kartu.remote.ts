@@ -1,6 +1,7 @@
 import { query, command } from '$app/server';
 import { error } from '@sveltejs/kit';
 import * as v from 'valibot';
+import { requireStaff } from '$lib/server/guard';
 import {
 	getKartuList,
 	getAllActiveSiswaWithFoto,
@@ -11,9 +12,13 @@ import {
 	cancelBatch,
 } from './kartu.service';
 
-export const getKartuListQ = query(async () => getKartuList());
+export const getKartuListQ = query(async () => {
+	requireStaff();
+	return getKartuList();
+});
 
 export const generateAllKartu = command(async () => {
+	requireStaff();
 	const siswaList = getAllActiveSiswaWithFoto();
 	if (siswaList.length === 0) {
 		return { error: 'Tidak ada siswa dengan foto' };
@@ -27,6 +32,7 @@ export const generateAllKartu = command(async () => {
 });
 
 export const regenerateKartuCmd = command(v.string(), async (id) => {
+	requireStaff();
 	const sd = getSiswaKartu(id);
 	if (!sd) error(404, 'Siswa tidak ditemukan');
 	const { job, batch } = enqueueSingle(sd.id, sd.nama);
@@ -39,6 +45,7 @@ export const regenerateKartuCmd = command(v.string(), async (id) => {
 });
 
 export const getBatchStatusQ = query(v.string(), async (batchId) => {
+	requireStaff();
 	const batch = getBatchStatus(batchId);
 	if (!batch) return null;
 	return {
@@ -51,6 +58,7 @@ export const getBatchStatusQ = query(v.string(), async (batchId) => {
 });
 
 export const cancelBatchC = command(v.string(), async (batchId) => {
+	requireStaff();
 	const cancelled = cancelBatch(batchId);
 	return { ok: true, cancelled, message: `${cancelled} job dibatalkan` };
 });

@@ -5,12 +5,15 @@
 	import AdminBreadcrumb from '$lib/components/navigation/admin-breadcrumb.svelte';
 	import MobileNav from '$lib/components/navigation/mobile-nav.svelte';
 	import SearchDialog from '$lib/components/navigation/search-dialog.svelte';
+	import MustChangePasswordBanner from '$lib/components/must-change-password-banner.svelte';
+	import { resolve } from '$app/paths';
 	import { logoutForm } from '$modules/auth/auth.remote';
 
 	let { children, data } = $props();
 
 	const user = $derived(data?.user);
 	const role = $derived(user?.role ?? '');
+	const mustChange = $derived(user?.mustChangePassword === 1);
 	const pengaturan = $derived((data as any)?.pengaturan ?? {});
 	const logoUrl = $derived(pengaturan.logoUrl ?? '/uploads/logo-kemenag.png');
 	const appName = $derived(pengaturan.appName ?? 'SIMAD');
@@ -24,7 +27,7 @@
 		<!-- Header -->
 		<header class="flex h-14 shrink-0 items-center justify-between border-b px-4">
 			<div class="flex items-center gap-2">
-				<a href="/" class="flex size-8 items-center justify-center overflow-hidden rounded-lg bg-primary text-primary-foreground text-xs font-bold">
+				<a href={resolve('/')} class="flex size-8 items-center justify-center overflow-hidden rounded-lg bg-primary text-primary-foreground text-xs font-bold">
 					<img src={logoUrl} alt="Logo" class="size-full object-contain" />
 				</a>
 				<div>
@@ -33,7 +36,7 @@
 				</div>
 			</div>
 			<div class="flex items-center gap-1">
-				<a href="/" class="px-2 py-1 text-xs text-muted-foreground hover:text-foreground">
+				<a href={resolve('/')} class="px-2 py-1 text-xs text-muted-foreground hover:text-foreground">
 					Situs Web
 				</a>
 				<form {...logoutForm}>
@@ -46,6 +49,7 @@
 
 		<!-- Content -->
 		<main class="flex-1 px-4 py-4">
+			<MustChangePasswordBanner {mustChange} />
 			{@render children?.()}
 		</main>
 
@@ -58,6 +62,7 @@
 		<AppSidebar {user} />
 		<Sidebar.Inset>
 			<AdminHeader {user} onSearch={() => searchOpen = true} />
+			<MustChangePasswordBanner {mustChange} />
 			<div class="px-4 pt-2">
 				<AdminBreadcrumb />
 			</div>

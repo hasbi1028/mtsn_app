@@ -1,19 +1,22 @@
 <script lang="ts">
-	import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
+	import { onMount } from 'svelte';
+	import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
 	import LayoutDashboardIcon from '@lucide/svelte/icons/layout-dashboard';
-	import UsersIcon from '@lucide/svelte/icons/users';
-	import GraduationCapIcon from '@lucide/svelte/icons/graduation-cap';
 	import BookOpenIcon from '@lucide/svelte/icons/book-open';
 	import BuildingIcon from '@lucide/svelte/icons/building';
-	import CalendarIcon from '@lucide/svelte/icons/calendar';
-	import ClipboardListIcon from '@lucide/svelte/icons/clipboard-list';
-	import BellRingIcon from '@lucide/svelte/icons/bell-ring';
-	import SettingsIcon from '@lucide/svelte/icons/settings';
-	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
-	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
-	import { useSidebar } from "$lib/components/ui/sidebar/index.js";
-	import { getActiveModule, setActiveModule } from './module-active.svelte.js';
-	import { page } from "$app/state";
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
+	import { page } from '$app/state';
+	import { resolve } from '$app/paths';
+	import { navItems, filterNavByRole } from '$lib/config/navigation.js';
+	import {
+		getActiveModule,
+		setActiveModule,
+		hydrateActiveModule
+	} from './module-active.svelte.js';
+
+	let { user }: { user?: { role: string } | null } = $props();
 
 	const sidebar = useSidebar();
 
@@ -22,21 +25,85 @@
 	const appName = $derived(pengaturan.appName ?? 'SIMAD');
 	const appSubtitle = $derived(pengaturan.appSubtitle ?? 'MTsN 2 Kolaka Utara');
 
-	const modules = [
-		{ name: "Semua", icon: LayoutDashboardIcon, description: "Tampilkan semua menu", key: "semua", active: true, url: "/admin/dashboard" },
-		{ name: "PTK", icon: UsersIcon, description: "Data PTK & Tendik", key: "PTK", active: true, url: "/admin/ptk" },
-		{ name: "Kesiswaan", icon: GraduationCapIcon, description: "Data Siswa & Kelas", key: "Kesiswaan", active: true, url: "/admin/siswa" },
-		{ name: "Jadwal", icon: CalendarIcon, description: "Roster & Kalender", key: "Jadwal", active: true, url: "/admin/roster" },
-		{ name: "Dokumen", icon: ClipboardListIcon, description: "SKMT, SKBK, SKAKPT", key: "Dokumen", active: true, url: "/admin/skmt" },
-		{ name: "Bel", icon: BellRingIcon, description: "Monitoring & Kontrol", key: "Bel", active: true, url: "/admin/bel" },
-		{ name: "Perpustakaan", icon: BookOpenIcon, description: "Buku & Peminjaman", active: false },
-		{ name: "Sarana & Prasarana", icon: BuildingIcon, description: "Inventaris Sekolah", active: false },
-		{ name: "Pengaturan", icon: SettingsIcon, description: "Konfigurasi Sistem", active: false },
+	const DESKRIPSI: Record<string, string> = {
+		PTK: 'Data PTK & Tendik',
+		Kesiswaan: 'Data Siswa & Kelas',
+		Jadwal: 'Roster & Kalender',
+		Dokumen: 'SKMT, SKBK, SKAKPT',
+		Konten: 'Berita & Pengumuman',
+		Bel: 'Monitoring & Kontrol',
+		Sistem: 'Pengaturan & Backup'
+	};
+
+	const items = $derived(user?.role ? filterNavByRole(navItems, user.role) : navItems);
+
+	// Turunkan modul dari grup navItems (satu sumber kebenaran), bukan daftar hardcoded.
+	const activeModules = $derived.by(() => {
+		const groups: { name: string; icon: any; url: string; urls: string[] }[] = [];
+		for (const it of items) {
+			if (it.group === 'semua') continue;
+			const urls = [it.url, ...(it.children?.map((c) => c.url) ?? [])];
+			const existing = groups.find((g) => g.name === it.group);
+			if (existing) existing.urls.push(...urls);
+			else groups.push({ name: it.group, icon: it.icon, url: it.url, urls });
+		}
+		return groups.map((g) => ({
+			key: g.name,
+			name: g.name,
+			icon: g.icon,
+			url: g.url,
+			urls: g.urls,
+			description: DESKRIPSI[g.name] ?? ''
+		}));
+	});
+
+	const modules = $derived([
+		{
+			key: 'semua',
+			name: 'Semua',
+			icon: LayoutDashboardIcon,
+			url: '/admin/dashboard',
+			urls: [] as string[],
+			description: 'Tampilkan semua menu'
+		},
+		...activeModules
+	]);
+
+	const activeKey = $derived(getActiveModule());
+
+	const modulMendatang = [
+		{ name: 'Perpustakaan', icon: BookOpenIcon, description: 'Buku & Peminjaman' },
+		{ name: 'Sarana & Prasarana', icon: BuildingIcon, description: 'Inventaris Sekolah' }
 	];
 
-	let activeModules = $derived(modules.filter(m => m.active));
-	let activeKey = $derived(getActiveModule());
-	let inactiveModules = $derived(modules.filter(m => !m.active));
+	onMount(() => {
+		hydrateActiveModule();
+		sinkronDariUrl();
+	});
+
+	function cariModul(pathname: string) {
+		return modules.find(
+			(m) => m.key !== 'semua' && m.urls.some((u) => pathname === u || pathname.startsWith(u + '/'))
+		);
+	}
+
+	function sinkronDariUrl() {
+		const found = cariModul(page.url.pathname);
+		if (found) setActiveModule(found.key);
+	}
+
+	// Sinkronkan modul aktif dengan URL & validasi hak akses.
+	$effect(() => {
+		const pathname = page.url.pathname;
+		const found = cariModul(pathname);
+		if (found) {
+			if (getActiveModule() !== found.key) setActiveModule(found.key);
+			return;
+		}
+		const current = getActiveModule();
+		const valid = current === 'semua' || activeModules.some((m) => m.key === current);
+		if (!valid) setActiveModule('semua');
+	});
 </script>
 
 <Sidebar.Menu>
@@ -63,42 +130,49 @@
 			<DropdownMenu.Content
 				class="w-(--bits-dropdown-menu-anchor-width) min-w-56 rounded-lg"
 				align="start"
-				side={sidebar.isMobile ? "bottom" : "right"}
+				side={sidebar.isMobile ? 'bottom' : 'right'}
 				sideOffset={4}
 			>
-				<DropdownMenu.Label class="text-xs text-muted-foreground">Modul Aktif</DropdownMenu.Label>
-				{#each activeModules as mod (mod.name)}
-					<DropdownMenu.Item class="gap-2 p-2" data-active={activeKey === (mod.key ?? '')}>
+				<DropdownMenu.Label class="text-xs text-muted-foreground">Modul</DropdownMenu.Label>
+				{#each modules as mod (mod.key)}
+					<DropdownMenu.Item class="gap-2 p-2" data-active={activeKey === mod.key}>
 						{#snippet child({ props })}
-							<a {...props} href={mod.url} onclick={() => setActiveModule(mod.key ?? 'semua')} class="flex w-full items-center gap-2">
-								<div class="flex size-6 items-center justify-center rounded-md {activeKey === (mod.key ?? '') ? 'bg-sidebar-primary text-sidebar-primary-foreground' : 'bg-sidebar-accent text-sidebar-accent-foreground'}">
+							<a
+								{...props}
+								href={resolve(mod.url as '/admin/dashboard')}
+								onclick={() => setActiveModule(mod.key)}
+								class="flex w-full items-center gap-2"
+							>
+								<div
+									class="flex size-6 items-center justify-center rounded-md {activeKey === mod.key
+										? 'bg-sidebar-primary text-sidebar-primary-foreground'
+										: 'bg-sidebar-accent text-sidebar-accent-foreground'}"
+								>
 									<mod.icon class="size-3.5 shrink-0" />
 								</div>
 								<div class="flex flex-col">
 									<span class="font-medium">{mod.name}</span>
 									<span class="text-xs text-muted-foreground">{mod.description}</span>
 								</div>
-								{#if activeKey === (mod.key ?? '')}<span class="ms-auto text-primary">✓</span>{/if}
+								{#if activeKey === mod.key}<span class="ms-auto text-primary">✓</span>{/if}
 							</a>
 						{/snippet}
 					</DropdownMenu.Item>
 				{/each}
-				
-				{#if inactiveModules.length > 0}
-					<DropdownMenu.Separator />
-					<DropdownMenu.Label class="text-xs text-muted-foreground">Modul Mendatang</DropdownMenu.Label>
-					{#each inactiveModules as mod (mod.name)}
-						<DropdownMenu.Item class="gap-2 p-2 opacity-50">
-							<div class="flex size-6 items-center justify-center rounded-md border bg-transparent">
-								<mod.icon class="size-3.5 shrink-0" />
-							</div>
-							<div class="flex flex-col">
-								<span class="font-medium">{mod.name}</span>
-								<span class="text-xs text-muted-foreground">{mod.description}</span>
-							</div>
-						</DropdownMenu.Item>
-					{/each}
-				{/if}
+
+				<DropdownMenu.Separator />
+				<DropdownMenu.Label class="text-xs text-muted-foreground">Modul Mendatang</DropdownMenu.Label>
+				{#each modulMendatang as mod (mod.name)}
+					<DropdownMenu.Item class="gap-2 p-2 opacity-50" disabled>
+						<div class="flex size-6 items-center justify-center rounded-md border bg-transparent">
+							<mod.icon class="size-3.5 shrink-0" />
+						</div>
+						<div class="flex flex-col">
+							<span class="font-medium">{mod.name}</span>
+							<span class="text-xs text-muted-foreground">{mod.description}</span>
+						</div>
+					</DropdownMenu.Item>
+				{/each}
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</Sidebar.MenuItem>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { resolve } from '$app/paths';
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
 	import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
 	import { getActiveModule } from './module-active.svelte.js';
@@ -19,7 +20,10 @@
 	} = $props();
 
 	const modul = $derived(getActiveModule());
-	const visible = $derived(modul === 'semua' ? items : items.filter((i) => i.group === modul));
+	// Item grup "semua" (Dashboard, Aktivitas, Persetujuan) selalu tampil.
+	const visible = $derived(
+		modul === 'semua' ? items : items.filter((i) => i.group === modul || i.group === 'semua')
+	);
 
 	// Dibaca di top-level komponen (bukan dalam #each) -> hydration-safe
 	const pathname = $derived(page?.url?.pathname ?? '');
@@ -53,7 +57,7 @@
 						<div class="flex w-full items-center gap-1">
 							<Sidebar.MenuButton tooltipContent={item.title} isActive={isActive(item.url) || hasActiveChild(item.children)} class="flex-1">
 								{#snippet child({ props })}
-									<a href={item.url} {...props}>
+									<a href={resolve(item.url as '/admin/dashboard')} {...props}>
 										<item.icon />
 										<span>{item.title}</span>
 									</a>
@@ -80,7 +84,7 @@
 					<Sidebar.MenuItem>
 						<Sidebar.MenuButton tooltipContent={item.title} isActive={isActive(item.url)}>
 							{#snippet child({ props })}
-								<a href={item.url} {...props}>
+								<a href={resolve(item.url as '/admin/dashboard')} {...props}>
 									<item.icon />
 									<span>{item.title}</span>
 								</a>

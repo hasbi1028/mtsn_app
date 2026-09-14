@@ -46,12 +46,12 @@ export const login = form(loginSchema, async ({ username, password }) => {
 	// 4. Update last login (fire and forget)
 	updateLastLogin(user.id);
 
-	// 5. Role-based redirect (+ force change password)
+	// 5. Role-based redirect (wajib ganti sandi ditangani banner di layout, bisa di-skip)
 	let redirectTo = '/admin/dashboard';
 	if (user.role === 'siswa') {
 		redirectTo = '/admin/siswa/profil';
-	} else if (user.mustChangePassword === 1) {
-		redirectTo = '/admin/profil/ganti-password';
+	} else if (user.role === 'ortu') {
+		redirectTo = '/admin/ortu/profil';
 	}
 	redirect(303, redirectTo);
 });

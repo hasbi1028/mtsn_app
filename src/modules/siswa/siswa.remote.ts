@@ -1,4 +1,6 @@
 import { query, command, form, getRequestEvent } from '$app/server';
+import { error } from '@sveltejs/kit';
+import { requireStaff, requireRole } from '$lib/server/guard';
 import {
 	siswaListSchema,
 	siswaDetailSchema,
@@ -15,13 +17,34 @@ import {
 } from './siswa.service';
 import { getUserFromSession } from '$modules/auth/auth.service';
 
-export const getSiswaListQ = query(siswaListSchema, async (args) => getSiswaList(args));
-export const getSiswaDetailQ = query(siswaDetailSchema, async ({ id }) => getSiswaDetail(id));
-export const getMyProfileQ = query(siswaByUserSchema, async ({ userId }) => getMyProfile(userId));
-export const getSiswaByRefIdQ = query(siswaByRefSchema, async ({ refId }) => getSiswaByRefId(refId));
-export const getSiswaBansosQ = query(siswaDetailSchema, async ({ id }) => getSiswaBansos(id));
-export const getKartuListQ = query(async () => getKartuList());
-export const getRekapQ = query(async () => getRekap());
+export const getSiswaListQ = query(siswaListSchema, async (args) => {
+	requireStaff();
+	return getSiswaList(args);
+});
+export const getSiswaDetailQ = query(siswaDetailSchema, async ({ id }) => {
+	requireStaff();
+	return getSiswaDetail(id);
+});
+export const getMyProfileQ = query(siswaByUserSchema, async ({ userId }) => {
+	const user = requireStaff();
+	return getMyProfile(userId ?? user.userId);
+});
+export const getSiswaByRefIdQ = query(siswaByRefSchema, async ({ refId }) => {
+	const user = requireStaff();
+	return getSiswaByRefId(refId ?? user.ref_id ?? -1);
+});
+export const getSiswaBansosQ = query(siswaDetailSchema, async ({ id }) => {
+	requireStaff();
+	return getSiswaBansos(id);
+});
+export const getKartuListQ = query(async () => {
+	requireStaff();
+	return getKartuList();
+});
+export const getRekapQ = query(async () => {
+	requireStaff();
+	return getRekap();
+});
 
 export const getCurrentSiswaQ = query(async () => {
 	const { cookies } = getRequestEvent();
@@ -32,25 +55,18 @@ export const getCurrentSiswaQ = query(async () => {
 });
 
 export const submitPerubahanC = command(perubahanSchema, async ({ siswaId, field, nilai_baru }) => {
+	const user = requireRole('siswa');
+	if (user.ref_id !== siswaId) throw error(403, 'Anda hanya bisa mengubah data Anda sendiri.');
 	return submitPerubahan(siswaId, field, nilai_baru);
 });
 
-function currentUser() {
-	const { cookies } = getRequestEvent();
-	const token = cookies.get('session_id');
-	return token ? getUserFromSession(token) : null;
-}
-
 export const uploadFoto = form(fotoSchema, async ({ foto }) => {
-	const user = currentUser();
-	if (!user) return { error: 'Tidak terautentikasi' };
+	const user = requireRole('siswa');
 	if (!user.ref_id) return { error: 'Tidak ada data siswa terkait' };
 	return uploadFotoSiswa(user.ref_id, foto);
 });
 
 export const uploadFotoAdmin = form(fotoAdminSchema, async ({ id, foto }) => {
-	const user = currentUser();
-	if (!user) return { error: 'Tidak terautentikasi' };
-	if (user.role !== 'admin' && user.role !== 'guru') return { error: 'Akses ditolak' };
+	requireRole('admin', 'guru');
 	return uploadFotoAdminSiswa(id, foto);
 });

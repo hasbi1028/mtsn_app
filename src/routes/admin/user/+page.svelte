@@ -71,7 +71,7 @@ import UserCheckIcon from '@lucide/svelte/icons/user-check';
 	}
 
 	async function handleReset(userId: number, username: string) {
-		if (!confirm(`Reset password "${username}" ke MTsN2026! ?`)) return;
+		if (!confirm(`Reset password "${username}" ke 2026qwerty! ?`)) return;
 		loadingAction = userId;
 		try {
 			const r: any = await resetPasswordC({ userId });
@@ -164,7 +164,7 @@ import UserCheckIcon from '@lucide/svelte/icons/user-check';
 				</div>
 				<div class="space-y-1">
 					<label class="text-xs text-muted-foreground" for="password">Password Default</label>
-					<Input id="password" name="password" value="MTsN2026!" class="h-8 text-xs" required />
+					<Input id="password" name="password" value="2026qwerty!" class="h-8 text-xs" required />
 				</div>
 				<div class="space-y-1">
 					<label class="text-xs text-muted-foreground" for="role">Role</label>
@@ -176,7 +176,7 @@ import UserCheckIcon from '@lucide/svelte/icons/user-check';
 				</div>
 			</div>
 			<p class="text-[11px] text-muted-foreground">
-				Password default: <code class="font-mono">MTsN2026!</code> — guru wajib ganti saat pertama login.
+				Password default: <code class="font-mono">2026qwerty!</code> — guru wajib ganti saat pertama login.
 			</p>
 			<div class="flex gap-2">
 				<Button type="submit" size="sm" class="h-8 cursor-pointer" disabled={createUserF.pending > 0}>

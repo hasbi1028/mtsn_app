@@ -3,6 +3,7 @@ import { redirect } from '@sveltejs/kit';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { getUserFromSession } from '$modules/auth/auth.service';
+import { canAccess, homeFor, isSensitive } from '$lib/config/access';
 
 // Direktori file upload runtime
 const UPLOADS_DIR = process.env.UPLOADS_DIR || path.join(process.cwd(), 'static', 'uploads');
@@ -82,9 +83,18 @@ export const handle: Handle = async ({ event, resolve }) => {
 		redirect(302, '/login');
 	}
 
-	// Force change password — redirect ke halaman ganti password
-	if (isAdminRoute && user && (user as any).mustChangePassword === 1 && pathname !== '/admin/profil/ganti-password') {
-		redirect(302, '/admin/profil/ganti-password');
+	if (isAdminRoute && user) {
+		const home = homeFor(user.role);
+
+		// Otorisasi role — redirect ke halaman rumah + toast
+		if (!canAccess(user.role, pathname)) {
+			redirect(302, `${home}?e=403`);
+		}
+
+		// Wajib ganti sandi (bisa di-skip) — modul sensitif diblokir sementara
+		if (user.mustChangePassword === 1 && isSensitive(pathname)) {
+			redirect(302, `${home}?e=wajib`);
+		}
 	}
 
 	return resolve(event);

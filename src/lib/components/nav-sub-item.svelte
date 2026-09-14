@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { resolve } from '$app/paths';
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
 
 	let {
@@ -19,7 +20,7 @@
 <Sidebar.MenuSubItem>
 	<Sidebar.MenuSubButton isActive={isActive(url)}>
 		{#snippet child({ props })}
-			<a href={url} {...props}>
+			<a href={resolve(url as '/admin/dashboard')} {...props}>
 				<span>{label}</span>
 			</a>
 		{/snippet}

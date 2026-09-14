@@ -2,17 +2,22 @@
 	import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
 	import LogOutIcon from "@lucide/svelte/icons/log-out";
 	import GlobeIcon from "@lucide/svelte/icons/globe";
+	import KeyRoundIcon from "@lucide/svelte/icons/key-round";
+	import UserIcon from "@lucide/svelte/icons/user";
+	import { Badge } from "$lib/components/ui/badge/index.js";
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
 	import { useSidebar } from "$lib/components/ui/sidebar/index.js";
+	import { resolve } from '$app/paths';
 	import { logoutForm } from '$modules/auth/auth.remote';
 
-	let { user }: { user?: { username: string; role: string; ref_id: number | null } | null } = $props();
+	let { user }: { user?: { username: string; role: string; ref_id: number | null; mustChangePassword?: number } | null } = $props();
 
 	const sidebar = useSidebar();
 
 	const initials = $derived(user?.username ? user.username.slice(0, 2).toUpperCase() : 'U');
 	const roleLabel = $derived(user?.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'User');
+	const mustChange = $derived(user?.mustChangePassword === 1);
 </script>
 
 <Sidebar.Menu>
@@ -51,14 +56,39 @@
 							<span class="truncate font-medium">{user?.username ?? 'User'}</span>
 							<span class="truncate text-xs">{roleLabel}</span>
 						</div>
+						{#if mustChange}
+							<Badge variant="destructive" class="text-[10px]">Ganti sandi</Badge>
+						{/if}
 					</div>
 				</DropdownMenu.Label>
+				<DropdownMenu.Separator />
+
+				<!-- Profil Saya -->
+				<DropdownMenu.Item>
+					{#snippet child({ props })}
+						<a {...props} href={resolve('/admin/profil')} class="flex w-full items-center gap-2">
+							<UserIcon class="size-4" />
+							Profil Saya
+						</a>
+					{/snippet}
+				</DropdownMenu.Item>
+
+				<!-- Ganti Password (self-service semua role) -->
+				<DropdownMenu.Item>
+					{#snippet child({ props })}
+						<a {...props} href={resolve('/admin/profil/ganti-password')} class="flex w-full items-center gap-2">
+							<KeyRoundIcon class="size-4" />
+							Ganti Password
+						</a>
+					{/snippet}
+				</DropdownMenu.Item>
+
 				<DropdownMenu.Separator />
 
 				<!-- Situs Web (link ke public) -->
 				<DropdownMenu.Item>
 					{#snippet child({ props })}
-						<a {...props} href="/" class="flex w-full items-center gap-2">
+						<a {...props} href={resolve('/')} class="flex w-full items-center gap-2">
 							<GlobeIcon class="size-4" />
 							Situs Web
 						</a>
