@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { setMode } from 'mode-watcher';
 	import PublicNavbar from '$lib/components/navigation/public-navbar.svelte';
 	import PublicFooter from '$lib/components/navigation/public-footer.svelte';
@@ -6,8 +7,10 @@
 	let { children, data } = $props();
 	const user = $derived(data?.user);
 
-	// Force light mode on public pages —不受 admin dark mode state
-	$effect(() => {
+	// Paksa mode terang di halaman publik — tidak terpengaruh state dark mode admin.
+	// HARUS di onMount, BUKAN di $effect: setMode() di dalam $effect memicu
+	// effect_update_depth_exceeded (loop) sehingga seluruh halaman publik error.
+	onMount(() => {
 		setMode('light');
 	});
 </script>
