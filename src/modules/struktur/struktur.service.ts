@@ -18,6 +18,7 @@ import {
 export interface PengaturanBagan {
 	judul: string;
 	tahun: string;
+	sk: string;
 	kop: string;
 	badge: string;
 	kamadNama: string;
@@ -31,6 +32,7 @@ export interface PengaturanBagan {
 export const DEFAULT_BAGAN: PengaturanBagan = {
 	judul: 'STRUKTUR ORGANISASI',
 	tahun: '2026/2027',
+	sk: '',
 	kop: 'KEMENTERIAN AGAMA REPUBLIK INDONESIA',
 	badge: '',
 	kamadNama: '',
@@ -66,22 +68,29 @@ export function ensureStrukturTables() {
 		)
 	`);
 	db.run(sql`
-		CREATE TABLE IF NOT EXISTS struktur_anggota (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			unit_kode TEXT NOT NULL,
-			ptk_id INTEGER,
-			nama_manual TEXT,
-			nip_manual TEXT,
-			gelar TEXT,
-			jabatan_tampil TEXT,
-			keterangan TEXT,
-			urutan INTEGER NOT NULL DEFAULT 0,
-			tampil_bagan INTEGER NOT NULL DEFAULT 1,
-			aktif INTEGER NOT NULL DEFAULT 1,
-			created_at TEXT DEFAULT (datetime('now','localtime')),
-			updated_at TEXT DEFAULT (datetime('now','localtime'))
-		)
+	CREATE TABLE IF NOT EXISTS struktur_anggota (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		unit_kode TEXT NOT NULL,
+		ptk_id INTEGER,
+		nama_manual TEXT,
+		nip_manual TEXT,
+		gelar TEXT,
+		jabatan_tampil TEXT,
+		keterangan TEXT,
+		kepala INTEGER NOT NULL DEFAULT 0,
+		urutan INTEGER NOT NULL DEFAULT 0,
+		tampil_bagan INTEGER NOT NULL DEFAULT 1,
+		aktif INTEGER NOT NULL DEFAULT 1,
+		created_at TEXT DEFAULT (datetime('now','localtime')),
+		updated_at TEXT DEFAULT (datetime('now','localtime'))
+	)
 	`);
+	// Migrasi ringan untuk DB yang tabelnya sudah ada sebelum kolom `kepala`.
+	try {
+		db.run(sql`ALTER TABLE struktur_anggota ADD COLUMN kepala INTEGER NOT NULL DEFAULT 0`);
+	} catch {
+		/* kolom sudah ada */
+	}
 	db.run(sql`CREATE INDEX IF NOT EXISTS idx_struktur_anggota_unit ON struktur_anggota(unit_kode)`);
 	db.run(sql`CREATE INDEX IF NOT EXISTS idx_struktur_anggota_ptk ON struktur_anggota(ptk_id)`);
 	ensured = true;
@@ -92,7 +101,7 @@ export function ensureStrukturTables() {
 export function getStrukturTree(): { units: UnitRow[]; anggota: AnggotaRow[] } {
 	ensureStrukturTables();
 	const units = db.all(sql`
-		SELECT kode, nama, tipe, kelompok,
+		SELECT kode, nama, tipe, kelompok, catatan,
 		       parent_kode AS parentKode, kolom, urutan,
 		       tampil_bagan AS tampilBagan, aktif
 		FROM struktur_unit
@@ -101,9 +110,9 @@ export function getStrukturTree(): { units: UnitRow[]; anggota: AnggotaRow[] } {
 
 	const anggota = db.all(sql`
 		SELECT a.id, a.unit_kode AS unitKode, a.ptk_id AS ptkId,
-		       a.nama_manual AS namaManual, a.gelar,
+		       a.nama_manual AS namaManual, a.nip_manual AS nipManual, a.gelar,
 		       a.jabatan_tampil AS jabatanTampil, a.keterangan,
-		       a.urutan, a.tampil_bagan AS tampilBagan, a.aktif,
+		       a.urutan, a.tampil_bagan AS tampilBagan, a.aktif, a.kepala,
 		       p.nama AS namaPtk, p.nip AS nipPtk, p.public_id AS publicId,
 		       p.foto_path AS fotoPtk
 		FROM struktur_anggota a
@@ -152,6 +161,7 @@ export function getPengaturanBagan(): PengaturanBagan {
 	return {
 		judul: map.struktur_judul || DEFAULT_BAGAN.judul,
 		tahun: map.struktur_tahun || DEFAULT_BAGAN.tahun,
+		sk: map.struktur_sk || DEFAULT_BAGAN.sk,
 		kop: map.struktur_kop || DEFAULT_BAGAN.kop,
 		badge: map.struktur_badge || '',
 		kamadNama: map.struktur_kamad_nama || DEFAULT_BAGAN.kamadNama,
@@ -285,6 +295,8 @@ export interface AnggotaInput {
 	keterangan?: string | null;
 	urutan?: number;
 	tampilBagan?: boolean;
+	/** true = kepala unit (tampil di header kotak bagan). */
+	kepala?: boolean;
 }
 
 export function simpanAnggota(input: AnggotaInput): { ok: true; pesan: string; id?: number } {
@@ -302,6 +314,7 @@ export function simpanAnggota(input: AnggotaInput): { ok: true; pesan: string; i
 	const nipManual = input.nipManual?.trim() || null;
 	const urutan = Number.isFinite(input.urutan) ? Number(input.urutan) : 0;
 	const tampilBagan = input.tampilBagan === false ? 0 : 1;
+	const kepala = input.kepala === true ? 1 : 0;
 
 	if (input.id) {
 		const id = Number(input.id);
@@ -309,7 +322,7 @@ export function simpanAnggota(input: AnggotaInput): { ok: true; pesan: string; i
 			UPDATE struktur_anggota SET unit_kode = ${unitKode}, ptk_id = ${ptkId},
 				nama_manual = ${namaManual}, nip_manual = ${nipManual}, gelar = ${gelar},
 				jabatan_tampil = ${jabatanTampil}, keterangan = ${keterangan},
-				urutan = ${urutan}, tampil_bagan = ${tampilBagan},
+				kepala = ${kepala}, urutan = ${urutan}, tampil_bagan = ${tampilBagan},
 				updated_at = datetime('now','localtime')
 			WHERE id = ${id}
 		`);
@@ -318,8 +331,8 @@ export function simpanAnggota(input: AnggotaInput): { ok: true; pesan: string; i
 
 	db.run(sql`
 		INSERT INTO struktur_anggota
-			(unit_kode, ptk_id, nama_manual, nip_manual, gelar, jabatan_tampil, keterangan, urutan, tampil_bagan)
-		VALUES (${unitKode}, ${ptkId}, ${namaManual}, ${nipManual}, ${gelar}, ${jabatanTampil}, ${keterangan}, ${urutan}, ${tampilBagan})
+			(unit_kode, ptk_id, nama_manual, nip_manual, gelar, jabatan_tampil, keterangan, kepala, urutan, tampil_bagan)
+		VALUES (${unitKode}, ${ptkId}, ${namaManual}, ${nipManual}, ${gelar}, ${jabatanTampil}, ${keterangan}, ${kepala}, ${urutan}, ${tampilBagan})
 	`);
 	return { ok: true, pesan: 'Anggota ditambahkan.' };
 }

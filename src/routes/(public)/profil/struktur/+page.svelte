@@ -42,6 +42,7 @@
 					{kolom}
 					judul={pengaturan.judul}
 					tahun={pengaturan.tahun}
+					sk={pengaturan.sk}
 					kop={pengaturan.kop}
 					badge={data.badge}
 					mode="web"
@@ -51,6 +52,7 @@
 
 			<div class="mt-6 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
 				{#if pengaturan.tahun}<span>Tahun Pelajaran {pengaturan.tahun}</span>{/if}
+				{#if pengaturan.sk}<span>· {pengaturan.sk}</span>{/if}
 				{#if data.badge}<span>· {data.badge} pegawai</span>{/if}
 				{#if pengaturan.tempatTgl}<span>· {pengaturan.tempatTgl}</span>{/if}
 				<a class="underline" href="/guru">Lihat daftar guru &amp; staf</a>

@@ -122,8 +122,16 @@
 					<Input id="kelompok" name="kelompok" placeholder="PIMPINAN" class="h-8 text-xs" />
 				</div>
 				<div class="space-y-1">
-					<label class="text-xs text-muted-foreground" for="kolom">Kolom</label>
-					<Input id="kolom" name="kolom" type="number" value="2" min="1" max="6" class="h-8 text-xs" />
+					<label class="text-xs text-muted-foreground" for="tipe">Bentuk isi kotak</label>
+					<select id="tipe" name="tipe" class="h-8 w-full rounded-md border bg-background px-2 text-xs">
+						<option value="daftar">Daftar (satu orang per baris)</option>
+						<option value="grid">Grid 3 sub-kolom (guru / wali kelas)</option>
+						<option value="catatan">Kotak catatan (tanpa daftar orang)</option>
+					</select>
+				</div>
+				<div class="space-y-1">
+					<label class="text-xs text-muted-foreground" for="kolom">Kolom (0 = baris puncak)</label>
+					<Input id="kolom" name="kolom" type="number" value="2" min="0" max="6" class="h-8 text-xs" />
 				</div>
 				<div class="space-y-1">
 					<label class="text-xs text-muted-foreground" for="urutan">Urutan</label>
@@ -132,6 +140,17 @@
 				<div class="space-y-1">
 					<label class="text-xs text-muted-foreground" for="parentKode">Induk (opsional)</label>
 					<Input id="parentKode" name="parentKode" placeholder="kamad" class="h-8 text-xs" />
+				</div>
+				<div class="space-y-1 md:col-span-2">
+					<label class="text-xs text-muted-foreground" for="catatan">
+						Catatan kotak (untuk bentuk "catatan")
+					</label>
+					<Input
+						id="catatan"
+						name="catatan"
+						placeholder="Kerjasama, publikasi & hubungan dengan komite dan orang tua/wali"
+						class="h-8 text-xs"
+					/>
 				</div>
 			</div>
 			<label class="flex items-center gap-2 text-xs text-muted-foreground">

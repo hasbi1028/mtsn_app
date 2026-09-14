@@ -224,11 +224,33 @@ Publik: item baru di `public-navbar.svelte` (child "Profil"), tautan di `/guru` 
 
 ---
 
-## Seed awal (SK 023/2026 — acuan tampilan `struktur-foto-v2-premium.html`)
+## Layout bagan (kanvas cetak 2000×1000 — acuan `struktur-foto-v4-nip.html`)
 
-Acuan data & gaya: `C:\Users\LENOVO\Downloads\struktur-foto-v2-premium.html`
-(data personel identik dengan `v4-nip`; v2 = premium hijau-emas, placeholder foto 3:4, tanpa NIP).
-Audit lengkap bagan ↔ `ptk` (47 orang, 10 nama belum ada di `ptk`, 3 baris `ptk` duplikat):
+Tampilan cetak/spanduk mengikuti bagan resmi versi v4:
+
+| Unsur | Sumber data |
+|---|---|
+| Logo Kemenag kiri + badge jumlah pegawai kanan | `static/uploads/logo-kemenag.png` + `struktur_badge` |
+| Sub judul "Tahun Pelajaran … • SK …" | `struktur_tahun` + `struktur_sk` |
+| Baris puncak (Ketua Komite **putus-putus** + Kepala Madrasah) | unit dengan **`kolom = 0`**; `kelompok = MITRA` → gaya mitra |
+| Header kotak tiap kolom (foto + jabatan + nama + NIP) | anggota dengan **`kepala = 1`** pada unit kolom tersebut |
+| Bar judul isi kotak (mis. "TATA USAHA", "DEWAN GURU MATA PELAJARAN (31)") | `struktur_unit.nama` |
+| Bentuk isi kotak | `struktur_unit.tipe`: `daftar` (1 orang/baris), `grid` (3 sub-kolom, untuk 31 guru & 12 wali), `catatan` (paragraf, mis. Humas) |
+| Kartu orang | foto 3:4 (placeholder inisial bila `ptk.foto_path` kosong) + nama/gelar + NIP + mapel/kelas |
+| NIP | `ptk.nip`, atau **`struktur_anggota.nip_manual`** bila `ptk` belum punya (tabel `ptk` tidak diubah) |
+| Kotak catatan (Humas / pembina ekskul) | `struktur_unit.catatan`, atau rangkuman "keterangan: nama" anggotanya |
+| Band SISWA, catatan kaki, blok tanda tangan | `struktur_catatan_kaki`, `struktur_kamad_nama/nip`, `struktur_tempat_tgl` |
+
+Kepadatan: kartu ≈34 px, kotak dengan >8 anggota memakai 2 sub-kolom CSS (`columns:2`),
+lebar kolom proporsional dengan jumlah entri dan tidak boleh sempit (basis 90 px, min. 3 bagian).
+NIP tampil bila `struktur_tampil_nip=1` (dokumen internal) — **halaman publik selalu tanpa NIP**.
+
+## Seed awal (SK 023/2026 — acuan tampilan `struktur-foto-v4-nip.html`)
+
+Acuan data & NIP: `C:\Users\LENOVO\Downloads\struktur-foto-v4-nip.html`
+(data personel identik dengan `v2-premium`; v4 memuat NIP 51 orang).
+Parser: `scripts/struktur-dari-html.mjs` → `scripts/struktur-sk023.json` → `scripts/seed-struktur-sk023.ts`.
+Audit lengkap bagan ↔ `ptk` (47 orang, 10 nama belum ada di `ptk`, baris `ptk` duplikat):
 lihat `.hermes/plans/2026-09-14_104235-modul-struktur-organisasi.md` §13.
 
 Unit awal: `komite` (mitra), `kamad` (pimpinan), `kaur-tu`, `wakamad-kurikulum`, `wakamad-kesiswaan`,

@@ -159,7 +159,8 @@ export const simpanAnggotaF = form(anggotaFormSchema as any, async (data: Anggot
 			jabatanTampil: str(data.jabatanTampil),
 			keterangan: str(data.keterangan),
 			urutan: Number(str(data.urutan)) || 0,
-			tampilBagan: data.tampilBagan !== false
+			tampilBagan: data.tampilBagan !== false,
+			kepala: data.kepala === true
 		});
 		return { ok: true as const, pesan: hasil.pesan, id: hasil.id };
 	} catch (e) {
@@ -197,6 +198,7 @@ export const simpanPengaturanBaganF = form(
 		const values: Record<string, string> = {
 			struktur_judul: str(data.struktur_judul),
 			struktur_tahun: str(data.struktur_tahun),
+			struktur_sk: str(data.struktur_sk),
 			struktur_kop: str(data.struktur_kop),
 			struktur_badge: str(data.struktur_badge),
 			struktur_kamad_nama: str(data.struktur_kamad_nama),

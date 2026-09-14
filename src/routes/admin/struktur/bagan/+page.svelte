@@ -31,6 +31,11 @@
 	let pakaiNip = $state(false);
 	let lastHasil: unknown = null;
 
+	// Ikuti pengaturan: sekali data pengaturan termuat, samakan saklar NIP & preset.
+	$effect(() => {
+		if (pengaturan && typeof pengaturan.tampilNip === 'boolean') pakaiNip = pengaturan.tampilNip;
+	});
+
 	$effect(() => {
 		const r: any = simpanPengaturanBaganF.result;
 		if (!r || r === lastHasil) return;
@@ -139,6 +144,16 @@
 				<div class="space-y-1">
 					<label class="text-xs text-muted-foreground" for="struktur_tahun">Tahun pelajaran</label>
 					<Input id="struktur_tahun" name="struktur_tahun" value={pengaturan.tahun ?? ''} class="h-8 text-xs" />
+				</div>
+				<div class="space-y-1">
+					<label class="text-xs text-muted-foreground" for="struktur_sk">Nomor SK (baris sub judul)</label>
+					<Input
+						id="struktur_sk"
+						name="struktur_sk"
+						value={pengaturan.sk ?? ''}
+						placeholder="SK No. 023 Tahun 2026"
+						class="h-8 text-xs"
+					/>
 				</div>
 				<div class="space-y-1">
 					<label class="text-xs text-muted-foreground" for="struktur_badge">

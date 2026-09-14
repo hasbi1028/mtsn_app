@@ -161,6 +161,16 @@
 						/>
 					</div>
 					<div class="space-y-1">
+						<label class="text-xs text-muted-foreground" for="nipManual">NIP</label>
+						<Input
+							id="nipManual"
+							name="nipManual"
+							value={edit?.nipManual ?? ''}
+							placeholder="Kosongkan bila sudah ada di data PTK"
+							class="h-8 text-xs"
+						/>
+					</div>
+					<div class="space-y-1">
 						<label class="text-xs text-muted-foreground" for="jabatanTampil">Jabatan tampil</label>
 						<Input
 							id="jabatanTampil"
@@ -197,6 +207,10 @@
 					<input type="checkbox" name="tampilBagan" checked={edit ? edit.tampilBagan === 1 : true} />
 					Tampilkan di bagan
 				</label>
+				<label class="flex items-center gap-2 text-xs text-muted-foreground">
+					<input type="checkbox" name="kepala" checked={edit ? edit.kepala === 1 : false} />
+					Kepala unit — tampil sebagai header kotak di bagan (layout spanduk)
+				</label>
 
 				<div class="flex gap-2">
 					<Button type="submit" size="sm" class="h-8 cursor-pointer" disabled={simpanAnggotaF.pending > 0}>
@@ -225,6 +239,9 @@
 				<div class="min-w-0">
 					<div class="flex flex-wrap items-center gap-2">
 						<span class="text-sm font-semibold">{labelAnggota(a)}</span>
+						{#if a.kepala === 1}
+							<Badge class="text-[10px]">kepala unit</Badge>
+						{/if}
 						{#if a.jabatanTampil}<Badge variant="secondary" class="text-[10px]">{a.jabatanTampil}</Badge>{/if}
 						{#if a.tampilBagan !== 1}
 							<Badge variant="destructive" class="text-[10px]">tidak tampil</Badge>

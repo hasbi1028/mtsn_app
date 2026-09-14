@@ -66,6 +66,7 @@
 			badge={data.badge}
 			mode="cetak"
 			publik={!nip}
+			sk={pengaturan.sk || ''}
 			catatanKaki={pengaturan.catatanKaki || ''}
 			tempatTgl={pengaturan.tempatTgl || ''}
 			ttdNama={pengaturan.kamadNama || ''}

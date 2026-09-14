@@ -33,6 +33,7 @@ const anggota = (over: Partial<AnggotaRow>): AnggotaRow => ({
 	aktif: 1,
 	namaPtk: null,
 	nipPtk: null,
+	nipManual: null,
 	publicId: null,
 	...over
 });
@@ -111,6 +112,39 @@ describe('susunBagan', () => {
 	it('mengosongkan kotak tanpa anggota (tidak error)', () => {
 		const bagan = susunBagan([unit({ kode: 'kosong', nama: 'Kosong' })], []);
 		expect(bagan[0].kotak[0].anggota).toEqual([]);
+	});
+});
+
+describe('susunBagan — NIP, kepala unit, dan catatan kotak', () => {
+	const units = [
+		unit({ kode: 'kamad', nama: 'Kepala Madrasah', kolom: 0, urutan: 1 }),
+		unit({ kode: 'kaur-tu', nama: 'Kepala Tata Usaha', kolom: 1, urutan: 1 }),
+		unit({ kode: 'humas', nama: 'Wakamad Humas', kolom: 5, urutan: 1, catatan: 'Kerjasama & publikasi' })
+	];
+	const rows = [
+		anggota({ id: 1, unitKode: 'kamad', namaPtk: 'ANWAR', nipManual: '196912311997031028', kepala: 1 }),
+		anggota({ id: 2, unitKode: 'kaur-tu', namaManual: 'Wahyuniar', nipManual: '197907152022212001', kepala: 1 }),
+		anggota({ id: 3, unitKode: 'humas', namaPtk: 'CHAIRUDDIN' })
+	];
+
+	it('memakai nip_manual bila ptk belum punya NIP', () => {
+		const hasil = susunBagan(units, rows, { publik: false });
+		const kamad = hasil[0].kotak.find((k) => k.kode === 'kamad');
+		expect(kamad?.anggota[0].nip).toBe('196912311997031028');
+	});
+
+	it('menandai kepala unit dan meneruskan catatan kotak', () => {
+		const hasil = susunBagan(units, rows, { publik: false });
+		const kaur = hasil.find((k) => k.kolom === 1)?.kotak[0];
+		expect(kaur?.anggota[0].kepala).toBe(true);
+		const humas = hasil.find((k) => k.kolom === 5)?.kotak[0];
+		expect(humas?.catatan).toBe('Kerjasama & publikasi');
+	});
+
+	it('menyembunyikan NIP pada mode publik', () => {
+		const hasil = susunBagan(units, rows, { publik: true });
+		const kamad = hasil[0].kotak.find((k) => k.kode === 'kamad');
+		expect(kamad?.anggota[0].nip).toBe('');
 	});
 });
 

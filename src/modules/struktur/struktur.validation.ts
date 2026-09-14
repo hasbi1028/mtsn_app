@@ -74,7 +74,8 @@ export const anggotaFormSchema = v.object({
 	jabatanTampil: teks(),
 	keterangan: teks(),
 	urutan: angka(0),
-	tampilBagan: saklar(true)
+	tampilBagan: saklar(true),
+	kepala: saklar(false)
 });
 
 export type AnggotaFormInput = v.InferOutput<typeof anggotaFormSchema>;
@@ -91,6 +92,7 @@ export const urutkanSchema = v.object({
 export const pengaturanBaganSchema = v.object({
 	struktur_judul: teks(),
 	struktur_tahun: teks(),
+	struktur_sk: teks(),
 	struktur_kop: teks(),
 	struktur_badge: teks(),
 	struktur_kamad_nama: teks(),

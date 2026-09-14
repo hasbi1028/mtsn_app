@@ -23,8 +23,18 @@ type Anggota = {
 	jabatan: string;
 	keterangan: string;
 	urutan: number;
+	kepala?: boolean;
+	nip?: string;
 };
-type Unit = { kode: string; nama: string; kelompok: string; tipe: string; kolom: number; urutan: number };
+type Unit = {
+	kode: string;
+	nama: string;
+	kelompok: string;
+	tipe: string;
+	kolom: number;
+	urutan: number;
+	catatan?: string;
+};
 type Data = {
 	sumber: string;
 	badge: string;
@@ -32,6 +42,7 @@ type Data = {
 	judul: string;
 	madrasah: string;
 	tahun: string;
+	sk: string;
 	tempatTgl: string;
 	kamadNama: string;
 	kamadNip: string;
@@ -96,6 +107,7 @@ CREATE TABLE IF NOT EXISTS struktur_anggota (
 	gelar TEXT,
 	jabatan_tampil TEXT,
 	keterangan TEXT,
+	kepala INTEGER NOT NULL DEFAULT 0,
 	urutan INTEGER NOT NULL DEFAULT 0,
 	tampil_bagan INTEGER NOT NULL DEFAULT 1,
 	aktif INTEGER NOT NULL DEFAULT 1,
@@ -110,6 +122,13 @@ CREATE TABLE IF NOT EXISTS pengaturan (
 	updated_at TEXT DEFAULT (datetime('now','localtime'))
 );
 `);
+
+// Migrasi ringan: kolom `kepala` (layout spanduk v4) untuk DB yang sudah ada.
+try {
+	db.exec('ALTER TABLE struktur_anggota ADD COLUMN kepala INTEGER NOT NULL DEFAULT 0');
+} catch {
+	/* kolom sudah ada */
+}
 
 const jumlahUnit = (db.prepare('SELECT COUNT(*) AS c FROM struktur_unit').get() as { c: number }).c;
 const jumlahAnggota = (db.prepare('SELECT COUNT(*) AS c FROM struktur_anggota').get() as { c: number }).c;
@@ -239,18 +258,18 @@ const tulis = db.transaction(() => {
 	}
 
 	const iUnit = db.prepare(`
-		INSERT INTO struktur_unit (kode, nama, tipe, kelompok, kolom, urutan, tampil_bagan, aktif)
-		VALUES (@kode, @nama, @tipe, @kelompok, @kolom, @urutan, 1, 1)
+		INSERT INTO struktur_unit (kode, nama, tipe, kelompok, kolom, urutan, tampil_bagan, aktif, catatan)
+		VALUES (@kode, @nama, @tipe, @kelompok, @kolom, @urutan, 1, 1, @catatan)
 		ON CONFLICT(kode) DO UPDATE SET
-			nama = @nama, tipe = @tipe, kelompok = @kelompok,
+			nama = @nama, tipe = @tipe, kelompok = @kelompok, catatan = @catatan,
 			kolom = @kolom, urutan = @urutan, updated_at = datetime('now','localtime')
 	`);
-	for (const u of data.units) iUnit.run(u);
+	for (const u of data.units) iUnit.run({ catatan: u.catatan ?? null, ...u });
 
 	const iAnggota = db.prepare(`
 		INSERT INTO struktur_anggota
-			(unit_kode, ptk_id, nama_manual, gelar, jabatan_tampil, keterangan, urutan, tampil_bagan, aktif)
-		VALUES (@unitKode, @ptkId, @namaManual, @gelar, @jabatanTampil, @keterangan, @urutan, 1, 1)
+			(unit_kode, ptk_id, nama_manual, nip_manual, gelar, jabatan_tampil, keterangan, kepala, urutan, tampil_bagan, aktif)
+		VALUES (@unitKode, @ptkId, @namaManual, @nipManual, @gelar, @jabatanTampil, @keterangan, @kepala, @urutan, 1, 1)
 	`);
 	for (const a of data.anggota) {
 		const ptkId = idUntuk(a);
@@ -258,9 +277,11 @@ const tulis = db.transaction(() => {
 			unitKode: a.unitKode,
 			ptkId,
 			namaManual: ptkId ? null : a.nama,
+			nipManual: a.nip || null,
 			gelar: a.gelar || null,
 			jabatanTampil: a.jabatan || null,
 			keterangan: a.keterangan || null,
+			kepala: a.kepala ? 1 : 0,
 			urutan: a.urutan
 		});
 	}
@@ -272,12 +293,13 @@ const tulis = db.transaction(() => {
 	const pengaturan: [string, string][] = [
 		['struktur_judul', data.judul],
 		['struktur_tahun', data.tahun],
+		['struktur_sk', data.sk],
 		['struktur_kop', data.kop],
 		['struktur_badge', data.badge],
 		['struktur_kamad_nama', data.kamadNama],
 		['struktur_kamad_nip', data.kamadNip],
 		['struktur_tempat_tgl', data.tempatTgl],
-		['struktur_tampil_nip', '0'],
+		['struktur_tampil_nip', '1'],
 		['struktur_publik_aktif', '1'],
 		['struktur_catatan_kaki', data.catatanKaki]
 	];
@@ -295,7 +317,7 @@ const akhirPtk = (
 console.log('\n=== HASIL ===');
 console.log(`struktur_unit    : ${akhirUnit}`);
 console.log(`struktur_anggota : ${akhirAnggota} (${akhirPtk} tertaut ptk, ${akhirAnggota - akhirPtk} entri luar)`);
-console.log(`pengaturan bagan : 10 kunci diset (judul/kop/tahun/badge/kamad/tempat/tampil_nip=0/publik=1)`);
+console.log(`pengaturan bagan : 11 kunci diset (judul/tahun/SK/kop/badge/kamad/tempat/catatan/tampil_nip/publik)`);
 console.log('Tabel ptk TIDAK diubah.');
 
 db.close();

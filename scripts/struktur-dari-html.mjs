@@ -8,7 +8,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const SRC =
-	process.argv[2] ?? 'C:/Users/LENOVO/Downloads/struktur-foto-v2-premium.html';
+	process.argv[2] ?? 'C:/Users/LENOVO/Downloads/struktur-foto-v4-nip.html';
 const OUT = process.argv[3] ?? 'scripts/struktur-sk023.json';
 
 const html = readFileSync(SRC, 'utf8');
@@ -34,13 +34,20 @@ function blokKolom(cls) {
 	return akhir > 0 ? setelah.slice(0, akhir) : setelah;
 }
 
-/** Teks head (jab + nama) dari sebuah blok kolom. */
+/** Ambil NIP 18 digit dari potongan HTML kartu (kosong bila placeholder "·····"). */
+function nipDari(chunk) {
+	const m = chunk.match(/class="nip">\s*NIP\.?\s*([0-9]{18})/);
+	return m ? m[1] : '';
+}
+
+/** Teks head (jab + nama + nip) dari sebuah blok kolom. */
 function head(blok) {
 	const m = blok.match(/<div class="head">([\s\S]*?)<\/div><\/div>/);
 	const isi = m ? m[1] : blok.slice(0, 400);
 	return {
 		jabatan: bersih((isi.match(/<div class="jab">([^<]*)/) ?? [])[1] ?? ''),
-		nama: bersih((isi.match(/<div class="nama">([^<]*)/) ?? [])[1] ?? '')
+		nama: bersih((isi.match(/<div class="nama">([^<]*)/) ?? [])[1] ?? ''),
+		nip: nipDari(isi)
 	};
 }
 
@@ -59,7 +66,7 @@ function item(blok, cls) {
 		const nama = bersih((c.match(/<div class="(?:nama|n)">([^<]*)/) ?? [])[1] ?? '');
 		const ket = bersih((c.match(/<div class="(?:m|ket)">([^<]*)/) ?? [])[1] ?? '');
 		const kelas = bersih((c.match(/<div class="k">([^<]*)/) ?? [])[1] ?? '');
-		if (nama) hasil.push({ jabatan: jab, nama, keterangan: ket || kelas });
+		if (nama) hasil.push({ jabatan: jab, nama, keterangan: ket || kelas, nip: nipDari(c) });
 	}
 	return hasil;
 }
@@ -73,8 +80,8 @@ function pisahGelar(s) {
 }
 
 const row1 = html.slice(html.indexOf('<div class="row1">'), html.indexOf('<div class="cols">'));
-const kotakRow1 = [...row1.matchAll(/<div class="jab">([\s\S]*?)<\/div><div class="nama">([\s\S]*?)<\/div>/g)].map(
-	(m) => ({ jabatan: bersih(m[1]), nama: bersih(m[2]) })
+const kotakRow1 = [...row1.matchAll(/<div class="jab">([\s\S]*?)<\/div><div class="nama">([\s\S]*?)<\/div>(?:<div class="nip">([\s\S]*?)<\/div>)?/g)].map(
+	(m) => ({ jabatan: bersih(m[1]), nama: bersih(m[2]), nip: (bersih(m[3] ?? '').match(/([0-9]{18})/) ?? [])[1] ?? '' })
 );
 
 const colTu = blokKolom('col-tu');
@@ -99,46 +106,75 @@ const tempatTgl = mTempat ? `${mTempat[1].trim()}, ${mTempat[2].trim()}` : '';
 const badge = (html.match(/(\d+)\s*ORANG/) ?? [])[1] ?? '';
 
 const units = [
-	{ kode: 'komite', nama: 'Ketua Komite', kelompok: 'MITRA', tipe: 'unit', kolom: 1, urutan: 1 },
-	{ kode: 'kamad', nama: 'Kepala Madrasah', kelompok: 'PIMPINAN', tipe: 'unit', kolom: 1, urutan: 2 },
-	{ kode: 'kaur-tu', nama: 'Kepala Tata Usaha', kelompok: 'PIMPINAN', tipe: 'unit', kolom: 2, urutan: 1 },
-	{ kode: 'tu-staf', nama: 'Staf Tata Usaha', kelompok: 'TATA USAHA', tipe: 'unit', kolom: 2, urutan: 2 },
-	{ kode: 'pendukung', nama: 'Tenaga Pendukung', kelompok: 'PENDUKUNG', tipe: 'unit', kolom: 2, urutan: 3 },
-	{ kode: 'wakamad-kurikulum', nama: 'Wakamad Kurikulum', kelompok: 'PIMPINAN', tipe: 'unit', kolom: 3, urutan: 1 },
+	{ kode: 'komite', nama: 'Ketua Komite', kelompok: 'MITRA', tipe: 'daftar', kolom: 0, urutan: 1 },
+	{ kode: 'kamad', nama: 'Kepala Madrasah', kelompok: 'PIMPINAN', tipe: 'daftar', kolom: 0, urutan: 2 },
+	{ kode: 'kaur-tu', nama: 'Kepala Tata Usaha', kelompok: 'PIMPINAN', tipe: 'daftar', kolom: 1, urutan: 1 },
+	{ kode: 'tu-staf', nama: 'Tata Usaha', kelompok: 'TATA USAHA', tipe: 'daftar', kolom: 1, urutan: 2 },
+	{ kode: 'pendukung', nama: 'Tenaga Pendukung', kelompok: 'PENDUKUNG', tipe: 'daftar', kolom: 1, urutan: 3 },
+	{
+		kode: 'wakamad-kurikulum',
+		nama: 'Wakamad Kurikulum',
+		kelompok: 'PIMPINAN',
+		tipe: 'daftar',
+		kolom: 2,
+		urutan: 1
+	},
 	{
 		kode: 'guru-mapel',
 		nama: 'Dewan Guru Mata Pelajaran',
 		kelompok: 'GURU',
-		tipe: 'unit',
-		kolom: 3,
+		tipe: 'grid',
+		kolom: 2,
 		urutan: 2
 	},
-	{ kode: 'wakamad-kesiswaan', nama: 'Wakamad Kesiswaan', kelompok: 'PIMPINAN', tipe: 'unit', kolom: 4, urutan: 1 },
-	{ kode: 'wali-kelas', nama: 'Wali Kelas', kelompok: 'GURU', tipe: 'unit', kolom: 4, urutan: 2 },
-	{ kode: 'guru-bk', nama: 'Guru BK', kelompok: 'GURU', tipe: 'unit', kolom: 4, urutan: 3 },
-	{ kode: 'pembina-osim', nama: 'Pembina OSIM', kelompok: 'GURU', tipe: 'unit', kolom: 4, urutan: 4 },
+	{
+		kode: 'wakamad-kesiswaan',
+		nama: 'Wakamad Kesiswaan',
+		kelompok: 'PIMPINAN',
+		tipe: 'daftar',
+		kolom: 3,
+		urutan: 1
+	},
+	{ kode: 'wali-kelas', nama: 'Wali Kelas', kelompok: 'GURU', tipe: 'grid', kolom: 3, urutan: 2 },
+	{ kode: 'guru-bk', nama: 'Guru BK', kelompok: 'GURU', tipe: 'daftar', kolom: 3, urutan: 3 },
+	{ kode: 'pembina-osim', nama: 'Pembina OSIM', kelompok: 'GURU', tipe: 'daftar', kolom: 3, urutan: 4 },
 	{
 		kode: 'pembina-ekskul',
 		nama: 'Pembina Ekstrakurikuler & Kokurikuler',
 		kelompok: 'GURU',
-		tipe: 'unit',
-		kolom: 4,
+		tipe: 'catatan',
+		kolom: 3,
 		urutan: 5
 	},
 	{
 		kode: 'wakamad-sarpras',
 		nama: 'Wakamad Sarana & Prasarana',
 		kelompok: 'PIMPINAN',
-		tipe: 'unit',
-		kolom: 5,
+		tipe: 'daftar',
+		kolom: 4,
 		urutan: 1
 	},
-	{ kode: 'pengelola-sarpras', nama: 'Pengelola Sarana', kelompok: 'TATA USAHA', tipe: 'unit', kolom: 5, urutan: 2 },
-	{ kode: 'wakamad-humas', nama: 'Wakamad Humas', kelompok: 'PIMPINAN', tipe: 'unit', kolom: 5, urutan: 3 }
+	{
+		kode: 'pengelola-sarpras',
+		nama: 'Sarana & Prasarana',
+		kelompok: 'TATA USAHA',
+		tipe: 'daftar',
+		kolom: 4,
+		urutan: 2
+	},
+	{
+		kode: 'wakamad-humas',
+		nama: 'Wakamad Humas',
+		kelompok: 'PIMPINAN',
+		tipe: 'catatan',
+		kolom: 5,
+		urutan: 1,
+		catatan: 'Kerjasama, publikasi & hubungan dengan komite dan orang tua/wali'
+	}
 ];
 
 const anggota = [];
-const tambah = (unitKode, namaTampil, jabatan = '', keterangan = '') => {
+const tambah = (unitKode, namaTampil, jabatan = '', keterangan = '', kepala = false, nip = '') => {
 	const { nama, gelar } = pisahGelar(namaTampil);
 	anggota.push({
 		unitKode,
@@ -146,45 +182,58 @@ const tambah = (unitKode, namaTampil, jabatan = '', keterangan = '') => {
 		gelar,
 		jabatan,
 		keterangan,
-		urutan: anggota.filter((a) => a.unitKode === unitKode).length + 1
+		urutan: anggota.filter((a) => a.unitKode === unitKode).length + 1,
+		...(kepala ? { kepala: true } : {}),
+		...(nip ? { nip } : {})
 	});
 };
 
 // kolom 1 — komite & kamad (row1)
 for (const k of kotakRow1) {
 	const unitKode = /KOMITE/i.test(k.jabatan) ? 'komite' : 'kamad';
-	tambah(unitKode, k.nama, /KOMITE/i.test(k.jabatan) ? 'Ketua Komite' : 'Kepala Madrasah');
+	tambah(unitKode, k.nama, /KOMITE/i.test(k.jabatan) ? 'Ketua Komite' : 'Kepala Madrasah', '', false, k.nip);
 }
 
 // kolom 2 — kepala TU + staf + pendukung
 const hTu = head(colTu);
-tambah('kaur-tu', hTu.nama, 'Kepala Tata Usaha');
+tambah('kaur-tu', hTu.nama, 'Kepala Tata Usaha', '', true, hTu.nip);
 for (const it of item(colTu, 'tu-item')) {
 	const pendukung = /KEAMANAN|KEBERSIHAN/i.test(it.jabatan);
-	tambah(pendukung ? 'pendukung' : 'tu-staf', it.nama, it.jabatan.replace(/\s*\*\s*$/, ''));
+	tambah(pendukung ? 'pendukung' : 'tu-staf', it.nama, it.jabatan.replace(/\s*\*\s*$/, ''), '', false, it.nip);
 }
 
 // kolom 3 — wakamad kurikulum + dewan guru
-tambah('wakamad-kurikulum', head(colKur).nama, 'Wakamad Kurikulum');
-for (const it of item(colKur, 'gcard')) tambah('guru-mapel', it.nama, '', it.keterangan);
+const hKur = head(colKur);
+tambah('wakamad-kurikulum', hKur.nama, 'Wakamad Kurikulum', '', true, hKur.nip);
+for (const it of item(colKur, 'gcard')) tambah('guru-mapel', it.nama, '', it.keterangan, false, it.nip);
 
 // kolom 4 — wakamad kesiswaan + wali kelas + guru BK & pembina OSIM + pembina ekskul
-tambah('wakamad-kesiswaan', head(colKes).nama, 'Wakamad Kesiswaan');
+const hKes = head(colKes);
+tambah('wakamad-kesiswaan', hKes.nama, 'Wakamad Kesiswaan', '', true, hKes.nip);
 for (const it of item(colKes, 'wcard')) {
-	tambah('wali-kelas', it.nama, /WALI KELAS/i.test(it.jabatan) ? 'Wali Kelas' : it.jabatan, it.keterangan);
+	tambah(
+		'wali-kelas',
+		it.nama,
+		/WALI KELAS/i.test(it.jabatan) ? 'Wali Kelas' : it.jabatan,
+		it.keterangan,
+		false,
+		it.nip
+	);
 }
 for (const it of item(colKes, 'tu-item')) {
-	if (/BK/i.test(it.jabatan)) tambah('guru-bk', it.nama, it.jabatan);
-	else if (/OSIM/i.test(it.jabatan)) tambah('pembina-osim', it.nama, it.jabatan);
-	else if (/LAB|PERPUSTAKAAN/i.test(it.jabatan)) tambah('pengelola-sarpras', it.nama, it.jabatan);
+	if (/BK/i.test(it.jabatan)) tambah('guru-bk', it.nama, it.jabatan, '', false, it.nip);
+	else if (/OSIM/i.test(it.jabatan)) tambah('pembina-osim', it.nama, it.jabatan, '', false, it.nip);
+	else if (/LAB|PERPUSTAKAAN/i.test(it.jabatan)) tambah('pengelola-sarpras', it.nama, it.jabatan, '', false, it.nip);
 	else console.warn('! item kolom 4 tidak dikenal:', it.jabatan, it.nama);
 }
 for (const p of pembina) tambah('pembina-ekskul', p.nama, 'Pembina Ekskul', p.keterangan);
 
 // kolom 5 — wakamad sarpras + pengelola + wakamad humas
-tambah('wakamad-sarpras', head(colSar).nama, 'Wakamad Sarana & Prasarana');
-for (const it of item(colSar, 'tu-item')) tambah('pengelola-sarpras', it.nama, it.jabatan);
-tambah('wakamad-humas', head(colHum).nama, 'Wakamad Humas');
+const hSar = head(colSar);
+tambah('wakamad-sarpras', hSar.nama, 'Wakamad Sarana & Prasarana', '', true, hSar.nip);
+for (const it of item(colSar, 'tu-item')) tambah('pengelola-sarpras', it.nama, it.jabatan, '', false, it.nip);
+const hHum = head(colHum);
+tambah('wakamad-humas', hHum.nama, 'Wakamad Humas', '', true, hHum.nip);
 
 const data = {
 	sumber: SRC.replace(/\\/g, '/').split('/').pop(),
@@ -193,6 +242,7 @@ const data = {
 	judul: 'STRUKTUR ORGANISASI',
 	madrasah: bersih((html.match(/<h2[^>]*>([\s\S]*?)<\/h2>/) ?? [])[1] ?? ''),
 	tahun: '2026/2027',
+	sk: 'SK No. 023 Tahun 2026',
 	tempatTgl: tempatTgl.replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim(),
 	kamadNama: namaKamad,
 	kamadNip: nipKamad,

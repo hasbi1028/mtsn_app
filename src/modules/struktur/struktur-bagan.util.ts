@@ -15,6 +15,8 @@ export interface UnitRow {
 	urutan: number;
 	tampilBagan: number;
 	aktif: number;
+	/** Catatan bebas unit (dipakai kotak "catatan" seperti Wakamad Humas). */
+	catatan?: string | null;
 }
 
 export interface AnggotaRow {
@@ -30,9 +32,12 @@ export interface AnggotaRow {
 	aktif: number;
 	namaPtk: string | null;
 	nipPtk: string | null;
+	nipManual?: string | null;
 	publicId: string | null;
 	/** Path foto dari ptk.foto_path (kosong = tampilkan placeholder). */
 	fotoPtk?: string | null;
+	/** 1 = kepala unit → tampil di header kotak bagan (layout v4). */
+	kepala?: number | null;
 }
 
 export interface BaganAnggota {
@@ -43,6 +48,8 @@ export interface BaganAnggota {
 	nip: string;
 	/** URL/path foto pegawai; kosong = placeholder inisial. */
 	foto?: string;
+	/** Kepala unit → dirender di header kotak, bukan di daftar anggota. */
+	kepala?: boolean;
 }
 
 export interface BaganKotak {
@@ -51,6 +58,7 @@ export interface BaganKotak {
 	tipe: string;
 	kelompok: string;
 	kolom: number;
+	catatan: string;
 	anggota: BaganAnggota[];
 }
 
@@ -95,8 +103,9 @@ function keBaganAnggota(a: AnggotaRow, publik: boolean): BaganAnggota {
 		gelar: (a.gelar ?? '').trim(),
 		label: (a.jabatanTampil ?? '').trim(),
 		keterangan: (a.keterangan ?? '').trim(),
-		nip: publik ? '' : (a.nipPtk ?? ''),
-		foto: (a.fotoPtk ?? '').trim()
+		nip: publik ? '' : (a.nipPtk || a.nipManual || '').trim(),
+		foto: (a.fotoPtk ?? '').trim(),
+		kepala: a.kepala === 1
 	};
 }
 
@@ -130,6 +139,7 @@ export function susunBagan(
 			tipe: u.tipe,
 			kelompok: u.kelompok ?? '',
 			kolom: u.kolom,
+			catatan: (u.catatan ?? '').trim(),
 			anggota: isi
 		};
 		const daftar = kolomMap.get(u.kolom) ?? [];

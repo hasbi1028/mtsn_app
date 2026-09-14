@@ -1,10 +1,11 @@
 {
- "sumber": "struktur-foto-v2-premium.html",
+ "sumber": "struktur-foto-v4-nip.html",
  "badge": "44",
  "kop": "KEMENTERIAN AGAMA REPUBLIK INDONESIA",
  "judul": "STRUKTUR ORGANISASI",
  "madrasah": "MTsN 2 KOLAKA UTARA",
  "tahun": "2026/2027",
+ "sk": "SK No. 023 Tahun 2026",
  "tempatTgl": "Pakue, 13 Juli 2026",
  "kamadNama": "ANWAR, S.Ag., M.Pd",
  "kamadNip": "196912311997031028",
@@ -14,121 +15,122 @@
    "kode": "komite",
    "nama": "Ketua Komite",
    "kelompok": "MITRA",
-   "tipe": "unit",
-   "kolom": 1,
+   "tipe": "daftar",
+   "kolom": 0,
    "urutan": 1
   },
   {
    "kode": "kamad",
    "nama": "Kepala Madrasah",
    "kelompok": "PIMPINAN",
-   "tipe": "unit",
-   "kolom": 1,
+   "tipe": "daftar",
+   "kolom": 0,
    "urutan": 2
   },
   {
    "kode": "kaur-tu",
    "nama": "Kepala Tata Usaha",
    "kelompok": "PIMPINAN",
-   "tipe": "unit",
-   "kolom": 2,
+   "tipe": "daftar",
+   "kolom": 1,
    "urutan": 1
   },
   {
    "kode": "tu-staf",
-   "nama": "Staf Tata Usaha",
+   "nama": "Tata Usaha",
    "kelompok": "TATA USAHA",
-   "tipe": "unit",
-   "kolom": 2,
+   "tipe": "daftar",
+   "kolom": 1,
    "urutan": 2
   },
   {
    "kode": "pendukung",
    "nama": "Tenaga Pendukung",
    "kelompok": "PENDUKUNG",
-   "tipe": "unit",
-   "kolom": 2,
+   "tipe": "daftar",
+   "kolom": 1,
    "urutan": 3
   },
   {
    "kode": "wakamad-kurikulum",
    "nama": "Wakamad Kurikulum",
    "kelompok": "PIMPINAN",
-   "tipe": "unit",
-   "kolom": 3,
+   "tipe": "daftar",
+   "kolom": 2,
    "urutan": 1
   },
   {
    "kode": "guru-mapel",
    "nama": "Dewan Guru Mata Pelajaran",
    "kelompok": "GURU",
-   "tipe": "unit",
-   "kolom": 3,
+   "tipe": "grid",
+   "kolom": 2,
    "urutan": 2
   },
   {
    "kode": "wakamad-kesiswaan",
    "nama": "Wakamad Kesiswaan",
    "kelompok": "PIMPINAN",
-   "tipe": "unit",
-   "kolom": 4,
+   "tipe": "daftar",
+   "kolom": 3,
    "urutan": 1
   },
   {
    "kode": "wali-kelas",
    "nama": "Wali Kelas",
    "kelompok": "GURU",
-   "tipe": "unit",
-   "kolom": 4,
+   "tipe": "grid",
+   "kolom": 3,
    "urutan": 2
   },
   {
    "kode": "guru-bk",
    "nama": "Guru BK",
    "kelompok": "GURU",
-   "tipe": "unit",
-   "kolom": 4,
+   "tipe": "daftar",
+   "kolom": 3,
    "urutan": 3
   },
   {
    "kode": "pembina-osim",
    "nama": "Pembina OSIM",
    "kelompok": "GURU",
-   "tipe": "unit",
-   "kolom": 4,
+   "tipe": "daftar",
+   "kolom": 3,
    "urutan": 4
   },
   {
    "kode": "pembina-ekskul",
    "nama": "Pembina Ekstrakurikuler & Kokurikuler",
    "kelompok": "GURU",
-   "tipe": "unit",
-   "kolom": 4,
+   "tipe": "catatan",
+   "kolom": 3,
    "urutan": 5
   },
   {
    "kode": "wakamad-sarpras",
    "nama": "Wakamad Sarana & Prasarana",
    "kelompok": "PIMPINAN",
-   "tipe": "unit",
-   "kolom": 5,
+   "tipe": "daftar",
+   "kolom": 4,
    "urutan": 1
   },
   {
    "kode": "pengelola-sarpras",
-   "nama": "Pengelola Sarana",
+   "nama": "Sarana & Prasarana",
    "kelompok": "TATA USAHA",
-   "tipe": "unit",
-   "kolom": 5,
+   "tipe": "daftar",
+   "kolom": 4,
    "urutan": 2
   },
   {
    "kode": "wakamad-humas",
    "nama": "Wakamad Humas",
    "kelompok": "PIMPINAN",
-   "tipe": "unit",
+   "tipe": "catatan",
    "kolom": 5,
-   "urutan": 3
+   "urutan": 1,
+   "catatan": "Kerjasama, publikasi & hubungan dengan komite dan orang tua/wali"
   }
  ],
  "anggota": [
@@ -146,7 +148,8 @@
    "gelar": "S.Ag., M.Pd",
    "jabatan": "Kepala Madrasah",
    "keterangan": "",
-   "urutan": 1
+   "urutan": 1,
+   "nip": "196912311997031028"
   },
   {
    "unitKode": "kaur-tu",
@@ -154,7 +157,9 @@
    "gelar": "S.H",
    "jabatan": "Kepala Tata Usaha",
    "keterangan": "",
-   "urutan": 1
+   "urutan": 1,
+   "kepala": true,
+   "nip": "196908232014112001"
   },
   {
    "unitKode": "tu-staf",
@@ -162,7 +167,8 @@
    "gelar": "S.Ag",
    "jabatan": "BENDAHARA",
    "keterangan": "",
-   "urutan": 1
+   "urutan": 1,
+   "nip": "197201162014111001"
   },
   {
    "unitKode": "tu-staf",
@@ -170,7 +176,8 @@
    "gelar": "",
    "jabatan": "STAF ADMINISTRASI",
    "keterangan": "",
-   "urutan": 2
+   "urutan": 2,
+   "nip": "197904202014112002"
   },
   {
    "unitKode": "tu-staf",
@@ -178,7 +185,8 @@
    "gelar": "S.A.P",
    "jabatan": "STAF TATA USAHA",
    "keterangan": "",
-   "urutan": 3
+   "urutan": 3,
+   "nip": "198612282025212013"
   },
   {
    "unitKode": "tu-staf",
@@ -186,7 +194,8 @@
    "gelar": "",
    "jabatan": "STAF TATA USAHA",
    "keterangan": "",
-   "urutan": 4
+   "urutan": 4,
+   "nip": "199003162025212013"
   },
   {
    "unitKode": "tu-staf",
@@ -202,7 +211,8 @@
    "gelar": "S.Kom",
    "jabatan": "OPERATOR",
    "keterangan": "",
-   "urutan": 6
+   "urutan": 6,
+   "nip": "199210282025211017"
   },
   {
    "unitKode": "tu-staf",
@@ -218,7 +228,8 @@
    "gelar": "",
    "jabatan": "KEAMANAN",
    "keterangan": "",
-   "urutan": 1
+   "urutan": 1,
+   "nip": "199410292025211040"
   },
   {
    "unitKode": "pendukung",
@@ -226,7 +237,8 @@
    "gelar": "",
    "jabatan": "KEBERSIHAN",
    "keterangan": "",
-   "urutan": 2
+   "urutan": 2,
+   "nip": "199807042025212047"
   },
   {
    "unitKode": "wakamad-kurikulum",
@@ -234,7 +246,9 @@
    "gelar": "S.Ag., M.Pd",
    "jabatan": "Wakamad Kurikulum",
    "keterangan": "",
-   "urutan": 1
+   "urutan": 1,
+   "kepala": true,
+   "nip": "196907051997032002"
   },
   {
    "unitKode": "guru-mapel",
@@ -242,7 +256,8 @@
    "gelar": "S.Ag *",
    "jabatan": "",
    "keterangan": "Qur'an Hadis",
-   "urutan": 1
+   "urutan": 1,
+   "nip": "197101112022212010"
   },
   {
    "unitKode": "guru-mapel",
@@ -250,7 +265,8 @@
    "gelar": "",
    "jabatan": "",
    "keterangan": "Akidah Akhlak",
-   "urutan": 2
+   "urutan": 2,
+   "nip": "196711062007012019"
   },
   {
    "unitKode": "guru-mapel",
@@ -258,7 +274,8 @@
    "gelar": "S.Pd.I *",
    "jabatan": "",
    "keterangan": "Fikih / Akidah Akhlak",
-   "urutan": 3
+   "urutan": 3,
+   "nip": "198312032009122005"
   },
   {
    "unitKode": "guru-mapel",
@@ -266,7 +283,8 @@
    "gelar": "S.Pd., Gr *",
    "jabatan": "",
    "keterangan": "SKI",
-   "urutan": 4
+   "urutan": 4,
+   "nip": "199307122024212047"
   },
   {
    "unitKode": "guru-mapel",
@@ -274,7 +292,8 @@
    "gelar": "S.E. *",
    "jabatan": "",
    "keterangan": "PPKn",
-   "urutan": 5
+   "urutan": 5,
+   "nip": "196802072014111002"
   },
   {
    "unitKode": "guru-mapel",
@@ -282,7 +301,8 @@
    "gelar": "S.Ag *",
    "jabatan": "",
    "keterangan": "Bahasa Arab",
-   "urutan": 6
+   "urutan": 6,
+   "nip": "197306172022212007"
   },
   {
    "unitKode": "guru-mapel",
@@ -314,7 +334,8 @@
    "gelar": "S.Pd *",
    "jabatan": "",
    "keterangan": "Bahasa Indonesia",
-   "urutan": 10
+   "urutan": 10,
+   "nip": "198001102005012010"
   },
   {
    "unitKode": "guru-mapel",
@@ -322,7 +343,8 @@
    "gelar": "S.Pd",
    "jabatan": "",
    "keterangan": "Bahasa Indonesia",
-   "urutan": 11
+   "urutan": 11,
+   "nip": "198706202024212031"
   },
   {
    "unitKode": "guru-mapel",
@@ -330,7 +352,8 @@
    "gelar": "S.Pd *",
    "jabatan": "",
    "keterangan": "Bahasa Indonesia",
-   "urutan": 12
+   "urutan": 12,
+   "nip": "198607072025212006"
   },
   {
    "unitKode": "guru-mapel",
@@ -338,7 +361,8 @@
    "gelar": "S.Pd., Gr",
    "jabatan": "",
    "keterangan": "Bahasa Indonesia",
-   "urutan": 13
+   "urutan": 13,
+   "nip": "199003302025212013"
   },
   {
    "unitKode": "guru-mapel",
@@ -346,7 +370,8 @@
    "gelar": "S.Pd *",
    "jabatan": "",
    "keterangan": "B. Indonesia / Informatika",
-   "urutan": 14
+   "urutan": 14,
+   "nip": "199101112025212009"
   },
   {
    "unitKode": "guru-mapel",
@@ -354,7 +379,8 @@
    "gelar": "S.Pd *",
    "jabatan": "",
    "keterangan": "Bahasa Indonesia",
-   "urutan": 15
+   "urutan": 15,
+   "nip": "199203292025212004"
   },
   {
    "unitKode": "guru-mapel",
@@ -362,7 +388,8 @@
    "gelar": "S.Pd *",
    "jabatan": "",
    "keterangan": "Matematika",
-   "urutan": 16
+   "urutan": 16,
+   "nip": "199108122025212007"
   },
   {
    "unitKode": "guru-mapel",
@@ -370,7 +397,8 @@
    "gelar": "S.Pd *",
    "jabatan": "",
    "keterangan": "IPA Terpadu",
-   "urutan": 17
+   "urutan": 17,
+   "nip": "196908171996031001"
   },
   {
    "unitKode": "guru-mapel",
@@ -378,7 +406,8 @@
    "gelar": "S.Pd",
    "jabatan": "",
    "keterangan": "IPA",
-   "urutan": 18
+   "urutan": 18,
+   "nip": "199711012025211001"
   },
   {
    "unitKode": "guru-mapel",
@@ -394,7 +423,8 @@
    "gelar": "S.Pd *",
    "jabatan": "",
    "keterangan": "Bahasa Inggris",
-   "urutan": 20
+   "urutan": 20,
+   "nip": "197903242022212013"
   },
   {
    "unitKode": "guru-mapel",
@@ -402,7 +432,8 @@
    "gelar": "S.Pd",
    "jabatan": "",
    "keterangan": "B. Inggris / Informatika",
-   "urutan": 21
+   "urutan": 21,
+   "nip": "199003022025212003"
   },
   {
    "unitKode": "guru-mapel",
@@ -418,7 +449,8 @@
    "gelar": "S.Pd *",
    "jabatan": "",
    "keterangan": "Seni Budaya",
-   "urutan": 23
+   "urutan": 23,
+   "nip": "197206032005011002"
   },
   {
    "unitKode": "guru-mapel",
@@ -434,7 +466,8 @@
    "gelar": "S.Pd *",
    "jabatan": "",
    "keterangan": "Penjasorkes",
-   "urutan": 25
+   "urutan": 25,
+   "nip": "199110042025211004"
   },
   {
    "unitKode": "guru-mapel",
@@ -450,7 +483,8 @@
    "gelar": "",
    "jabatan": "",
    "keterangan": "Informatika",
-   "urutan": 27
+   "urutan": 27,
+   "nip": "196909052022211005"
   },
   {
    "unitKode": "guru-mapel",
@@ -458,7 +492,8 @@
    "gelar": "S.Ag",
    "jabatan": "",
    "keterangan": "Fikih / IPS",
-   "urutan": 28
+   "urutan": 28,
+   "nip": "196907012022212013"
   },
   {
    "unitKode": "guru-mapel",
@@ -466,7 +501,8 @@
    "gelar": "S.Pd",
    "jabatan": "",
    "keterangan": "IPS / PKn",
-   "urutan": 29
+   "urutan": 29,
+   "nip": "199107312025212018"
   },
   {
    "unitKode": "guru-mapel",
@@ -482,7 +518,8 @@
    "gelar": "S.Ag",
    "jabatan": "",
    "keterangan": "Fikih / Qur'an Hadis",
-   "urutan": 31
+   "urutan": 31,
+   "nip": "197406102023212008"
   },
   {
    "unitKode": "wakamad-kesiswaan",
@@ -490,7 +527,9 @@
    "gelar": "S.Ag., M.Pd",
    "jabatan": "Wakamad Kesiswaan",
    "keterangan": "",
-   "urutan": 1
+   "urutan": 1,
+   "kepala": true,
+   "nip": "197101011997031009"
   },
   {
    "unitKode": "wali-kelas",
@@ -498,7 +537,8 @@
    "gelar": "S.Pd",
    "jabatan": "",
    "keterangan": "VII.A",
-   "urutan": 1
+   "urutan": 1,
+   "nip": "199711012025211001"
   },
   {
    "unitKode": "wali-kelas",
@@ -506,7 +546,8 @@
    "gelar": "S.Pd",
    "jabatan": "",
    "keterangan": "VII.B",
-   "urutan": 2
+   "urutan": 2,
+   "nip": "198001102005012010"
   },
   {
    "unitKode": "wali-kelas",
@@ -514,7 +555,8 @@
    "gelar": "S.Pd., Gr",
    "jabatan": "",
    "keterangan": "VII.C",
-   "urutan": 3
+   "urutan": 3,
+   "nip": "199003302025212013"
   },
   {
    "unitKode": "wali-kelas",
@@ -522,7 +564,8 @@
    "gelar": "S.Pd",
    "jabatan": "",
    "keterangan": "VII.D",
-   "urutan": 4
+   "urutan": 4,
+   "nip": "197903242022212013"
   },
   {
    "unitKode": "wali-kelas",
@@ -530,7 +573,8 @@
    "gelar": "S.Pd",
    "jabatan": "",
    "keterangan": "VII.E",
-   "urutan": 5
+   "urutan": 5,
+   "nip": "198607072025212006"
   },
   {
    "unitKode": "wali-kelas",
@@ -538,7 +582,8 @@
    "gelar": "S.Pd",
    "jabatan": "",
    "keterangan": "VIII.A",
-   "urutan": 6
+   "urutan": 6,
+   "nip": "199003022025212003"
   },
   {
    "unitKode": "wali-kelas",
@@ -546,7 +591,8 @@
    "gelar": "S.Pd",
    "jabatan": "",
    "keterangan": "VIII.B",
-   "urutan": 7
+   "urutan": 7,
+   "nip": "199101112025212009"
   },
   {
    "unitKode": "wali-kelas",
@@ -554,7 +600,8 @@
    "gelar": "S.Pd",
    "jabatan": "",
    "keterangan": "VIII.C",
-   "urutan": 8
+   "urutan": 8,
+   "nip": "199203292025212004"
   },
   {
    "unitKode": "wali-kelas",
@@ -562,7 +609,8 @@
    "gelar": "S.Ag",
    "jabatan": "",
    "keterangan": "VIII.D",
-   "urutan": 9
+   "urutan": 9,
+   "nip": "197406102023212008"
   },
   {
    "unitKode": "wali-kelas",
@@ -570,7 +618,8 @@
    "gelar": "S.Pd",
    "jabatan": "",
    "keterangan": "IX.A",
-   "urutan": 10
+   "urutan": 10,
+   "nip": "199108122025212007"
   },
   {
    "unitKode": "wali-kelas",
@@ -578,7 +627,8 @@
    "gelar": "S.Pd",
    "jabatan": "",
    "keterangan": "IX.B",
-   "urutan": 11
+   "urutan": 11,
+   "nip": "198706202024212031"
   },
   {
    "unitKode": "wali-kelas",
@@ -586,7 +636,8 @@
    "gelar": "S.Pd., Gr",
    "jabatan": "",
    "keterangan": "IX.C",
-   "urutan": 12
+   "urutan": 12,
+   "nip": "199307122024212047"
   },
   {
    "unitKode": "guru-bk",
@@ -666,7 +717,9 @@
    "gelar": "S.Ag",
    "jabatan": "Wakamad Sarana & Prasarana",
    "keterangan": "",
-   "urutan": 1
+   "urutan": 1,
+   "kepala": true,
+   "nip": "197412062009032001"
   },
   {
    "unitKode": "pengelola-sarpras",
@@ -674,7 +727,8 @@
    "gelar": "S.Pd",
    "jabatan": "PENGELOLA LAB. IPA",
    "keterangan": "",
-   "urutan": 1
+   "urutan": 1,
+   "nip": "196908171996031001"
   },
   {
    "unitKode": "pengelola-sarpras",
@@ -682,7 +736,8 @@
    "gelar": "S.Kom",
    "jabatan": "PENGELOLA LAB. KOMPUTER",
    "keterangan": "",
-   "urutan": 2
+   "urutan": 2,
+   "nip": "199210282025211017"
   },
   {
    "unitKode": "pengelola-sarpras",
@@ -690,7 +745,8 @@
    "gelar": "",
    "jabatan": "PENGELOLA PERPUSTAKAAN",
    "keterangan": "",
-   "urutan": 3
+   "urutan": 3,
+   "nip": "196711062007012019"
   },
   {
    "unitKode": "wakamad-humas",
@@ -698,7 +754,9 @@
    "gelar": "",
    "jabatan": "Wakamad Humas",
    "keterangan": "",
-   "urutan": 1
+   "urutan": 1,
+   "kepala": true,
+   "nip": "197002251998031002"
   }
  ]
 }
