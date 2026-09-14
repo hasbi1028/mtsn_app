@@ -1,47 +1,57 @@
-# SIMAD MTsN 2 Kolaka Utara
+# SIMAD — Sistem Informasi Manajemen Madrasah
 
-> **⚠️ DEPRECATED** — Repository ini sudah tidak digunakan.
-> Silakan lihat [mtsnsuper](../mtsnsuper) untuk versi terbaru (SvelteKit 3 + SQLite).
+**MTsN 2 Kolaka Utara** · aplikasi **produksi / aktif dipakai** (bukan deprecated).
+
+> Catatan repo: [`mtsnsuper`](../mtsnsuper) adalah **proyek terpisah** (CBT Madrasah / Super Web App,
+> SvelteKit 3) — bukan pengganti dan bukan versi baru SIMAD. SIMAD tetap dipakai dan dikembangkan.
 
 ---
 
-Sistem Informasi Manajemen Akademik Digital (SIMAD) untuk MTsN 2 Kolaka Utara.
+## Stack
 
-## Creating a project
+- **SvelteKit 2** + Svelte 5 (runes) + **remote functions** (`query`/`form`/`command`) — tanpa Go API
+- **Drizzle ORM + SQLite** (`local.db`, mode WAL)
+- TailwindCSS v4 + shadcn-svelte (nova), Lucide icons, mode-watcher
+- Valibot (Standard Schema) untuk validasi
+- Vitest (unit) + Playwright (e2e)
+- Runtime produksi: Node + `@sveltejs/adapter-node` di **:3720**, worker bel Go (`worker-bel.exe`) di **:8093**
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Modul
 
-```sh
-# create a new project
-npx sv create my-app
-```
+Admin: dashboard, PTK, Kesiswaan (siswa, kartu siswa, rombel), Dokumen (SKMT, SKBK, SKAKPT),
+Konten (berita, pengumuman, agenda, galeri, prestasi, ekskul), Jadwal (roster), Bel (monitoring +
+perpustakaan suara), Aktivitas, Persetujuan, Sistem (pengaturan, backup & restore).
+Publik: beranda, berita, profil, guru, kurikulum, PPDB, galeri, prestasi, ekskul, fasilitas,
+kalender, kontak. Peran login: admin, kepsek, guru, staf, siswa, ortu.
 
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-bun x sv@0.17.0 create --template minimal --types ts --add sveltekit-adapter="adapter:node" drizzle="database:sqlite+sqlite:libsql" --install bun mtsn_app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Menjalankan
 
 ```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+bun run dev -- --port 3720     # pengembangan (WAJIB bun, bukan npm run dev)
+npm run check                  # svelte-check
+npx vitest run                 # unit test
+npx playwright test            # e2e (butuh build)
+npm run build                  # build produksi
 ```
 
-## Building
-
-To create a production version of your app:
+Produksi (PM2):
 
 ```sh
-npm run build
+# Linux server (MTsN 2 Kolut): config utama
+pm2 start ecosystem.config.cjs && pm2 save
+
+# Windows (dev lokal): pakai config khusus Windows
+#   catatan PM2 5.x: file config HANYA dikenali bila namanya memuat literal ".config.cjs",
+#   jadi `ecosystem.config.windows.cjs` tidak bisa di-start langsung — pakai
+#   `pm2 restart mtsn-app-bff simad-bel` (per nama app) atau rename ke `ecosystem-windows.config.cjs`.
+pm2 start mtsn-app-bff simad-bel
 ```
 
-You can preview the production build with `npm run preview`.
+Backup & restore: halaman `/admin/backup` + `npm run backup:create|status|drill`
+(restore 2 tahap lewat CLI — lihat `AGENTS.md` §Backup & Restore).
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Dokumentasi
+
+- `AGENTS.md` — arsitektur, konvensi modul, aturan test
+- `specs/NNN-nama/` — spec + test plan + MDD per modul (index: `specs/README.md`)
+- `.hermes/plans/` — rencana fitur yang menunggu persetujuan
