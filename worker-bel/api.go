@@ -35,7 +35,7 @@ type masterRequest struct {
 	Enabled bool `json:"enabled"`
 }
 
-func startAPIServer(port, apiKey, soundBase string) *http.Server {
+func startAPIServer(port, apiKey, soundBase, cacheDir string, usage func() map[string]int) *http.Server {
 	mux := http.NewServeMux()
 
 	// auth helper
@@ -151,6 +151,9 @@ func startAPIServer(port, apiKey, soundBase string) *http.Server {
 		playing, path := statusPlayback()
 		writeJSON(w, http.StatusOK, statusResponse{Playing: playing, Path: path, Master: MasterEnabled()})
 	})
+
+	// Pustaka suara: GET/POST /api/suara, DELETE /api/suara/<nama>
+	registerSuaraRoutes(mux, soundBase, cacheDir, checkAuth, usage)
 
 	srv := &http.Server{
 		Addr:         "127.0.0.1:" + port,

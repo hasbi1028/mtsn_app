@@ -259,6 +259,36 @@ func (s *Scheduler) preload() {
 	}
 }
 
+// SoundUsage: jumlah jadwal aktif/nonaktif di jam_bel yang memakai tiap file suara.
+// Dipakai halaman /admin/bel/suara untuk badge "dipakai N".
+func (s *Scheduler) SoundUsage() map[string]int {
+	out := map[string]int{}
+	if s.db == nil {
+		if err := s.openDB(); err != nil {
+			errlg.Println("SoundUsage: DB belum terbuka:", err)
+			return out
+		}
+	}
+	rows, err := s.db.Query(`SELECT sound_path, COUNT(*) FROM jam_bel GROUP BY sound_path`)
+	if err != nil {
+		errlg.Println("SoundUsage:", err)
+		return out
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var p string
+		var n int
+		if err := rows.Scan(&p, &n); err != nil {
+			continue
+		}
+		if p == "" {
+			continue
+		}
+		out[filepath.Base(p)] = n
+	}
+	return out
+}
+
 func (s *Scheduler) heartbeat() {
 	s.mu.Lock()
 	n := len(s.schedule)

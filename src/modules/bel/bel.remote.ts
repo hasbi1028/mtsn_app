@@ -1,4 +1,4 @@
-import { query, form, command, getRequestEvent } from '$app/server';
+import { query, form, command } from '$app/server';
 import * as v from 'valibot';
 import {
 	getBelJadwal, getBelSuara, createBelJadwal, updateBelJadwal,
@@ -52,15 +52,9 @@ export const deleteJadwalC = command(v.object({ id: v.string() }), async ({ id }
 	return { ok: true, pesan: 'Jadwal dihapus.' };
 });
 
-export const uploadSuaraC = command(v.object({ fileName: v.string(), fileSize: v.number() }), async ({ fileName, fileSize }) => {
-	if (fileSize > 10 << 20) {
+export const uploadSuaraForm = form(v.object({ file: v.instance(File) }), async ({ file }) => {
+	if (file.size > 10 << 20) {
 		return { ok: false, error: 'Ukuran maksimal 10 MB.' };
-	}
-	const { request } = getRequestEvent();
-	const fd = await request.formData();
-	const file = fd.get('file');
-	if (!file || typeof file === 'string') {
-		return { ok: false, error: 'Pilih file terlebih dahulu.' };
 	}
 	const up = new FormData();
 	up.append('file', file, file.name);
@@ -69,7 +63,8 @@ export const uploadSuaraC = command(v.object({ fileName: v.string(), fileSize: v
 		if (!data.ok) {
 			return { ok: false, error: data.error || 'Upload gagal.' };
 		}
-		return { ok: true, pesan: `Suara "${data.name}" terupload.` };
+		void getBelSuaraFilesQ().refresh();
+		return { ok: true, pesan: data.pesan || `Suara "${data.name}" terupload.` };
 	} catch {
 		return { ok: false, error: 'Upload gagal — coba lagi.' };
 	}

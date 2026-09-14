@@ -24,9 +24,9 @@ func main() {
 	if cfg.APIKey == "" {
 		errlg.Println("PERINGATAN: BEL_API_KEY kosong — API hanya menerima localhost")
 	}
-	apiSrv := startAPIServer(cfg.APIPort, cfg.APIKey, cfg.SoundBase)
+	s := NewScheduler(cfg)
+	apiSrv := startAPIServer(cfg.APIPort, cfg.APIKey, cfg.SoundBase, "sound-cache", s.SoundUsage)
 	defer apiSrv.Close()
 
-	s := NewScheduler(cfg)
 	s.Run()
 }

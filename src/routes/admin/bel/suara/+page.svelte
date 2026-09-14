@@ -4,13 +4,26 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import PageLayout from '$lib/components/page-layout.svelte';
 	import { notify } from '$lib/toast';
-	import { getBelSuaraFilesQ, playBellC, stopBellC, uploadSuaraC, deleteSuaraC } from '$modules/bel/bel.remote';
+	import { getBelSuaraFilesQ, playBellC, stopBellC, uploadSuaraForm, deleteSuaraC } from '$modules/bel/bel.remote';
 
 	const suaraQuery = $derived(getBelSuaraFilesQ());
 	const files = $derived(((suaraQuery.current as any)?.files ?? []) as { name: string; size: number; used_by: number }[]);
 
-	let uploading = $state(false);
-	let fileInput = $state<HTMLInputElement | null>(null);
+	let lastUpload: unknown = null;
+
+	// Hasil unggahan dibaca dari remote form (form() = satu-satunya jalur yang
+	// mengirim berkas; command() mengirim JSON sehingga formData selalu kosong).
+	$effect(() => {
+		const r: any = uploadSuaraForm.result;
+		if (!r || r === lastUpload) return;
+		lastUpload = r;
+		if (r.ok) {
+			notify.success(r.pesan || 'Suara terupload.');
+			suaraQuery.refresh();
+		} else {
+			notify.error(r.error || 'Upload gagal.');
+		}
+	});
 
 	function fmtSize(n: number) {
 		if (n >= 1 << 20) return (n / (1 << 20)).toFixed(1) + ' MB';
@@ -32,20 +45,6 @@
 		const r = await deleteSuaraC({ name }) as any;
 		if (r?.ok) { notify.success(r.pesan); suaraQuery.refresh(); }
 		else notify.error(r?.error || 'Gagal hapus.');
-	}
-
-	async function onUpload(e: Event) {
-		e.preventDefault();
-		if (!fileInput?.files?.[0]) { notify.warning('Pilih file terlebih dahulu.'); return; }
-		const file = fileInput.files[0];
-		uploading = true;
-		try {
-			const fd = new FormData();
-			fd.append('file', file);
-			const r = await uploadSuaraC({ fileName: file.name, fileSize: file.size }) as any;
-			if (r?.ok) { notify.success(r.pesan); suaraQuery.refresh(); if (fileInput) fileInput.value = ''; }
-			else notify.error(r?.error || 'Upload gagal.');
-		} finally { uploading = false; }
 	}
 </script>
 
@@ -80,10 +79,10 @@
 
 	<div class="rounded-lg border p-4 mt-4">
 		<p class="text-sm font-semibold mb-2">Upload Suara Baru</p>
-		<form onsubmit={onUpload} class="flex flex-wrap items-center gap-2">
-			<input type="file" accept=".mp3,.wav,.m4a,.wma,audio/*" class="text-xs max-w-xs" bind:this={fileInput} required />
-			<Button type="submit" size="sm" disabled={uploading} class="h-8 cursor-pointer">
-				{uploading ? 'Mengunggah...' : 'Upload'}
+		<form {...uploadSuaraForm} enctype="multipart/form-data" class="flex flex-wrap items-center gap-2">
+			<input type="file" name="file" accept=".mp3,.wav,.m4a,.wma,audio/*" class="text-xs max-w-xs" required />
+			<Button type="submit" size="sm" disabled={uploadSuaraForm.pending > 0} class="h-8 cursor-pointer">
+				{uploadSuaraForm.pending > 0 ? 'Mengunggah...' : 'Upload'}
 			</Button>
 		</form>
 		<p class="text-xs text-muted-foreground mt-2">Format mp3/wav/m4a/wma, maksimal 10 MB.</p>
