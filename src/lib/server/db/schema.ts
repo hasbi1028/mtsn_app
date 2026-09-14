@@ -13,7 +13,7 @@ export const users = sqliteTable('users', {
 	refId: integer('ref_id'), // FK ke ptk.id / siswa.id / ortu.id
 	isActive: integer('is_active').default(1),
 	lastLogin: text('last_login'),
-	createdAt: integer('created_at', { mode: 'timestamp_ms' }).default(sql`strftime('%s','now')*1000`),
+	createdAt: integer('created_at', { mode: 'timestamp_ms' }).default(sql`(strftime('%s','now')*1000)`),
 	updatedAt: text('updated_at')
 });
 
@@ -21,7 +21,7 @@ export const sessions = sqliteTable('sessions', {
 	token: text('token').primaryKey(),
 	userId: integer('user_id').notNull(),
 	expiresAt: integer('expires_at').notNull(),
-	createdAt: integer('created_at', { mode: 'timestamp_ms' }).default(sql`strftime('%s','now')*1000`)
+	createdAt: integer('created_at', { mode: 'timestamp_ms' }).default(sql`(strftime('%s','now')*1000)`)
 });
 
 // ============================================
@@ -69,7 +69,7 @@ export const cuti = sqliteTable('cuti', {
 	tanggalMulai: text('tanggal_mulai').notNull(),
 	tanggalSelesai: text('tanggal_selesai').notNull(),
 	keterangan: text('keterangan'),
-	createdAt: text('created_at').default(sql`datetime('now','localtime')`),
+	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`),
 	referencedDari: text('referenced_dari').default('EMISGTK')
 });
 
@@ -118,7 +118,7 @@ export const dokumen = sqliteTable('dokumen', {
 	jenis: text('jenis').default('SKMT Rekap'),
 	filePath: text('file_path').notNull(),
 	periode: text('periode'),
-	uploadedAt: integer('uploaded_at', { mode: 'timestamp_ms' }).default(sql`strftime('%s','now')*1000`)
+	uploadedAt: integer('uploaded_at', { mode: 'timestamp_ms' }).default(sql`(strftime('%s','now')*1000)`)
 });
 
 // ============================================
@@ -175,8 +175,8 @@ export const siswa = sqliteTable('siswa', {
 	fotoPath: text('foto_path'),
 	fotoPending: text('foto_pending'),
 	fotoStatus: text('foto_status').default('approved'),
-	createdAt: text('created_at').default(sql`datetime('now','localtime')`),
-	updatedAt: text('updated_at').default(sql`datetime('now','localtime')`)
+	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`),
+	updatedAt: text('updated_at').default(sql`(datetime('now','localtime'))`)
 });
 
 // ============================================
@@ -192,8 +192,8 @@ export const rombel = sqliteTable('rombel', {
 	waliPtkId: integer('wali_ptk_id'),
 	kapasitas: integer('kapasitas').default(40),
 	aktif: integer('aktif', { mode: 'boolean' }).default(true),
-	createdAt: text('created_at').default(sql`datetime('now','localtime')`),
-	updatedAt: text('updated_at').default(sql`datetime('now','localtime')`)
+	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`),
+	updatedAt: text('updated_at').default(sql`(datetime('now','localtime'))`)
 });
 
 // ============================================
@@ -209,7 +209,7 @@ export const perubahanSiswa = sqliteTable('perubahan_siswa', {
 	status: text('status').default('pending'), // pending | approved | rejected
 	catatan: text('catatan'),
 	diajukanBy: text('diajukan_by').default('siswa'),
-	diajukanAt: text('diajukan_at').default(sql`datetime('now','localtime')`),
+	diajukanAt: text('diajukan_at').default(sql`(datetime('now','localtime'))`),
 	disetujuiAt: text('disetujui_at'),
 	disetujuiOleh: text('disetujui_oleh')
 });
@@ -223,7 +223,7 @@ export const activityLog = sqliteTable('activity_log', {
 	userId: integer('user_id'),
 	action: text('action'),
 	detail: text('detail'),
-	createdAt: integer('created_at', { mode: 'timestamp_ms' }).default(sql`strftime('%s','now')*1000`)
+	createdAt: integer('created_at', { mode: 'timestamp_ms' }).default(sql`(strftime('%s','now')*1000)`)
 });
 
 // ============================================
@@ -237,7 +237,7 @@ export const ortu = sqliteTable('ortu', {
 	noHp: text('no_hp'),
 	alamat: text('alamat'),
 	pekerjaan: text('pekerjaan'),
-	createdAt: text('created_at').default(sql`datetime('now','localtime')`)
+	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`)
 });
 
 export const siswaOrtu = sqliteTable('siswa_ortu', {
@@ -259,8 +259,8 @@ export const jamBel = sqliteTable('jam_bel', {
 	soundPath: text('sound_path'),
 	repeat: integer('repeat').default(2),
 	aktif: integer('aktif', { mode: 'boolean' }).default(true),
-	createdAt: text('created_at').default(sql`datetime('now','localtime')`),
-	updatedAt: text('updated_at').default(sql`datetime('now','localtime')`)
+	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`),
+	updatedAt: text('updated_at').default(sql`(datetime('now','localtime'))`)
 });
 
 export const belSettings = sqliteTable('bel_settings', {
@@ -275,7 +275,7 @@ export const belSettings = sqliteTable('bel_settings', {
 export const pengaturan = sqliteTable('pengaturan', {
 	key: text('key').primaryKey(),
 	value: text('value'),
-	updatedAt: text('updated_at').default(sql`datetime('now','localtime')`)
+	updatedAt: text('updated_at').default(sql`(datetime('now','localtime'))`)
 });
 
 // ============================================
@@ -287,7 +287,7 @@ export const kartuCache = sqliteTable('kartu_cache', {
 	siswaId: integer('siswa_id').notNull().references(() => siswa.id),
 	filePath: text('file_path').notNull(),
 	fileType: text('file_type').notNull(), // front | back
-	generatedAt: text('generated_at').default(sql`datetime('now','localtime')`),
+	generatedAt: text('generated_at').default(sql`(datetime('now','localtime'))`),
 	hash: text('hash') // based on foto_path mtime
 });
 
@@ -297,7 +297,7 @@ export const kartuCache = sqliteTable('kartu_cache', {
 
 export const schemaMigrations = sqliteTable('schema_migrations', {
 	version: integer('version').primaryKey(),
-	appliedAt: text('applied_at').default(sql`datetime('now','localtime')`)
+	appliedAt: text('applied_at').default(sql`(datetime('now','localtime'))`)
 });
 
 // ============================================
@@ -315,8 +315,8 @@ export const berita = sqliteTable('berita', {
 	kategori: text('kategori').default('umum'), // umum | kegiatan | prestasi
 	published: integer('published', { mode: 'boolean' }).default(false),
 	publishedAt: text('published_at'),
-	createdAt: text('created_at').default(sql`datetime('now','localtime')`),
-	updatedAt: text('updated_at').default(sql`datetime('now','localtime')`)
+	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`),
+	updatedAt: text('updated_at').default(sql`(datetime('now','localtime'))`)
 });
 
 export const pengumuman = sqliteTable('pengumuman', {
@@ -326,7 +326,7 @@ export const pengumuman = sqliteTable('pengumuman', {
 	penting: integer('penting', { mode: 'boolean' }).default(false),
 	published: integer('published', { mode: 'boolean' }).default(false),
 	publishedAt: text('published_at'),
-	createdAt: text('created_at').default(sql`datetime('now','localtime')`)
+	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`)
 });
 
 export const agenda = sqliteTable('agenda', {
@@ -337,7 +337,7 @@ export const agenda = sqliteTable('agenda', {
 	tanggalSelesai: text('tanggal_selesai'),
 	lokasi: text('lokasi'),
 	warna: text('warna').default('#3b82f6'),
-	createdAt: text('created_at').default(sql`datetime('now','localtime')`)
+	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`)
 });
 
 export const galeri = sqliteTable('galeri', {
@@ -346,7 +346,7 @@ export const galeri = sqliteTable('galeri', {
 	deskripsi: text('deskripsi'),
 	gambar: text('gambar').notNull(),
 	kategori: text('kategori').default('kegiatan'), // kegiatan | wisata | olahraga | lainnya
-	createdAt: text('created_at').default(sql`datetime('now','localtime')`)
+	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`)
 });
 
 export const ekskul = sqliteTable('ekskul', {
@@ -358,7 +358,7 @@ export const ekskul = sqliteTable('ekskul', {
 	pembina: text('pembina'),
 	jadwal: text('jadwal'),
 	aktif: integer('aktif', { mode: 'boolean' }).default(true),
-	createdAt: text('created_at').default(sql`datetime('now','localtime')`)
+	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`)
 });
 
 export const prestasi = sqliteTable('prestasi', {
@@ -369,5 +369,5 @@ export const prestasi = sqliteTable('prestasi', {
 	pemenang: text('pemenang'),
 	tingkat: text('tingkat').default('sekolah'), // sekolah | kabupaten | provinsi | nasional
 	tahun: integer('tahun'),
-	createdAt: text('created_at').default(sql`datetime('now','localtime')`)
+	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`)
 });

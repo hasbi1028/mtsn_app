@@ -3,7 +3,7 @@ CREATE TABLE `activity_log` (
 	`user_id` integer,
 	`action` text,
 	`detail` text,
-	`created_at` integer DEFAULT strftime('%s','now')*1000
+	`created_at` integer DEFAULT (strftime('%s','now')*1000)
 );
 --> statement-breakpoint
 CREATE TABLE `bel_settings` (
@@ -18,7 +18,7 @@ CREATE TABLE `cuti` (
 	`tanggal_mulai` text NOT NULL,
 	`tanggal_selesai` text NOT NULL,
 	`keterangan` text,
-	`created_at` text DEFAULT datetime('now','localtime'),
+	`created_at` text DEFAULT (datetime('now','localtime')),
 	`referenced_dari` text DEFAULT 'EMISGTK'
 );
 --> statement-breakpoint
@@ -28,7 +28,7 @@ CREATE TABLE `dokumen` (
 	`jenis` text DEFAULT 'SKMT Rekap',
 	`file_path` text NOT NULL,
 	`periode` text,
-	`uploaded_at` integer DEFAULT strftime('%s','now')*1000
+	`uploaded_at` integer DEFAULT (strftime('%s','now')*1000)
 );
 --> statement-breakpoint
 CREATE TABLE `jam_bel` (
@@ -40,8 +40,8 @@ CREATE TABLE `jam_bel` (
 	`sound_path` text,
 	`repeat` integer DEFAULT 2,
 	`aktif` integer DEFAULT true,
-	`created_at` text DEFAULT datetime('now','localtime'),
-	`updated_at` text DEFAULT datetime('now','localtime')
+	`created_at` text DEFAULT (datetime('now','localtime')),
+	`updated_at` text DEFAULT (datetime('now','localtime'))
 );
 --> statement-breakpoint
 CREATE TABLE `jtm_semester` (
@@ -60,7 +60,7 @@ CREATE TABLE `kartu_cache` (
 	`siswa_id` integer NOT NULL,
 	`file_path` text NOT NULL,
 	`file_type` text NOT NULL,
-	`generated_at` text DEFAULT datetime('now','localtime'),
+	`generated_at` text DEFAULT (datetime('now','localtime')),
 	`hash` text
 );
 --> statement-breakpoint
@@ -71,7 +71,7 @@ CREATE TABLE `ortu` (
 	`no_hp` text,
 	`alamat` text,
 	`pekerjaan` text,
-	`created_at` text DEFAULT datetime('now','localtime')
+	`created_at` text DEFAULT (datetime('now','localtime'))
 );
 --> statement-breakpoint
 CREATE TABLE `perubahan_siswa` (
@@ -83,7 +83,7 @@ CREATE TABLE `perubahan_siswa` (
 	`status` text DEFAULT 'pending',
 	`catatan` text,
 	`diajukan_by` text DEFAULT 'siswa',
-	`diajukan_at` text DEFAULT datetime('now','localtime'),
+	`diajukan_at` text DEFAULT (datetime('now','localtime')),
 	`disetujui_at` text,
 	`disetujui_oleh` text
 );
@@ -115,8 +115,8 @@ CREATE TABLE `rombel` (
 	`wali_ptk_id` integer,
 	`kapasitas` integer DEFAULT 40,
 	`aktif` integer DEFAULT true,
-	`created_at` text DEFAULT datetime('now','localtime'),
-	`updated_at` text DEFAULT datetime('now','localtime')
+	`created_at` text DEFAULT (datetime('now','localtime')),
+	`updated_at` text DEFAULT (datetime('now','localtime'))
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `rombel_nama_unique` ON `rombel` (`nama`);--> statement-breakpoint
@@ -132,14 +132,14 @@ CREATE TABLE `roster` (
 --> statement-breakpoint
 CREATE TABLE `schema_migrations` (
 	`version` integer PRIMARY KEY NOT NULL,
-	`applied_at` text DEFAULT datetime('now','localtime')
+	`applied_at` text DEFAULT (datetime('now','localtime'))
 );
 --> statement-breakpoint
 CREATE TABLE `sessions` (
 	`token` text PRIMARY KEY NOT NULL,
 	`user_id` integer NOT NULL,
 	`expires_at` integer NOT NULL,
-	`created_at` integer DEFAULT strftime('%s','now')*1000
+	`created_at` integer DEFAULT (strftime('%s','now')*1000)
 );
 --> statement-breakpoint
 CREATE TABLE `siswa` (
@@ -177,8 +177,8 @@ CREATE TABLE `siswa` (
 	`foto_path` text,
 	`foto_pending` text,
 	`foto_status` text DEFAULT 'approved',
-	`created_at` text DEFAULT datetime('now','localtime'),
-	`updated_at` text DEFAULT datetime('now','localtime')
+	`created_at` text DEFAULT (datetime('now','localtime')),
+	`updated_at` text DEFAULT (datetime('now','localtime'))
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `siswa_nis_unique` ON `siswa` (`nis`);--> statement-breakpoint
@@ -231,7 +231,7 @@ CREATE TABLE `users` (
 	`ref_id` integer,
 	`is_active` integer DEFAULT 1,
 	`last_login` text,
-	`created_at` integer DEFAULT strftime('%s','now')*1000,
+	`created_at` integer DEFAULT (strftime('%s','now')*1000),
 	`updated_at` text
 );
 --> statement-breakpoint
