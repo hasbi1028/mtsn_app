@@ -16,15 +16,15 @@
 
 	function onChange(e: Event) {
 		const v = (e.target as HTMLSelectElement).value;
-		if (v) window.location.href = `/roster?kelas=${v}`;
+		if (v) window.location.href = `/admin/roster?kelas=${v}`;
 	}
 </script>
 
-<PageLayout title="Roster" description="Jadwal pelajaran per kelas">
-	{#await rosterQuery}
-		<p class="text-sm text-muted-foreground">Memuat jadwal...</p>
-	{:then rosterData}
-		{@const rows = rosterData.rows as any[]}
+{#await rosterQuery}
+	<p class="text-sm text-muted-foreground">Memuat jadwal...</p>
+{:then rosterData}
+	{@const rows = rosterData.rows as any[]}
+	<PageLayout title="Roster" description="Jadwal pelajaran per kelas">
 		{#snippet actions()}
 			<select
 				class="border border-input bg-background rounded-md px-3 py-1.5 text-sm cursor-pointer"
@@ -40,5 +40,5 @@
 		<DataTable {columns} data={rows} emptyMessage="Tidak ada jadwal pelajaran" />
 
 		<p class="mt-2 text-xs text-muted-foreground">{rows.length} jam pelajaran/minggu</p>
-	{/await}
-</PageLayout>
+	</PageLayout>
+{/await}

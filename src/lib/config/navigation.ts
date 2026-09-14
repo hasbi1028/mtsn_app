@@ -144,12 +144,12 @@ export const navItems: NavItem[] = [
 export const siswaNavItems = [
 	{
 		title: "Profil Saya",
-		url: "/siswa/profil",
+		url: "/admin/siswa/profil",
 		icon: UserIcon,
 	},
 	{
 		title: "Cek Bansos",
-		url: "/siswa/bansos",
+		url: "/admin/siswa/bansos",
 		icon: BellIcon,
 	},
 ];
@@ -157,12 +157,12 @@ export const siswaNavItems = [
 export const ortuNavItems = [
 	{
 		title: "Profil Anak",
-		url: "/ortu/profil",
+		url: "/admin/ortu/profil",
 		icon: UsersRoundIcon,
 	},
 	{
 		title: "Cek Bansos",
-		url: "/ortu/bansos",
+		url: "/admin/ortu/bansos",
 		icon: BellIcon,
 	},
 ];

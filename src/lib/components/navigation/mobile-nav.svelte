@@ -10,11 +10,11 @@
 
 	const navItems = $derived(
 		role === 'siswa' ? [
-			{ url: '/siswa/profil', label: 'Profil', icon: UserIcon },
-			{ url: '/siswa/bansos', label: 'Bansos', icon: BellIcon },
+			{ url: '/admin/siswa/profil', label: 'Profil', icon: UserIcon },
+			{ url: '/admin/siswa/bansos', label: 'Bansos', icon: BellIcon },
 		] : role === 'ortu' ? [
-			{ url: '/ortu/profil', label: 'Profil', icon: UserIcon },
-			{ url: '/ortu/bansos', label: 'Bansos', icon: BellIcon },
+			{ url: '/admin/ortu/profil', label: 'Profil', icon: UserIcon },
+			{ url: '/admin/ortu/bansos', label: 'Bansos', icon: BellIcon },
 		] : []
 	);
 </script>

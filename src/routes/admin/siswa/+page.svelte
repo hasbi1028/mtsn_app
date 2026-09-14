@@ -7,6 +7,9 @@
 	import * as Pagination from '$lib/components/ui/pagination/index.js';
 	import { goto } from '$app/navigation';
 	import Search from '@lucide/svelte/icons/search';
+	import ChevronLeft from '@lucide/svelte/icons/chevron-left';
+	import ChevronRight from '@lucide/svelte/icons/chevron-right';
+	import { buttonVariants } from '$lib/components/ui/button/index.js';
 	import { getSiswaListQ, getRekapQ } from '$modules/siswa/siswa.remote';
 	import { page } from '$app/state';
 
@@ -57,7 +60,7 @@
 			else params.delete(k);
 		});
 		const s = params.toString();
-		return `/siswa${s ? '?' + s : ''}`;
+		return `/admin/siswa${s ? '?' + s : ''}`;
 	}
 
 	function onKelas(k: string) {
@@ -69,7 +72,7 @@
 	}
 
 	function resetFilters() {
-		goto('/siswa', { noScroll: true });
+		goto('/admin/siswa', { noScroll: true });
 	}
 
 	function resetSearch() {
@@ -87,7 +90,7 @@
 		if (statusParam) params.set('status', statusParam);
 		if (p > 1) params.set('page', String(p));
 		const s = params.toString();
-		return `/siswa${s ? '?' + s : ''}`;
+		return `/admin/siswa${s ? '?' + s : ''}`;
 	}
 
 	const activeSearch = $derived(Boolean(q));
@@ -104,7 +107,7 @@
 
 	<PageLayout title="Data Siswa" description="Kesiswaan MTsN 2 Kolaka Utara — TA 2026/2027 Ganjil · sinkron EMIS 26-08-2026">
 		{#snippet actions()}
-			<form method="GET" action="/siswa" class="flex flex-col gap-1.5 w-full sm:w-72">
+			<form method="GET" action="/admin/siswa" class="flex flex-col gap-1.5 w-full sm:w-72">
 				<div class="flex gap-1.5">
 					<Input name="q" bind:value={q} placeholder="Cari nama..." class="h-8 text-xs" />
 					<Button type="submit" size="sm" class="h-8 px-2" aria-label="Cari siswa"><Search class="size-4" /></Button>
@@ -206,8 +209,13 @@
 					{#snippet children({ pages, currentPage })}
 						<Pagination.Content>
 							<Pagination.Item>
-								<a href={qs(Math.max(1, currentPage - 1))}>
-									<Pagination.Previous />
+								<a
+									href={qs(Math.max(1, pageParam - 1))}
+									aria-label="Halaman sebelumnya"
+									class={buttonVariants({ variant: 'ghost', size: 'default' })}
+								>
+									<ChevronLeft class="size-4" />
+									<span class="hidden sm:block">Sebelumnya</span>
 								</a>
 							</Pagination.Item>
 							{#each pages as pg (pg.key)}
@@ -226,8 +234,13 @@
 								{/if}
 							{/each}
 							<Pagination.Item>
-								<a href={qs(Math.min(totalPages, currentPage + 1))}>
-									<Pagination.Next />
+								<a
+									href={qs(Math.min(totalPages, pageParam + 1))}
+									aria-label="Halaman berikutnya"
+									class={buttonVariants({ variant: 'ghost', size: 'default' })}
+								>
+									<span class="hidden sm:block">Berikutnya</span>
+									<ChevronRight class="size-4" />
 								</a>
 							</Pagination.Item>
 						</Pagination.Content>

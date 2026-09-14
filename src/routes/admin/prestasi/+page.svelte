@@ -41,7 +41,7 @@
 			<Medal class="size-5" />
 			<h1 class="text-xl font-semibold">Prestasi</h1>
 		</div>
-		<a href="/prestasi/new"><Button size="sm"><Plus class="mr-1 size-4" /> Tambah</Button></a>
+		<a href="/admin/prestasi/new"><Button size="sm"><Plus class="mr-1 size-4" /> Tambah</Button></a>
 	</div>
 
 	<form onsubmit={handleSearch} class="flex gap-2">
@@ -77,7 +77,7 @@
 								<Table.Cell class="text-sm">{p.tahun ?? '-'}</Table.Cell>
 								<Table.Cell>
 									<div class="flex gap-1">
-										<a href="/prestasi/{p.id}/edit"><Button variant="ghost" size="icon" class="size-7"><Pencil class="size-3.5" /></Button></a>
+										<a href="/admin/prestasi/{p.id}/edit"><Button variant="ghost" size="icon" class="size-7"><Pencil class="size-3.5" /></Button></a>
 										<Button variant="ghost" size="icon" class="size-7 text-destructive" onclick={() => handleDelete(p.id)}><Trash2 class="size-3.5" /></Button>
 									</div>
 								</Table.Cell>

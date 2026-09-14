@@ -23,12 +23,12 @@
 	const appSubtitle = $derived(pengaturan.appSubtitle ?? 'MTsN 2 Kolaka Utara');
 
 	const modules = [
-		{ name: "Semua", icon: LayoutDashboardIcon, description: "Tampilkan semua menu", key: "semua", active: true, url: "/" },
-		{ name: "PTK", icon: UsersIcon, description: "Data PTK & Tendik", key: "PTK", active: true, url: "/ptk" },
-		{ name: "Kesiswaan", icon: GraduationCapIcon, description: "Data Siswa & Kelas", key: "Kesiswaan", active: true, url: "/siswa" },
-		{ name: "Jadwal", icon: CalendarIcon, description: "Roster & Kalender", key: "Jadwal", active: true, url: "/roster" },
-		{ name: "Dokumen", icon: ClipboardListIcon, description: "SKMT, SKBK, SKAKPT", key: "Dokumen", active: true, url: "/skmt" },
-		{ name: "Bel", icon: BellRingIcon, description: "Monitoring & Kontrol", key: "Bel", active: true, url: "/bel" },
+		{ name: "Semua", icon: LayoutDashboardIcon, description: "Tampilkan semua menu", key: "semua", active: true, url: "/admin/dashboard" },
+		{ name: "PTK", icon: UsersIcon, description: "Data PTK & Tendik", key: "PTK", active: true, url: "/admin/ptk" },
+		{ name: "Kesiswaan", icon: GraduationCapIcon, description: "Data Siswa & Kelas", key: "Kesiswaan", active: true, url: "/admin/siswa" },
+		{ name: "Jadwal", icon: CalendarIcon, description: "Roster & Kalender", key: "Jadwal", active: true, url: "/admin/roster" },
+		{ name: "Dokumen", icon: ClipboardListIcon, description: "SKMT, SKBK, SKAKPT", key: "Dokumen", active: true, url: "/admin/skmt" },
+		{ name: "Bel", icon: BellRingIcon, description: "Monitoring & Kontrol", key: "Bel", active: true, url: "/admin/bel" },
 		{ name: "Perpustakaan", icon: BookOpenIcon, description: "Buku & Peminjaman", active: false },
 		{ name: "Sarana & Prasarana", icon: BuildingIcon, description: "Inventaris Sekolah", active: false },
 		{ name: "Pengaturan", icon: SettingsIcon, description: "Konfigurasi Sistem", active: false },

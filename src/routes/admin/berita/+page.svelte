@@ -47,7 +47,7 @@
 			<Newspaper class="size-5" />
 			<h1 class="text-xl font-semibold">Berita</h1>
 		</div>
-		<a href="/berita/new">
+		<a href="/admin/berita/new">
 			<Button size="sm"><Plus class="mr-1 size-4" /> Tambah</Button>
 		</a>
 	</div>
@@ -96,7 +96,7 @@
 										<Button variant="ghost" size="icon" class="size-7" onclick={() => togglePublish(b.id)}>
 											{#if b.published}<EyeOff class="size-3.5" />{:else}<Eye class="size-3.5" />{/if}
 										</Button>
-										<a href="/berita/{b.id}/edit">
+										<a href="/admin/berita/{b.id}/edit">
 											<Button variant="ghost" size="icon" class="size-7"><Pencil class="size-3.5" /></Button>
 										</a>
 										<Button variant="ghost" size="icon" class="size-7 text-destructive" onclick={() => handleDelete(b.id)}>

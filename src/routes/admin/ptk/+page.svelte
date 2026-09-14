@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button/index.js';
+	import { buttonVariants } from '$lib/components/ui/button/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import DataTable from '$lib/components/data-table.svelte';
@@ -10,6 +11,8 @@
 	import ArrowUpDown from '@lucide/svelte/icons/arrow-up-down';
 	import ArrowUp from '@lucide/svelte/icons/arrow-up';
 	import ArrowDown from '@lucide/svelte/icons/arrow-down';
+	import ChevronLeft from '@lucide/svelte/icons/chevron-left';
+	import ChevronRight from '@lucide/svelte/icons/chevron-right';
 
 	let q = $derived(page.url.searchParams.get('q') || '');
 	let filter = $derived(page.url.searchParams.get('filter') || '');
@@ -42,7 +45,7 @@
 			params.set('sortBy', col);
 			params.set('sortDir', 'asc');
 		}
-		return `/ptk?${params.toString()}`;
+		return `/admin/ptk?${params.toString()}`;
 	}
 
 	function pageUrl(searchQ: string, searchFilter: string, p: number) {
@@ -53,7 +56,7 @@
 		if (sortBy !== 'nama') params.set('sortBy', sortBy);
 		if (sortDir !== 'asc') params.set('sortDir', sortDir);
 		const s = params.toString();
-		return `/ptk${s ? '?' + s : ''}`;
+		return `/admin/ptk${s ? '?' + s : ''}`;
 	}
 </script>
 
@@ -166,8 +169,13 @@
 					{#snippet children({ pages, currentPage })}
 						<Pagination.Content>
 							<Pagination.Item>
-								<a href={pageUrl(q, filter, Math.max(1, currentPage - 1))}>
-									<Pagination.Previous />
+								<a
+									href={pageUrl(q, filter, Math.max(1, pg - 1))}
+									aria-label="Halaman sebelumnya"
+									class={buttonVariants({ variant: 'ghost', size: 'default' })}
+								>
+									<ChevronLeft class="size-4" />
+									<span class="hidden sm:block">Sebelumnya</span>
 								</a>
 							</Pagination.Item>
 							{#each pages as pgi (pgi.key)}
@@ -186,8 +194,13 @@
 								{/if}
 							{/each}
 							<Pagination.Item>
-								<a href={pageUrl(q, filter, Math.min(totalPages, currentPage + 1))}>
-									<Pagination.Next />
+								<a
+									href={pageUrl(q, filter, Math.min(totalPages, pg + 1))}
+									aria-label="Halaman berikutnya"
+									class={buttonVariants({ variant: 'ghost', size: 'default' })}
+								>
+									<span class="hidden sm:block">Berikutnya</span>
+									<ChevronRight class="size-4" />
 								</a>
 							</Pagination.Item>
 						</Pagination.Content>

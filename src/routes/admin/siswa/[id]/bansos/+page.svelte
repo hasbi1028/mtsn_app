@@ -32,17 +32,24 @@
 
 <div class="mx-auto max-w-xl space-y-4 p-4">
 	<div class="flex items-center gap-2">
-		<a href="/admin/siswa/{siswa?.publicId}/profil">
-			<Button variant="ghost" size="sm" class="h-8 px-2">
+		{#if siswa}
+			<a href={`/admin/siswa/${siswa.publicId}/profil`}>
+				<Button variant="ghost" size="sm" class="h-8 px-2">
+					<ArrowLeft class="size-4" />
+					Profil
+				</Button>
+			</a>
+		{:else}
+			<Button variant="ghost" size="sm" class="h-8 px-2" disabled>
 				<ArrowLeft class="size-4" />
 				Profil
 			</Button>
-		</a>
+		{/if}
 		<h1 class="text-lg font-bold">Cek Bansos</h1>
 	</div>
 
-	{#if bansosRaw}
-		<a href="/admin/siswa/{siswa?.publicId}/bansos/cetak" target="_blank">
+	{#if bansosRaw && siswa}
+		<a href={`/admin/siswa/${siswa.publicId}/bansos/cetak`} target="_blank">
 			<Button variant="outline" size="sm" class="w-full">
 				<PrinterIcon class="size-4 mr-2" />
 				Cetak PDF

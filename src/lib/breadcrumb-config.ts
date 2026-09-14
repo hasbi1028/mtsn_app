@@ -57,13 +57,13 @@ export function buildBreadcrumb(pathname: string): BreadcrumbEntry[] {
     // If current seg is "siswa" and next is numeric ID, continue to next
     if (seg === 'siswa' && nextSeg && /^\d+$/.test(nextSeg)) {
       // We'll add "Data Siswa" without href, resolve after ID
-      entries.push({ label, href: '/siswa' });
+      entries.push({ label, href: '/admin/siswa' });
       continue;
     }
 
     // If current seg is "ptk" and next is numeric ID, same pattern
     if (seg === 'ptk' && nextSeg && /^\d+$/.test(nextSeg)) {
-      entries.push({ label, href: '/ptk' });
+      entries.push({ label, href: '/admin/ptk' });
       continue;
     }
 
@@ -76,7 +76,7 @@ export function buildBreadcrumb(pathname: string): BreadcrumbEntry[] {
 
   // If first entry is Dashboard but we're not on root, add Dashboard link
   if (segments.length > 0 && segments[0] !== '') {
-    entries.unshift({ label: 'Dashboard', href: '/' });
+    entries.unshift({ label: 'Dashboard', href: '/admin/dashboard' });
   }
 
   return entries;

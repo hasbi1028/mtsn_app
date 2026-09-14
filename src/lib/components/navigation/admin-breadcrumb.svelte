@@ -4,8 +4,9 @@
 
 	const pathname = $derived(page?.url?.pathname ?? '');
 
+	// segmen 'admin' disembunyikan — crumb "Home" sudah menunjuk ke /admin/dashboard
 	const segments = $derived(
-		pathname.split('/').filter(Boolean)
+		pathname.split('/').filter(Boolean).filter((s) => s !== 'admin')
 	);
 
 	const breadcrumbMap: Record<string, string> = {
@@ -31,14 +32,35 @@
 		'kartu': 'Kartu',
 		'suara': 'Suara',
 		'bansos': 'Bansos',
+		'new': 'Tambah',
+		'edit': 'Ubah',
 	};
 
+	const listRoutes = ['ptk', 'siswa', 'rombel', 'berita', 'agenda', 'galeri', 'prestasi', 'ekskul', 'pengumuman'];
+
 	function getSegmentLabel(segment: string): string {
-		return breadcrumbMap[segment] || segment;
+		if (breadcrumbMap[segment]) return breadcrumbMap[segment];
+		// id teknis (public_id SIS-xxxx / id angka) jangan ditampilkan mentah
+		if (/^SIS-/.test(segment) || /^\d+$/.test(segment)) return 'Detail';
+		return segment;
 	}
 
-	function getSegmentUrl(index: number): string {
-		return '/' + segments.slice(0, index + 1).join('/');
+	/**
+	 * URL crumb harus menunjuk rute yang benar-benar ada.
+	 * - /admin/ortu tidak punya halaman index → jadikan teks biasa (null)
+	 * - /admin/<list>/<id> untuk siswa|ortu tidak punya rute sendiri → tambah /profil
+	 * - /admin/<list>/<id> halaman konten (berita, agenda, ...) → kembali ke daftar
+	 */
+	function getSegmentUrl(index: number): string | null {
+		const path = '/admin/' + segments.slice(0, index + 1).join('/');
+		if (path === '/admin/ortu') return null;
+		const match = path.match(/^\/admin\/([^/]+)\/[^/]+$/);
+		if (match) {
+			const list = match[1];
+			if (list === 'siswa' || list === 'ortu') return `${path}/profil`;
+			if (listRoutes.includes(list)) return `/admin/${list}`;
+		}
+		return path;
 	}
 </script>
 
@@ -49,7 +71,7 @@
 		</a>
 		{#each segments as segment, i}
 			<ChevronRight class="size-3" />
-			{#if i < segments.length - 1}
+			{#if i < segments.length - 1 && getSegmentUrl(i)}
 				<a href={getSegmentUrl(i)} class="hover:text-foreground transition-colors">
 					{getSegmentLabel(segment)}
 				</a>

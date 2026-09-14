@@ -38,7 +38,7 @@
 			<Trophy class="size-5" />
 			<h1 class="text-xl font-semibold">Ekstrakurikuler</h1>
 		</div>
-		<a href="/ekskul/new"><Button size="sm"><Plus class="mr-1 size-4" /> Tambah</Button></a>
+		<a href="/admin/ekskul/new"><Button size="sm"><Plus class="mr-1 size-4" /> Tambah</Button></a>
 	</div>
 
 	<form onsubmit={handleSearch} class="flex gap-2">
@@ -69,7 +69,7 @@
 								<Table.Cell>{#if e.aktif}<Badge variant="default" class="bg-green-600">Aktif</Badge>{:else}<Badge variant="secondary">Nonaktif</Badge>{/if}</Table.Cell>
 								<Table.Cell>
 									<div class="flex gap-1">
-										<a href="/ekskul/{e.id}/edit"><Button variant="ghost" size="icon" class="size-7"><Pencil class="size-3.5" /></Button></a>
+										<a href="/admin/ekskul/{e.id}/edit"><Button variant="ghost" size="icon" class="size-7"><Pencil class="size-3.5" /></Button></a>
 										<Button variant="ghost" size="icon" class="size-7 text-destructive" onclick={() => handleDelete(e.id)}><Trash2 class="size-3.5" /></Button>
 									</div>
 								</Table.Cell>
