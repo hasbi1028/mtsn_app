@@ -3,6 +3,7 @@
 	import PublicPageHeader from '$lib/components/public-page-header.svelte';
 	import School from '@lucide/svelte/icons/school';
 	import MapPin from '@lucide/svelte/icons/map-pin';
+	import Network from '@lucide/svelte/icons/network';
 </script>
 
 <svelte:head>
@@ -91,6 +92,24 @@
 						<h3 class="font-semibold">Lokasi</h3>
 					</div>
 					<p class="text-sm text-muted-foreground">Jl. Pendidikan No. 1, Kabupaten Kolaka Utara, Sulawesi Tenggara, Indonesia</p>
+				</CardContent>
+			</Card>
+
+			<Card class="mt-4">
+				<CardContent class="p-6">
+					<div class="flex items-center gap-2 mb-3">
+						<Network class="size-4 text-primary" />
+						<h3 class="font-semibold">Struktur Organisasi</h3>
+					</div>
+					<p class="text-sm text-muted-foreground mb-3">
+						Susunan pimpinan, tenaga kependidikan, guru, dan wali kelas MTsN 2 Kolaka Utara.
+					</p>
+					<a
+						href="/profil/struktur"
+						class="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+					>
+						Lihat bagan struktur organisasi →
+					</a>
 				</CardContent>
 			</Card>
 		</div>

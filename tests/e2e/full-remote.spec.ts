@@ -121,5 +121,10 @@ test.describe('Full Remote — Endpoint Guards', () => {
 		const backupUnduh = path.join(root, 'src/routes/api/backup/[name]/download/+server.ts');
 		expect(existsSync(backupUnduh)).toBe(true);
 		expect(readFileSync(backupUnduh, 'utf-8')).toContain('export const GET');
+
+		// endpoint biner modul struktur organisasi (spec 029) — unduh PNG bagan, dipakai lewat <a href>
+		const strukturPng = path.join(root, 'src/routes/api/struktur/bagan.png/+server.ts');
+		expect(existsSync(strukturPng)).toBe(true);
+		expect(readFileSync(strukturPng, 'utf-8')).toContain('export const GET');
 	});
 });

@@ -13,6 +13,7 @@
 		{ href: '/profil', label: 'Profil', children: [
 			{ href: '/profil', label: 'Tentang Kami' },
 			{ href: '/profil/visi-misi', label: 'Visi & Misi' },
+			{ href: '/profil/struktur', label: 'Struktur Organisasi' },
 		]},
 		{ href: '/ppdb', label: 'PPDB' },
 		{ href: '/berita', label: 'Berita' },

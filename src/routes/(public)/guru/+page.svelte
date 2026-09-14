@@ -49,6 +49,16 @@
 	accent="primary"
 />
 
+<div class="mx-auto max-w-5xl px-4 pt-6">
+	<a
+		href="/profil/struktur"
+		class="flex items-center justify-between gap-3 rounded-lg border bg-card px-4 py-3 text-sm hover:bg-muted"
+	>
+		<span class="font-medium">Lihat Struktur Organisasi madrasah</span>
+		<span class="text-xs text-muted-foreground">pimpinan · TU · wali kelas →</span>
+	</a>
+</div>
+
 <div class="mx-auto max-w-5xl px-4 py-8">
 	<!-- Filters -->
 	<div class="flex flex-col sm:flex-row gap-3 mb-8">

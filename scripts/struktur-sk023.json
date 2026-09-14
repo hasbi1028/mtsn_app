@@ -1,0 +1,704 @@
+{
+ "sumber": "struktur-foto-v2-premium.html",
+ "badge": "44",
+ "kop": "KEMENTERIAN AGAMA REPUBLIK INDONESIA",
+ "judul": "STRUKTUR ORGANISASI",
+ "madrasah": "MTsN 2 KOLAKA UTARA",
+ "tahun": "2026/2027",
+ "tempatTgl": "Pakue, 13 Juli 2026",
+ "kamadNama": "ANWAR, S.Ag., M.Pd",
+ "kamadNip": "196912311997031028",
+ "catatanKaki": "* Guru Mata Pelajaran Utama • * Tenaga Pendukung (di luar jumlah pegawai) · Ketua Komite: mitra madrasah · SK No. 023/2026",
+ "units": [
+  {
+   "kode": "komite",
+   "nama": "Ketua Komite",
+   "kelompok": "MITRA",
+   "tipe": "unit",
+   "kolom": 1,
+   "urutan": 1
+  },
+  {
+   "kode": "kamad",
+   "nama": "Kepala Madrasah",
+   "kelompok": "PIMPINAN",
+   "tipe": "unit",
+   "kolom": 1,
+   "urutan": 2
+  },
+  {
+   "kode": "kaur-tu",
+   "nama": "Kepala Tata Usaha",
+   "kelompok": "PIMPINAN",
+   "tipe": "unit",
+   "kolom": 2,
+   "urutan": 1
+  },
+  {
+   "kode": "tu-staf",
+   "nama": "Staf Tata Usaha",
+   "kelompok": "TATA USAHA",
+   "tipe": "unit",
+   "kolom": 2,
+   "urutan": 2
+  },
+  {
+   "kode": "pendukung",
+   "nama": "Tenaga Pendukung",
+   "kelompok": "PENDUKUNG",
+   "tipe": "unit",
+   "kolom": 2,
+   "urutan": 3
+  },
+  {
+   "kode": "wakamad-kurikulum",
+   "nama": "Wakamad Kurikulum",
+   "kelompok": "PIMPINAN",
+   "tipe": "unit",
+   "kolom": 3,
+   "urutan": 1
+  },
+  {
+   "kode": "guru-mapel",
+   "nama": "Dewan Guru Mata Pelajaran",
+   "kelompok": "GURU",
+   "tipe": "unit",
+   "kolom": 3,
+   "urutan": 2
+  },
+  {
+   "kode": "wakamad-kesiswaan",
+   "nama": "Wakamad Kesiswaan",
+   "kelompok": "PIMPINAN",
+   "tipe": "unit",
+   "kolom": 4,
+   "urutan": 1
+  },
+  {
+   "kode": "wali-kelas",
+   "nama": "Wali Kelas",
+   "kelompok": "GURU",
+   "tipe": "unit",
+   "kolom": 4,
+   "urutan": 2
+  },
+  {
+   "kode": "guru-bk",
+   "nama": "Guru BK",
+   "kelompok": "GURU",
+   "tipe": "unit",
+   "kolom": 4,
+   "urutan": 3
+  },
+  {
+   "kode": "pembina-osim",
+   "nama": "Pembina OSIM",
+   "kelompok": "GURU",
+   "tipe": "unit",
+   "kolom": 4,
+   "urutan": 4
+  },
+  {
+   "kode": "pembina-ekskul",
+   "nama": "Pembina Ekstrakurikuler & Kokurikuler",
+   "kelompok": "GURU",
+   "tipe": "unit",
+   "kolom": 4,
+   "urutan": 5
+  },
+  {
+   "kode": "wakamad-sarpras",
+   "nama": "Wakamad Sarana & Prasarana",
+   "kelompok": "PIMPINAN",
+   "tipe": "unit",
+   "kolom": 5,
+   "urutan": 1
+  },
+  {
+   "kode": "pengelola-sarpras",
+   "nama": "Pengelola Sarana",
+   "kelompok": "TATA USAHA",
+   "tipe": "unit",
+   "kolom": 5,
+   "urutan": 2
+  },
+  {
+   "kode": "wakamad-humas",
+   "nama": "Wakamad Humas",
+   "kelompok": "PIMPINAN",
+   "tipe": "unit",
+   "kolom": 5,
+   "urutan": 3
+  }
+ ],
+ "anggota": [
+  {
+   "unitKode": "komite",
+   "nama": "Sabaruddin",
+   "gelar": "S.IP",
+   "jabatan": "Ketua Komite",
+   "keterangan": "",
+   "urutan": 1
+  },
+  {
+   "unitKode": "kamad",
+   "nama": "Anwar",
+   "gelar": "S.Ag., M.Pd",
+   "jabatan": "Kepala Madrasah",
+   "keterangan": "",
+   "urutan": 1
+  },
+  {
+   "unitKode": "kaur-tu",
+   "nama": "Wahyuniar",
+   "gelar": "S.H",
+   "jabatan": "Kepala Tata Usaha",
+   "keterangan": "",
+   "urutan": 1
+  },
+  {
+   "unitKode": "tu-staf",
+   "nama": "Muhammad Nurdin",
+   "gelar": "S.Ag",
+   "jabatan": "BENDAHARA",
+   "keterangan": "",
+   "urutan": 1
+  },
+  {
+   "unitKode": "tu-staf",
+   "nama": "Andi Musdalipa",
+   "gelar": "",
+   "jabatan": "STAF ADMINISTRASI",
+   "keterangan": "",
+   "urutan": 2
+  },
+  {
+   "unitKode": "tu-staf",
+   "nama": "Jinawati",
+   "gelar": "S.A.P",
+   "jabatan": "STAF TATA USAHA",
+   "keterangan": "",
+   "urutan": 3
+  },
+  {
+   "unitKode": "tu-staf",
+   "nama": "Lilis Suriani",
+   "gelar": "",
+   "jabatan": "STAF TATA USAHA",
+   "keterangan": "",
+   "urutan": 4
+  },
+  {
+   "unitKode": "tu-staf",
+   "nama": "Munasira",
+   "gelar": "S.E.",
+   "jabatan": "STAF TU / PERPUSTAKAAN",
+   "keterangan": "",
+   "urutan": 5
+  },
+  {
+   "unitKode": "tu-staf",
+   "nama": "Hasbi Awal",
+   "gelar": "S.Kom",
+   "jabatan": "OPERATOR",
+   "keterangan": "",
+   "urutan": 6
+  },
+  {
+   "unitKode": "tu-staf",
+   "nama": "M. Nuriksan",
+   "gelar": "S.Ak",
+   "jabatan": "OPERATOR",
+   "keterangan": "",
+   "urutan": 7
+  },
+  {
+   "unitKode": "pendukung",
+   "nama": "Ashar Arif",
+   "gelar": "",
+   "jabatan": "KEAMANAN",
+   "keterangan": "",
+   "urutan": 1
+  },
+  {
+   "unitKode": "pendukung",
+   "nama": "Nurhidayati",
+   "gelar": "",
+   "jabatan": "KEBERSIHAN",
+   "keterangan": "",
+   "urutan": 2
+  },
+  {
+   "unitKode": "wakamad-kurikulum",
+   "nama": "Irmawati Nur",
+   "gelar": "S.Ag., M.Pd",
+   "jabatan": "Wakamad Kurikulum",
+   "keterangan": "",
+   "urutan": 1
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Saimang",
+   "gelar": "S.Ag *",
+   "jabatan": "",
+   "keterangan": "Qur'an Hadis",
+   "urutan": 1
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Dra. Ratnawati *",
+   "gelar": "",
+   "jabatan": "",
+   "keterangan": "Akidah Akhlak",
+   "urutan": 2
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Sitti Rafidah",
+   "gelar": "S.Pd.I *",
+   "jabatan": "",
+   "keterangan": "Fikih / Akidah Akhlak",
+   "urutan": 3
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Susianti",
+   "gelar": "S.Pd., Gr *",
+   "jabatan": "",
+   "keterangan": "SKI",
+   "urutan": 4
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Muh. Sain",
+   "gelar": "S.E. *",
+   "jabatan": "",
+   "keterangan": "PPKn",
+   "urutan": 5
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Sutra",
+   "gelar": "S.Ag *",
+   "jabatan": "",
+   "keterangan": "Bahasa Arab",
+   "urutan": 6
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "K.M. Muh. Tang",
+   "gelar": "S.Ag",
+   "jabatan": "",
+   "keterangan": "Bahasa Arab",
+   "urutan": 7
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Jayanti Jufri",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "B. Arab / Informatika / Mulok",
+   "urutan": 8
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Nurilmi",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "B. Arab / Mulok",
+   "urutan": 9
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Herniati",
+   "gelar": "S.Pd *",
+   "jabatan": "",
+   "keterangan": "Bahasa Indonesia",
+   "urutan": 10
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Wati Zaelani Sidig Ellyanando",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "Bahasa Indonesia",
+   "urutan": 11
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Rustiani",
+   "gelar": "S.Pd *",
+   "jabatan": "",
+   "keterangan": "Bahasa Indonesia",
+   "urutan": 12
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Ernawati",
+   "gelar": "S.Pd., Gr",
+   "jabatan": "",
+   "keterangan": "Bahasa Indonesia",
+   "urutan": 13
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Andi Mirna",
+   "gelar": "S.Pd *",
+   "jabatan": "",
+   "keterangan": "B. Indonesia / Informatika",
+   "urutan": 14
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Nirmawati Tahir",
+   "gelar": "S.Pd *",
+   "jabatan": "",
+   "keterangan": "Bahasa Indonesia",
+   "urutan": 15
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Nurul Fitri Usman",
+   "gelar": "S.Pd *",
+   "jabatan": "",
+   "keterangan": "Matematika",
+   "urutan": 16
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Kardi",
+   "gelar": "S.Pd *",
+   "jabatan": "",
+   "keterangan": "IPA Terpadu",
+   "urutan": 17
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Abdillah",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "IPA",
+   "urutan": 18
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Mirnawati",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "IPA Terpadu",
+   "urutan": 19
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Rusnawati",
+   "gelar": "S.Pd *",
+   "jabatan": "",
+   "keterangan": "Bahasa Inggris",
+   "urutan": 20
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Yurnianti",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "B. Inggris / Informatika",
+   "urutan": 21
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Nurunnisa Alimah A.",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "B. Inggris / Informatika",
+   "urutan": 22
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Supriadi",
+   "gelar": "S.Pd *",
+   "jabatan": "",
+   "keterangan": "Seni Budaya",
+   "urutan": 23
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Asniar",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "Seni Budaya / Informatika",
+   "urutan": 24
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Kaharuddin",
+   "gelar": "S.Pd *",
+   "jabatan": "",
+   "keterangan": "Penjasorkes",
+   "urutan": 25
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Srihardianti",
+   "gelar": "S.Or",
+   "jabatan": "",
+   "keterangan": "Penjasorkes / Informatika",
+   "urutan": 26
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Drs. Malik *",
+   "gelar": "",
+   "jabatan": "",
+   "keterangan": "Informatika",
+   "urutan": 27
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Mida",
+   "gelar": "S.Ag",
+   "jabatan": "",
+   "keterangan": "Fikih / IPS",
+   "urutan": 28
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Mutmainnah",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "IPS / PKn",
+   "urutan": 29
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "KM. Muhammad Yani",
+   "gelar": "S.Pd *",
+   "jabatan": "",
+   "keterangan": "Mulok Agama",
+   "urutan": 30
+  },
+  {
+   "unitKode": "guru-mapel",
+   "nama": "Hj. Sitti Rahmah",
+   "gelar": "S.Ag",
+   "jabatan": "",
+   "keterangan": "Fikih / Qur'an Hadis",
+   "urutan": 31
+  },
+  {
+   "unitKode": "wakamad-kesiswaan",
+   "nama": "Taufik",
+   "gelar": "S.Ag., M.Pd",
+   "jabatan": "Wakamad Kesiswaan",
+   "keterangan": "",
+   "urutan": 1
+  },
+  {
+   "unitKode": "wali-kelas",
+   "nama": "Abdillah",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "VII.A",
+   "urutan": 1
+  },
+  {
+   "unitKode": "wali-kelas",
+   "nama": "Herniati",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "VII.B",
+   "urutan": 2
+  },
+  {
+   "unitKode": "wali-kelas",
+   "nama": "Ernawati",
+   "gelar": "S.Pd., Gr",
+   "jabatan": "",
+   "keterangan": "VII.C",
+   "urutan": 3
+  },
+  {
+   "unitKode": "wali-kelas",
+   "nama": "Rusnawati",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "VII.D",
+   "urutan": 4
+  },
+  {
+   "unitKode": "wali-kelas",
+   "nama": "Rustiani",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "VII.E",
+   "urutan": 5
+  },
+  {
+   "unitKode": "wali-kelas",
+   "nama": "Yurnianti",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "VIII.A",
+   "urutan": 6
+  },
+  {
+   "unitKode": "wali-kelas",
+   "nama": "Andi Mirna",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "VIII.B",
+   "urutan": 7
+  },
+  {
+   "unitKode": "wali-kelas",
+   "nama": "Nirmawati Tahir",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "VIII.C",
+   "urutan": 8
+  },
+  {
+   "unitKode": "wali-kelas",
+   "nama": "Hj. Sitti Rahmah",
+   "gelar": "S.Ag",
+   "jabatan": "",
+   "keterangan": "VIII.D",
+   "urutan": 9
+  },
+  {
+   "unitKode": "wali-kelas",
+   "nama": "Nurul Fitri Usman",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "IX.A",
+   "urutan": 10
+  },
+  {
+   "unitKode": "wali-kelas",
+   "nama": "Wati Zaelani Sidig Ellyanando",
+   "gelar": "S.Pd",
+   "jabatan": "",
+   "keterangan": "IX.B",
+   "urutan": 11
+  },
+  {
+   "unitKode": "wali-kelas",
+   "nama": "Susianti",
+   "gelar": "S.Pd., Gr",
+   "jabatan": "",
+   "keterangan": "IX.C",
+   "urutan": 12
+  },
+  {
+   "unitKode": "guru-bk",
+   "nama": "Muhammad Nurdin",
+   "gelar": "S.Ag",
+   "jabatan": "GURU BK",
+   "keterangan": "",
+   "urutan": 1
+  },
+  {
+   "unitKode": "pembina-osim",
+   "nama": "Muh. Sain",
+   "gelar": "S.E.",
+   "jabatan": "PEMBINA OSIM",
+   "keterangan": "",
+   "urutan": 1
+  },
+  {
+   "unitKode": "pembina-ekskul",
+   "nama": "Mirnawati",
+   "gelar": "",
+   "jabatan": "Pembina Ekskul",
+   "keterangan": "Pramuka",
+   "urutan": 1
+  },
+  {
+   "unitKode": "pembina-ekskul",
+   "nama": "Jayanti Jufri",
+   "gelar": "",
+   "jabatan": "Pembina Ekskul",
+   "keterangan": "PMR",
+   "urutan": 2
+  },
+  {
+   "unitKode": "pembina-ekskul",
+   "nama": "Sutra",
+   "gelar": "",
+   "jabatan": "Pembina Ekskul",
+   "keterangan": "PIK-R",
+   "urutan": 3
+  },
+  {
+   "unitKode": "pembina-ekskul",
+   "nama": "Supriadi",
+   "gelar": "",
+   "jabatan": "Pembina Ekskul",
+   "keterangan": "Kesenian",
+   "urutan": 4
+  },
+  {
+   "unitKode": "pembina-ekskul",
+   "nama": "Mida",
+   "gelar": "",
+   "jabatan": "Pembina Ekskul",
+   "keterangan": "Keagamaan",
+   "urutan": 5
+  },
+  {
+   "unitKode": "pembina-ekskul",
+   "nama": "Kaharuddin",
+   "gelar": "",
+   "jabatan": "Pembina Ekskul",
+   "keterangan": "Olahraga",
+   "urutan": 6
+  },
+  {
+   "unitKode": "pembina-ekskul",
+   "nama": "Nurilmi",
+   "gelar": "",
+   "jabatan": "Pembina Ekskul",
+   "keterangan": "UKS",
+   "urutan": 7
+  },
+  {
+   "unitKode": "wakamad-sarpras",
+   "nama": "Andi Rasnia Rasjid",
+   "gelar": "S.Ag",
+   "jabatan": "Wakamad Sarana & Prasarana",
+   "keterangan": "",
+   "urutan": 1
+  },
+  {
+   "unitKode": "pengelola-sarpras",
+   "nama": "Kardi",
+   "gelar": "S.Pd",
+   "jabatan": "PENGELOLA LAB. IPA",
+   "keterangan": "",
+   "urutan": 1
+  },
+  {
+   "unitKode": "pengelola-sarpras",
+   "nama": "Hasbi Awal",
+   "gelar": "S.Kom",
+   "jabatan": "PENGELOLA LAB. KOMPUTER",
+   "keterangan": "",
+   "urutan": 2
+  },
+  {
+   "unitKode": "pengelola-sarpras",
+   "nama": "Dra. Ratnawati",
+   "gelar": "",
+   "jabatan": "PENGELOLA PERPUSTAKAAN",
+   "keterangan": "",
+   "urutan": 3
+  },
+  {
+   "unitKode": "wakamad-humas",
+   "nama": "Drs. H. Chairuddin",
+   "gelar": "",
+   "jabatan": "Wakamad Humas",
+   "keterangan": "",
+   "urutan": 1
+  }
+ ]
+}

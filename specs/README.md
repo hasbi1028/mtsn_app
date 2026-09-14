@@ -47,6 +47,12 @@
 | 024 | Remote Activity | ✅ Done | [spec](024-remote-activity/spec.md) | `activity.spec.ts` |
 | 027 | Backup & Restore | ✅ Done | [spec](027-backup-restore/spec.md) · [MDD](027-backup-restore/MDD.md) · [test plan](027-backup-restore/test-plan.md) · [drill](027-backup-restore/drill.md) | `backup.spec.ts` |
 
+### Fitur Baru (di luar migrasi remote)
+
+| # | Module | Status | Spec | Test |
+|---|--------|--------|------|------|
+| 029 | Struktur Organisasi | ✅ Done | [spec](029-struktur-organisasi/spec.md) · [test plan](029-struktur-organisasi/test-plan.md) | `struktur.spec.ts` |
+
 ### Structural Guards
 
 | # | Test | Status | File |

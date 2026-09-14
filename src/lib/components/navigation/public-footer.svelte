@@ -19,6 +19,7 @@
 				<h3 class="font-semibold text-sm mb-2">Profil</h3>
 				<ul class="space-y-1 text-xs text-muted-foreground">
 					<li><a href="/profil" class="hover:underline">Tentang Kami</a></li>
+					<li><a href="/profil/struktur" class="hover:underline">Struktur Organisasi</a></li>
 					<li><a href="/profil/visi-misi" class="hover:underline">Visi & Misi</a></li>
 					<li><a href="/kurikulum" class="hover:underline">Kurikulum</a></li>
 					<li><a href="/guru" class="hover:underline">Daftar Guru</a></li>

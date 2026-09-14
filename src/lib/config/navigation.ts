@@ -24,6 +24,7 @@ import StarIcon from "@lucide/svelte/icons/star";
 import MedalIcon from "@lucide/svelte/icons/medal";
 import ArchiveRestoreIcon from "@lucide/svelte/icons/archive-restore";
 import SettingsIcon from "@lucide/svelte/icons/settings";
+import NetworkIcon from "@lucide/svelte/icons/network";
 
 export interface NavItem {
 	title: string;
@@ -52,6 +53,17 @@ export const navItems: NavItem[] = [
 		roles: ["admin", "kepsek"],
 		children: [
 			{ title: "Data PTK", url: `${A}/ptk`, icon: UsersIcon },
+		],
+	},
+	{
+		title: "Struktur Organisasi",
+		url: `${A}/struktur`,
+		icon: NetworkIcon,
+		group: "PTK",
+		roles: ["admin", "kepsek", "guru", "staf"],
+		children: [
+			{ title: "Daftar Unit", url: `${A}/struktur`, icon: NetworkIcon },
+			{ title: "Bagan & Cetak", url: `${A}/struktur/bagan`, icon: GalleryVerticalEndIcon },
 		],
 	},
 	{

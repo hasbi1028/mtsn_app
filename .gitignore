@@ -81,6 +81,7 @@ static/uploads/s35/
 
 # Kartu cache (generated)
 data/kartu/
+data/struktur/
 
 # Backup & restore runtime (spec 027)
 data/backups/
