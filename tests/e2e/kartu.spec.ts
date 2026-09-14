@@ -1,6 +1,13 @@
 import { test, expect, type Page } from '@playwright/test';
 import { loginAs, gotoAndWait } from './helpers';
 
+async function firstSiswaPublicId(page: Page): Promise<string> {
+	await page.goto('/admin/siswa', { waitUntil: 'domcontentloaded' });
+	await page.waitForTimeout(1500);
+	const href = await page.locator('tbody tr a').first().getAttribute('href').catch(() => null);
+	return href?.match(/\/admin\/siswa\/([^/]+)\/profil/)?.[1] ?? '';
+}
+
 async function firstSiswaId(page: Page): Promise<string> {
 	const src = await page
 		.locator('.kartu-item')
@@ -19,13 +26,13 @@ test.describe('Kartu Siswa', () => {
 	// ─── BATCH PAGE (grid) ─────────────────────────────────────────
 
 	test('batch: heading dan grid tampil', async ({ page }) => {
-		await gotoAndWait(page, '/siswa/kartu');
+		await gotoAndWait(page, '/admin/siswa/kartu');
 		await expect(page.getByRole('heading', { name: 'Kartu Siswa' })).toBeVisible({ timeout: 12000 });
 		await expect(page.locator('.kartu-item').first()).toBeVisible({ timeout: 12000 });
 	});
 
 	test('batch: setiap kartu punya depan + belakang', async ({ page }) => {
-		await gotoAndWait(page, '/siswa/kartu');
+		await gotoAndWait(page, '/admin/siswa/kartu');
 		await expect(page.locator('.kartu-item').first()).toBeVisible({ timeout: 12000 });
 		const item = page.locator('.kartu-item').first();
 		await expect(item.locator('.kartu-side')).toHaveCount(2);
@@ -34,7 +41,7 @@ test.describe('Kartu Siswa', () => {
 	});
 
 	test('batch: front image loaded', async ({ page }) => {
-		await gotoAndWait(page, '/siswa/kartu');
+		await gotoAndWait(page, '/admin/siswa/kartu');
 		await expect(page.locator('.kartu-item').first()).toBeVisible({ timeout: 12000 });
 		const img = page.locator('.kartu-side').first().locator('img');
 		const nw = await img.evaluate((el: HTMLImageElement) => el.naturalWidth);
@@ -42,7 +49,7 @@ test.describe('Kartu Siswa', () => {
 	});
 
 	test('batch: back image loaded', async ({ page }) => {
-		await gotoAndWait(page, '/siswa/kartu');
+		await gotoAndWait(page, '/admin/siswa/kartu');
 		await expect(page.locator('.kartu-item').first()).toBeVisible({ timeout: 12000 });
 		const img = page.locator('.kartu-side').nth(1).locator('img');
 		await expect(async () => {
@@ -52,7 +59,7 @@ test.describe('Kartu Siswa', () => {
 	});
 
 	test('batch: tombol generate semua & regenerate tampil', async ({ page }) => {
-		await gotoAndWait(page, '/siswa/kartu');
+		await gotoAndWait(page, '/admin/siswa/kartu');
 		await expect(page.locator('.kartu-item').first()).toBeVisible({ timeout: 12000 });
 		await expect(page.getByRole('button', { name: /Generate Semua Kartu/i })).toBeVisible();
 		const btn = page.locator('.kartu-item').first().getByRole('button', { name: /regenerate/i });
@@ -61,7 +68,7 @@ test.describe('Kartu Siswa', () => {
 	});
 
 	test('batch: regenerate via UI menampilkan toast sukses', async ({ page }) => {
-		await gotoAndWait(page, '/siswa/kartu');
+		await gotoAndWait(page, '/admin/siswa/kartu');
 		await expect(page.locator('.kartu-item').first()).toBeVisible({ timeout: 12000 });
 		await page.locator('.kartu-item').first().getByRole('button', { name: /regenerate/i }).click();
 		await expect(
@@ -72,12 +79,12 @@ test.describe('Kartu Siswa', () => {
 	// ─── SINGLE PAGE ───────────────────────────────────────────────
 
 	test('single: front card tampil dengan data sekolah', async ({ page }) => {
-		await gotoAndWait(page, '/siswa/kartu');
+		await gotoAndWait(page, '/admin/siswa/kartu');
 		await expect(page.locator('.kartu-item').first()).toBeVisible({ timeout: 12000 });
-		const id = await firstSiswaId(page);
+		const id = await firstSiswaPublicId(page);
 		test.skip(!id, 'Tidak ada kartu');
-		await gotoAndWait(page, `/siswa/${id}/kartu`);
-		await expect(page.getByText('Preview Kartu Siswa')).toBeVisible({ timeout: 8000 });
+		await gotoAndWait(page, `/admin/siswa/${id}/kartu`);
+		await expect(page.getByRole('heading', { name: 'Preview Kartu Siswa' })).toBeVisible({ timeout: 8000 });
 		const card = page.locator('.card');
 		await expect(card).toBeVisible();
 		await expect(card.getByText('MTsN 2 KOLAKA UTARA')).toBeVisible();
@@ -85,12 +92,12 @@ test.describe('Kartu Siswa', () => {
 	});
 
 	test('single: toggle ke belakang', async ({ page }) => {
-		await gotoAndWait(page, '/siswa/kartu');
+		await gotoAndWait(page, '/admin/siswa/kartu');
 		await expect(page.locator('.kartu-item').first()).toBeVisible({ timeout: 12000 });
-		const id = await firstSiswaId(page);
+		const id = await firstSiswaPublicId(page);
 		test.skip(!id, 'Tidak ada kartu');
-		await gotoAndWait(page, `/siswa/${id}/kartu`);
-		await expect(page.getByText('Preview Kartu Siswa')).toBeVisible({ timeout: 8000 });
+		await gotoAndWait(page, `/admin/siswa/${id}/kartu`);
+		await expect(page.getByRole('heading', { name: 'Preview Kartu Siswa' })).toBeVisible({ timeout: 8000 });
 
 		await page.getByRole('button', { name: /lihat belakang/i }).click();
 		const backImg = page.locator('.card-back-img');
@@ -103,11 +110,11 @@ test.describe('Kartu Siswa', () => {
 	});
 
 	test('single: toggle balik ke depan', async ({ page }) => {
-		await gotoAndWait(page, '/siswa/kartu');
+		await gotoAndWait(page, '/admin/siswa/kartu');
 		await expect(page.locator('.kartu-item').first()).toBeVisible({ timeout: 12000 });
-		const id = await firstSiswaId(page);
+		const id = await firstSiswaPublicId(page);
 		test.skip(!id, 'Tidak ada kartu');
-		await gotoAndWait(page, `/siswa/${id}/kartu`);
+		await gotoAndWait(page, `/admin/siswa/${id}/kartu`);
 		await page.getByRole('button', { name: /lihat belakang/i }).click();
 		await expect(page.locator('.card-back-img')).toBeVisible({ timeout: 8000 });
 		await page.getByRole('button', { name: /lihat depan/i }).click();
@@ -116,39 +123,39 @@ test.describe('Kartu Siswa', () => {
 	});
 
 	test('single: tombol generate ulang, print, download ada', async ({ page }) => {
-		await gotoAndWait(page, '/siswa/kartu');
+		await gotoAndWait(page, '/admin/siswa/kartu');
 		await expect(page.locator('.kartu-item').first()).toBeVisible({ timeout: 12000 });
-		const id = await firstSiswaId(page);
+		const id = await firstSiswaPublicId(page);
 		test.skip(!id, 'Tidak ada kartu');
-		await gotoAndWait(page, `/siswa/${id}/kartu`);
-		await expect(page.getByText('Preview Kartu Siswa')).toBeVisible({ timeout: 8000 });
+		await gotoAndWait(page, `/admin/siswa/${id}/kartu`);
+		await expect(page.getByRole('heading', { name: 'Preview Kartu Siswa' })).toBeVisible({ timeout: 8000 });
 		await expect(page.getByRole('button', { name: /generate ulang/i })).toBeVisible();
 		await expect(page.getByRole('button', { name: /^Cetak$/i })).toBeVisible();
 		await expect(page.getByRole('button', { name: /download png/i })).toBeVisible();
 	});
 
 	test('single: tombol kembali ke profil', async ({ page }) => {
-		await gotoAndWait(page, '/siswa/kartu');
+		await gotoAndWait(page, '/admin/siswa/kartu');
 		await expect(page.locator('.kartu-item').first()).toBeVisible({ timeout: 12000 });
-		const id = await firstSiswaId(page);
+		const id = await firstSiswaPublicId(page);
 		test.skip(!id, 'Tidak ada kartu');
-		await gotoAndWait(page, `/siswa/${id}/kartu`);
-		await expect(page.getByText('Preview Kartu Siswa')).toBeVisible({ timeout: 8000 });
+		await gotoAndWait(page, `/admin/siswa/${id}/kartu`);
+		await expect(page.getByRole('heading', { name: 'Preview Kartu Siswa' })).toBeVisible({ timeout: 8000 });
 		const link = page.getByRole('link', { name: /kembali ke profil/i });
 		await expect(link).toBeVisible();
 		await link.click();
-		await page.waitForURL(/\/siswa\/\d+\/profil/, { timeout: 8000 });
+		await page.waitForURL(/\/admin\/siswa\/[^/]+\/profil/, { timeout: 8000 });
 	});
 
 	test('navigasi: profil -> kartu siswa', async ({ page }) => {
-		await gotoAndWait(page, '/siswa');
+		await gotoAndWait(page, '/admin/siswa');
 		await page.locator('tbody tr a').first().click();
-		await page.waitForURL(/\/siswa\/\d+\/profil/, { timeout: 8000 });
+		await page.waitForURL(/\/admin\/siswa\/[^/]+\/profil/, { timeout: 8000 });
 		const kartuLink = page.locator('a[href$="/kartu"]:not([data-slot])').filter({ hasText: 'Kartu Siswa' });
 		await expect(kartuLink).toBeVisible({ timeout: 5000 });
 		await kartuLink.click();
-		await page.waitForURL(/\/siswa\/\d+\/kartu/, { timeout: 8000 });
-		await expect(page.getByText('Preview Kartu Siswa')).toBeVisible({ timeout: 5000 });
+		await page.waitForURL(/\/admin\/siswa\/[^/]+\/kartu/, { timeout: 8000 });
+		await expect(page.getByRole('heading', { name: 'Preview Kartu Siswa' })).toBeVisible({ timeout: 5000 });
 	});
 
 	// ─── GUARD: endpoint bisnis legacy harus 404 ───────────────────
@@ -168,7 +175,7 @@ test.describe('Kartu Siswa', () => {
 	});
 
 	test('endpoint PNG kartu tetap 200/404 gambar valid', async ({ page }) => {
-		await gotoAndWait(page, '/siswa/kartu');
+		await gotoAndWait(page, '/admin/siswa/kartu');
 		await expect(page.locator('.kartu-item').first()).toBeVisible({ timeout: 12000 });
 		const id = await firstSiswaId(page);
 		test.skip(!id, 'Tidak ada kartu');

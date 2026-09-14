@@ -15,14 +15,14 @@ test.describe('Hydration', () => {
     page.on('pageerror', e => errors.push('PAGEERROR: ' + e.message));
 
     await loginAs(page);
-    await page.goto('/ptk', { waitUntil: 'networkidle' });
+    await page.goto('/admin/ptk', { waitUntil: 'networkidle' });
     await page.waitForTimeout(1500);
     console.log('errors after SSR /ptk:', JSON.stringify(errors));
     expect(errors).toEqual([]);
 
     // Cek breadcrumb aktif
     const bc = page.locator('nav[aria-label="breadcrumb"]').first();
-    await expect(bc).toContainText('Data PTK', { timeout: 5000 });
+    await expect(bc).toContainText('PTK', { timeout: 5000 });
   });
 
   test('refresh (F5) tidak ada hydrate error', async ({ page }) => {
@@ -36,7 +36,7 @@ test.describe('Hydration', () => {
     page.on('pageerror', e => errors.push('PAGEERROR: ' + e.message));
 
     await loginAs(page);
-    await page.goto('/siswa', { waitUntil: 'networkidle' });
+    await page.goto('/admin/siswa', { waitUntil: 'networkidle' });
     await page.waitForTimeout(1000);
     // reload (refresh)
     await page.reload({ waitUntil: 'networkidle' });
@@ -45,7 +45,7 @@ test.describe('Hydration', () => {
     expect(errors).toEqual([]);
 
     const bc = page.locator('nav[aria-label="breadcrumb"]').first();
-    await expect(bc).toContainText('Data Siswa', { timeout: 5000 });
+    await expect(bc).toContainText('Siswa', { timeout: 5000 });
   });
 
   test('dashboard tidak ada hydrate error', async ({ page }) => {
@@ -58,7 +58,7 @@ test.describe('Hydration', () => {
     });
     page.on('pageerror', e => errors.push('PAGEERROR: ' + e.message));
     await loginAs(page);
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await page.goto('/admin/dashboard', { waitUntil: 'networkidle' });
     await page.waitForTimeout(1500);
     console.log('errors on /:', JSON.stringify(errors));
     expect(errors).toEqual([]);

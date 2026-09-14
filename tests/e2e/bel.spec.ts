@@ -7,28 +7,29 @@ test.describe('Bel', () => {
 	});
 
 	test('bel monitoring page loads', async ({ page }) => {
-		await gotoAndWait(page, '/bel');
+		await gotoAndWait(page, '/admin/bel');
 		await expect(page.locator('body')).toBeVisible();
 	});
 
 	test('bel page has schedule section', async ({ page }) => {
-		await gotoAndWait(page, '/bel');
+		await gotoAndWait(page, '/admin/bel');
 		await expect(page.locator('body')).toBeVisible();
 	});
 
 	test('bel page heading visible', async ({ page }) => {
-		await gotoAndWait(page, '/bel');
+		await gotoAndWait(page, '/admin/bel');
 		await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 8000 });
 	});
 
 	test('bel page shows jadwal or empty state', async ({ page }) => {
-		await gotoAndWait(page, '/bel');
+		await gotoAndWait(page, '/admin/bel');
 		await page.waitForLoadState('networkidle');
 		await expect(page.locator('body')).toBeVisible();
 	});
 
 	test('unauthenticated -> redirect', async ({ page }) => {
-		await page.goto('/bel');
+		await page.context().clearCookies();
+		await page.goto('/admin/bel');
 		await expect(page).toHaveURL(/\/login/);
 	});
 });

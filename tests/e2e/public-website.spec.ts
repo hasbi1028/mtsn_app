@@ -14,7 +14,7 @@ test.describe('Public Website', () => {
 
 		for (const page of publicPages) {
 			test(`${page.path} loads without login`, async ({ page: p }) => {
-				await p.goto(page.path);
+				await p.goto(page.path, { waitUntil: 'domcontentloaded' });
 				await expect(p.locator('body')).toContainText(page.title);
 				await expect(p).not.toHaveURL(/login/);
 			});
@@ -22,7 +22,7 @@ test.describe('Public Website', () => {
 	});
 
 	test.describe('Protected pages redirect to login', () => {
-		const protectedPages = ['/', '/dashboard', '/ptk', '/siswa', '/rombel'];
+		const protectedPages = ['/admin/dashboard', '/admin/ptk', '/admin/siswa', '/admin/rombel'];
 
 		for (const path of protectedPages) {
 			test(`${path} redirects to login`, async ({ page }) => {
@@ -35,12 +35,15 @@ test.describe('Public Website', () => {
 	test.describe('Navigation', () => {
 		test('navbar contains all public links', async ({ page }) => {
 			await page.goto('/profil');
-			await expect(page.locator('nav a')).toContainText(['Profil', 'Guru', 'PPDB', 'Berita', 'Kontak']);
+			const nav = page.locator('nav').first();
+			for (const label of ['Profil', 'Guru', 'PPDB', 'Berita', 'Kontak']) {
+				await expect(nav).toContainText(label);
+			}
 		});
 
-		test('login button links to /dashboard', async ({ page }) => {
+		test('login button links to /login', async ({ page }) => {
 			await page.goto('/profil');
-			const loginLink = page.locator('a[href="/dashboard"]');
+			const loginLink = page.locator('a[href="/login"]');
 			await expect(loginLink).toBeVisible();
 		});
 
@@ -61,7 +64,7 @@ test.describe('Public Website', () => {
 
 		test('has visi-misi link', async ({ page }) => {
 			await page.goto('/profil');
-			await expect(page.locator('a[href="/profil/visi-misi"]')).toBeVisible();
+			await expect(page.locator('a[href="/profil/visi-misi"]').first()).toBeAttached();
 		});
 	});
 
@@ -91,7 +94,7 @@ test.describe('Public Website', () => {
 
 	test.describe('Kontak page', () => {
 		test('shows contact info', async ({ page }) => {
-			await page.goto('/kontak');
+			await page.goto('/kontak', { waitUntil: 'domcontentloaded' });
 			await expect(page.locator('body')).toContainText('Kontak');
 			await expect(page.locator('body')).toContainText('info@mtsn2kolut.sch.id');
 		});

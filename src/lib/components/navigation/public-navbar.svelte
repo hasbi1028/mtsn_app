@@ -101,7 +101,7 @@
 		<Sheet.Root bind:open={mobileOpen}>
 			<Sheet.Trigger>
 				{#snippet child({ props })}
-					<Button {...props} variant="ghost" size="icon" class="md:hidden size-8 cursor-pointer">
+					<Button {...props} variant="ghost" size="icon" class="md:hidden size-8 cursor-pointer" aria-label="Menu">
 						<Menu class="size-5" />
 						<span class="sr-only">Menu</span>
 					</Button>

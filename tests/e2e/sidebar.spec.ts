@@ -4,7 +4,7 @@ import { loginAs, gotoAndWait } from './helpers';
 test.describe('Sidebar', () => {
   test.beforeEach(async ({ page }) => {
     await loginAs(page);
-    await gotoAndWait(page, '/');
+    await gotoAndWait(page, '/admin/dashboard');
   });
 
   test('sidebar tampil untuk admin', async ({ page }) => {

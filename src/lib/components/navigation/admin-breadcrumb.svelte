@@ -43,7 +43,7 @@
 </script>
 
 {#if segments.length > 0}
-	<nav class="flex items-center gap-1 text-xs text-muted-foreground">
+	<nav aria-label="breadcrumb" class="flex items-center gap-1 text-xs text-muted-foreground">
 		<a href="/admin/dashboard" class="hover:text-foreground transition-colors">
 			Home
 		</a>

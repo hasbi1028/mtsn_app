@@ -7,7 +7,7 @@ test.describe('Auth', () => {
 		await page.getByPlaceholder('username').fill('hasbi');
 		await page.locator('#password').fill('admin123');
 		await page.getByRole('button', { name: 'Masuk' }).click();
-		await page.waitForURL('/', { timeout: 10000 });
+		await page.waitForURL('/admin/dashboard', { timeout: 10000 });
 		await expect(page.locator('h1').filter({ hasText: 'Dashboard' })).toBeVisible({ timeout: 5000 });
 	});
 
@@ -20,21 +20,21 @@ test.describe('Auth', () => {
 	});
 
 	test('akses halaman tanpa login -> redirect ke login', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/admin/dashboard');
 		await expect(page).toHaveURL(/\/login/);
 	});
 
 	test('loginAs via API -> bisa akses dashboard', async ({ page }) => {
 		await loginAs(page);
-		await gotoAndWait(page, '/');
-		await expect(page).toHaveURL('/');
+		await gotoAndWait(page, '/admin/dashboard');
+		await expect(page).toHaveURL('/admin/dashboard');
 		await expect(page.locator('h1').filter({ hasText: 'Dashboard' })).toBeVisible({ timeout: 8000 });
 	});
 
 	test('logout via UI -> session dihapus dan redirect ke /login', async ({ page }) => {
 		await loginAs(page);
-		await gotoAndWait(page, '/');
-		await expect(page).toHaveURL('/');
+		await gotoAndWait(page, '/admin/dashboard');
+		await expect(page).toHaveURL('/admin/dashboard');
 
 		await page.getByRole('button', { name: /keluar/i }).first().click();
 		await page.waitForURL(/\/login/, { timeout: 10000 });
@@ -56,17 +56,17 @@ test.describe('Auth', () => {
 	});
 
 	test('akses /ptk tanpa login -> redirect', async ({ page }) => {
-		await page.goto('/ptk');
+		await page.goto('/admin/ptk');
 		await expect(page).toHaveURL(/\/login/);
 	});
 
 	test('akses /siswa tanpa login -> redirect', async ({ page }) => {
-		await page.goto('/siswa');
+		await page.goto('/admin/siswa');
 		await expect(page).toHaveURL(/\/login/);
 	});
 
 	test('akses /approval tanpa login -> redirect', async ({ page }) => {
-		await page.goto('/approval');
+		await page.goto('/admin/approval');
 		await expect(page).toHaveURL(/\/login/);
 	});
 });

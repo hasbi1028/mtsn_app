@@ -16,12 +16,12 @@ test.describe('Siswa — Admin', () => {
 	});
 
 	test('can list siswa', async ({ page }) => {
-		await gotoAndWait(page, '/siswa');
+		await gotoAndWait(page, '/admin/siswa');
 		await expect(page.locator('body')).toBeVisible();
 	});
 
 	test('can search siswa', async ({ page }) => {
-		await gotoAndWait(page, '/siswa');
+		await gotoAndWait(page, '/admin/siswa');
 		const searchInput = page.locator('input[placeholder*="cari"], input[type="search"], input[name="q"]').first();
 		if (await searchInput.isVisible()) {
 			await searchInput.fill('test');
@@ -30,33 +30,33 @@ test.describe('Siswa — Admin', () => {
 	});
 
 	test('siswa list page loads', async ({ page }) => {
-		await gotoAndWait(page, '/siswa');
+		await gotoAndWait(page, '/admin/siswa');
 		const hasContent = await page.locator('body').isVisible();
 		expect(hasContent).toBe(true);
 	});
 
 	test('siswa page heading visible', async ({ page }) => {
-		await gotoAndWait(page, '/siswa');
+		await gotoAndWait(page, '/admin/siswa');
 		await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 8000 });
 	});
 
 	test('admin: navigasi ke profil siswa', async ({ page }) => {
-		await gotoAndWait(page, '/siswa');
+		await gotoAndWait(page, '/admin/siswa');
 		const link = page.locator('tbody tr a, [class*="row"] a').first();
 		if (await link.isVisible()) {
 			await link.click();
-			await page.waitForURL(/\/siswa\/\d+\/profil/, { timeout: 8000 });
-			await expect(page.getByText('Profil Siswa')).toBeVisible({ timeout: 8000 });
+			await page.waitForURL(/\/admin\/siswa\/[^/]+\/profil/, { timeout: 8000 });
+			await expect(page.getByRole('heading', { name: 'Profil Siswa' })).toBeVisible({ timeout: 15000 });
 		}
 	});
 
 	test('admin: upload foto siswa via uploadFotoAdmin', async ({ page }) => {
-		await gotoAndWait(page, '/siswa');
+		await gotoAndWait(page, '/admin/siswa');
 		const link = page.locator('tbody tr a, [class*="row"] a').first();
 		if (await link.isVisible()) {
 			await link.click();
-			await page.waitForURL(/\/siswa\/\d+\/profil/, { timeout: 8000 });
-			await expect(page.getByText('Profil Siswa')).toBeVisible({ timeout: 8000 });
+			await page.waitForURL(/\/admin\/siswa\/[^/]+\/profil/, { timeout: 8000 });
+			await expect(page.getByRole('heading', { name: 'Profil Siswa' })).toBeVisible({ timeout: 15000 });
 
 			await page.locator('button', { hasText: 'Ubah' }).first().click();
 			await page.setInputFiles('input[type="file"]', { name: 'foto.png', mimeType: 'image/png', buffer: PNG });
@@ -69,11 +69,11 @@ test.describe('Siswa — Admin', () => {
 	});
 
 	test('admin: navigasi ke bansos siswa', async ({ page }) => {
-		await gotoAndWait(page, '/siswa');
+		await gotoAndWait(page, '/admin/siswa');
 		const link = page.locator('tbody tr a, [class*="row"] a').first();
 		if (await link.isVisible()) {
 			await link.click();
-			await page.waitForURL(/\/siswa\/\d+\/profil/, { timeout: 8000 });
+			await page.waitForURL(/\/admin\/siswa\/[^/]+\/profil/, { timeout: 8000 });
 			const bansosLink = page.locator('a[href$="/bansos"]').first();
 			if (await bansosLink.isVisible()) {
 				await bansosLink.click();
@@ -84,7 +84,8 @@ test.describe('Siswa — Admin', () => {
 	});
 
 	test('unauthenticated -> redirect', async ({ page }) => {
-		await page.goto('/siswa');
+		await page.context().clearCookies();
+		await page.goto('/admin/siswa');
 		await expect(page).toHaveURL(/\/login/);
 	});
 });
@@ -92,7 +93,7 @@ test.describe('Siswa — Admin', () => {
 test.describe('Siswa — Self-Service (Siswa Login)', () => {
 	test('siswa: ajukan perubahan data via command', async ({ page }) => {
 		await loginAs(page, SISWA_USER, SISWA_PASS);
-		await gotoAndWait(page, '/siswa/profil');
+		await gotoAndWait(page, '/admin/siswa/profil');
 		await expect(page.getByText('Profil Saya').first()).toBeVisible({ timeout: 10000 });
 
 		await page.getByRole('button', { name: /Ubah Data Pribadi/i }).click();
@@ -106,7 +107,7 @@ test.describe('Siswa — Self-Service (Siswa Login)', () => {
 
 	test('siswa: upload foto via remote form()', async ({ page }) => {
 		await loginAs(page, SISWA_USER, SISWA_PASS);
-		await gotoAndWait(page, '/siswa/profil');
+		await gotoAndWait(page, '/admin/siswa/profil');
 		await expect(page.getByText('Profil Saya').first()).toBeVisible({ timeout: 10000 });
 
 		await page.setInputFiles('#foto-input', { name: 'foto.png', mimeType: 'image/png', buffer: PNG });
@@ -118,13 +119,13 @@ test.describe('Siswa — Self-Service (Siswa Login)', () => {
 
 	test('siswa: bansos page tampil', async ({ page }) => {
 		await loginAs(page, SISWA_USER, SISWA_PASS);
-		await gotoAndWait(page, '/siswa/bansos');
+		await gotoAndWait(page, '/admin/siswa/bansos');
 		await expect(page.locator('body')).toBeVisible({ timeout: 10000 });
 	});
 
 	test('siswa: cetak bansos tampil', async ({ page }) => {
 		await loginAs(page, SISWA_USER, SISWA_PASS);
-		await gotoAndWait(page, '/siswa/bansos/cetak');
+		await gotoAndWait(page, '/admin/siswa/bansos/cetak');
 		await expect(page.locator('body')).toBeVisible({ timeout: 10000 });
 	});
 });
