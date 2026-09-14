@@ -1,0 +1,24 @@
+# Penanda jenis berkas — supaya diff/konversi baris tidak salah pada berkas biner.
+# Sengaja TANPA aturan eol global (`* text=auto`) agar tidak memicu renormalisasi
+# line-ending pada seluruh riwayat (perubahan diff raksasa yang tidak perlu).
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.gif  binary
+*.ico  binary
+*.mp3  binary
+*.wav  binary
+*.m4a  binary
+*.wma  binary
+*.mp4  binary
+*.pdf  binary
+*.docx binary
+*.xlsx binary
+*.zip  binary
+*.db   binary
+*.exe  binary
+
+# Berkas Windows batch wajib CRLF
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
