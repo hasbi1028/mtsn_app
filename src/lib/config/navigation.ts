@@ -25,6 +25,7 @@ import MedalIcon from "@lucide/svelte/icons/medal";
 import ArchiveRestoreIcon from "@lucide/svelte/icons/archive-restore";
 import SettingsIcon from "@lucide/svelte/icons/settings";
 import NetworkIcon from "@lucide/svelte/icons/network";
+import ShieldUserIcon from "@lucide/svelte/icons/shield-user";
 
 export interface NavItem {
 	title: string;
@@ -147,6 +148,7 @@ export const navItems: NavItem[] = [
 		group: "Sistem",
 		roles: ["admin"],
 		children: [
+			{ title: "Kelola User", url: `${A}/user`, icon: ShieldUserIcon },
 			{ title: "Pengaturan", url: `${A}/pengaturan`, icon: SettingsIcon },
 			{ title: "Backup & Restore", url: `${A}/backup`, icon: ArchiveRestoreIcon },
 		],

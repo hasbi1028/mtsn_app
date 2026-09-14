@@ -12,6 +12,7 @@ export const users = sqliteTable('users', {
 	role: text('role').notNull().default('admin'), // admin | guru | siswa | orangtua
 	refId: integer('ref_id'), // FK ke ptk.id / siswa.id / ortu.id
 	isActive: integer('is_active').default(1),
+	mustChangePassword: integer('must_change_password').notNull().default(0),
 	lastLogin: text('last_login'),
 	createdAt: integer('created_at', { mode: 'timestamp_ms' }).default(sql`(strftime('%s','now')*1000)`),
 	updatedAt: text('updated_at')

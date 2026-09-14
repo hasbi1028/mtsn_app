@@ -8,7 +8,8 @@ import {
 	createSession,
 	deleteSessionByToken,
 	getUserFromSession,
-	updateLastLogin
+	updateLastLogin,
+	changePassword
 } from './auth.service';
 
 /**
@@ -45,8 +46,13 @@ export const login = form(loginSchema, async ({ username, password }) => {
 	// 4. Update last login (fire and forget)
 	updateLastLogin(user.id);
 
-	// 5. Role-based redirect
-	const redirectTo = user.role === 'siswa' ? '/admin/siswa/profil' : '/admin/dashboard';
+	// 5. Role-based redirect (+ force change password)
+	let redirectTo = '/admin/dashboard';
+	if (user.role === 'siswa') {
+		redirectTo = '/admin/siswa/profil';
+	} else if (user.mustChangePassword === 1) {
+		redirectTo = '/admin/profil/ganti-password';
+	}
 	redirect(303, redirectTo);
 });
 
@@ -82,4 +88,33 @@ export const getMe = query(async () => {
 	if (!token) return null;
 
 	return getUserFromSession(token);
+});
+
+/**
+ * Ganti password form — dipakai di halaman /admin/profil/ganti-password
+ */
+const changePasswordSchema = v.object({
+	passwordLama: v.pipe(v.string(), v.nonEmpty()),
+	passwordBaru: v.pipe(v.string(), v.minLength(6)),
+	konfirmasi: v.pipe(v.string(), v.nonEmpty())
+});
+
+export const changePasswordF = form(changePasswordSchema as any, async (data) => {
+	try {
+		const { cookies } = getRequestEvent();
+		const token = cookies.get('session_id');
+		if (!token) return { ok: false as const, error: 'Tidak terautentikasi.' };
+
+		const session = getUserFromSession(token);
+		if (!session) return { ok: false as const, error: 'Sesi tidak valid.' };
+
+		if (data.passwordBaru !== data.konfirmasi) {
+			return { ok: false as const, error: 'Konfirmasi password tidak cocok.' };
+		}
+
+		const hasil = changePassword(session.userId, data.passwordLama, data.passwordBaru);
+		return { ok: true as const, pesan: hasil.pesan };
+	} catch (e) {
+		return { ok: false as const, error: (e as Error).message || 'Gagal mengganti password.' };
+	}
 });

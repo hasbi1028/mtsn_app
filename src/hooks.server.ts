@@ -82,5 +82,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 		redirect(302, '/login');
 	}
 
+	// Force change password — redirect ke halaman ganti password
+	if (isAdminRoute && user && (user as any).mustChangePassword === 1 && pathname !== '/admin/profil/ganti-password') {
+		redirect(302, '/admin/profil/ganti-password');
+	}
+
 	return resolve(event);
 };

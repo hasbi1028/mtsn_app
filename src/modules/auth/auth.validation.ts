@@ -20,4 +20,5 @@ export interface UserSession {
 	username: string;
 	role: string;
 	ref_id: number | null;
+	mustChangePassword: number;
 }
