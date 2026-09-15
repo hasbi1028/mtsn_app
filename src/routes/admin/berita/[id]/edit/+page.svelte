@@ -7,9 +7,13 @@
 	import { notify } from '$lib/toast';
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
 	import Trash2 from '@lucide/svelte/icons/trash-2';
+	import { canManage } from '$lib/konten';
 
 	let { params } = $props();
 	const id = $derived(Number(params.id));
+
+	const user = $derived(page.data.user as { role?: string; userId?: number } | null);
+	const guru = $derived(user?.role === 'guru');
 
 	let judul = $state('');
 	let ringkasan = $state('');
@@ -18,6 +22,7 @@
 	let penulis = $state('Admin');
 	let kategori = $state('umum');
 	let published = $state(false);
+	let authorUserId = $state<number | null>(null);
 	let loaded = $state(false);
 
 	const kategoriOptions = ['umum', 'kegiatan', 'prestasi'];
@@ -33,6 +38,7 @@
 			penulis = item.penulis ?? 'Admin';
 			kategori = item.kategori ?? 'umum';
 			published = item.published ?? false;
+			authorUserId = item.authorUserId ?? null;
 		}
 		loaded = true;
 	});
@@ -60,7 +66,7 @@
 			<a href="/admin/berita"><Button variant="ghost" size="icon" class="size-8"><ArrowLeft class="size-4" /></Button></a>
 			<h1 class="text-xl font-semibold">Edit Berita</h1>
 		</div>
-		<Button variant="destructive" size="sm" onclick={handleDelete}><Trash2 class="mr-1 size-3.5" /> Hapus</Button>
+		<Button variant="destructive" size="sm" onclick={handleDelete} class={canManage(user?.role, user?.userId, authorUserId) ? '' : 'hidden'}><Trash2 class="mr-1 size-3.5" /> Hapus</Button>
 	</div>
 
 	{#if !loaded}
@@ -99,10 +105,16 @@
 							</select>
 						</div>
 					</div>
-					<div class="flex items-center gap-2">
-						<input type="checkbox" id="published" name="published" bind:checked={published} class="rounded" />
-						<label for="published" class="text-sm">Publikasikan</label>
-					</div>
+					{#if guru}
+						<p class="rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+							Status terbit diatur admin. Perubahan Anda tetap tersimpan sebagai draft bila belum terbit.
+						</p>
+					{:else}
+						<div class="flex items-center gap-2">
+							<input type="checkbox" id="published" name="published" bind:checked={published} class="rounded" />
+							<label for="published" class="text-sm">Publikasikan</label>
+						</div>
+					{/if}
 					<Button type="submit">Simpan</Button>
 				</form>
 			</CardContent>

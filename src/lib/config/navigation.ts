@@ -96,7 +96,7 @@ export const navItems: NavItem[] = [
 		url: `${A}/berita`,
 		icon: NewspaperIcon,
 		group: "Konten",
-		roles: ["admin", "kepsek"],
+		roles: ["admin", "kepsek", "guru"],
 		children: [
 			{ title: "Berita", url: `${A}/berita`, icon: NewspaperIcon },
 			{ title: "Pengumuman", url: `${A}/pengumuman`, icon: MegaphoneIcon },

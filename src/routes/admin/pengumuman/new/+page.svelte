@@ -1,10 +1,14 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { createPengumumanF } from '$modules/pengumuman/pengumuman.remote';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
 	import { goto } from '$app/navigation';
 	import { notify } from '$lib/toast';
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
+
+	const user = $derived(page.data.user as { role?: string } | null);
+	const guru = $derived(user?.role === 'guru');
 
 	let judul = $state('');
 	let konten = $state('');
@@ -38,16 +42,23 @@
 					<label for="konten" class="text-sm font-medium">Konten *</label>
 					<textarea id="konten" name="konten" bind:value={konten} rows={10} required class="w-full rounded-md border bg-background px-3 py-1.5 text-sm"></textarea>
 				</div>
-				<div class="flex items-center gap-4">
+				<div class="flex flex-wrap items-center gap-4">
 					<div class="flex items-center gap-2">
 						<input type="checkbox" id="penting" name="penting" bind:checked={penting} class="rounded" />
 						<label for="penting" class="text-sm">Penting</label>
 					</div>
-					<div class="flex items-center gap-2">
-						<input type="checkbox" id="published" name="published" bind:checked={published} class="rounded" />
-						<label for="published" class="text-sm">Publikasikan</label>
-					</div>
+					{#if !guru}
+						<div class="flex items-center gap-2">
+							<input type="checkbox" id="published" name="published" bind:checked={published} class="rounded" />
+							<label for="published" class="text-sm">Publikasikan</label>
+						</div>
+					{/if}
 				</div>
+				{#if guru}
+					<p class="rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+						Konten Anda akan disimpan sebagai <b>draft</b> dan ditinjau admin sebelum terbit.
+					</p>
+				{/if}
 				<Button type="submit">Simpan</Button>
 			</form>
 		</CardContent>

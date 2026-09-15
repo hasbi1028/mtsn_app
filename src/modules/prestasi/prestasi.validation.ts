@@ -5,7 +5,8 @@ export const prestasiListSchema = v.object({
 	tingkat: v.optional(v.string(), ''),
 	tahun: v.optional(v.number()),
 	page: v.optional(v.number(), 1),
-	perPage: v.optional(v.number(), 20)
+	perPage: v.optional(v.number(), 20),
+	mine: v.optional(v.number())
 });
 
 export type PrestasiListInput = v.InferOutput<typeof prestasiListSchema>;
@@ -16,7 +17,8 @@ export const prestasiCreateSchema = v.object({
 	gambar: v.optional(v.string()),
 	pemenang: v.optional(v.string()),
 	tingkat: v.optional(v.string(), 'sekolah'),
-	tahun: v.optional(v.number())
+	tahun: v.optional(v.number()),
+	published: v.optional(v.boolean(), true)
 });
 
 export type PrestasiCreateInput = v.InferOutput<typeof prestasiCreateSchema>;
@@ -28,7 +30,8 @@ export const prestasiUpdateSchema = v.object({
 	gambar: v.optional(v.string()),
 	pemenang: v.optional(v.string()),
 	tingkat: v.optional(v.string()),
-	tahun: v.optional(v.number())
+	tahun: v.optional(v.number()),
+	published: v.optional(v.boolean())
 });
 
 export type PrestasiUpdateInput = v.InferOutput<typeof prestasiUpdateSchema>;

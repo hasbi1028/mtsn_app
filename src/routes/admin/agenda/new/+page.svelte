@@ -1,10 +1,14 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { createAgendaF } from '$modules/agenda/agenda.remote';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
 	import { goto } from '$app/navigation';
 	import { notify } from '$lib/toast';
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
+
+	const user = $derived(page.data.user as { role?: string } | null);
+	const guru = $derived(user?.role === 'guru');
 
 	let judul = $state('');
 	let deskripsi = $state('');
@@ -60,6 +64,11 @@
 						<input id="warna" name="warna" type="color" bind:value={warna} class="h-9 w-full rounded-md border bg-background px-1 py-1" />
 					</div>
 				</div>
+				{#if guru}
+					<p class="rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+						Konten Anda akan disimpan sebagai <b>draft</b> dan ditinjau admin sebelum terbit.
+					</p>
+				{/if}
 				<Button type="submit">Simpan</Button>
 			</form>
 		</CardContent>

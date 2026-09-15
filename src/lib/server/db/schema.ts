@@ -313,6 +313,7 @@ export const berita = sqliteTable('berita', {
 	konten: text('konten'),
 	gambar: text('gambar'),
 	penulis: text('penulis').default('Admin'),
+	authorUserId: integer('author_user_id'),
 	kategori: text('kategori').default('umum'), // umum | kegiatan | prestasi
 	published: integer('published', { mode: 'boolean' }).default(false),
 	publishedAt: text('published_at'),
@@ -325,6 +326,8 @@ export const pengumuman = sqliteTable('pengumuman', {
 	judul: text('judul').notNull(),
 	konten: text('konten').notNull(),
 	penting: integer('penting', { mode: 'boolean' }).default(false),
+	penulis: text('penulis').default('Admin'),
+	authorUserId: integer('author_user_id'),
 	published: integer('published', { mode: 'boolean' }).default(false),
 	publishedAt: text('published_at'),
 	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`)
@@ -338,6 +341,10 @@ export const agenda = sqliteTable('agenda', {
 	tanggalSelesai: text('tanggal_selesai'),
 	lokasi: text('lokasi'),
 	warna: text('warna').default('#3b82f6'),
+	penulis: text('penulis').default('Admin'),
+	authorUserId: integer('author_user_id'),
+	published: integer('published', { mode: 'boolean' }).default(false),
+	publishedAt: text('published_at'),
 	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`)
 });
 
@@ -347,6 +354,10 @@ export const galeri = sqliteTable('galeri', {
 	deskripsi: text('deskripsi'),
 	gambar: text('gambar').notNull(),
 	kategori: text('kategori').default('kegiatan'), // kegiatan | wisata | olahraga | lainnya
+	penulis: text('penulis').default('Admin'),
+	authorUserId: integer('author_user_id'),
+	published: integer('published', { mode: 'boolean' }).default(false),
+	publishedAt: text('published_at'),
 	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`)
 });
 
@@ -359,6 +370,10 @@ export const ekskul = sqliteTable('ekskul', {
 	pembina: text('pembina'),
 	jadwal: text('jadwal'),
 	aktif: integer('aktif', { mode: 'boolean' }).default(true),
+	penulis: text('penulis').default('Admin'),
+	authorUserId: integer('author_user_id'),
+	published: integer('published', { mode: 'boolean' }).default(false),
+	publishedAt: text('published_at'),
 	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`)
 });
 
@@ -370,5 +385,9 @@ export const prestasi = sqliteTable('prestasi', {
 	pemenang: text('pemenang'),
 	tingkat: text('tingkat').default('sekolah'), // sekolah | kabupaten | provinsi | nasional
 	tahun: integer('tahun'),
+	penulis: text('penulis').default('Admin'),
+	authorUserId: integer('author_user_id'),
+	published: integer('published', { mode: 'boolean' }).default(false),
+	publishedAt: text('published_at'),
 	createdAt: text('created_at').default(sql`(datetime('now','localtime'))`)
 });

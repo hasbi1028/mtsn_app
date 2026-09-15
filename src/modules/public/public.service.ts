@@ -1,6 +1,6 @@
 import { db } from '$lib/server/db';
 import { ptk, siswa, rombel, berita, pengumuman, agenda, galeri, ekskul, prestasi } from '$lib/server/db/schema';
-import { count, eq, sql, desc } from 'drizzle-orm';
+import { count, eq, sql, desc, and } from 'drizzle-orm';
 
 export function getPublicStats() {
 	const totalSiswa = db.select({ count: count() }).from(siswa).get();
@@ -50,6 +50,7 @@ export function getBerandaData() {
 	const upcomingAgenda = db
 		.select()
 		.from(agenda)
+		.where(eq(agenda.published, true))
 		.orderBy(agenda.tanggalMulai)
 		.limit(5)
 		.all();
@@ -57,6 +58,7 @@ export function getBerandaData() {
 	const latestGaleri = db
 		.select({ id: galeri.id, judul: galeri.judul, gambar: galeri.gambar, kategori: galeri.kategori })
 		.from(galeri)
+		.where(eq(galeri.published, true))
 		.orderBy(desc(galeri.createdAt))
 		.limit(8)
 		.all();
@@ -64,7 +66,7 @@ export function getBerandaData() {
 	const ekskulList = db
 		.select({ id: ekskul.id, nama: ekskul.nama, slug: ekskul.slug, gambar: ekskul.gambar, pembina: ekskul.pembina, jadwal: ekskul.jadwal })
 		.from(ekskul)
-		.where(eq(ekskul.aktif, true))
+		.where(and(eq(ekskul.aktif, true), eq(ekskul.published, true)))
 		.orderBy(ekskul.nama)
 		.limit(6)
 		.all();
@@ -72,6 +74,7 @@ export function getBerandaData() {
 	const prestasiList = db
 		.select()
 		.from(prestasi)
+		.where(eq(prestasi.published, true))
 		.orderBy(desc(prestasi.tahun))
 		.limit(6)
 		.all();

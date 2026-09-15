@@ -23,11 +23,15 @@ export function getPengumumanList({ q, page, perPage }: PengumumanListInput) {
 	return { items, total: total?.count ?? 0, page, perPage };
 }
 
-export function getAllPengumumanList({ q, page, perPage }: PengumumanListInput) {
-	let where = undefined;
+export function getAllPengumumanList({ q, page, perPage, mine }: PengumumanListInput) {
+	const conditions = [];
 	if (q) {
-		where = sql`(${pengumuman.judul} LIKE ${'%' + q + '%'} OR ${pengumuman.konten} LIKE ${'%' + q + '%'})`;
+		conditions.push(sql`(${pengumuman.judul} LIKE ${'%' + q + '%'} OR ${pengumuman.konten} LIKE ${'%' + q + '%'})`);
 	}
+	if (mine) {
+		conditions.push(eq(pengumuman.authorUserId, mine));
+	}
+	const where = conditions.length > 0 ? and(...conditions) : undefined;
 
 	const total = db.select({ count: count() }).from(pengumuman).where(where).get();
 	const items = db
@@ -46,9 +50,22 @@ export function getPengumumanById(id: number) {
 	return db.select().from(pengumuman).where(eq(pengumuman.id, id)).get() ?? null;
 }
 
-export function createPengumuman(data: PengumumanCreateInput) {
+export interface Author {
+	userId: number | null;
+	nama: string;
+}
+
+export function createPengumuman(data: PengumumanCreateInput, author?: Author) {
 	const publishedAt = data.published ? new Date().toISOString().slice(0, 19).replace('T', ' ') : null;
-	const result = db.insert(pengumuman).values({ ...data, publishedAt }).run();
+	const result = db
+		.insert(pengumuman)
+		.values({
+			...data,
+			publishedAt,
+			penulis: author?.nama ?? 'Admin',
+			authorUserId: author?.userId ?? null
+		})
+		.run();
 	return { id: Number(result.lastInsertRowid) };
 }
 

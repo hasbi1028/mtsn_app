@@ -3,7 +3,8 @@ import * as v from 'valibot';
 export const ekskulListSchema = v.object({
 	q: v.optional(v.string(), ''),
 	page: v.optional(v.number(), 1),
-	perPage: v.optional(v.number(), 20)
+	perPage: v.optional(v.number(), 20),
+	mine: v.optional(v.number())
 });
 
 export type EkskulListInput = v.InferOutput<typeof ekskulListSchema>;
@@ -18,7 +19,8 @@ export const ekskulCreateSchema = v.object({
 	gambar: v.optional(v.string()),
 	pembina: v.optional(v.string()),
 	jadwal: v.optional(v.string()),
-	aktif: v.optional(v.boolean(), true)
+	aktif: v.optional(v.boolean(), true),
+	published: v.optional(v.boolean(), true)
 });
 
 export type EkskulCreateInput = v.InferOutput<typeof ekskulCreateSchema>;
@@ -30,7 +32,8 @@ export const ekskulUpdateSchema = v.object({
 	gambar: v.optional(v.string()),
 	pembina: v.optional(v.string()),
 	jadwal: v.optional(v.string()),
-	aktif: v.optional(v.boolean())
+	aktif: v.optional(v.boolean()),
+	published: v.optional(v.boolean())
 });
 
 export type EkskulUpdateInput = v.InferOutput<typeof ekskulUpdateSchema>;

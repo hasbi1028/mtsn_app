@@ -1,14 +1,18 @@
 <script lang="ts">
-	import { getPrestasiListQ, updatePrestasiF, deletePrestasiC } from '$modules/prestasi/prestasi.remote';
+	import { page } from '$app/state';
+	import { getAllPrestasiListQ, updatePrestasiF, deletePrestasiC } from '$modules/prestasi/prestasi.remote';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
 	import { goto } from '$app/navigation';
 	import { notify } from '$lib/toast';
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
 	import Trash2 from '@lucide/svelte/icons/trash-2';
+	import { canManage } from '$lib/konten';
 
 	let { params } = $props();
 	const id = $derived(Number(params.id));
+
+	const user = $derived(page.data.user as { role?: string; userId?: number } | null);
 
 	let judul = $state('');
 	let deskripsi = $state('');
@@ -16,11 +20,12 @@
 	let pemenang = $state('');
 	let tingkat = $state('sekolah');
 	let tahun = $state(new Date().getFullYear());
+	let authorUserId = $state<number | null>(null);
 	let loaded = $state(false);
 
 	const tingkatOptions = ['sekolah', 'kabupaten', 'provinsi', 'nasional'];
 
-	const dataQ = getPrestasiListQ({ q: '', page: 1, perPage: 100 });
+	const dataQ = getAllPrestasiListQ({ q: '', page: 1, perPage: 100 });
 	dataQ.then((data) => {
 		const item = data.items.find((p) => p.id === id);
 		if (item) {
@@ -30,6 +35,7 @@
 			pemenang = item.pemenang ?? '';
 			tingkat = item.tingkat ?? 'sekolah';
 			tahun = item.tahun ?? new Date().getFullYear();
+			authorUserId = item.authorUserId ?? null;
 		}
 		loaded = true;
 	});
@@ -57,7 +63,7 @@
 			<a href="/admin/prestasi"><Button variant="ghost" size="icon" class="size-8"><ArrowLeft class="size-4" /></Button></a>
 			<h1 class="text-xl font-semibold">Edit Prestasi</h1>
 		</div>
-		<Button variant="destructive" size="sm" onclick={handleDelete}><Trash2 class="mr-1 size-3.5" /> Hapus</Button>
+		<Button variant="destructive" size="sm" onclick={handleDelete} class={canManage(user?.role, user?.userId, authorUserId) ? '' : 'hidden'}><Trash2 class="mr-1 size-3.5" /> Hapus</Button>
 	</div>
 
 	{#if !loaded}

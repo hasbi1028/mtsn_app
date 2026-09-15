@@ -36,11 +36,15 @@ export function getBeritaBySlug(slug: string) {
 	return db.select().from(berita).where(eq(berita.slug, slug)).get() ?? null;
 }
 
-export function getAllBeritaList({ q, page, perPage }: BeritaListInput) {
-	let where = undefined;
+export function getAllBeritaList({ q, page, perPage, mine }: BeritaListInput) {
+	const conditions = [];
 	if (q) {
-		where = sql`(${berita.judul} LIKE ${'%' + q + '%'} OR ${berita.ringkasan} LIKE ${'%' + q + '%'})`;
+		conditions.push(sql`(${berita.judul} LIKE ${'%' + q + '%'} OR ${berita.ringkasan} LIKE ${'%' + q + '%'})`);
 	}
+	if (mine) {
+		conditions.push(eq(berita.authorUserId, mine));
+	}
+	const where = conditions.length > 0 ? and(...conditions) : undefined;
 
 	const total = db.select({ count: count() }).from(berita).where(where).get();
 	const items = db
@@ -55,14 +59,32 @@ export function getAllBeritaList({ q, page, perPage }: BeritaListInput) {
 	return { items, total: total?.count ?? 0, page, perPage };
 }
 
-export function createBerita(data: BeritaCreateInput) {
+export function getBeritaById(id: number) {
+	return db.select().from(berita).where(eq(berita.id, id)).get() ?? null;
+}
+
+export interface Author {
+	userId: number | null;
+	nama: string;
+}
+
+export function createBerita(data: BeritaCreateInput, author?: Author) {
 	let slug = makeSlug(data.judul);
 	const existing = db.select({ slug: berita.slug }).from(berita).where(eq(berita.slug, slug)).get();
 	if (existing) {
 		slug = slug + '-' + Date.now();
 	}
 	const publishedAt = data.published ? new Date().toISOString().slice(0, 19).replace('T', ' ') : null;
-	const result = db.insert(berita).values({ ...data, slug, publishedAt }).run();
+	const result = db
+		.insert(berita)
+		.values({
+			...data,
+			slug,
+			publishedAt,
+			penulis: data.penulis ?? author?.nama ?? 'Admin',
+			authorUserId: author?.userId ?? null
+		})
+		.run();
 	return { id: Number(result.lastInsertRowid), slug };
 }
 

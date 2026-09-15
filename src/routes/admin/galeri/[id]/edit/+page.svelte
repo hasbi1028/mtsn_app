@@ -1,24 +1,29 @@
 <script lang="ts">
-	import { getGaleriListQ, updateGaleriF, deleteGaleriC } from '$modules/galeri/galeri.remote';
+	import { page } from '$app/state';
+	import { getAllGaleriListQ, updateGaleriF, deleteGaleriC } from '$modules/galeri/galeri.remote';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
 	import { goto } from '$app/navigation';
 	import { notify } from '$lib/toast';
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
 	import Trash2 from '@lucide/svelte/icons/trash-2';
+	import { canManage } from '$lib/konten';
 
 	let { params } = $props();
 	const id = $derived(Number(params.id));
+
+	const user = $derived(page.data.user as { role?: string; userId?: number } | null);
 
 	let judul = $state('');
 	let deskripsi = $state('');
 	let gambar = $state('');
 	let kategori = $state('kegiatan');
+	let authorUserId = $state<number | null>(null);
 	let loaded = $state(false);
 
 	const kategoriOptions = ['kegiatan', 'wisata', 'olahraga', 'lainnya'];
 
-	const dataQ = getGaleriListQ({ q: '', page: 1, perPage: 100 });
+	const dataQ = getAllGaleriListQ({ q: '', page: 1, perPage: 100 });
 	dataQ.then((data) => {
 		const item = data.items.find((g) => g.id === id);
 		if (item) {
@@ -26,6 +31,7 @@
 			deskripsi = item.deskripsi ?? '';
 			gambar = item.gambar;
 			kategori = item.kategori ?? 'kegiatan';
+			authorUserId = item.authorUserId ?? null;
 		}
 		loaded = true;
 	});
@@ -53,7 +59,7 @@
 			<a href="/admin/galeri"><Button variant="ghost" size="icon" class="size-8"><ArrowLeft class="size-4" /></Button></a>
 			<h1 class="text-xl font-semibold">Edit Galeri</h1>
 		</div>
-		<Button variant="destructive" size="sm" onclick={handleDelete}><Trash2 class="mr-1 size-3.5" /> Hapus</Button>
+		<Button variant="destructive" size="sm" onclick={handleDelete} class={canManage(user?.role, user?.userId, authorUserId) ? '' : 'hidden'}><Trash2 class="mr-1 size-3.5" /> Hapus</Button>
 	</div>
 
 	{#if !loaded}

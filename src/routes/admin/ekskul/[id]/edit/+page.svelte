@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { getAllEkskulListQ, updateEkskulF, deleteEkskulC } from '$modules/ekskul/ekskul.remote';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
@@ -6,9 +7,12 @@
 	import { notify } from '$lib/toast';
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
 	import Trash2 from '@lucide/svelte/icons/trash-2';
+	import { canManage } from '$lib/konten';
 
 	let { params } = $props();
 	const id = $derived(Number(params.id));
+
+	const user = $derived(page.data.user as { role?: string; userId?: number } | null);
 
 	let nama = $state('');
 	let deskripsi = $state('');
@@ -16,6 +20,7 @@
 	let pembina = $state('');
 	let jadwal = $state('');
 	let aktif = $state(true);
+	let authorUserId = $state<number | null>(null);
 	let loaded = $state(false);
 
 	const dataQ = getAllEkskulListQ({ q: '', page: 1, perPage: 100 });
@@ -28,6 +33,7 @@
 			pembina = item.pembina ?? '';
 			jadwal = item.jadwal ?? '';
 			aktif = item.aktif ?? true;
+			authorUserId = item.authorUserId ?? null;
 		}
 		loaded = true;
 	});
@@ -55,7 +61,7 @@
 			<a href="/admin/ekskul"><Button variant="ghost" size="icon" class="size-8"><ArrowLeft class="size-4" /></Button></a>
 			<h1 class="text-xl font-semibold">Edit Ekskul</h1>
 		</div>
-		<Button variant="destructive" size="sm" onclick={handleDelete}><Trash2 class="mr-1 size-3.5" /> Hapus</Button>
+		<Button variant="destructive" size="sm" onclick={handleDelete} class={canManage(user?.role, user?.userId, authorUserId) ? '' : 'hidden'}><Trash2 class="mr-1 size-3.5" /> Hapus</Button>
 	</div>
 
 	{#if !loaded}

@@ -3,7 +3,8 @@ import * as v from 'valibot';
 export const pengumumanListSchema = v.object({
 	q: v.optional(v.string(), ''),
 	page: v.optional(v.number(), 1),
-	perPage: v.optional(v.number(), 20)
+	perPage: v.optional(v.number(), 20),
+	mine: v.optional(v.number())
 });
 
 export type PengumumanListInput = v.InferOutput<typeof pengumumanListSchema>;
